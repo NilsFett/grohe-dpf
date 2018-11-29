@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router} from '@angular/router';
+import { UserService} from './services/user.service';
+import { UiService} from './services/ui.service';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +10,11 @@ import { Router} from '@angular/router';
 })
 export class AppComponent {
   public loggedIn:boolean = false;
-  public view:string = 'customer';
-
   constructor(
-    public router : Router
-
+    public router : Router,
+    public user: UserService,
+    public ui: UiService
   ) {
-    console.log(this.router);
+
   }
 }

@@ -64,6 +64,11 @@ header{
   height:140px;
 }
 
+header.login{
+
+  height:160px;
+}
+
 header div{
   vertical-align: text-top;
   vertical-align: top;
@@ -77,6 +82,11 @@ nav, .main{
 
 .main{
   padding:20px 20px 20px 300px;
+}
+
+.login .main{
+  width:100%;
+  padding:20px;
 }
 
 nav .logo{

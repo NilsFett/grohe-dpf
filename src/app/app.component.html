@@ -1,8 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div [ngClass]="{'login': (router.url == '/' || router.url == 'login')}">
-<nav *ngIf="loggedIn">
+<nav *ngIf="user.isLoggedIn">
   <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
-  <ul *ngIf="view == 'customer'">
+  <ul *ngIf="ui.view == 'customer'">
     <li>
       <a>Order</a>
     </li>
@@ -10,7 +10,7 @@
       <a>Display Request</a>
     </li>
   </ul>
-  <ul *ngIf="view == 'admin'">
+  <ul *ngIf="ui.view == 'admin'">
     <li>
       <a>User Account Request</a>
     </li>
@@ -40,15 +40,15 @@
 <header [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
 
     <div class="span6">
-      <img *ngIf="!loggedIn" class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
+      <img *ngIf="!user.isLoggedIn" class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
       <h2>Display Factory</h2>
     </div>
-    <div *ngIf="loggedIn" class="span6">
+    <div *ngIf="user.isLoggedIn" class="span6">
       <p class="right">Angemeldet als: Vanessa Wittmer<span></span></p>
     </div>
     <div class="spacer20 clear"></div>
-    <div  *ngIf="loggedIn"class="span6">
-      <p><span (click)="view = 'customer'" [ngClass]="{'active': view == 'customer'}" class="button">Customer View</span><span (click)="view = 'admin'" [ngClass]="{'active': view == 'admin'}" class="button">Admin View</span></p>
+    <div  *ngIf="user.isLoggedIn"class="span6">
+      <p><span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span><span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span></p>
     </div>
 </header>
 <div class="main">

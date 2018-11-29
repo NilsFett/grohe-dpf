@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +17,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule,MatCheckboxModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
 
+import { UserService } from './services/user.service';
+import { UiService } from './services/ui.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +33,10 @@ import {MatButtonModule} from '@angular/material/button';
     AppRoutingModule,
     MatTableModule, MatSortModule, MatPaginatorModule,MatFormFieldModule,MatSelectModule,MatInputModule,MatButtonModule,MatCheckboxModule
   ],
-  providers: [],
+  providers: [
+    UserService,
+    UiService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
