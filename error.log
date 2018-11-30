@@ -1,0 +1,2 @@
+[Thu Nov 29 15:59:00.565829 2018] [:error] [pid 28358] [client 127.0.0.1:48004] PHP Fatal error:  Uncaught Error: Class 'cGroheapiController' not found in /home/nils/workspace/grohe-dpf/api/index.php:43\nStack trace:\n#0 {main}\n  thrown in /home/nils/workspace/grohe-dpf/api/index.php on line 43
+[Thu Nov 29 18:00:31.148030 2018] [:error] [pid 30233] [client 127.0.0.1:38818] PHP Parse error:  syntax error, unexpected '=' in /home/nils/workspace/grohe-dpf/api/models/cDisplaysModel.php on line 65

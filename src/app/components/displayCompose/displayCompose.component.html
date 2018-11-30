@@ -1,4 +1,18 @@
 <div class="order boxshadow">
   <h2>Display Compose</h2>
-
+  <div class="spacer20"></div>
+  <mat-select (selectionChange)="displayChanged($event.value)" placeholder="Select Display">
+    <mat-option *ngFor="let display of displaysService.displays" [value]="display.id" selected="selected">{{display.articlenr}} - {{display.title}}</mat-option>
+  </mat-select>
+  <br />
+  {{selectedDisplayId}}
+  <br />
+  <div *ngIf="selectedDisplay">
+    <p>Article Number:{{selectedDisplay.articlenr}}</p>
+    <p>Title:{{selectedDisplay.title}}</p>
+    <p>Displaytype:{{selectedDisplay.displaytype}}</p>
+    <p>Image:{{selectedDisplay.image}}</p>
+    <p>Topsign Punch:{{selectedDisplay.topsign_punch}}</p>
+    <p>Instruction:{{selectedDisplay.instruction}}</p>
+  </div>
 </div>

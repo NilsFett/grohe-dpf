@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { HttpClientModule }    from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,8 @@ import {MatButtonModule} from '@angular/material/button';
 
 import { UserService } from './services/user.service';
 import { UiService } from './services/ui.service';
+import { ConfigService } from './services/config.service';
+import { DisplaysService } from './services/displays.service';
 
 @NgModule({
   declarations: [
@@ -31,11 +34,14 @@ import { UiService } from './services/ui.service';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     MatTableModule, MatSortModule, MatPaginatorModule,MatFormFieldModule,MatSelectModule,MatInputModule,MatButtonModule,MatCheckboxModule
   ],
   providers: [
     UserService,
-    UiService
+    UiService,
+    ConfigService,
+    DisplaysService
   ],
   bootstrap: [AppComponent]
 })
