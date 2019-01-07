@@ -40,9 +40,15 @@ h1{
   clear:both;
 }
 
+.span4{
+  float:left;
+  width:33.333%;
+}
+
 .span6{
   float:left;
   width:50%;
+  padding-right:20px;
 }
 
 .clear{
@@ -63,7 +69,6 @@ header{
   padding:20px 20px 20px 300px;
   height:140px;
 }
-
 header.login{
 
   height:160px;
@@ -82,6 +87,13 @@ nav, .main{
 
 .main{
   padding:20px 20px 20px 300px;
+  width:100%;
+  overflow-y: scroll;
+}
+
+.main h2{
+  padding:10px;
+  background-color:#e9e9e9;
 }
 
 .login .main{
@@ -189,4 +201,13 @@ div.clogin{
 }
 .mat-form-field.mat-focused .mat-form-field-ripple{
   background-color:#3784c0;
+}
+
+.mat-form-field {
+  width:80%;
+}
+
+.parts{
+  list-style-type: none;
+  margin: 5px 0;
 }
