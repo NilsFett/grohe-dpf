@@ -35,8 +35,15 @@ class cGroheapiController{
 	public function index(){
 
 	}
-	
-	
+
+	public function index(){
+
+	}
+		
+	public function getDisplays(){
+		$displays = cDisplaysModel::getAll();
+		echo json_encode($displays);
+	}	
 	
 	public function getDisplays(){
 		$displays = cDisplaysModel::getAll();
