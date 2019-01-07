@@ -47,7 +47,7 @@
       <p class="right">Angemeldet als: Vanessa Wittmer<span></span></p>
     </div>
     <div class="spacer20 clear"></div>
-    <div  *ngIf="user.isLoggedIn"class="span6">
+    <div *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/'" class="span6">
       <p><span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span><span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span></p>
     </div>
 </header>
