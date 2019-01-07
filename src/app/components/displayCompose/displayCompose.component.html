@@ -2,17 +2,1107 @@
   <h2>Display Compose</h2>
   <div class="spacer20"></div>
   <mat-select (selectionChange)="displayChanged($event.value)" placeholder="Select Display">
-    <mat-option *ngFor="let display of displaysService.displays" [value]="display.id" selected="selected">{{display.articlenr}} - {{display.title}}</mat-option>
+    <mat-option *ngFor="let display of displaysService.displays" [value]="display.id">{{display.articlenr}} - {{display.title}}</mat-option>
   </mat-select>
-  <br />
-  {{selectedDisplayId}}
-  <br />
+  <div class="clear spacer20"></div>
   <div *ngIf="selectedDisplay">
-    <p>Article Number:{{selectedDisplay.articlenr}}</p>
-    <p>Title:{{selectedDisplay.title}}</p>
-    <p>Displaytype:{{selectedDisplay.displaytype}}</p>
-    <p>Image:{{selectedDisplay.image}}</p>
-    <p>Topsign Punch:{{selectedDisplay.topsign_punch}}</p>
-    <p>Instruction:{{selectedDisplay.instruction}}</p>
+    <div class="row">
+      <div class="span6">
+        <h1>Selected Display:</h1>
+        <div class="clear spacer20"></div>
+        <mat-form-field>
+          <input type="text"  matInput placeholder="Title" value="{{selectedDisplay.title}}">
+        </mat-form-field>
+        <div class="clear spacer20"></div>
+        <mat-form-field>
+          <input type="text"  matInput placeholder="Article Number" value="{{selectedDisplay.articlenr}}">
+        </mat-form-field>
+        <div class="clear spacer20"></div>
+        <mat-form-field>
+          <input type="text"  matInput placeholder="Display Type" value="{{selectedDisplay.displaytype}}">
+        </mat-form-field>
+        <div class="clear spacer20"></div>
+        <p>Kein Bild ausgewählt</p>
+        <div class="clear spacer20"></div>
+        <mat-select placeholder="Topsign Punch">
+          <mat-option [value]="1" selected="selected">new punch</mat-option>
+          <mat-option [value]="2">old punch</mat-option>
+        </mat-select>
+        <div class="clear spacer20"></div>
+        <mat-select placeholder="Instruction">
+          <mat-option [value]="1">Euphoria</mat-option>
+          <mat-option [value]="2">Rainshower</mat-option>
+          <mat-option [value]="3" selected="selected">Standard Instruction</mat-option>
+        </mat-select>
+        <div class="clear spacer20"></div>
+        <p>Selected Display Parts:</p>
+        <ul class="parts">
+          <li>98001209 | 	Halterung gestanzt, zum Einkleben mit 2 Dekopunkte | 2x</li>
+          <li>98001210 | 	Dekopunkt Durchmesser 30 mm | 2x</li>
+          <li>98001240 | 	Stülper groß - Halbfaltkiste mit zusammen stoßende | 2x</li>
+          <li>98001295 | 	Mantel gestanzt, 2-tlg. Geklebt | 2x</li>
+        </ul>
+        <p>Selected Articles:</p>
+        <ul class="parts">
+          <li>122075 | 		31114000+GROHclean | 6x</li>
+          <li>122073 | 	31148000 + GROHclean | 8x</li>
+          <li>98001240 | 	Stülper groß - Halbfaltkiste mit zusammen stoßende | 2x</li>
+          <li>98001295 | 	Mantel gestanzt, 2-tlg. Geklebt | 2x</li>
+        </ul>
+      </div>
+      <div class="span6">
+        <h1>Display Parts</h1>
+        <div style="height:300px;overflow-y:scroll;">
+
+        <table width="100%" cellspacing="0">
+        <tbody><tr class="table_headline">
+            <th>Art-No.</th>
+            <th>Title</th>
+            <th>Weight</th>
+            <th>&nbsp;</th>
+        </tr>
+
+        <tr class="">
+            <td>98001202</td>
+            <td>Sockel gestanzt, aus 2 gleichen Teilen zusammen ge</td>
+            <td>270g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001220</td>
+            <td>Trennsteg gestanzt, zum stecken, für Art. 27315 un</td>
+            <td>170g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001221</td>
+            <td>Trennsteg gestanzt, zum stecken, für Art. 27152</td>
+            <td>168g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001222</td>
+            <td>Trennsteg gestanzt, zum stecken, für Art. 27157 un</td>
+            <td>170g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001223</td>
+            <td>Trennsteg gestanzt, zum stecken, für Art. 32559</td>
+            <td>173g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001235</td>
+            <td>Wickel gerillt, für Art. 32731, 32441, 27324, 2731</td>
+            <td>282g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001236</td>
+            <td>Wickel gerillt, für Art. 34227 und 34230</td>
+            <td>300g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001238</td>
+            <td>Blistereinsatz gestanzt</td>
+            <td>171g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001239</td>
+            <td>Wickel gerillt, für Art. 40 451</td>
+            <td>165g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001240</td>
+            <td>Stülper groß - Halbfaltkiste mit zusammen stoßende</td>
+            <td>1783g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001250</td>
+            <td>DIY Vitalio Standard Plakat gestanzt zum Aufstecke</td>
+            <td>120g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001252</td>
+            <td>DIY Bad WT Standard Plakat gestanzt zum Aufstecken</td>
+            <td>120g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001253</td>
+            <td>DIY Küche Standard Plakat gestanzt zum Aufstecken </td>
+            <td>120g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001267</td>
+            <td>Stapelschütte gestanzt, zum Krempeln</td>
+            <td>1015g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001268</td>
+            <td>Füllstück als Tiefenausgleich für Kombidisplay</td>
+            <td>261g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001295</td>
+            <td>Mantel gestanzt, 2-tlg. Geklebt</td>
+            <td>700g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>63920000</td>
+            <td>Transport Box</td>
+            <td>150g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001229</td>
+            <td>Insert for Hoses</td>
+            <td>138g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001134</td>
+            <td>Faltkiste CD New Tempesta</td>
+            <td>185g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001138</td>
+            <td>Top Sign CD New Tempesta</td>
+            <td>100g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001134</td>
+            <td>Faltkiste CD New Tempesta</td>
+            <td>185g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001139</td>
+            <td>Top Sign Tempesta Classic</td>
+            <td>100g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98858131</td>
+            <td>Top Sign Tempesta Cosmo</td>
+            <td>100g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001K14</td>
+            <td>Einsatz </td>
+            <td>250g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98856031</td>
+            <td>Thekendisplay Spare Parts</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98859031</td>
+            <td>Thekendisplays Schachtel</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>9101631</td>
+            <td>bundlebox 16</td>
+            <td>1750g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>91013131</td>
+            <td>Bundle box</td>
+            <td>950g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>91025000</td>
+            <td>Karton gestanzt</td>
+            <td>120g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>91016131</td>
+            <td>Carton</td>
+            <td>1750g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001S21</td>
+            <td>Tray Counterdisplay</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001S22</td>
+            <td>Faltkiste Counterdisplay</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001S23</td>
+            <td>Topsign Counterdisplay</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001S24</td>
+            <td>Tray Countertopdisplay</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001S25</td>
+            <td>Half folding box Countertopdisplay</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001S27</td>
+            <td>Stülper Counterdisplay Reso2 </td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001S28</td>
+            <td>Topsign Counterdisplay Reso2</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001S29</td>
+            <td>Tray Counterdisplay Reso2</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001S30</td>
+            <td>Topsign Counterdisplay D/CH</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001S31</td>
+            <td>Topsign Counterdisplay global</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001200</td>
+            <td>Technosteg</td>
+            <td>305g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001198</td>
+            <td>Sockel Oberteil</td>
+            <td>852g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001199</td>
+            <td>V-Steg</td>
+            <td>428g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001197</td>
+            <td>Inlet French Mantel</td>
+            <td>988g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001400 </td>
+            <td>Counter Top Display SENSE</td>
+            <td>150g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001401</td>
+            <td>St</td>
+            <td>127g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001402</td>
+            <td>Topsign Countertop SENSE Germany</td>
+            <td>40g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001414</td>
+            <td>Topsign Countertop SENSE English</td>
+            <td>40g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001403</td>
+            <td>Topsign Countertop SENSE France</td>
+            <td>40g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001430</td>
+            <td>Topsign Countertop SENSE Italy</td>
+            <td>40g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001427</td>
+            <td>Topsign Countertop SENSE Polen</td>
+            <td>40g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001428</td>
+            <td>Topsign Countertop SENSE Spain</td>
+            <td>40g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001429</td>
+            <td>Topsign Countertop SENSE NL</td>
+            <td>40g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001435</td>
+            <td>Topsign Counter New Tempesta</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001436</td>
+            <td>Topsign Counter Tempesta Cosmopolitan</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001434</td>
+            <td>St</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001433</td>
+            <td>Tray Counter Display Tempesta</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>116950</td>
+            <td>Schachtel 900</td>
+            <td>1225g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>116949</td>
+            <td>Schachtel 600</td>
+            <td>910g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001S76</td>
+            <td>Sticker R&amp;F</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001S78</td>
+            <td>Sticker R&amp;F</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001B60</td>
+            <td>Bundle Box 600</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001B90</td>
+            <td>Bundle Box 900</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001S82</td>
+            <td>Topsign Countertop Finnland</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>63589000</td>
+            <td>Karton 1350X400X230MM</td>
+            <td>0g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001438</td>
+            <td>Cut Case</td>
+            <td>200g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>91028000</td>
+            <td>Karton        WPVDW 2,5 AB DRUCK 1-FARB</td>
+            <td>300g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>91035031</td>
+            <td>Karton         WPVDW 2,5 AB DRUCK 1-FARB</td>
+            <td>720g</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr class="blue_bg">
+            <td>98001B12</td>
+            <td>Palettenmantel</td>
+            <td>120g</td>
+            <td>
+				+
+			</td>
+        </tr>
+
+        <tr class="">
+            <td>98001B02</td>
+            <td>Palettenbanderole</td>
+            <td>120g</td>
+            <td>
+				+
+			</td>
+        </tr>
+            </tbody></table>
+          </div>
+          <h1>Articles</h1>
+          <div style="height:300px;overflow-y:scroll">
+
+            <table width="100%" cellspacing="0">
+        <tbody><tr class="table_headline">
+            <th>Art-No.</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Packaging</th>
+            <th>&nbsp;</th>
+        </tr>
+
+        <tr rel="122074" class="articlerows ">
+            <td>122074</td>
+            <td>30204000+GROHclean<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="122075" class="articlerows blue_bg">
+            <td>122075</td>
+            <td>31114000+GROHclean<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="122073" class="articlerows ">
+            <td>122073</td>
+            <td>31148000 + GROHclean<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="122649" class="articlerows blue_bg">
+            <td>122649</td>
+            <td>34143003+Cooling Bag<br><i></i></td>
+            <td>GRT</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="122647" class="articlerows ">
+            <td>122647</td>
+            <td>34155003+Cooling Bag<br><i></i></td>
+            <td>GRT</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="40824000" class="articlerows blue_bg">
+            <td>40824000</td>
+            <td>Ablaufgarnitur "Click"<br><i></i></td>
+            <td>Basin</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="26268LV0" class="articlerows ">
+            <td>26268LV0</td>
+            <td>Aquatunes Bluetooth Lautsprecher EU<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="39351000" class="articlerows blue_bg">
+            <td>39351000</td>
+            <td>Bau Ceramic WC Set randlos soft close<br><i>0</i></td>
+            <td>Spare_Parts</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="31562SD0" class="articlerows ">
+            <td>31562SD0</td>
+            <td>Bau Sp<br><i>0</i></td>
+            <td>Kitchen</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27395000" class="articlerows blue_bg">
+            <td>27395000</td>
+            <td>BauContemporary shower rail set<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27466000" class="articlerows ">
+            <td>27466000</td>
+            <td>BauCosmopolitan Handbrsset Mono (Blister<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27360000" class="articlerows blue_bg">
+            <td>27360000</td>
+            <td>BauCosmopolitan handshower set Mono<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="23333000" class="articlerows ">
+            <td>23333000</td>
+            <td>BauEdge EHM Brause AP<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="23328000" class="articlerows blue_bg">
+            <td>23328000</td>
+            <td>BauEdge EHM WT<br><i></i></td>
+            <td>Basin</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="23356000" class="articlerows ">
+            <td>23356000</td>
+            <td>BauEdge EHM WT F<br><i></i></td>
+            <td>Basin</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="23340000" class="articlerows blue_bg">
+            <td>23340000</td>
+            <td>BauLoop EHM Brause AP<br><i></i></td>
+            <td>Basin</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="31368000" class="articlerows ">
+            <td>31368000</td>
+            <td>BauLoop EHM SPT <br><i></i></td>
+            <td>Kitchen</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="23335000" class="articlerows blue_bg">
+            <td>23335000</td>
+            <td>BauLoop EHM WT<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="98001S10" class="articlerows ">
+            <td>98001S10</td>
+            <td>Blisterleiste transparent<br><i></i></td>
+            <td>Basin</td>
+            <td>blister</td>
+            <td>
++
+			</td>
+        </tr>
+
+
+        <tr rel="27645000" class="articlerows ">
+            <td>27645000</td>
+            <td>Tempesta Classic Brausestangenset 600 mm<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="28593001" class="articlerows blue_bg">
+            <td>28593001</td>
+            <td>Tempesta Classic Brausestangenset 600 mm<br><i></i></td>
+            <td>Tempesta</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27598000" class="articlerows ">
+            <td>27598000</td>
+            <td>Tempesta Classic Brausestangenset 600 mm<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="28578001" class="articlerows blue_bg">
+            <td>28578001</td>
+            <td>Tempesta Classic Handbrause IV<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27576000" class="articlerows ">
+            <td>27576000</td>
+            <td>Tempesta Cosmo Brausestangenset 600 mm<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27577000" class="articlerows blue_bg">
+            <td>27577000</td>
+            <td>Tempesta Cosmo Brausestangenset 600 mm<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27579000" class="articlerows ">
+            <td>27579000</td>
+            <td>Tempesta Cosmo Brausestangenset 600 mm<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27840000" class="articlerows blue_bg">
+            <td>27840000</td>
+            <td>Tempesta Cosmo Brausestangenset 600 mm<br><i></i></td>
+            <td>Tempesta</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27573000" class="articlerows ">
+            <td>27573000</td>
+            <td>Tempesta Cosmo Handbrause IV<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="26225000" class="articlerows blue_bg">
+            <td>26225000</td>
+            <td>Tempesta Cosmopolitan Duschsystem<br><i></i></td>
+            <td>Tempesta</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+
+
+        <tr rel="23216000" class="articlerows blue_bg">
+            <td>23216000</td>
+            <td>Touch Cosmopolitan EHM WT glatt.K<br><i></i></td>
+            <td>Basin</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="23215000" class="articlerows ">
+            <td>23215000</td>
+            <td>Touch Cosmopolitan EHM WT Kette<br><i></i></td>
+            <td>Basin</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="23217000" class="articlerows blue_bg">
+            <td>23217000</td>
+            <td>Touch Cosmopolitan Standventil WT<br><i></i></td>
+            <td>Basin</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="32450000" class="articlerows ">
+            <td>32450000</td>
+            <td>Touch sink mixer low swivel spout<br><i></i></td>
+            <td>Kitchen</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="32451000" class="articlerows blue_bg">
+            <td>32451000</td>
+            <td>Touch sink mixer pull-out spray<br><i></i></td>
+            <td>Kitchen</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="98001S21" class="articlerows ">
+            <td>98001S21</td>
+            <td>Tray Counterdisplay<br><i></i></td>
+            <td>Counter</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27729000" class="articlerows blue_bg">
+            <td>27729000</td>
+            <td>Vitalio Art Brausestangenset <br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27730000" class="articlerows ">
+            <td>27730000</td>
+            <td>Vitalio Art Brausestangenset 600 mm<br><i></i></td>
+            <td>Handshowers</td>
+            <td>carton</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27727000" class="articlerows blue_bg">
+            <td>27727000</td>
+            <td>Vitalio Art Handbrause<br><i></i></td>
+            <td>Handshowers</td>
+            <td>blister</td>
+            <td>
++
+			</td>
+        </tr>
+
+        <tr rel="27728000" class="articlerows ">
+            <td>27728000</td>
+            <td>Vitalio Art Handbrausenset<br><i></i></td>
+            <td>Handshowers</td>
+            <td>blister</td>
+            <td>
++
+			</td>
+        </tr>
+
+
+            </tbody></table>
+          </div>
+      </div>
+      <div class="clear"></div>
+    </div>
   </div>
 </div>
