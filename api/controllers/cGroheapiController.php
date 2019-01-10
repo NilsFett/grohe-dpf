@@ -3,48 +3,60 @@
 /*
 Copyright (c) 2018 Nils Fett
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
-INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 class cGroheapiController{
 	static $oInstance = NULL;
 	private $aActionStatus = array();
-	
+
 	private $newlyCreatedComponentsDuringExecuteChangeStackByTempId;
 	private $changingComponentsDuringExecuteChangeStackByTempId;
 
 	private function __construct(){
 
 	}
-	
-	static public function getInstance(){		
+
+	static public function getInstance(){
 		if(self::$oInstance == NULL){
 			self::$oInstance = new cGroheapiController();
 		}
 		return self::$oInstance;
 	}
-	
-	public function index(){
 
-	}
+
 
 	public function index(){
-
+		echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'data'=>cSessionUser::getInstance()->data()));
 	}
-		
-	public function getDisplays(){
-		$displays = cDisplaysModel::getAll();
-		echo json_encode($displays);
-	}	
-	
+
+	public function isLoggedIn(){
+		echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'data'=>cSessionUser::getInstance()->data()));
+	}
+
+
+	public function login(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$oSessionUser = cSessionUser::getInstance();
+		$oSessionUser->login($postData['email'], $postData['passwd']);
+		echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'data'=>cSessionUser::getInstance()->data()));
+	}
+
+	public function logout(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$oSessionUser = cSessionUser::getInstance();
+		$oSessionUser->logout();
+		echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'data'=>cSessionUser::getInstance()->data()));
+	}
+
 	public function getDisplays(){
 		$displays = cDisplaysModel::getAll();
 		echo json_encode($displays);
@@ -54,10 +66,10 @@ class cGroheapiController{
 		$displays = cDisplaysPartsModel::getPartsToDisplays();
 		echo json_encode($displays);
 	}
-		
+
 	public function addMenuItem(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-		
+
 		$oPageModel = new cPageModel();
 		$oPageModel->set('name', $postData['name']);
 		$oPageModel->set('menu_id', $postData['menu_id']);
@@ -68,18 +80,18 @@ class cGroheapiController{
 		$oPageModel->save();
 		$this->getMenues();
 	}
-	
+
 	public function changeMenuItem(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-		
-		$oPageModel = new cPageModel($postData['id']);		
+
+		$oPageModel = new cPageModel($postData['id']);
 		$oPageModel->set('name', $postData['name']);
-		$oPageModel->set('menu_id', $postData['menu_id']);		
+		$oPageModel->set('menu_id', $postData['menu_id']);
 		$oPageModel->set('published', 1);
-		$oPageModel->set('deleted', 0);		
-		
+		$oPageModel->set('deleted', 0);
+
 		if($oPageModel->get('parent_id') != $postData['parent_id']){
-			$oldParentId = $oPageModel->get('parent_id');			
+			$oldParentId = $oPageModel->get('parent_id');
 			$oldOrderNumber = $oPageModel->get('order_number');
 			if($oldParentId){
 				$oldParent = new cPageModel($oldParentId);
@@ -97,7 +109,7 @@ class cGroheapiController{
 				$newParent->set('menu_id', $postData['menu_id']);
 				$newParent->set('parent_id', 0);
 			}
-			$order_number = $newParent->getMaxChildsOrderNumber()+1;			
+			$order_number = $newParent->getMaxChildsOrderNumber()+1;
 			$oPageModel->set('order_number', $order_number);
 		}
 		else{
@@ -110,14 +122,14 @@ class cGroheapiController{
 		}
 		$this->getMenues();
 	}
-	
+
 	public function menuItemDelete(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$oPageModel = new cPageModel($postData['id']);
 		$orderNumber = $oPageModel->get('order_number');
 		$oPrevPageModel = new cPageModel($oPageModel->getPrevId());
-		
-		
+
+
 
 		if($oPrevPageModel->get('id')){
 			$oPageModel->delete();
@@ -135,9 +147,9 @@ class cGroheapiController{
 		}
 		$this->getMenues();
 	}
-	
-	
-	
+
+
+
 	public function getPageStructure(){
 /*
 		echo '<pre>';
@@ -145,7 +157,7 @@ class cGroheapiController{
 */
 		echo json_encode(cStructureModel::getTreeByPageId($_GET['id']));
 	}
-	
+
 	public function saveText(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$oText = new cTextModel($postData['id']);
@@ -153,7 +165,7 @@ class cGroheapiController{
 		$oText->save();
 		echo json_encode(array('success'=>true));
 	}
-	
+
 	public function executeChangeStack(){
 		$this->postData = json_decode(file_get_contents('php://input'),true);
 		echo '<pre>';
@@ -165,7 +177,7 @@ class cGroheapiController{
 			}
 			if(isset($action['objectChanging']['tempId']) ){
 				$this->changingComponentsDuringExecuteChangeStackByTempId[$action['objectChanging']['tempId']] = &$action['objectChanging'];
-			}			
+			}
 			switch($action['action']){
 				case 'addComponent':
 					$this->addComponent($action);
@@ -175,25 +187,25 @@ class cGroheapiController{
 				break;
 			}
 		}
-		
+
 		var_dump($this->postData);
 		json_encode($this->postData);
 		exit();
 	}
-	
+
 	public function addComponent(&$action){
-		
+
 		/*
-		$postData = json_decode(file_get_contents('php://input'),true);	
+		$postData = json_decode(file_get_contents('php://input'),true);
 		*/
 		$parentId = $action['objectChanging']['id'];
-		
+
 		if( isset($action['objectChanging']['tempId'])
-			&& isset( $this->newlyCreatedComponentsDuringExecuteChangeStackByTempId[$action['objectChanging']['tempId']]) 
+			&& isset( $this->newlyCreatedComponentsDuringExecuteChangeStackByTempId[$action['objectChanging']['tempId']])
 			&& $this->newlyCreatedComponentsDuringExecuteChangeStackByTempId[$action['objectChanging']['tempId']]['id'] ){
 			$parentId = $this->newlyCreatedComponentsDuringExecuteChangeStackByTempId[$action['objectChanging']['tempId']]['id'];
 		}
-		
+
 		$slotId = $action['objectChanging']['slot_id'];
 		$pageId = $action['objectChanging']['page_id'];
 		$isStructureComponent = $action['newObject']['isStructureComponent'];
@@ -218,7 +230,7 @@ class cGroheapiController{
 			}
 			if(isset($action['objectChanging']['tempId']) && isset($this->changingComponentsDuringExecuteChangeStackByTempId[$action['objectChanging']['tempId']])){
 				$this->changingComponentsDuringExecuteChangeStackByTempId[$action['objectChanging']['tempId']]['id'] = $parentId;
-			}			
+			}
 			$oStructurePagesModel = new cStructurePagesModel();
 			$oStructurePagesModel->set('page_id', $pageId);
 			$oStructurePagesModel->set('structure_id', $oNewElement->get('id'));
@@ -231,13 +243,13 @@ class cGroheapiController{
 			$oNewElement->set('order_number', $oNewElement->getMaxOrderNumber()+1);
 			$oNewElement->set('type', $type);
 			$oNewElement->save();
-			
+
 			if($texts){
 				$oText = new cTextModel();
 				$oText->set('html', '');
 				$oText->set('order_number', 1);
 				$oText->save();
-				
+
 				$oContentTexts = new cContentTextsModel();
 				$oContentTexts->set('content_id', $oNewElement->get('id'));
 				$oContentTexts->set('text_id', $oText->get('id'));
@@ -251,7 +263,7 @@ class cGroheapiController{
 				$oResourcesModel->set('path_id', 0);
 				$oResourcesModel->set('order_number', 1);
 				$oResourcesModel->save();
-				
+
 				$oContentTexts = new cContentResourcesModel();
 				$oContentTexts->set('content_id', $oNewElement->get('id'));
 				$oContentTexts->set('resources_id', $oText->get('id'));
@@ -264,7 +276,7 @@ class cGroheapiController{
 		$postData['order'] = $oNewElement->get('order_number');
 		//echo json_encode($postData);
 	}
-	
+
 	public function deleteComponent(&$action){
 		//$postData = json_decode(file_get_contents('php://input'),true);
 		if($action['objectChanging']['isStructureComponent']){
@@ -276,7 +288,7 @@ class cGroheapiController{
 			$oContentModel->delete();
 		}
 	}
-	
+
 	public function changeType(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 
@@ -287,59 +299,59 @@ class cGroheapiController{
 		$postData['success'] = true;
 		echo json_encode($postData);
 	}
-	
-	
+
+
 	public function saveProperity(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		cPropertiesModel::replace($postData['id'], ($postData['isStructureComponent']?'structure':'content'), $postData['propName'], $postData['probValue']);
-		echo json_encode($postData);		
+		echo json_encode($postData);
 	}
 
 	public function saveProperityMenu(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		cPropertiesModel::replace($postData['id'], ($postData['parent_type']), $postData['propName'], $postData['propValue']);
-		echo json_encode($postData);		
+		echo json_encode($postData);
 	}
-		
+
 	public function moveAfter(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-		echo json_encode($postData);		
+		echo json_encode($postData);
 	}
 
 	public function movePrepend(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-		
+
 		if($postData['targetElementIsStructure'] == false && $postData['movingElementIsStructure'] == true){
 			echo json_encode(array('success'=>false,'error'=>'structure element must not be put in content element'));
 		}
-		
+
 		if($postData['targetElementIsStructure'] && $postData['movingElementIsStructure'] == false){
 			$oTargetElement = new cStructureModel($postData['targetElementId']);
 			$oMovingElement = new cContentModel($postData['movingElementId']);
 			$nOldOrderNumber = $oMovingElement->get('order_number');
 			$oOldTargetElement = new cStructureModel($oMovingElement->get('structure_id'));
-			
+
 			cContentModel::increaseOrderNumberAt(0,$oTargetElement->get('id'), $oMovingElement->get('language'));
-			
+
 			$oMovingElement->set('structure_id', $oTargetElement->get('id'));
 			$oMovingElement->set('order_number', 1);
-			
-			
+
+
 			$oMovingElement->save();
-			
+
 			$oOldTargetElement->reduceOrderNumberAt($nOldOrderNumber);
 		}
 
-		echo json_encode($postData);		
+		echo json_encode($postData);
 	}
-	
+
 	public function moveAppend(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-		
+
 		if($postData['targetElementIsStructure'] == false && $postData['movingElementIsStructure'] == true){
 			echo json_encode(array('success'=>false,'error'=>'structure element must not be put in content element'));
 		}
-		
+
 		if($postData['targetElementIsStructure'] && $postData['movingElementIsStructure'] == false){
 			$oTargetElement = new cStructureModel($postData['targetElementId']);
 			$oMovingElement = new cContentModel($postData['movingElementId']);
@@ -348,13 +360,13 @@ class cGroheapiController{
 			$oMovingElement->set('structure_id', $oTargetElement->get('id'));
 			$oMovingElement->set('order_number', ($oTargetElement->getMaxChildsOrderNumber()+1));
 			$oMovingElement->save();
-			
+
 			$oOldTargetElement->reduceOrderNumberAt($nOldOrderNumber);
 		}
 
-		echo json_encode($postData);		
+		echo json_encode($postData);
 	}
-	
+
 	public function componentUp(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		if($postData['movingElementIsStructure']){
@@ -370,7 +382,7 @@ class cGroheapiController{
 		else{
 			$prevElementId = $oMovingElement->getPrevId();
 			if($postData['movingElementIsStructure']){
-				$prevElement = new cStructureModel($prevElementId);				
+				$prevElement = new cStructureModel($prevElementId);
 			}
 			else{
 				$prevElement = new cContentModel($prevElementId);
@@ -386,7 +398,7 @@ class cGroheapiController{
 			echo json_encode($postData);
 		}
 	}
-	
+
 	public function componentDown(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$oMovingElement = new cContentModel($postData['movingElementId']);
@@ -409,7 +421,7 @@ class cGroheapiController{
 			echo json_encode($postData);
 		}
 	}
-	
+
 	public function saveResources(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		cContentResourcesModel::setNew($postData['elementResourcesChanged']['id'], $postData['resources']);
@@ -430,17 +442,17 @@ class cGroheapiController{
 		$oResourcesModel->delete();
 		echo json_encode($postData);
 	}
-		
+
 	public function loadMediathekFiles(){
 		echo json_encode(cResourcesModel::getAll());
 	}
-	
+
 	public function fileUpload(){
 		if( count($_FILES) ){
 			foreach( $_FILES as $aImage ){
 				$aSize = getimagesize($aImage['tmp_name']);
-				
-				if($aImage['type'] == 'application/octet-stream'){					
+
+				if($aImage['type'] == 'application/octet-stream'){
 					if($aSize !== false){
 						$aFile['type'] = $aSize['mime'];
 					}
@@ -451,7 +463,7 @@ class cGroheapiController{
 				else if( $aImage['error'] == 0 ){
 					$aErrors [] = 'File '.$aImage['tmp_name'].' konnte hochgeladen werden.';
 					continue;
-				}				
+				}
 
 				$sExtension = explode('/', $aSize['mime']);
 				$sExtension = $sExtension[1];
@@ -470,7 +482,7 @@ class cGroheapiController{
 						$oResource->set('type', $aImage['type']);
 						$oResource->set('filesize', $aImage['size']);
 						$oResource->set('upload_timestamp', time());
-			
+
 
 						if( $aImage['type'] == 'image/jpeg' || $aImage['type'] == 'image/gif' || $aImage['type'] == 'image/png' ){
 							if(isset($aSize[0])){
@@ -478,7 +490,7 @@ class cGroheapiController{
 							}
 							if(isset($aSize[1])){
 								$oResource->set('height', $aSize[1]);
-							}	
+							}
 							if($aSize[0] > $aSize[1]){
 								$newHeight = $aSize[1] / ( $aSize[0] / 100 );
 								$newWidth = 100;
@@ -491,9 +503,9 @@ class cGroheapiController{
 								$newHeight = 100;
 								$newWidth = 100;
 							}
-							
+
 							$image = new Imagick(cConfig::getInstance()->get('basepath')."html/public/resources/".$sHash.".".$sExtension);
-							
+
 							$image->resizeImage($newWidth, $newHeight, imagick::FILTER_CUBIC, 1, true);
 							//$image->cropThumbnailImage($newWidth,$newHeight);
 							$image->writeImage( cConfig::getInstance()->get('basepath')."html/public/resources/thumbs/".$sHash.".".$sExtension );

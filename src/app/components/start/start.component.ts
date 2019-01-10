@@ -2,11 +2,11 @@ import { Component} from '@angular/core';
 import { UserService} from '../../services/user.service';
 
 @Component({
-  selector: 'grohe-dpf-login',
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.css']
+  selector: 'grohe-dpf-start',
+  templateUrl: './start.component.html',
+  styleUrls: ['./start.component.css']
 })
-export class OrderComponent{
+export class StartComponent{
   constructor(
     public user: UserService
   ) {

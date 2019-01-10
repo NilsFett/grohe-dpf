@@ -1,11 +1,18 @@
 <div class="clogin boxshadow">
   <h2>Login </h2>
-  <mat-form-field>
-    <input type="email"  matInput placeholder="E-Mail">
-  </mat-form-field>
-  <mat-form-field>
-    <input type="password"  matInput placeholder="Password">
-  </mat-form-field>
-  <div class="spacer20"></div>
-  <button routerLink="/order" type="submit" mat-raised-button (click)="user.isLoggedIn = true">Login</button>
+  <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="spacer20"></div>
+    <mat-form-field>
+      <input type="email" formControlName="email" matInput name="email" #email placeholder="E-Mail">
+      <mat-error [hidden]="email.valid || email.pristine">Please fill in a valid email address</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" formControlName="passwd" matInput name="passwd" #passwd placeholder="Password">
+      <mat-error [hidden]="passwd.valid || passwd.pristine">required</mat-error>
+    </mat-form-field>
+    <div class="spacer20"></div>
+    <button type="submit" mat-raised-button>Login</button>
+    <div class="spacer20"></div>
+    <p *ngIf="logginIncorrect">login data incorrect</p>
+  </form>
 </div>

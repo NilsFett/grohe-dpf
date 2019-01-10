@@ -14,7 +14,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
+session_start();
 if ($_SERVER['REQUEST_METHOD']=='OPTIONS') {
 	exit();
 }
@@ -34,23 +34,23 @@ try{
 	require('cConfig.php');
 	require('autoloader.php');
 	//require('../functions/functions.php');
-	
+
 	cSystem::getInstance()->init();
 	$action = cSystem::getInstance()->getAction();
 	$env = cSystem::getInstance()->getEnviroment();
 	$sController = 'c'.ucfirst($env).'Controller';
-	$oController = $sController::getInstance();	
+	$oController = $sController::getInstance();
 	$oController->{$action}();
 }
 catch(Exception $e){
 
-	
-	echo '<pre><h1>'.$e->getMessage().'</h1>';
-	
 
-	
+	echo '<pre><h1>'.$e->getMessage().'</h1>';
+
+
+
 	foreach( $e->getTrace() as $aStep ){
-		
+
 		if( isset( $aStep['file'] ) ){
 			echo '<p>'.$aStep['file'].' at line'.$aStep['line'].'</p>';
 			echo '<p>Funtion '.$aStep['function'].'</p>';
