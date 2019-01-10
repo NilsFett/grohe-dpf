@@ -9,12 +9,11 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class UserService {
   public isLoggedIn:boolean=false;
+  public logginIncorrect = false;
   public loggedInState:Subject<boolean>;
   public loggedInStateObserver:Observable<boolean>;
-
-
-
   public data:object;
+
   constructor(
     private http: HttpClient,
     private config: ConfigService,
@@ -25,12 +24,17 @@ export class UserService {
     this.http.get(`${this.config.baseURL}isLoggedIn`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
         if(response.loggedIn){
-          this.isLoggedIn = true;
+          if( ! this.isLoggedIn ){
+            this.isLoggedIn = true;
+            this.loggedInState.next(true);
+          }
           this.data = response.data;
-          this.loggedInState.next(true);
         }
         else{
-          this.loggedInState.next(false);
+          if( this.isLoggedIn ){
+            this.isLoggedIn = false;
+            this.loggedInState.next(false);
+          }
         }
       },
       error => {
@@ -46,12 +50,19 @@ export class UserService {
         console.log(response);
 
         if(response.loggedIn){
-          this.isLoggedIn = true;
+          if( ! this.isLoggedIn ){
+            this.isLoggedIn = true;
+            this.loggedInState.next(true);
+          }
           this.data = response.data;
-          this.loggedInState.next(true);
+          this.logginIncorrect = false;
         }
         else{
-          this.loggedInState.next(false);
+          if( this.isLoggedIn ){
+            this.isLoggedIn = false;
+            this.loggedInState.next(false);
+          }
+          this.logginIncorrect = true;
         }
       },
       error => {
@@ -67,12 +78,18 @@ export class UserService {
         console.log(response);
 
         if(response.loggedIn){
-          this.isLoggedIn = true;
+          if( ! this.isLoggedIn ){
+            this.isLoggedIn = true;
+            this.loggedInState.next(true);
+          }
           this.data = response.data;
-          this.loggedInState.next(true);
+
         }
         else{
-          this.loggedInState.next(false);
+          if( this.isLoggedIn ){
+            this.isLoggedIn = false;
+            this.loggedInState.next(false);
+          }
         }
       },
       error => {

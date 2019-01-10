@@ -13,6 +13,7 @@
     <div class="spacer20"></div>
     <button type="submit" mat-raised-button>Login</button>
     <div class="spacer20"></div>
-    <p *ngIf="logginIncorrect">login data incorrect</p>
+    <p class="mat-error" *ngIf="user.logginIncorrect">login data incorrect</p>
   </form>
+  <a routerLink="/register">register</a>
 </div>

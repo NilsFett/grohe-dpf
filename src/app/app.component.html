@@ -1,5 +1,6 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div [ngClass]="{'login': (router.url == '/' || router.url == 'login')}">
+
+<div [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register')}">
+
   <nav *ngIf="user.isLoggedIn">
     <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
     <ul *ngIf="ui.view == 'customer'">
@@ -55,7 +56,6 @@
   <div class="main" [style.height.px]="mainheight">
     <router-outlet></router-outlet>
   </div>
-  ###{{error.errors}}###
   <div *ngIf="error.errors.length" class="messages">
     <p *ngFor="let error of error.errors">{{error}}</p>
   </div>
