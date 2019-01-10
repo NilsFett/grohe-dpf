@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Router} from '@angular/router';
 import { UserService} from './services/user.service';
+import { ErrorService} from './services/error.service';
 import { UiService} from './services/ui.service';
 
 @Component({
@@ -21,9 +22,19 @@ export class AppComponent {
   constructor(
     public router : Router,
     public user: UserService,
+    public error: ErrorService,
     public ui: UiService
   ) {
+    this.user.loggedInStateObserver.subscribe(loggedIn => {
+      console.log('logged in state changed!');
+      console.log(loggedIn);
+      if(loggedIn){
 
+      }
+      else{
+        this.router.navigate(['/login']);
+      }
+    });
     this.adjustHeight();
   }
 

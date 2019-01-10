@@ -19,22 +19,20 @@ class cConfig{
 
 	private $aConfig = array();
 
-
 	private function __construct(){
 		$this->aConfig['debug'] = false;
 
 		$this->aConfig['senderMail'] = 'mail@nils-fett.de';
 		$this->aConfig['hosts'] = array(
-			'groheapi.localdomain' => 'groheapi'
+			'grohe-dpf.localdomain' => 'groheapi'
 			 //everything.localdomain
 		);
-		$this->aConfig['dbname'] = 'grohe';
+		$this->aConfig['dbname'] = 'grohe-dpf';
 		$this->aConfig['user'] = 'root';
-		$this->aConfig['password'] = 'x_aBf%@';
+		$this->aConfig['password'] = 'iCasaful:06123';
 
-		$this->aConfig['basepath'] = '/home/nils/workspace/grohe-dpf/api/';
-		
-
+		$this->aConfig['basepath'] = '/Users/nilsfett/Sites/grohe-dpf/api/';
+		$this->aConfig['enviroment'] = 'grohedpf';
 	}
 
 	static public function getInstance(){
@@ -44,7 +42,7 @@ class cConfig{
 		return self::$oInstance;
 	}
 
-	public function get($sKey = NULL){		
+	public function get($sKey = NULL){
 		if($sKey == NULL){
 			return $this->aConfig;
 		}
@@ -56,20 +54,3 @@ class cConfig{
 		}
 	}
 }
-
-/* MWS */
-define ('DATE_FORMAT', 'Y-m-d\TH:i:s\Z');
-define('AWS_ACCESS_KEY_ID', 'AKIAJGJL2MKUPG75XPOQ');
-define('AWS_SECRET_ACCESS_KEY', '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');
-
-define('APPLICATION_NAME', 'MWS Reporter');
-define('APPLICATION_VERSION', '0.1');
-    
-define ('MERCHANT_ID', 'A1Q7HF98VTYCCR');
-
-/* AWS */
-/*
-define ('AWS_ACCESS_KEY', 'AKIAII43RQXR67TJ7IIA');
-define ('AWS_SECRET_KEY', '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');
-define ('ASSOCIATE_TAG', 'httpswwwwank-21');
-*/

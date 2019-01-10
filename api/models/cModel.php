@@ -2,37 +2,39 @@
 /*
 Copyright (c) 2011 Nils Fett
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
-INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-class cModel extends cDatabase{	
+class cModel extends cDatabase{
 	protected $bHasChanged = false;
 	protected $bIsNew = true;
 	protected $aColumns = array();
 	protected $sOrderBy = false;
 	protected $bASC = false;
-	
+
 	public function __construct($aData){
 		parent::__construct();
-		$this->popolate($aData);
+		if($aData)
+			$this->popolate($aData);
 	}
-	
+
 	protected function popolate($aData){
 		if( is_array($aData) ){
 			if(isset($this->sPrimary)){
-				if(isset($aData[$this->sPrimary]['value'])){
-					$this->aColumns[$this->sPrimary] = $aData[$this->sPrimary]['value'];
+				if(isset($aData[$this->sPrimary])){
+					$this->aColumns[$this->sPrimary]['value'] = $aData[$this->sPrimary];
 					$this->bIsNew = false;
-				}				
+				}
 			}
+
 			foreach( $this->aColumns as $sColumn => $sValue ){
 				if(isset($aData[$sColumn])){
 					$this->aColumns[$sColumn]['value'] = $aData[$sColumn];
@@ -63,7 +65,11 @@ class cModel extends cDatabase{
 			$this->bIsNew = true;
 		}
 	}
-	
+
+	public function data(){
+		return $this->aColumns;
+	}
+
 	public function set( $sColumn, $sValue ){
 		if( $this->aColumns[$sColumn]['value'] === $sValue ){
 
@@ -81,7 +87,7 @@ class cModel extends cDatabase{
 				else{
 
 					$this->aColumns[$sColumn]['value'] =$sValue ;
-			
+
 				}
 			}
 			$this->bHasChanged = true;
@@ -95,20 +101,20 @@ class cModel extends cDatabase{
 
 	public function setASC( $bASC ){
 		$this->bASC =$bASC;
-	}	
-	
+	}
+
 	public function get( $sColumn ){
 
 		return $this->aColumns[$sColumn]['value'];
 	}
-	
+
 	public function save(){
 		$aColsValuePairs = array();
 		if( $this->bIsNew ){
 			$aColNames = array();
 			$aColValues = array();
 
-			foreach( $this->aColumns as $sColumn => $sValue){				
+			foreach( $this->aColumns as $sColumn => $sValue){
 				if( $sColumn == 'id' || is_array($sValue['value']) ){
 					continue;
 				}
@@ -121,12 +127,12 @@ class cModel extends cDatabase{
 			}
 			if(isset($_GET['debug'])){
 				echo '<p>INSERT INTO '.$this->sTable.' ( '.(implode(',', $aColNames)).' ) VALUES ( '.implode(',', $aColValues).' )</p>';
-				
+
 				print_r($aColNames);
 				print_r($aColValues);
 				print_r($aColsValuePairs);
-				
-				
+
+
 			}
 
 			$oPDO = $this->hConnection->prepare( 'INSERT INTO `'.static::$sTable.'` ( '.(implode(',', $aColNames).' ) VALUES ( '.implode(',', $aColValues).' )' ), array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
@@ -135,10 +141,11 @@ class cModel extends cDatabase{
 			if( isset($this->sPrimary)  ){
 				$this->aColumns[$this->sPrimary]['value'] = $this->hConnection->lastInsertId();
 			}
-			$this->bIsNew = false;	
+			$this->bIsNew = false;
 		}
 		else{
 			if($this->bHasChanged){
+
 				$sQuery = 'UPDATE `'.static::$sTable.'` SET ';
 				foreach( $this->aColumns as $sColumn => $sValue){
 					if( $sColumn == $this->sPrimary  || is_array($sValue['value']) ){
@@ -146,29 +153,37 @@ class cModel extends cDatabase{
 					}
 
 					$sQuery .= $sColumn.' = :'.$sColumn.',';
-					
+
 					if($sValue['value'] == 'NULL'){
-						$aColsValuePairs[':'.$sColumn] = PDO::PARAM_NULL;	
+						$aColsValuePairs[':'.$sColumn] = PDO::PARAM_NULL;
 					}
 					else{
-						$aColsValuePairs[':'.$sColumn] = $sValue['value'];
+						if( $sValue['value'] == '' && $sValue['type'] != 'varchar' ){
+							$aColsValuePairs[':'.$sColumn] = PDO::PARAM_NULL;
+						}
+						elseif( ( $sValue['value'] == '0000-00-00 00:00:00' && $sValue['type'] == 'datetime' ) ){
+							$aColsValuePairs[':'.$sColumn] = NULL;
+						}
+						else{
+							$aColsValuePairs[':'.$sColumn] = $sValue['value'];
+						}
+
 					}
 				}
 				$sQuery = substr($sQuery, 0, -1);
 				$sQuery .= ' WHERE '.$this->sPrimary.' = '.$this->aColumns[$this->sPrimary]['value'];
-				
+
 				if(isset($_GET['debug'])){
 					echo '<p>'.$sQuery.'</p>';
 				}
 				$oPDO = $this->hConnection->prepare( $sQuery , array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
-
 				$oPDO->execute( $aColsValuePairs );
 			}
 		}
 		return $this;
 	}
-	
-	public function clear(){		
+
+	public function clear(){
 		$this->bHasChanged = false;
 		$this->bIsNew = true;
 		foreach( $this->aColumns as  &$sValue){
@@ -186,7 +201,7 @@ class cModel extends cDatabase{
 		$x = $oPDO->execute();
 		$this->hConnection->commit();
 	}
-	
+
 	public function delete(){
 		$sQuery = 'DELETE FROM '.static::$sTable.' WHERE ID = '.$this->aColumns[$this->sPrimary]['value'];
 		if(isset($_GET['debug'])){
@@ -207,7 +222,7 @@ class cModel extends cDatabase{
 		}
 		return $aResult;
 	}
-		
+
 	public function getValuesArray(){
 		$aValuesArray = array();
 		foreach($this->aColumns as $col => $props){
