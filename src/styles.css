@@ -68,12 +68,26 @@ nav{
 header{
   padding:20px 20px 20px 300px;
   height:140px;
+  width:100%;
 }
+
+.login header{
+  padding:20px;
+}
+
+.login header .span6{
+  margin:0 auto;
+  float:none;
+  padding:0;
+  display:block;
+  text-align: center;;
+}
+/*
 header.login{
 
   height:160px;
 }
-
+*/
 header div{
   vertical-align: text-top;
   vertical-align: top;
@@ -89,6 +103,11 @@ nav, .main{
   padding:20px 20px 20px 300px;
   width:100%;
   overflow-y: scroll;
+  margin-bottom: 20px;
+}
+
+.login .main{
+
 }
 
 .main h2{
@@ -155,16 +174,16 @@ header.login .span6{
 }
 
 div.clogin{
-  width:50%;
-  max-width:300px;
+  width:300px;
   padding:20px;
-  margin:40px auto 0 auto;
+  margin:40px auto 20px auto;
 }
 
+/*
 .main{
   margin:20px 0 0 0;
 }
-
+*/
 .order{
     padding:20px;
 }

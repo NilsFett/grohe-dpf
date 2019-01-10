@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { StartComponent } from './components/start/start.component';
 import { OrderComponent } from './components/order/order.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
@@ -30,6 +31,7 @@ import { DisplaysService } from './services/displays.service';
   declarations: [
     AppComponent,
     LoginComponent,
+    RegisterComponent,
     StartComponent,
     OrderComponent,
     DisplayComposeComponent

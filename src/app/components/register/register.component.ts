@@ -1,14 +1,14 @@
 import { Component} from '@angular/core';
 import { UserService} from '../../services/user.service';
-import {  FormGroup, FormControl, Validators  } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router} from '@angular/router';
 
 @Component({
-  selector: 'grohe-dpf-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'grohe-dpf-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent{
+export class RegisterComponent{
 
   loginForm = new FormGroup({
     email : new FormControl('',[Validators.required, Validators.email]),
@@ -17,15 +17,10 @@ export class LoginComponent{
 
   constructor(
     public user: UserService,
-    public router : Router,
+    public router: Router
   ) {
-    this.user.loggedInStateObserver.subscribe(loggedIn => {
-      console.log('logged in state changed!');
-      console.log(loggedIn);
-      if(loggedIn){
-        this.router.navigate(['/start']);
-      }
-    });
+
+    
   }
 
   public onSubmit(){

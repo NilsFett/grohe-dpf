@@ -26,8 +26,6 @@ export class AppComponent {
     public ui: UiService
   ) {
     this.user.loggedInStateObserver.subscribe(loggedIn => {
-      console.log('logged in state changed!');
-      console.log(loggedIn);
       if(loggedIn){
 
       }
