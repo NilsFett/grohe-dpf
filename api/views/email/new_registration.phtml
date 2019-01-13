@@ -1,0 +1,92 @@
+--<?php echo $this->aData['boundary'].'
+'; ?>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+User-Request Information:
+Name: <?php echo $this->aData['user']->get('name'); ?>
+Surame: <?php echo $this->aData['user']->get('surname'); ?></td>
+Department: <?php echo $this->aData['user']->get('department'); ?>
+Street: <?php echo $this->aData['user']->get('street'); ?></td>
+Zipcode: <?php echo $this->aData['user']->get('zipcode'); ?>
+City: <?php echo $this->aData['user']->get('city'); ?>
+Country: <?php echo $this->aData['user']->get('country'); ?>
+Phone: <?php echo $this->aData['user']->get('phone'); ?>
+Fax: <?php echo $this->aData['user']->get('fax'); ?>
+E-Mail-Address: <?php echo $this->aData['user']->get('mail'); ?>
+Cost Centre: <?php echo $this->aData['costno']->get('costno'); ?> - <?php echo $this->aData['costno']->get('description'); ?>
+
+Your way to the display factory: http://grohe2.hoehne-media.de
+
+--<?php echo $this->aData['boundary'].'
+'; ?>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+<html>
+	<head>
+		<style>
+			body{
+				font-family: Verdana;
+				color:#000000;
+			}
+
+		</style>
+	</head>
+	<body>
+	    <b>User-Request Information:</b><br />
+	    <table border="1">
+	      <tr>
+	        <td><b>Name:</b></td>
+	        <td><?php echo $this->aData['user']->get('name'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Surame:</b></td>
+	        <td><?php echo $this->aData['user']->get('surname'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Department:</b></td>
+	        <td><?php echo $this->aData['user']->get('department'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Street:</b></td>
+	        <td><?php echo $this->aData['user']->get('street'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Zipcode:</b></td>
+	        <td><?php echo $this->aData['user']->get('zipcode'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>City:</b></td>
+	        <td><?php echo $this->aData['user']->get('city'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Country:</b></td>
+	        <td><?php echo $this->aData['user']->get('country'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Phone:</b></td>
+	        <td><?php echo $this->aData['user']->get('phone'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Fax:</b></td>
+	        <td><?php echo $this->aData['user']->get('fax'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>E-Mail-Address:</b> </td>
+	        <td><?php echo $this->aData['user']->get('mail'); ?></td>
+	      </tr>
+	      <tr>
+	        <td><b>Cost Centre:</b></td>
+	        <td><?php echo $this->aData['costno']->get('costno'); ?> - <?php echo $this->aData['costno']->get('description'); ?> </td>
+	      </tr>
+	    </table>
+
+	    <br />
+
+	    <a href="http://grohe2.hoehne-media.de/">Your way to the display factory</a>
+	</body>
+</html>
+
+--<?php echo $this->aData['boundary']; ?>--

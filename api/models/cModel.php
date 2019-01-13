@@ -118,11 +118,13 @@ class cModel extends cDatabase{
 				if( $sColumn == 'id' || is_array($sValue['value']) ){
 					continue;
 				}
-				$aColNames[] = '`'.$sColumn.'`';
-				$aColValues[] = ':'.$sColumn;
+
 				if($sValue['type'] == 'int' && ($sValue['value'] === '' || $sValue['value'] === false )){
+					continue;
 					$sValue['value'] = NULL;
 				}
+				$aColNames[] = '`'.$sColumn.'`';
+				$aColValues[] = ':'.$sColumn;
 				$aColsValuePairs[':'.$sColumn] = $sValue['value'];
 			}
 			if(isset($_GET['debug'])){

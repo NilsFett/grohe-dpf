@@ -139,4 +139,36 @@ class cUserModel extends cModel{
 		}
 	}
 
+	public static function emailExists($email){
+		$query = "SELECT * FROM `t_user` WHERE mail = '$email'";
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+
+		$stmt->execute();
+		if($data = $stmt->fetch(PDO::FETCH_ASSOC)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public static function register($data){
+		if(self::emailExists($data['mail'])){
+			return false;
+		}
+		$user = new cUserModel($data);
+		$user->save();
+		return $user;
+	}
+
+
+	public static function getUserRequests(){
+		$query = "SELECT * FROM `t_user` WHERE verifyBy IS NULL ORDER BY `createdate`";
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 }

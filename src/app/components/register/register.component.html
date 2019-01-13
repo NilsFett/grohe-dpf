@@ -1,35 +1,81 @@
-<div class="clogin boxshadow">
+<div class="clogin boxshadow" >
   <h2>Register</h2>
-  <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form *ngIf="!showSuccessMessage" name="loginForm" [formGroup]="registerForm">
     <div class="spacer20"></div>
     <mat-form-field>
-      <input type="text" formControlName="lastname" matInput name="lastname" #lastname placeholder="Lastname">
+      <input type="text" formControlName="lastname" matInput name="lastname" #lastname placeholder="Lastname*">
       <mat-error [hidden]="lastname.valid || lastname.pristine">required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input  ###{{error.errors}}###put type="text" formControlName="firstname" matInput name="firstname" #firstname placeholder="Firstname">
+      <input  ###{{error.errors}}###put type="text" formControlName="firstname" matInput name="firstname" #firstname placeholder="Firstname*">
       <mat-error [hidden]="firstname.valid || firstname.pristine">required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" formControlName="department" matInput name="department" #department placeholder="Department">
+      <input type="text" formControlName="department" matInput name="department" #department placeholder="Department*">
       <mat-error [hidden]="department.valid || department.pristine">required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" formControlName="street" matInput name="street" #street placeholder="Street">
+      <input type="text" formControlName="street" matInput name="street" #street placeholder="Street*">
       <mat-error [hidden]="street.valid || street.pristine">required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" formControlName="zipcode" matInput name="zipcode" #zipcode placeholder="Zipcode">
+      <input type="text" formControlName="zipcode" matInput name="zipcode" #zipcode placeholder="Zipcode*">
       <mat-error [hidden]="zipcode.valid || zipcode.pristine">required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" formControlName="city" matInput name="city" #city placeholder="City">
+      <input type="text" formControlName="city" matInput name="city" #city placeholder="City*">
       <mat-error [hidden]="city.valid || city.pristine">required</mat-error>
     </mat-form-field>
-    <div class="spacer20"></div>
-    <button type="submit" mat-raised-button>Register</button>
-    <div class="spacer20"></div>
 
+    <mat-form-field>
+      <mat-select formControlName="country"  #country placeholder="Country*">
+        <mat-optgroup *ngFor="let continent of countries">{{continent[0].Continent}}
+          <mat-option value="{{land.Name}}" *ngFor="let land of continent">{{land.Name}}</mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" formControlName="phone" matInput name="phone" #phone placeholder="Phone*">
+      <mat-error [hidden]="phone.valid || phone.pristine">required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" formControlName="fax" matInput name="fax" #fax placeholder="Fax">
+      <mat-error [hidden]="city.valid || city.pristine">required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="text" formControlName="email" matInput name="email" #email placeholder="E-Mail*">
+      <mat-error [hidden]="(email.valid || email.pristine)">
+        <span *ngIf="f.email.errors && f.email.errors.required">required</span>
+        <span *ngIf="f.email.errors && f.email.errors.email">Please insert a valid E-Mail address</span>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" formControlName="costcentre" matInput name="costcentre" #costcentre placeholder="Cost Centre*">
+      <mat-error [hidden]="costcentre.valid || costcentre.pristine">required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select formControlName="costcentrecountry"  #costcentrecountry placeholder="Cost Centre Country*">
+        <mat-optgroup *ngFor="let continent of countries">{{continent[0].Continent}}
+          <mat-option value="{{land2.Code}}" *ngFor="let land2 of continent">{{land2.Name}}</mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+
+
+    <p *ngIf="errorMessage">Your E-Mail address is already registered in our system<br />
+      If you have forgotten your password, please use the following form to request a new one. <a routerLink="/newPassword" href="/newPassword">Here you get a new password</a><br />If your account has not released jet, please wait until it is persuaded by the administration.
+      <br class="spacer20" />
+    </p>
+    <p>Fields labeled with a * are required</p>
+    <br class="spacer20" />
+    <button (click)="onSubmit()" mat-raised-button>Register</button>
+    <div class="spacer20"></div>
   </form>
-  <a routerLink="/login">back to login</a>
+  <div *ngIf="showSuccessMessage">
+    <p class="mt mb">Register success</p>
+  </div>
+  <div class="tright">
+    <a class="tright" routerLink="/login" href="/register">< back to login</a>
+  </div>
 </div>
