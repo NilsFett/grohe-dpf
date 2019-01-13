@@ -37,6 +37,6 @@ export class AppComponent {
   }
 
   adjustHeight(){
-    this.mainheight = window.innerHeight - 200;
+    this.mainheight = window.innerHeight - 140;
   }
 }

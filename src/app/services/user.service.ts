@@ -97,4 +97,8 @@ export class UserService {
       }
     );
   }
+
+  public register(data){
+    return this.http.post(`${this.config.baseURL}register`, data,{withCredentials: true});
+  }
 }

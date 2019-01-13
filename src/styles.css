@@ -55,6 +55,18 @@ h1{
   clear:both;
 }
 
+.tright{
+    text-align:right;
+}
+
+.mt{
+  margin-top:20px;
+}
+
+.mb{
+  margin-bottom:20px;
+}
+
 header, nav{
   background-color: #112038;
   padding:20px;
@@ -174,7 +186,8 @@ header.login .span6{
 }
 
 div.clogin{
-  width:300px;
+  width:50%;
+  min-width:300px;
   padding:20px;
   margin:40px auto 20px auto;
 }
@@ -229,7 +242,9 @@ div.clogin{
 }
 
 .mat-form-field {
-  width:80%;
+  width:100%;
+  max-width:300px;
+  display:block !important;
 }
 
 .parts{

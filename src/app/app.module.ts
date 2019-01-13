@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { UserRequestsComponent } from './components/userrequests/userrequests.component';
 import { StartComponent } from './components/start/start.component';
 import { OrderComponent } from './components/order/order.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
@@ -22,6 +23,7 @@ import {MatInputModule,MatCheckboxModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
 
 import { UserService } from './services/user.service';
+import { CountryService } from './services/country.service';
 import { ErrorService } from './services/error.service';
 import { UiService } from './services/ui.service';
 import { ConfigService } from './services/config.service';
@@ -31,6 +33,7 @@ import { DisplaysService } from './services/displays.service';
   declarations: [
     AppComponent,
     LoginComponent,
+    UserRequestsComponent,
     RegisterComponent,
     StartComponent,
     OrderComponent,
@@ -47,6 +50,7 @@ import { DisplaysService } from './services/displays.service';
   ],
   providers: [
     UserService,
+    CountryService,
     ErrorService,
     UiService,
     ConfigService,
