@@ -1,7 +1,7 @@
 
-<div [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register')}">
+<div [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register'), 'pad': (res.width < 1000)}">
 
-  <nav *ngIf="user.isLoggedIn">
+  <nav *ngIf="user.isLoggedIn" [ngClass]="{'open': navopen}">
     <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
     <ul *ngIf="ui.view == 'customer'">
       <li>
@@ -37,6 +37,8 @@
         <a>User</a>
       </li>
     </ul>
+    <span *ngIf="!navopen" (click)="openclosenav()" class="openclose icon-right-open"></span>
+    <span *ngIf="navopen" (click)="openclosenav()" class="openclose icon-left-open"></span>
   </nav>
   <header [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
 
@@ -45,8 +47,12 @@
         <h2>Display Factory</h2>
       </div>
       <div *ngIf="user.isLoggedIn" class="span6">
-        <p class="right">Angemeldet als: Vanessa Wittmer<span></span></p>
-        <p (click)="user.logout()" class="right">logout</p>
+        <p class="right">Angemeldet als: Vanessa Wittmer<br />
+
+          <span class="icon icon-logout" (click)="user.logout()">logout</span>
+
+        </p>
+Resulotion:{{res.width}} * {{res.height}}
       </div>
       <div class="spacer20 clear"></div>
       <div *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/'" class="span6">

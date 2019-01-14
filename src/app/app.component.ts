@@ -18,6 +18,8 @@ export class AppComponent {
 
   public loggedIn:boolean = false;
   public mainheight : number;
+  public res: object = {width:null,height:null}
+  public navopen = false;
 
   constructor(
     public router : Router,
@@ -38,5 +40,10 @@ export class AppComponent {
 
   adjustHeight(){
     this.mainheight = window.innerHeight - 140;
+    this.res = {width:window.innerWidth,height:window.innerHeight};
+  }
+
+  openclosenav(){
+    this.navopen = !this.navopen;
   }
 }

@@ -60,7 +60,7 @@ class cCountriesModel extends cModel{
 	public static function getAllSortByContinent(){
 		$query = '	SELECT *
 					FROM `t_country`
-					WHERE hide = "false"
+					WHERE hide = "true"
 					ORDER BY Continent, Name';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
