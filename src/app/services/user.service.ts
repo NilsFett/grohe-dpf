@@ -13,6 +13,7 @@ export class UserService {
   public loggedInState:Subject<boolean>;
   public loggedInStateObserver:Observable<boolean>;
   public data:object;
+  public userRequests:object[] = null;
 
   constructor(
     private http: HttpClient,
@@ -46,9 +47,6 @@ export class UserService {
   public login(email, passwd){
     this.http.post(`${this.config.baseURL}login`, {email:email, passwd:passwd},{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
-        console.log('response');
-        console.log(response);
-
         if(response.loggedIn){
           if( ! this.isLoggedIn ){
             this.isLoggedIn = true;
@@ -100,5 +98,9 @@ export class UserService {
 
   public register(data){
     return this.http.post(`${this.config.baseURL}register`, data,{withCredentials: true});
+  }
+
+  public getUserRequests(){
+    return this.http.get(`${this.config.baseURL}getUserRequests`, {withCredentials: true});
   }
 }

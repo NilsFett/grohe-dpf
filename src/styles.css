@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "assets/css/fontello.css";
+@import "assets/css/fontello-codes.css";
 
 *{
   margin:0px;
@@ -75,6 +77,29 @@ header, nav{
 nav{
   position:absolute;
   height:100%;
+  width:240px;
+}
+
+nav .openclose{
+  display:none;
+}
+.pad nav .openclose{
+  display:block;
+  position:absolute;
+  top:50%;
+  left:0px;
+  margin-left:220px;
+  height:40px;
+  width:40px;
+  line-height:40px;
+  text-align: right;
+  border-radius: 0 20px 20px 0;
+  background-color: #112038;
+  cursor:pointer;
+}
+
+.pad nav.open{
+  margin-left:0px;
 }
 
 header{
@@ -106,16 +131,17 @@ header div{
   display: inline-block;
   height:60px;
 }
-
+/*
 nav, .main{
   float:left;
 }
-
+*/
 .main{
   padding:20px 20px 20px 300px;
   width:100%;
   overflow-y: scroll;
   margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .login .main{
@@ -176,11 +202,12 @@ header.login{
   padding:20px 20px 20px 20px;
   text-align:center;
 }
-
+/*
 header.login h2{
   margin-top:20px;
   float:none;
 }
+*/
 header.login .span6{
   width:100%;
 }
@@ -250,4 +277,35 @@ div.clogin{
 .parts{
   list-style-type: none;
   margin: 5px 0;
+}
+
+/* TRANSITIONS */
+nav{
+  -webkit-transition: margin 2s; /* Safari */
+  transition: margin 2s;
+}
+
+header, .main{
+  -webkit-transition: padding 2s; /* Safari */
+  transition: padding 2s;
+}
+
+/* RESULOTION < 1000 px width */
+
+.pad nav{
+  margin-left: -240px;
+}
+
+.pad header{
+  padding: 20px;
+}
+
+.pad .main{
+  padding: 20px;
+}
+@media screen and (max-width: 800px) {
+  .main .span4{
+    width:100%;
+    margin-bottom: 20px;
+  }
 }
