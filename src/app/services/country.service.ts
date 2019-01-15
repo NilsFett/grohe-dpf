@@ -20,12 +20,15 @@ export class CountryService {
     private error: ErrorService
   ) {
     this.dataLoadedObserver = this.dataLoaded.asObservable();
+    this.loadCountries();
+  }
+
+  public loadCountries(){
     this.http.get(`${this.config.baseURL}getCountries`,{withCredentials: true}).subscribe(
       (response:object[]) => {
-        console.log(response);
-
         this.data = response;
         this.dataLoaded.next(this.data);
+        this.loaded = true;
       },
       error => {
         this.error.setError(error);

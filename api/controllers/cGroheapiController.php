@@ -58,6 +58,21 @@ class cGroheapiController{
 
 	public function register(){
 		$postData = json_decode(file_get_contents('php://input'),true);
+/*
+		$postData['city'] = "Iserlohn";
+		$postData['costcentre'] = "23423423";
+		$postData['costcentrecountry'] = "DEU";
+		$postData['country'] = "Germany";
+		$postData['department'] = "Development";
+		$postData['fax'] = "";
+		$postData['mail'] = "nils.fett@gmail.com";
+		$postData['name'] = "Nils";
+		$postData['name'] = "Fett";
+
+		$postData['phone'] = "023719309399";
+		$postData['street'] = "Am großen Teich 20";
+		$postData['zipcode'] = "58640";
+*/
 		$postData['usertype'] = 'user';
 		$postData['createdate'] = date( 'Y-m-d H:m:i', time());
 
@@ -116,9 +131,10 @@ class cGroheapiController{
 			$ocUserModel->save();
 			cMail::sentMail('account_released', array('user' => $ocUserModel, 'password' => $password));
 
-			echo json_encode($ocUserModel);
+			$this->getUserRequests();
 		}
 	}
+
 	public function declineUserRequest(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		if(cSessionUser::getInstance()->bIsLoggedIn){
@@ -128,6 +144,4 @@ class cGroheapiController{
 			echo json_encode($ocUserModel);
 		}
 	}
-
-
 }

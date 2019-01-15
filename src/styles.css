@@ -9,7 +9,6 @@
   box-sizing: border-box;
   font-size:100%;
   line-height:200%;
-
 }
 
 .spacer20{
@@ -18,8 +17,11 @@
 
 html,body{
   height:100%;
+  width:100%;
   overflow:hidden;
+  position: fixed;
 }
+
 body{
   background-color: #e9e9e9;
   color:#ffffff;
@@ -44,6 +46,7 @@ ul{
 .right{
   float:right;
 }
+
 .row{
   clear:both;
 }
@@ -367,6 +370,21 @@ header, .main{
 
 @media screen and (max-width: 600px) {
   .main .span4{
+    width:100%;
+  }
+
+  div.logo img {
+      width: 100px;
+  }
+
+  header{
+    font-size:80%;
+  }
+  header .left{
+    display:none;
+  }
+
+  header .span6{
     width:100%;
   }
 }
