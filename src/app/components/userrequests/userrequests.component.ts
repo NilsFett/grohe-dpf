@@ -25,6 +25,18 @@ export class UserRequestsComponent{
           this.error.setError(error);
         }
       );
-    }
+  }
 
+  public typeChanged(user, event){
+    console.log(event);
+    user.usertype = event.value;
+  }
+  public accept(user){
+    this.user.accept(user).subscribe((response:ApiResponseInterface) => {
+      this.userRequests = response.data;
+    },
+    error => {
+      this.error.setError(error);
+    });
+  }
 }

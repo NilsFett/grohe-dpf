@@ -103,4 +103,12 @@ export class UserService {
   public getUserRequests(){
     return this.http.get(`${this.config.baseURL}getUserRequests`, {withCredentials: true});
   }
+
+  public accept(user){
+    return this.http.post(`${this.config.baseURL}acceptUserRequest`, user, {withCredentials: true});
+  }
+
+  public decline(user){
+    return this.http.post(`${this.config.baseURL}declineUserRequest`, user, {withCredentials: true});
+  }
 }

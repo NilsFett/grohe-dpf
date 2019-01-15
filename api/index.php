@@ -33,7 +33,7 @@ try{
 
 	require('cConfig.php');
 	require('autoloader.php');
-	//require('../functions/functions.php');
+	require('./functions/functions.php');
 
 	cSystem::getInstance()->init();
 	$action = cSystem::getInstance()->getAction();
