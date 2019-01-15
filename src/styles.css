@@ -8,6 +8,8 @@
   padding:0px;
   box-sizing: border-box;
   font-size:100%;
+  line-height:200%;
+
 }
 
 .spacer20{
@@ -33,6 +35,10 @@ a{
 h1{
   margin:0px;
   padding:0px;
+}
+
+ul{
+  padding: 0 0 0 20px;
 }
 
 .right{
@@ -69,15 +75,51 @@ h1{
   margin-bottom:20px;
 }
 
+.pointer{
+  cursor:pointer;
+}
+
+.hr{
+  border-bottom: 1px solid #112038;
+}
 header, nav{
   background-color: #112038;
   padding:20px;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+div.logo{
+    position:fixed;
+    top:20px;
+    left:20px;
+    background-color: #112038;
+    z-index:20;
+    text-align:center;
+    font-size:120%;
+}
+
+div.logo img{
+  width:200px;
 }
 
 nav{
   position:absolute;
   height:100%;
   width:240px;
+  z-index:10;
+  padding-top:140px;
+}
+
+nav ul{
+  padding:0px;
+}
+
+nav .button{
+  width:100%;
+  display:block;
 }
 
 nav .openclose{
@@ -281,19 +323,19 @@ div.clogin{
 
 /* TRANSITIONS */
 nav{
-  -webkit-transition: margin 2s; /* Safari */
-  transition: margin 2s;
+  -webkit-transition: margin 0.5s; /* Safari */
+  transition: margin 0.5s;
 }
 
 header, .main{
-  -webkit-transition: padding 2s; /* Safari */
-  transition: padding 2s;
+  -webkit-transition: padding 0.5s; /* Safari */
+  transition: padding 0.5s;
 }
 
 /* RESULOTION < 1000 px width */
 
 .pad nav{
-  margin-left: -240px;
+  margin-left: -230px;
 }
 
 .pad header{
@@ -303,9 +345,28 @@ header, .main{
 .pad .main{
   padding: 20px;
 }
+
+.hidegt800{
+  display:none;
+}
+
 @media screen and (max-width: 800px) {
   .main .span4{
-    width:100%;
+    width:50%;
     margin-bottom: 20px;
+  }
+
+  .hidelt800{
+    display:none;
+  }
+
+  .hidegt800{
+    display:block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main .span4{
+    width:100%;
   }
 }

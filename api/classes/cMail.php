@@ -44,7 +44,17 @@ class cMail{
 				$mail_body = $oMailView->render();
 				$recipient = array('Vanessa.Wittmer@grohe.com');
 			break;
+			case 'account_released':
+				$subject = 'Grohe - Display Factory - Your User Account has been released.';
+				$oMailView->setTemplate($sTemplate);
+				$oMailView->assign('user', $data['user']);
+				$oMailView->assign('password', $data['password']);
+				$mail_body = $oMailView->render();
+				$recipient = array($data['user']->get('mail'));
+			break;
 		}
+
+
 		$subject = '=?UTF-8?B?'.base64_encode($subject).'?=';
 		$headers   = array();
 		$headers[] = "MIME-Version: 1.0";

@@ -58,21 +58,6 @@ class cGroheapiController{
 
 	public function register(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-
-		$postData['surname'] = 'Fett';
-		$postData['name'] = 'Nils';
-		$postData['department'] = 'Development';
-		$postData['street'] = 'An der Heide 7';
-		$postData['zipcode'] = '58730';
-		$postData['city'] = 'Fröndenberg';
-		$postData['country'] = 'Deutschland';
-		$postData['phone'] = '015125261800';
-		$postData['fax'] = '';
-		$postData['mail'] = 'mail@fett-it'.time().'.de';
-		$postData['costcentre'] = '45345345345';
-		$postData['costcentrecountry'] = 'DEU';
-
-
 		$postData['usertype'] = 'user';
 		$postData['createdate'] = date( 'Y-m-d H:m:i', time());
 
@@ -112,10 +97,37 @@ class cGroheapiController{
 	}
 
 	public function getUserRequests(){
-		if(true || cSessionUser::getInstance()->bIsLoggedIn){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$users = cUserModel::getUserRequests();
 			echo json_encode($users);
 		}
 	}
+
+	public function acceptUserRequest(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$ocUserModel = new cUserModel($postData['id']);
+			$ocUserModel->set('usertype', $postData['usertype']);
+			$ocUserModel->set('verifyBy', cSessionUser::getInstance()->get('id'));
+			$ocUserModel->set('verifyAt', date('Y-m-d H:m:i'), time());
+			$password = GeneratePassword();
+			$ocUserModel->set('password', md5($password));
+			$ocUserModel->save();
+			cMail::sentMail('account_released', array('user' => $ocUserModel, 'password' => $password));
+
+			echo json_encode($ocUserModel);
+		}
+	}
+	public function declineUserRequest(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$ocUserModel = new cUserModel($postData['id']);
+			$ocUserModel->set('deleted', 1);
+			$ocUserModel->save();
+			echo json_encode($ocUserModel);
+		}
+	}
+
 
 }
