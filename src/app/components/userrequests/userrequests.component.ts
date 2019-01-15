@@ -31,9 +31,19 @@ export class UserRequestsComponent{
     console.log(event);
     user.usertype = event.value;
   }
+
   public accept(user){
-    this.user.accept(user).subscribe((response:ApiResponseInterface) => {
-      this.userRequests = response.data;
+    this.user.accept(user).subscribe((response:any) => {
+      this.userRequests = response;
+    },
+    error => {
+      this.error.setError(error);
+    });
+  }
+
+  public decline(user){
+    this.user.decline(user).subscribe((response:any) => {
+      this.userRequests = response;
     },
     error => {
       this.error.setError(error);

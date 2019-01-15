@@ -12,7 +12,7 @@ export class UserService {
   public logginIncorrect = false;
   public loggedInState:Subject<boolean>;
   public loggedInStateObserver:Observable<boolean>;
-  public data:object;
+  public data:any;
   public userRequests:object[] = null;
 
   constructor(
@@ -25,11 +25,11 @@ export class UserService {
     this.http.get(`${this.config.baseURL}isLoggedIn`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
         if(response.loggedIn){
+          this.data = response.data;
           if( ! this.isLoggedIn ){
             this.isLoggedIn = true;
             this.loggedInState.next(true);
           }
-          this.data = response.data;
         }
         else{
           if( this.isLoggedIn ){
@@ -39,6 +39,7 @@ export class UserService {
         }
       },
       error => {
+        console.log(error);
         this.error.setError(error);
       }
     );
@@ -48,11 +49,12 @@ export class UserService {
     this.http.post(`${this.config.baseURL}login`, {email:email, passwd:passwd},{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
         if(response.loggedIn){
+          this.data = response.data;
           if( ! this.isLoggedIn ){
             this.isLoggedIn = true;
             this.loggedInState.next(true);
           }
-          this.data = response.data;
+
           this.logginIncorrect = false;
         }
         else{

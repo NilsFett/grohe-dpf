@@ -42,7 +42,9 @@ class cMail{
 				$oMailView->assign('user', $data['user']);
 				$oMailView->assign('costno', $data['costno']);
 				$mail_body = $oMailView->render();
-				$recipient = array('Vanessa.Wittmer@grohe.com');
+//				$recipient = array('Vanessa.Wittmer@grohe.com');
+				$recipient = array('mail@nils-fett.de');
+
 			break;
 			case 'account_released':
 				$subject = 'Grohe - Display Factory - Your User Account has been released.';
@@ -59,7 +61,7 @@ class cMail{
 		$headers   = array();
 		$headers[] = "MIME-Version: 1.0";
 		$headers[] = "Content-Type: multipart/alternative;boundary=\"" . $boundary ."\"";
-		$headers[] = "From: Display Factory Admin  <admin@grohe-hoehne-media.de>";
+		$headers[] = "From: admin@grohe2.hoehne-media.de <admin@grohe2.hoehne-media.de>";
 
 		$headers[] = "Reply-To: admin@grohe-hoehne-media.de";
 		$headers[] = "X-Mailer: PHP/".phpversion();
@@ -72,7 +74,8 @@ class cMail{
 				echo $mail_body;
 			}
 			else{
-				$success = mail('mail@nils-fett.de', $subject, $mail_body, implode("\r\n",$headers));
+				$success = mail($email, $subject, $mail_body, implode("\r\n",$headers));
+
 				//$success = mail($email, $subject, $mail_body, implode("\r\n",$headers));
 			}
 		}

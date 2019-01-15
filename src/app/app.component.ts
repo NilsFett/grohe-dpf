@@ -18,7 +18,7 @@ export class AppComponent {
 
   public loggedIn:boolean = false;
   public mainheight : number;
-  public res: object = {width:null,height:null}
+  public res: any = {width:null,height:null}
   public navopen = false;
 
   constructor(

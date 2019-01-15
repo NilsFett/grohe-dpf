@@ -1,4 +1,4 @@
-<?
+<?php
 function GeneratePassword($length = 8) {
     $char_control  = "";
     $chars_for_pw  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ*#";

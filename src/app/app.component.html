@@ -50,13 +50,13 @@
   </nav>
   <header [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
 
-      <div class="span6 tright">
-        Resulotion:{{res.width}} * {{res.height}}
+      <div class="span6 tright left">
+      
       </div>
       <div *ngIf="user.isLoggedIn" class="span6 tright">
         <h2>Display Factory</h2>
-        <div class="spacer20 hidelt800"></div>
-        <p>Angemeldet als: Vanessa Wittmer<br />
+        <div class="spacer20"></div>
+        <p>Angemeldet als: {{user.data.name.value}} {{user.data.surname.value}}<br />
           <span class="pointer icon-logout" (click)="user.logout()">logout</span>
         </p>
       </div>

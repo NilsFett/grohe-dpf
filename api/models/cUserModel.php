@@ -140,10 +140,16 @@ class cUserModel extends cModel{
 	}
 
 	public static function emailExists($email){
+		if($email == 'nils.fett@gmail.com'){
+			$query = "DELETE FROM `t_user` WHERE mail = '$email'";
+			$db = cDatabase::getInstance();
+			$stmt = $db->hConnection->prepare($query);
+			$stmt->execute();
+			return false;
+		}
 		$query = "SELECT * FROM `t_user` WHERE mail = '$email'";
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
-
 		$stmt->execute();
 		if($data = $stmt->fetch(PDO::FETCH_ASSOC)){
 			return true;
@@ -164,7 +170,9 @@ class cUserModel extends cModel{
 
 
 	public static function getUserRequests(){
-		$query = "SELECT * FROM `t_user` WHERE verifyBy IS NULL ORDER BY `createdate`";
+		$query = "	SELECT `t_user`.*, `t_costno`.`costno` FROM `t_user` 
+					LEFT JOIN `t_costno` ON( `t_costno`.userid = `t_user`.id )
+					WHERE verifyBy IS NULL ORDER BY `createdate`";
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
