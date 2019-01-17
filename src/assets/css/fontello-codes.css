@@ -1,5 +1,6 @@
 
 .icon-logout:before { content: '\e800'; } /* '' */
+.icon-user:before { content: '\e801'; } /* '' */
 .icon-left-open:before { content: '\e81c'; } /* '' */
 .icon-right-open:before { content: '\e822'; } /* '' */
 .icon-menu:before { content: '\f0c9'; } /* '' */

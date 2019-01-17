@@ -6,7 +6,7 @@
 </div>
 <div #wrapper (scroll)="wrapperScrolls()" id="wrapper" [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register'), 'pad': (res.width < 1000)}">
 
-  <nav *ngIf="user.isLoggedIn" [ngClass]="{'open': navopen}">
+  <nav *ngIf="user.isLoggedIn" [ngClass]="{'open': navopen}" [ngStyle]="navstyle">
 
     <div *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/' && res.width < 1000" >
       <p><span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span></p>
@@ -42,7 +42,7 @@
         <a>Topsign</a>
       </li>
       <li>
-        <a>Orders</a>
+        <a>Orders</a>4
       </li>
       <li>
         <a>User</a>
@@ -59,8 +59,8 @@
       <div *ngIf="user.isLoggedIn" class="span4 tright">
         <h2>Display Factory</h2>
         <div class="spacer20"></div>
-        <p>Angemeldet als: {{user.data.name.value}} {{user.data.surname.value}}<br />
-          <span class="pointer icon-logout" (click)="user.logout()">logout</span>
+        <p>Angemeldet als: <span class="pointer">{{user.data.name.value}} {{user.data.surname.value}}<span class="icon-user"></span></span><br />
+          <span class="pointer" (click)="user.logout()">logout<span class="icon-logout"></span></span>
         </p>
       </div>
       <div class="spacer20 clear"></div>
