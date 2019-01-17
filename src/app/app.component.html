@@ -1,15 +1,18 @@
-
-<div [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register'), 'pad': (res.width < 1000)}">
-  <div class="logo">
-    <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
-
+<div *ngIf="!headervisible" class="stickyheader">
+  <div class="blue">
+    <img alt="Grohe Logo" src="/assets/images/grohe_logo.png"><span>Display factory</span>
   </div>
+  <div class="gradient"></div>
+</div>
+<div #wrapper (scroll)="wrapperScrolls()" id="wrapper" [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register'), 'pad': (res.width < 1000)}">
+
   <nav *ngIf="user.isLoggedIn" [ngClass]="{'open': navopen}">
-    <div class="spacer20"></div>
+
     <div *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/' && res.width < 1000" >
       <p><span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span></p>
       <div class="spacer20"></div>
       <p><span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span></p>
+      <div class="spacer20"></div>
     </div>
     <ul *ngIf="ui.view == 'customer'">
       <li>
@@ -50,10 +53,10 @@
   </nav>
   <header [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
 
-      <div class="span6 tright left">
-      
+      <div class="span8 left">
+        <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
       </div>
-      <div *ngIf="user.isLoggedIn" class="span6 tright">
+      <div *ngIf="user.isLoggedIn" class="span4 tright">
         <h2>Display Factory</h2>
         <div class="spacer20"></div>
         <p>Angemeldet als: {{user.data.name.value}} {{user.data.surname.value}}<br />
@@ -61,11 +64,14 @@
         </p>
       </div>
       <div class="spacer20 clear"></div>
-      <div *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/' && res.width >= 1000" class="span6">
-        <p><span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span><span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span></p>
+      <div class="span8" style="padding-left:280px;" *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/' && res.width >= 1000">
+        <p>
+          <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span>
+          <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span>
+        </p>
       </div>
   </header>
-  <div class="main" [style.height.px]="mainheight">
+  <div class="main" >
     <router-outlet></router-outlet>
   </div>
   <div *ngIf="error.errors.length" class="messages">

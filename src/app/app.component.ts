@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { UserService} from './services/user.service';
 import { ErrorService} from './services/error.service';
@@ -9,17 +9,18 @@ import { UiService} from './services/ui.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  @HostListener('window:resize', ['$event'])   onResize(event) {
+export class AppComponent implements AfterViewInit{
+  @HostListener('window:resize', ['$event']) onResize(event) {
     this.adjustHeight();
   }
 
-  @ViewChild('main') elementMain: ElementRef;
+  @ViewChild('wrapper') elementWrapper: ElementRef;
 
   public loggedIn:boolean = false;
   public mainheight : number;
   public res: any = {width:null,height:null}
   public navopen = false;
+  public headervisible:boolean = true;
 
   constructor(
     public router : Router,
@@ -36,14 +37,25 @@ export class AppComponent {
       }
     });
     this.adjustHeight();
+
+  }
+
+  ngAfterViewInit(){
+    this.headervisible = this.elementWrapper.nativeElement.scrollTop < 140;
   }
 
   adjustHeight(){
     this.mainheight = window.innerHeight - 140;
     this.res = {width:window.innerWidth,height:window.innerHeight};
+
   }
 
   openclosenav(){
     this.navopen = !this.navopen;
+  }
+
+  wrapperScrolls(){
+    console.log(this.elementWrapper.nativeElement.scrollTop);
+    this.headervisible = this.elementWrapper.nativeElement.scrollTop < 140;
   }
 }
