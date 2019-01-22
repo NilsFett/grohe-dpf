@@ -21,6 +21,7 @@ export class AppComponent implements AfterViewInit{
   public res: any = {width:null,height:null}
   public navopen = false;
   public headervisible:boolean = true;
+  public userInfoOpen:boolean = false;
 
   constructor(
     public router : Router,

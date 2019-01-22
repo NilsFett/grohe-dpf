@@ -1,13 +1,11 @@
 <div *ngIf="!headervisible" class="stickyheader">
   <div class="blue">
-    <img alt="Grohe Logo" src="/assets/images/grohe_logo.png"><span>Display factory</span>
+    <img alt="Grohe Logo" src="/assets/images/grohe_logo.png">
   </div>
   <div class="gradient"></div>
 </div>
 <div #wrapper (scroll)="wrapperScrolls()" id="wrapper" [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register'), 'pad': (res.width < 1000)}">
-
   <nav *ngIf="user.isLoggedIn" [ngClass]="{'open': navopen}" [ngStyle]="navstyle">
-
     <div *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/' && res.width < 1000" >
       <p><span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span></p>
       <div class="spacer20"></div>
@@ -52,23 +50,21 @@
     <span *ngIf="navopen" (click)="openclosenav()" class="openclose icon-left-open"></span>
   </nav>
   <header [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
-
-      <div class="span8 left">
+      <div class="hleft left">
         <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
       </div>
-      <div *ngIf="user.isLoggedIn" class="span4 tright">
-        <h2>Display Factory</h2>
-        <div class="spacer20"></div>
-        <p>Angemeldet als: <span class="pointer">{{user.data.name.value}} {{user.data.surname.value}}<span class="icon-user"></span></span><br />
-          <span class="pointer" (click)="user.logout()">logout<span class="icon-logout"></span></span>
+      <div *ngIf="user.isLoggedIn" class="hmiddle tright">
+        <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span>
+        <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span>
+
+
+      </div>
+      <div *ngIf="user.isLoggedIn" class="hright tright">
+        <p>{{user.initials}}<span class="pointer">{{user.data.name.value}} {{user.data.surname.value}}</span><span (click)="userInfoOpen = ! userInfoOpen" class="icon-down-open-1"></span>
         </p>
       </div>
-      <div class="spacer20 clear"></div>
-      <div class="span8" style="padding-left:280px;" *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/' && res.width >= 1000">
-        <p>
-          <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span>
-          <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span>
-        </p>
+      <div *ngIf="userInfoOpen" class="user-info">
+        <span class="pointer" (click)="user.logout()">logout<</span>
       </div>
   </header>
   <div class="main" >

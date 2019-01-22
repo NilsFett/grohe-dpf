@@ -96,6 +96,7 @@ ul{
 .hr{
   border-bottom: 1px solid #112038;
 }
+
 header, nav{
   background-color: #112038;
   padding:20px;
@@ -143,7 +144,7 @@ header, nav{
 }
 
 img.logo{
-  width:200px;
+  height:60px;
 }
 
 nav{
@@ -151,7 +152,7 @@ nav{
   height:100%;
   width:240px;
   z-index:10;
-  margin-top:120px;
+  margin-top:80px;
 }
 
 nav ul{
@@ -166,6 +167,7 @@ nav .button{
 nav .openclose{
   display:none;
 }
+
 .pad nav .openclose{
   display:block;
   position:absolute;
@@ -187,10 +189,22 @@ nav .openclose{
 
 header{
   padding:20px ;
-  height:120px;
+  height:80px;
   width:100%;
 }
 
+header .hleft{
+  width:220px;
+  float:left;
+}
+
+header .hright{
+  float:left;
+}
+
+header .hright{
+  float:right;
+}
 .login header{
   padding:20px;
 }
@@ -263,17 +277,29 @@ nav ul ul{
 
 nav ul li{
   padding:5px;
-  border-left: 1px solid #3784c0;
-  border-bottom: 1px solid #3784c0;
   cursor: pointer;
 }
 
-nav ul li:hover{
-  background-color: #3784c0;
+nav ul li a{
+  color: #fff;
 }
 
+nav ul li:hover a, nav ul li a.active{
+  font-weight:bold;
+}
+nav ul li:hover a:before, nav ul li a.active:before{
+  content: '\e802';
+  font-family: "fontello";
+  position:absolute;
+  margin-left:-18px;
+  color:#3084b9;
+  font-weight:bold;
+  font-size:20px;
+}
+
+
 nav ul li:hover a{
-  color:#fff;
+
 }
 
 h2{
