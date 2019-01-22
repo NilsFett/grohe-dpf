@@ -14,6 +14,7 @@ export class UserService {
   public loggedInStateObserver:Observable<boolean>;
   public data:any;
   public userRequests:object[] = null;
+  public initials:string = '';
 
   constructor(
     private http: HttpClient,
@@ -83,7 +84,7 @@ export class UserService {
             this.loggedInState.next(true);
           }
           this.data = response.data;
-
+          this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
         }
         else{
           if( this.isLoggedIn ){
@@ -113,4 +114,5 @@ export class UserService {
   public decline(user){
     return this.http.post(`${this.config.baseURL}declineUserRequest`, user, {withCredentials: true});
   }
+
 }
