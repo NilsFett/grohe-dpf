@@ -1,9 +1,4 @@
-<div *ngIf="!headervisible" class="stickyheader">
-  <div class="blue">
-    <img alt="Grohe Logo" src="/assets/images/grohe_logo.png">
-  </div>
-  <div class="gradient"></div>
-</div>
+
 <div #wrapper (scroll)="wrapperScrolls()" id="wrapper" [ngClass]="{'login': (router.url == '/' || router.url == '/login' || router.url == '/register'), 'pad': (res.width < 1000)}">
   <nav *ngIf="user.isLoggedIn" [ngClass]="{'open': navopen}" [ngStyle]="navstyle">
     <div *ngIf="user.isLoggedIn && router.url != 'login' && router.url != '/' && res.width < 1000" >
@@ -49,15 +44,13 @@
     <span *ngIf="!navopen" (click)="openclosenav()" class="openclose icon-right-open"></span>
     <span *ngIf="navopen" (click)="openclosenav()" class="openclose icon-left-open"></span>
   </nav>
-  <header [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
+  <header *ngIf="router.url != '/' && router.url != '/login' && router.url != '/register'" [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
       <div class="hleft left">
         <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
       </div>
       <div *ngIf="user.isLoggedIn" class="hmiddle tright">
         <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span>
         <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span>
-
-
       </div>
       <div *ngIf="user.isLoggedIn" class="hright tright">
         <p>{{user.initials}}<span class="pointer">{{user.data.name.value}} {{user.data.surname.value}}</span><span (click)="userInfoOpen = ! userInfoOpen" class="icon-down-open-1"></span>

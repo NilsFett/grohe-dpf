@@ -1,23 +1,29 @@
-<div class="clogin boxshadow">
-  <h2>Login </h2>
-  <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="spacer20"></div>
-    <mat-form-field>
-      <input type="email" formControlName="email" matInput name="email" #email placeholder="E-Mail">
-      <mat-error [hidden]="email.valid || email.pristine">Please fill in a valid email address</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input type="password" formControlName="passwd" matInput name="passwd" #passwd placeholder="Password">
-      <mat-error [hidden]="passwd.valid || passwd.pristine">required</mat-error>
-    </mat-form-field>
-    <div class="spacer20"></div>
-    <button type="submit" mat-raised-button>Login</button>
-    <div class="spacer20"></div>
-    <p class="mat-error" *ngIf="user.logginIncorrect">login data incorrect</p>
-  </form>
-  <div class="tright">
-    <a routerLink="/register" href="/register">register</a>
+<div class="clogin">
+  <div class="boxshadow">
+    <div class="blue">
+      <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
+    </div>
+    <h2>Display Factory Login</h2>
+    <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="spacer20"></div>
+      <mat-form-field>
+        <input type="email" formControlName="email" matInput name="email" #email placeholder="E-Mail">
+        <mat-error [hidden]="email.valid || email.pristine">Please fill in a valid email address</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" formControlName="passwd" matInput name="passwd" #passwd placeholder="Password">
+        <mat-error [hidden]="passwd.valid || passwd.pristine">required</mat-error>
+      </mat-form-field>
+      <div class="spacer20"></div>
+      <button type="submit" mat-raised-button>Login</button>
+      <div class="spacer20"></div>
+      <p class="mat-error" *ngIf="user.logginIncorrect">login data incorrect</p>
+    </form>
     <div  class="spacer20"></div>
     <a routerLink="/newPassword" href="/newPassword">forgot Password?</a>
+
+  </div>
+  <div class="tright">
+      <a routerLink="/register" href="/register">register</a>
   </div>
 </div>
