@@ -49,11 +49,13 @@
         <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
       </div>
       <div *ngIf="user.isLoggedIn" class="hmiddle tright">
-        <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span>
-        <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span>
+        <p>
+          <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span>
+          <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span>
+        </p>
       </div>
       <div *ngIf="user.isLoggedIn" class="hright tright">
-        <p>{{user.initials}}<span class="pointer">{{user.data.name.value}} {{user.data.surname.value}}</span><span (click)="userInfoOpen = ! userInfoOpen" class="icon-down-open-1"></span>
+        <p><span class="initals">{{user.initials}}</span><span class="pointer">{{user.data.name.value}} {{user.data.surname.value}}</span><span (click)="userInfoOpen = ! userInfoOpen" class="icon-down-open-1"></span>
         </p>
       </div>
       <div *ngIf="userInfoOpen" class="user-info">

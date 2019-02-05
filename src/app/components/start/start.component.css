@@ -1,0 +1,14 @@
+.start{
+  width:55%;
+  padding:2%;
+  margin:10% 0 0 20%;
+  color:#6c737d;
+  border:3px solid #6c737d;
+}
+
+.icon-attention{
+  font-size:80px;
+  display:inline-block;
+  margin: 0 10px 10px 0;
+  float:left;
+}
