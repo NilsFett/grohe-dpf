@@ -7,6 +7,7 @@ import { UserRequestsComponent } from './components/userrequests/userrequests.co
 import { OrderComponent } from './components/order/order.component';
 import { StartComponent } from './components/start/start.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
+import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'userRequests', component: UserRequestsComponent },
   { path: 'order', component: OrderComponent },
   { path: 'start', component: StartComponent },
-  { path: 'displayCompose', component: DisplayComposeComponent }
+  { path: 'displayCompose', component: DisplayComposeComponent },
+  { path: 'displayParts', component: DisplayPartsComponent }
 ];
 
 @NgModule({
