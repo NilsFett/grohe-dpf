@@ -99,11 +99,14 @@ ul{
 
 header, nav{
   background-color: #112038;
-  padding:20px;
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
+}
+
+nav{
+  padding:20px;
 }
 
 .main{
@@ -144,15 +147,16 @@ header, nav{
 }
 
 img.logo{
-  height:60px;
+  height:45px;
+  margin:20px;
 }
 
 nav{
   position:absolute;
   height:100%;
-  width:240px;
+  width:260px;
   z-index:10;
-  margin-top:80px;
+  margin-top:60px;
 }
 
 nav ul{
@@ -167,7 +171,7 @@ nav .button{
 nav .openclose{
   display:none;
 }
-
+/*
 .pad nav .openclose{
   display:block;
   position:absolute;
@@ -186,15 +190,14 @@ nav .openclose{
 .pad nav.open{
   margin-left:0px;
 }
-
+*/
 header{
-  padding:20px ;
-  height:80px;
+  height:60px;
   width:100%;
 }
 
 header .hleft{
-  width:220px;
+  width:260px;
   float:left;
 }
 
@@ -205,34 +208,12 @@ header .hright{
 header .hright{
   float:right;
 }
-.login header{
-  padding:20px;
-}
-
-.login header .span6{
-  margin:0 auto;
-  float:none;
-  padding:0;
-  display:block;
-  text-align: center;;
-}
-/*
-header.login{
-
-  height:160px;
-}
-*/
 header div{
   vertical-align: text-top;
   vertical-align: top;
   display: inline-block;
   height:60px;
 }
-/*
-nav, .main{
-  float:left;
-}
-*/
 
 #wrapper{
   height:100%;
@@ -243,13 +224,8 @@ nav, .main{
 .main{
   padding:20px 20px 20px 300px;
   width:100%;
-
   margin-bottom: 20px;
   -webkit-overflow-scrolling: touch;
-}
-
-.login .main{
-
 }
 
 .main h2{
@@ -267,7 +243,6 @@ nav .logo{
 }
 
 nav ul{
-
   list-style-type: none;
 }
 
@@ -306,12 +281,38 @@ h2{
   font-size: 20px;
   line-height: 22px;
   font-weight:normal;
+}
 
+header p{
+  line-height: 60px;
 }
 
 header .button{
-  margin:10px 10px 0 0;
-  line-height: 1.3em;
+  line-height: 54px;
+  display:inline-block;
+  cursor:pointer;
+  margin: 0px 10px;
+}
+
+
+header .initals{
+  display:inline-block;
+  line-height: 40px;
+  border-radius: 20px;
+  background-color:#3184b9;
+  height:40px;
+  width:40px;
+  margin:10px;
+  text-align:center;
+  font-weight:bold
+}
+
+header .button:hover, header .button.active{
+  border-top: 3px solid #3184b9;
+}
+
+header .button.active{
+  font-weight:bold;
 }
 
 header.login{
@@ -349,7 +350,7 @@ header.login .span6{
 .blue{
     background-color: #112038;
 }
-
+/*
 .button{
   padding:10px;
   background-color: #3784c0;
@@ -362,7 +363,7 @@ header.login .span6{
   filter: saturate(200%);
   box-shadow: 0 0 0 2px rgba(255,255,255,.3) inset,0 0 6px rgba(255,255,255,.4) inset;
 }
-
+*/
 .messages{
   position:fixed;
   top:10px;

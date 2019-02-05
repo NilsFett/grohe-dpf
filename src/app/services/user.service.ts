@@ -29,6 +29,7 @@ export class UserService {
           this.data = response.data;
           if( ! this.isLoggedIn ){
             this.isLoggedIn = true;
+            this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
             this.loggedInState.next(true);
           }
         }
@@ -53,6 +54,7 @@ export class UserService {
           this.data = response.data;
           if( ! this.isLoggedIn ){
             this.isLoggedIn = true;
+            this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
             this.loggedInState.next(true);
           }
 
