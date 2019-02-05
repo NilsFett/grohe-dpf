@@ -111,6 +111,13 @@ class cGroheapiController{
 		}
 	}
 
+	public function getDisplayParts(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$displays = cDisplaysPartsModel::getAll();
+			echo json_encode($displays);
+		}
+	}
+
 	public function getUserRequests(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$users = cUserModel::getUserRequests();

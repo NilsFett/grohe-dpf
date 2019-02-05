@@ -13,6 +13,8 @@ import { UserRequestsComponent } from './components/userrequests/userrequests.co
 import { StartComponent } from './components/start/start.component';
 import { OrderComponent } from './components/order/order.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
+import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
+
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTableModule} from '@angular/material/table';
@@ -28,6 +30,8 @@ import { ErrorService } from './services/error.service';
 import { UiService } from './services/ui.service';
 import { ConfigService } from './services/config.service';
 import { DisplaysService } from './services/displays.service';
+import { DataService } from './services/data.service';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +41,8 @@ import { DisplaysService } from './services/displays.service';
     RegisterComponent,
     StartComponent,
     OrderComponent,
-    DisplayComposeComponent
+    DisplayComposeComponent,
+    DisplayPartsComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,8 @@ import { DisplaysService } from './services/displays.service';
     ErrorService,
     UiService,
     ConfigService,
-    DisplaysService
+    DisplaysService,
+    DataService
   ],
   bootstrap: [AppComponent]
 })
