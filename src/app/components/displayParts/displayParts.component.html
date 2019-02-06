@@ -1,11 +1,26 @@
 <div class="order boxshadow">
   <h2>Display Parts</h2>
   <div class="spacer20"></div>
-  {{displayParts}}
+
   <table *ngIf="displayParts" mat-table [dataSource]="displayParts">
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef> Title </th>
       <td mat-cell *matCellDef="let part"> {{part.title}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="articlenr">
+      <th mat-header-cell *matHeaderCellDef> Articel Number </th>
+      <td mat-cell *matCellDef="let part"> {{part.articlenr}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="open_format">
+      <th mat-header-cell *matHeaderCellDef> Open Format </th>
+      <td mat-cell *matCellDef="let part"> {{part.open_format}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef> Stock </th>
+      <td mat-cell *matCellDef="let part"> {{part.stock}} </td>
     </ng-container>
 
     <ng-container matColumnDef="weight">
@@ -13,7 +28,14 @@
       <td mat-cell *matCellDef="let part"> {{part.weight}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="deleted">
+      <th mat-header-cell *matHeaderCellDef> Hidden </th>
+      <td mat-cell *matCellDef="let part"> {{part.deleted}} </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
+
+
   </table>
 </div>

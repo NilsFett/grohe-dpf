@@ -19,7 +19,7 @@ export class AppComponent implements AfterViewInit{
   public loggedIn:boolean = false;
   public mainheight : number;
   public res: any = {width:null,height:null}
-  public navopen = false;
+  public navopen = true;
   public headervisible:boolean = true;
   public userInfoOpen:boolean = false;
 

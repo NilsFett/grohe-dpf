@@ -11,7 +11,9 @@ import { DisplaysPart } from '../../classes/DisplaysPart';
 })
 export class DisplayPartsComponent{
   displayParts:DisplaysPart[] = null;
-  columnsToDisplay = ['title', 'weight'];
+  columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted'];
+
+
   constructor(
     public user: UserService,
     public ui: UiService,
