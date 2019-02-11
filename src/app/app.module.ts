@@ -8,12 +8,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { LoginComponent } from './components/login/login.component';
+import { PasswordResetComponent } from './components/passwordReset/passwordReset.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserRequestsComponent } from './components/userrequests/userrequests.component';
 import { StartComponent } from './components/start/start.component';
 import { OrderComponent } from './components/order/order.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
+
+import { DpfContentDirective } from './components/directives/dpf-content.directive';
+import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
 
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -25,6 +29,8 @@ import {MatInputModule,MatCheckboxModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
 
 import { UserService } from './services/user.service';
+import { AuthGuard } from './services/auth.service';
+
 import { CountryService } from './services/country.service';
 import { ErrorService } from './services/error.service';
 import { UiService } from './services/ui.service';
@@ -37,12 +43,15 @@ import { DataService } from './services/data.service';
   declarations: [
     AppComponent,
     LoginComponent,
+    PasswordResetComponent,
     UserRequestsComponent,
     RegisterComponent,
     StartComponent,
     OrderComponent,
     DisplayComposeComponent,
-    DisplayPartsComponent
+    DisplayPartsComponent,
+    DpfContentDirective,
+    DpfOverflowWrapperDirective
   ],
   imports: [
     BrowserModule,
@@ -55,6 +64,7 @@ import { DataService } from './services/data.service';
   ],
   providers: [
     UserService,
+    AuthGuard,
     CountryService,
     ErrorService,
     UiService,

@@ -5,7 +5,7 @@ div.clogin{
   min-width:300px;
   max-width:80%;
   padding:20px;
-  margin:15% auto 20px auto;
+  margin:5% auto 20px auto;
   text-align: center;
   color:#FFF;
 }
@@ -24,4 +24,10 @@ div.clogin .boxshadow{
 
 .tright{
   margin:20px;
+}
+@media screen and (max-width: 400px) {
+  div.clogin{
+
+    margin:0 auto;
+  }
 }

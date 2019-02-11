@@ -1,9 +1,6 @@
 
-.icon-logout:before { content: '\e800'; } /* '' */
-.icon-user:before { content: '\e801'; } /* '' */
-.icon-dot:before { content: '\e802'; } /* '' */
-.icon-attention:before { content: '\e804'; } /* '' */
-.icon-left-open:before { content: '\e81c'; } /* '' */
-.icon-right-open:before { content: '\e822'; } /* '' */
-.icon-down-open-1:before { content: '\e832'; } /* '' */
+.icon-dot:before { content: '\e800'; } /* '' */
+.icon-attention:before { content: '\e801'; } /* '' */
+.icon-edit:before { content: '\e802'; } /* '' */
+.icon-cancel:before { content: '\e803'; } /* '' */
 .icon-menu:before { content: '\f0c9'; } /* '' */
