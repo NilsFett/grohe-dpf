@@ -12,3 +12,35 @@
   margin: 0 10px 10px 0;
   float:left;
 }
+
+@media screen and (max-width: 800px) {
+  .start{
+    width:85%;
+    margin:10% 0 0 8%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .start{
+    width:85%;
+    margin:10% 0 0 8%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .start{
+    width:100%;
+    margin:0;
+    padding:20px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .icon-attention{
+    font-size:40px;
+
+  }
+  h3{
+    font-size:1em;
+  }
+}

@@ -13,14 +13,13 @@ export class AppComponent implements AfterViewInit{
   @HostListener('window:resize', ['$event']) onResize(event) {
     this.adjustHeight();
   }
-
-  @ViewChild('wrapper') elementWrapper: ElementRef;
+  @ViewChild('main') main: ElementRef;
 
   public loggedIn:boolean = false;
   public mainheight : number;
   public res: any = {width:null,height:null}
   public navopen = true;
-  public headervisible:boolean = true;
+  public overflow:boolean;
   public userInfoOpen:boolean = false;
 
   constructor(
@@ -37,26 +36,23 @@ export class AppComponent implements AfterViewInit{
         this.router.navigate(['/login']);
       }
     });
-    this.adjustHeight();
-
+    this.mainheight = window.innerHeight - 20;
+    this.res = {width:window.innerWidth,height:window.innerHeight};
+    if(this.res.width < 800){
+      this.navopen = false;
+    }
   }
 
   ngAfterViewInit(){
-    this.headervisible = this.elementWrapper.nativeElement.scrollTop < 140;
+    this.adjustHeight();// = window.innerHeight - 80;
   }
 
   adjustHeight(){
-    this.mainheight = window.innerHeight - 140;
+    this.mainheight = window.innerHeight - 20;
     this.res = {width:window.innerWidth,height:window.innerHeight};
-
   }
 
   openclosenav(){
     this.navopen = !this.navopen;
-  }
-
-  wrapperScrolls(){
-    console.log(this.elementWrapper.nativeElement.scrollTop);
-    this.headervisible = this.elementWrapper.nativeElement.scrollTop < 140;
   }
 }

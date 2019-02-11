@@ -125,6 +125,19 @@ class cUserModel extends cModel{
 		return $this->hRessource->fetch();
 	}
 
+	public static function loadByEMail($email){
+		$query = 'SELECT * FROM t_user WHERE mail = "'.$email.'"';
+		$db = cDatabase::getInstance();
+		$hRessource = $db->hConnection->query($query);
+		$row = $hRessource->fetch();
+		if($row){
+				return new cUserModel($row);
+		}
+		else{
+			return false;
+		}
+	}
+
 	public function login($mail, $password){
 		$query = "SELECT * FROM `t_user` WHERE mail = '$mail' AND password = MD5('$password')";
 
@@ -170,7 +183,7 @@ class cUserModel extends cModel{
 
 
 	public static function getUserRequests(){
-		$query = "	SELECT `t_user`.*, `t_costno`.`costno` FROM `t_user` 
+		$query = "	SELECT `t_user`.*, `t_costno`.`costno` FROM `t_user`
 					LEFT JOIN `t_costno` ON( `t_costno`.userid = `t_user`.id )
 					WHERE verifyBy IS NULL ORDER BY `createdate`";
 		$db = cDatabase::getInstance();

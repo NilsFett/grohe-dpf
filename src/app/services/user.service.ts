@@ -5,10 +5,13 @@ import { ErrorService } from './error.service';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
 export class UserService {
   public isLoggedIn:boolean=false;
+  public checked:boolean=false;
+  public checkingLogin:boolean=false;
   public logginIncorrect = false;
   public loggedInState:Subject<boolean>;
   public loggedInStateObserver:Observable<boolean>;
@@ -19,26 +22,48 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private config: ConfigService,
-    private error: ErrorService
+    private error: ErrorService,
+    private router: Router
   ) {
     this.loggedInState = new Subject<boolean>();
     this.loggedInStateObserver = this.loggedInState.asObservable();
+
+    this.router.events.subscribe((val) => {
+      if( val instanceof NavigationEnd){
+        this.checked = false;
+
+      }
+    });
+    this.checkLogin();
+  }
+
+  public checkLogin(){
+    if(this.checkingLogin)return;
+    this.checkingLogin = true;
+    console.log('CHECK LOGIN');
     this.http.get(`${this.config.baseURL}isLoggedIn`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
+        console.log('response');
+        console.log(response.loggedIn);
         if(response.loggedIn){
-          this.data = response.data;
-          if( ! this.isLoggedIn ){
-            this.isLoggedIn = true;
-            this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
-            this.loggedInState.next(true);
+
+          if( this.router.url == '/' || this.router.url == '/login' || this.router.url == '/register' || this.router.url == '/passwordReset'){
+
+            console.log('REDIRECT TO START');
+            console.log(this.router);
+            this.router.navigate(['/start']);
           }
+          this.data = response.data;
+          this.isLoggedIn = true;
+          this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
+          this.loggedInState.next(true);
         }
         else{
-          if( this.isLoggedIn ){
             this.isLoggedIn = false;
             this.loggedInState.next(false);
-          }
         }
+        this.checked = true;
+        this.checkingLogin = false;
       },
       error => {
         console.log(error);
@@ -48,6 +73,7 @@ export class UserService {
   }
 
   public login(email, passwd){
+    this.checkingLogin = true;
     this.http.post(`${this.config.baseURL}login`, {email:email, passwd:passwd},{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
         if(response.loggedIn){
@@ -67,6 +93,8 @@ export class UserService {
           }
           this.logginIncorrect = true;
         }
+        this.checked = true;
+        this.checkingLogin = false;
       },
       error => {
         this.error.setError(error);
@@ -75,6 +103,7 @@ export class UserService {
   }
 
   public logout(){
+    this.checkingLogin = true;
     this.http.get(`${this.config.baseURL}logout`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
         console.log('response');
@@ -94,6 +123,8 @@ export class UserService {
             this.loggedInState.next(false);
           }
         }
+        this.checked = true;
+        this.checkingLogin = false;
       },
       error => {
         this.error.setError(error);
@@ -103,6 +134,10 @@ export class UserService {
 
   public register(data){
     return this.http.post(`${this.config.baseURL}register`, data,{withCredentials: true});
+  }
+
+  public passwordReset(data){
+    return this.http.post(`${this.config.baseURL}passwordReset`, data,{withCredentials: true});
   }
 
   public getUserRequests(){

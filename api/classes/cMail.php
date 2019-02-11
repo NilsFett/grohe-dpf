@@ -54,6 +54,15 @@ class cMail{
 				$mail_body = $oMailView->render();
 				$recipient = array($data['user']->get('mail'));
 			break;
+			case 'password_reset':
+				$subject = 'Grohe - Display Factory - Your new password';
+				$oMailView->setTemplate($sTemplate);
+				$oMailView->assign('user', $data['user']);
+				$oMailView->assign('password', $data['password']);
+				$mail_body = $oMailView->render();
+				$recipient = array($data['user']->get('mail'));
+			break;
+
 		}
 
 

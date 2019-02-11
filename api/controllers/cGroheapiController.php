@@ -92,6 +92,22 @@ class cGroheapiController{
 		}
 	}
 
+	public function passwordReset(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$ocUserModel = cUserModel::loadByEmail($postData['email']);
+		if($ocUserModel){
+			$password = GeneratePassword();
+			$ocUserModel->set('password', md5($password));
+
+			$ocUserModel->save();
+			cMail::sentMail('password_reset', array('user' => $ocUserModel, 'password' => $password));
+			echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => true));
+		}
+		else{
+			echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => false, 'error' => 'E-Mail Address not found'));
+		}
+	}
+
 	public function getCountries(){
 		$countries = cCountriesModel::getAllSortByContinent();
 		echo json_encode($countries);

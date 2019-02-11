@@ -58,7 +58,7 @@ export class RegisterComponent implements AfterViewInit{
         costcentre:this.registerForm.get('costcentre').value,
         costcentrecountry:this.registerForm.get('costcentrecountry').value
       };
-      console.log(data);
+
       this.user.register( data).subscribe(
         (response:ApiResponseInterface) => {
           if(response.success){

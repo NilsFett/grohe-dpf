@@ -19,13 +19,7 @@ export class LoginComponent{
     public user: UserService,
     public router : Router,
   ) {
-    this.user.loggedInStateObserver.subscribe(loggedIn => {
-      console.log('logged in state changed!');
-      console.log(loggedIn);
-      if(loggedIn){
-        this.router.navigate(['/start']);
-      }
-    });
+
   }
 
   public onSubmit(){
