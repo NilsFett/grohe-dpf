@@ -27,32 +27,15 @@ export class UserService {
   ) {
     this.loggedInState = new Subject<boolean>();
     this.loggedInStateObserver = this.loggedInState.asObservable();
-
-    this.router.events.subscribe((val) => {
-      if( val instanceof NavigationEnd){
-        this.checked = false;
-
-      }
-    });
-    this.checkLogin();
   }
 
   public checkLogin(){
     if(this.checkingLogin)return;
     this.checkingLogin = true;
-    console.log('CHECK LOGIN');
+
     this.http.get(`${this.config.baseURL}isLoggedIn`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
-        console.log('response');
-        console.log(response.loggedIn);
         if(response.loggedIn){
-
-          if( this.router.url == '/' || this.router.url == '/login' || this.router.url == '/register' || this.router.url == '/passwordReset'){
-
-            console.log('REDIRECT TO START');
-            console.log(this.router);
-            this.router.navigate(['/start']);
-          }
           this.data = response.data;
           this.isLoggedIn = true;
           this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
@@ -82,6 +65,7 @@ export class UserService {
             this.isLoggedIn = true;
             this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
             this.loggedInState.next(true);
+            this.router.navigate(['/start']);
           }
 
           this.logginIncorrect = false;
