@@ -133,9 +133,16 @@ body th.mat-header-cell, td{
   padding:20px;
 }
 
+.overlay-content{
+  padding:20px;
+  height:100%;
+  width:100%;
+  background: rgba(255,255,255, 1);
+}
+
 .close{
   float:right;
-  margin: -35px -25px 0 0;
+  margin: -5px -5px 0 0;
   cursor:pointer;
   display:block;
   height:20px;

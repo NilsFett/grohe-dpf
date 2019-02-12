@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, HostListener, AfterViewInit } from '@angular/core';
-import { Router} from '@angular/router';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { UserService} from './services/user.service';
 import { ErrorService} from './services/error.service';
 import { UiService} from './services/ui.service';
@@ -22,24 +22,52 @@ export class AppComponent implements AfterViewInit{
   public overflow:boolean;
   public userInfoOpen:boolean = false;
 
+  private currentURL:string = null;
+
   constructor(
     public router : Router,
     public user: UserService,
     public error: ErrorService,
     public ui: UiService
   ) {
+    this.router.events.subscribe(
+      (navEnd:NavigationEnd) => {
+        if(navEnd.urlAfterRedirects){
+          this.currentURL = navEnd.urlAfterRedirects;
+          if(this.user.checked){
+            this.checkRedirect();
+          }
+        }
+      },
+      (navStart:NavigationStart) => {
+        this.currentURL = null;
+      }
+    );
     this.user.loggedInStateObserver.subscribe(loggedIn => {
-      if(loggedIn){
 
+      if(this.currentURL){
+        this.checkRedirect();
       }
-      else{
-        this.router.navigate(['/login']);
-      }
+
     });
+    this.user.checkLogin();
     this.mainheight = window.innerHeight - 20;
     this.res = {width:window.innerWidth,height:window.innerHeight};
     if(this.res.width < 800){
       this.navopen = false;
+    }
+  }
+
+  private checkRedirect(){
+    if(this.user.isLoggedIn){
+      if(this.currentURL == '/' || this.currentURL == '/login' || this.currentURL == '/passwordReset' || this.currentURL == '/register'){
+        this.router.navigate(['/start']);
+      }
+    }
+    else{
+      if( ! (this.currentURL == '/' || this.currentURL== '/login' || this.currentURL == '/passwordReset' || this.currentURL == '/register') ){
+        this.router.navigate(['/login']);
+      }
     }
   }
 

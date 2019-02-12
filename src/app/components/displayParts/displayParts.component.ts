@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, OnChanges, Input} from '@angular/core';
 import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
@@ -11,9 +11,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './displayParts.component.html',
   styleUrls: ['./displayParts.component.css']
 })
-export class DisplayPartsComponent{
+export class DisplayPartsComponent implements OnChanges{
+  @Input() currentDataSet:DisplaysPart = null;
   displayParts:DisplaysPart[] = null;
-  currentDataSet:DisplaysPart = null;
+
   columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted', 'edit'];
 
   displayPartForm = new FormGroup({
@@ -35,19 +36,27 @@ export class DisplayPartsComponent{
       console.log(this.displayParts);
       this.currentDataSet = this.displayParts[0];
       console.log(this.currentDataSet);
+
+      this.displayPartForm['title'].patchValue({
+        title: 'fdsfgsdfs'
+      });
     }
     else{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
           this.displayParts = displayParts;
-          console.log(this.displayParts);
           this.currentDataSet = this.displayParts[0];
-          console.log(this.currentDataSet);
+          this.displayPartForm.patchValue({
+            title: 'fdsfgsdfs'
+          });
         }
       );
       this.dataService.loadDisplays();
     }
   }
 
+  ngOnChanges(){
+    console.log('ngOnChanges');
+  }
 
 }

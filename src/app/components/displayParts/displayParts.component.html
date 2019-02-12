@@ -50,40 +50,39 @@
 <div class="overlaybg" *ngIf="currentDataSet"></div>
 <div class="overlay" *ngIf="currentDataSet">
   <span (click)="currentDataSet = null" class="close">X</span>
-  <h3 class="fa icon-edit">Display&nbsp;Part</h3>
-  <p>{{currentDataSet.title}}</p>
+  <div class="overlay-content">
+    <h3 class="fa icon-edit">Display&nbsp;Part</h3>
+    <p>{{currentDataSet.title}}</p>
+    <hr />
+    <div class="container-flex">
+      <form name="displayPartForm" [formGroup]="displayPartForm">
+        <div class="spacer20"></div>
+        <mat-form-field>
+          <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
+          <mat-error [hidden]="title.valid || title.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" formControlName="articlenr" matInput name="articlenr" #articlenr placeholder="Articlenr*">
+          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" formControlName="open_format" matInput name="open_format" #open_format placeholder="Open Format">
+          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" formControlName="stock" matInput name="stock" #stock placeholder="Stock">
+          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight">
+          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
+        </mat-form-field>
 
-  <div class="container-flex">
-    <form name="displayPartForm" [formGroup]="displayPartForm">
-      <div class="spacer20"></div>
-      <mat-form-field>
-        <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
-        <mat-error [hidden]="title.valid || title.pristine">required</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" formControlName="articlenr" matInput name="articlenr" #articlenr placeholder="Articlenr*">
-        <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" formControlName="open_format" matInput name="open_format" #open_format placeholder="Open Format">
-        <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" formControlName="stock" matInput name="stock" #stock placeholder="Stock">
-        <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight">
-        <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
-      </mat-form-field>
-
-      <mat-checkbox formControlName="deleted" matInput name="deleted" #deleted placeholder="Visible"></mat-checkbox>Visible
-
-
-
-
-      <button (click)="onSubmit()" mat-raised-button>Save</button>
-      <div class="spacer20"></div>
-    </form>
+        <mat-checkbox formControlName="deleted" matInput name="deleted" #deleted placeholder="Visible"></mat-checkbox>&nbsp;Visible
+        <hr />
+        <button (click)="onSubmit()" mat-raised-button>Save</button>
+        <div class="spacer20"></div>
+      </form>
+    </div>
   </div>
 </div>
