@@ -167,4 +167,9 @@ class cGroheapiController{
 			echo json_encode($ocUserModel);
 		}
 	}
+	
+	public function changeDisplayPart(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		echo json_encode($postData);
+	}
 }

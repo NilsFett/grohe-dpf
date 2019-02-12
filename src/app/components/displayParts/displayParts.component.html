@@ -1,9 +1,7 @@
 <div class="content boxshadow" dpfContent>
   <h2>Display Parts</h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
-
     <div class="spacer20"></div>
-
       <table *ngIf="displayParts" mat-table [dataSource]="displayParts">
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef> Title </th>
@@ -37,13 +35,11 @@
 
         <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef> Edit </th>
-          <td class="edit" (click)="currentDataSet = part" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
+          <td class="edit" (click)="setCurrentDataSet(part)" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
-
-
       </table>
     </div>
 </div>
@@ -80,7 +76,8 @@
 
         <mat-checkbox formControlName="deleted" matInput name="deleted" #deleted placeholder="Visible"></mat-checkbox>&nbsp;Visible
         <hr />
-        <button (click)="onSubmit()" mat-raised-button>Save</button>
+        <div class="spacer20"></div>
+        <button (click)="save()" mat-raised-button>Save</button>
         <div class="spacer20"></div>
       </form>
     </div>

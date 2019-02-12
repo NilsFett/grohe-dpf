@@ -4,7 +4,7 @@
       <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
     </div>
     <h2>Display Factory Login</h2>
-    <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form name="loginForm" [formGroup]="loginForm">
       <div class="spacer20"></div>
       <mat-form-field>
         <input type="email" formControlName="email" matInput name="email" #email placeholder="E-Mail">
@@ -15,7 +15,7 @@
         <mat-error [hidden]="passwd.valid || passwd.pristine">required</mat-error>
       </mat-form-field>
       <div class="spacer20"></div>
-      <button type="submit" mat-raised-button>Login</button>
+      <button (click)="onSubmit()" type="submit" mat-raised-button>Login</button>
       <div class="spacer20"></div>
       <p class="mat-error" *ngIf="user.logginIncorrect">login data incorrect</p>
     </form>
