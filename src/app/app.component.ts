@@ -78,6 +78,9 @@ export class AppComponent implements AfterViewInit{
   adjustHeight(){
     this.mainheight = window.innerHeight - 20;
     this.res = {width:window.innerWidth,height:window.innerHeight};
+    if(this.res.width < 800){
+      this.navopen = false;
+    }
   }
 
   openclosenav(){

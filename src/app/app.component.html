@@ -22,8 +22,8 @@
       <li>
         <a href="/displayCompose" routerLink="/displayCompose">Display Compose</a>
       </li>
-      <li>
-        <a [ngClass]="{'active': (router.url == '/displayParts')}" href="/displayParts" routerLink="/displayParts">Display Parts</a>
+      <li [ngClass]="{'active': (router.url == '/displayParts')}">
+        <a href="/displayParts" routerLink="/displayParts">Display Parts</a>
       </li>
       <li>
         <a>Articles</a>
@@ -38,6 +38,7 @@
         <a>User</a>
       </li>
       <li>{{res.width}}/{{res.height}}</li>
+      <li>{{router.url}}</li>
     </ul>
   </nav>
   <header *ngIf="router.url != '/' && router.url != '/login' && router.url != '/register' && router.url != '/passwordReset'" [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
@@ -45,8 +46,8 @@
       <div *ngIf="user.isLoggedIn" class="hleft tright">
         <p>
           <span *ngIf="!navopen" (click)="openclosenav()" class="openclose fa icon-menu"></span>
-          <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button">Customer View</span>
-          <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button">Admin View</span>
+          <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button"><span class="highwidth">Customer View</span><span class="lowwidth fa icon-eye">C</span></span>
+          <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button"><span class="highwidth">Admin View</span><span class="lowwidth fa icon-eye">A</span></span>
         </p>
       </div>
       <div *ngIf="user.isLoggedIn" class="hright tright">

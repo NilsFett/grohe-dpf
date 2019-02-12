@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input} from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
@@ -11,8 +11,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './displayParts.component.html',
   styleUrls: ['./displayParts.component.css']
 })
-export class DisplayPartsComponent implements OnChanges{
-  @Input() currentDataSet:DisplaysPart = null;
+export class DisplayPartsComponent{
+  currentDataSet:DisplaysPart = null;
   displayParts:DisplaysPart[] = null;
 
   columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted', 'edit'];
@@ -33,30 +33,47 @@ export class DisplayPartsComponent implements OnChanges{
   ) {
     if(this.dataService.displayParts){
       this.displayParts = this.dataService.displayParts;
-      console.log(this.displayParts);
-      this.currentDataSet = this.displayParts[0];
-      console.log(this.currentDataSet);
-
-      this.displayPartForm['title'].patchValue({
-        title: 'fdsfgsdfs'
-      });
+      //this.currentDataSet = this.displayParts[0];
     }
     else{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
           this.displayParts = displayParts;
-          this.currentDataSet = this.displayParts[0];
-          this.displayPartForm.patchValue({
-            title: 'fdsfgsdfs'
-          });
         }
       );
-      this.dataService.loadDisplays();
+      this.dataService.loadDisplayParts();
     }
+
+    this.displayPartForm.valueChanges.subscribe(val => {
+      console.log(val);
+    });
   }
 
-  ngOnChanges(){
-    console.log('ngOnChanges');
+  public save(){
+    console.log(this.displayPartForm.controls['title'].value);
+
+    console.log(this.currentDataSet.title);
+    this.currentDataSet.title = this.displayPartForm.controls['title'].value;
+    this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
+    this.currentDataSet.open_format = this.displayPartForm.controls['open_format'].value;
+    this.currentDataSet.stock = this.displayPartForm.controls['stock'].value;
+    this.currentDataSet.weight = this.displayPartForm.controls['weight'].value;
+    this.currentDataSet.deleted = this.displayPartForm.controls['deleted'].value;
+    this.dataService.changeDisplayPart(this.currentDataSet);
   }
+
+  public setCurrentDataSet(currentDataSet){
+
+    this.currentDataSet = currentDataSet;
+    this.displayPartForm.patchValue({
+      title: currentDataSet.title,
+      articlenr: currentDataSet.articlenr,
+      open_format: currentDataSet.open_format,
+      stock: currentDataSet.stock,
+      weight: currentDataSet.weight,
+      deleted: currentDataSet.deleted
+    });
+  }
+
 
 }

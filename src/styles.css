@@ -117,7 +117,7 @@ body th.mat-header-cell, td{
   height:100%;
   width:100%;
   background: rgba(255,255,255, 0.8);
-  z-index:18;
+  z-index:48;
 }
 
 .overlay{
@@ -127,9 +127,8 @@ body th.mat-header-cell, td{
   padding:20px;
   height:100%;
   width:100%;
-
   color:#000;
-  z-index:20;
+  z-index:50;
   padding:20px;
 }
 
@@ -213,7 +212,7 @@ header{
 
 .hwrapper{
   width:100%;
-  min-width:440px;
+  /*min-width:440px;*/
   padding: 0 20px;
 }
 
@@ -243,7 +242,7 @@ header .hright p{
   height:100%;
   width:100%;
   position:fixed;
-  overflow-y: scroll;
+  /* overflow-y: scroll;*/
 }
 
 #wrapper.login{
@@ -308,7 +307,7 @@ nav ul li:hover a, nav ul li.active a{
   font-weight:bold;
 }
 nav ul li:hover a:before, nav ul li.active a:before{
-  content: '\e800';
+  content: '\e802';
   font-family: "fontello";
   position:absolute;
   margin-left:-20px;
@@ -439,16 +438,17 @@ header.login .span6{
 }
 
 /* TRANSITIONS */
+/*
 nav{
-  -webkit-transition: margin 0.5s; /* Safari */
+  -webkit-transition: margin 0.5s;
   transition: margin 0.5s;
 }
 
 header, .main{
-  -webkit-transition: padding 0.5s; /* Safari */
+  -webkit-transition: padding 0.5s;
   transition: padding 0.5s;
 }
-
+*/
 /* RESULOTION < 1000 px width */
 /*
 .pad nav{
@@ -467,6 +467,13 @@ header, .main{
   display:none;
 }
 
+.lowwidth{
+  display:none;
+}
+
+.highwidth{
+  display:inline;
+}
 @media screen and (max-width: 800px) {
   .open .main{
     padding:100px 20px 20px 60px;
@@ -487,6 +494,10 @@ header, .main{
   nav{
     position:fixed
   }
+
+  .open .hwrapper {
+    padding-left: 20px;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -499,7 +510,7 @@ header, .main{
   }
 
   header{
-    font-size:80%;
+
   }
   header .left{
     display:none;
@@ -507,6 +518,12 @@ header, .main{
 
   header .span6{
     width:100%;
+  }
+  .lowwidth{
+    display:inline;
+  }
+  .highwidth{
+    display:none;
   }
 }
 @media screen and (max-width: 400px) {

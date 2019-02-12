@@ -19,8 +19,10 @@ export class AuthGuard implements CanActivate {
       this.loggedInObserver = observer;
     });
     this.user.loggedInStateObserver.subscribe( loggedIn => {
+      if(this.loggedInObserver){
+        this.loggedInObserver.next(loggedIn);
+      }
 
-      this.loggedInObserver.next(loggedIn);
     });
   }
 
