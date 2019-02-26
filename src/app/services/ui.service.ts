@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 @Injectable()
 export class UiService {
   public view:string='customer';
+  public showOverlay:boolean=false;
 
   constructor(
     private user:UserService

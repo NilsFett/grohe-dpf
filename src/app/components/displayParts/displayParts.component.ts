@@ -13,9 +13,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class DisplayPartsComponent{
   currentDataSet:DisplaysPart = null;
+  dataSetToDelete:DisplaysPart = null;
   displayParts:DisplaysPart[] = null;
 
-  columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted', 'edit'];
+  columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted', 'edit', 'delete'];
 
   displayPartForm = new FormGroup({
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
@@ -50,9 +51,6 @@ export class DisplayPartsComponent{
   }
 
   public save(){
-    console.log(this.displayPartForm.controls['title'].value);
-
-    console.log(this.currentDataSet.title);
     this.currentDataSet.title = this.displayPartForm.controls['title'].value;
     this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
     this.currentDataSet.open_format = this.displayPartForm.controls['open_format'].value;
@@ -63,7 +61,6 @@ export class DisplayPartsComponent{
   }
 
   public setCurrentDataSet(currentDataSet){
-
     this.currentDataSet = currentDataSet;
     this.displayPartForm.patchValue({
       title: currentDataSet.title,
@@ -75,5 +72,7 @@ export class DisplayPartsComponent{
     });
   }
 
-
+  public showDelete(part){
+    this.dataSetToDelete = part;
+  }
 }

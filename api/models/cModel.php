@@ -2,8 +2,8 @@
 /*
 Copyright (c) 2011 Nils Fett
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
 and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -24,6 +24,35 @@ class cModel extends cDatabase{
 		parent::__construct();
 		if($aData)
 			$this->popolate($aData);
+	}	
+	
+
+	public function getFT($sTableName){
+		$query =  'SELECT `'.$sTableName.'`.* 
+						FROM `'.$sTableName.'`,`'.$this->sTable.'` 
+						WHERE `'.$this->sTable.'`.`'.$this->foreignTables[$sTableName][0].'` = `'.$sTableName.'`.`'.$this->foreignTables[$sTableName][1].'`
+						AND `'.$this->sTable.'`.'.$this->sPrimary. ' = '.$this->aColumns[$this->sPrimary]['value'];
+		$oPDO = $this->hConnection->prepare( $query, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
+		try{
+			$oPDO->execute(  );
+		}
+		catch(Exception $e){
+			echo $query;
+			print_r($e);
+			exit();
+		}
+		
+		$aRows = $oPDO->fetchAll();
+		if(!$aRows){
+			return array();
+		}
+		$classname = $this->foreignTables[$sTableName][2];
+		$aObjects = array();
+		foreach( $aRows as $aRow){
+			$aObjects[] = new $classname($aRow);
+		}
+		
+		return $aObjects;
 	}
 
 	protected function popolate($aData){
@@ -34,7 +63,6 @@ class cModel extends cDatabase{
 					$this->bIsNew = false;
 				}
 			}
-
 			foreach( $this->aColumns as $sColumn => $sValue ){
 				if(isset($aData[$sColumn])){
 					$this->aColumns[$sColumn]['value'] = $aData[$sColumn];

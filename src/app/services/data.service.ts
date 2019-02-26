@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { ConfigService } from './config.service';
 import { ErrorService } from './error.service';
 import { DisplaysPart } from '../classes/DisplaysPart';
+import { ApiResponseInterface } from '../interfaces/apiResponse';
 
 @Injectable()
 export class DataService {

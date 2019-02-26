@@ -38,14 +38,19 @@
           <td class="edit" (click)="setCurrentDataSet(part)" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
         </ng-container>
 
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
       </table>
     </div>
 </div>
-<div class="overlaybg" *ngIf="currentDataSet"></div>
+
 <div class="overlay" *ngIf="currentDataSet">
-  <span (click)="currentDataSet = null" class="close">X</span>
+  <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
   <div class="overlay-content">
     <h3 class="fa icon-edit">Display&nbsp;Part</h3>
     <p>{{currentDataSet.title}}</p>
@@ -80,6 +85,19 @@
         <button (click)="save()" mat-raised-button>Save</button>
         <div class="spacer20"></div>
       </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="overlay" *ngIf="dataSetToDelete">
+  <span (click)="dataSetToDelete = null;ui.showOverlay = false;" class="close">X</span>
+  <div class="overlay-content">
+    <h3 class="fa icon-trash-empty">Display&nbsp;Part</h3>
+    <p>{{dataSetToDelete.title}}</p>
+    <hr />
+    <div class="container-flex">
+      <h2>This Display Part will be deleted permanently. Are you sure?</h2>
     </div>
   </div>
 </div>
