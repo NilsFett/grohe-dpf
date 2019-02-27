@@ -61,6 +61,7 @@ export class DisplayPartsComponent{
   }
 
   public setCurrentDataSet(currentDataSet){
+    this.ui.showOverlay = true;
     this.currentDataSet = currentDataSet;
     this.displayPartForm.patchValue({
       title: currentDataSet.title,
@@ -73,6 +74,17 @@ export class DisplayPartsComponent{
   }
 
   public showDelete(part){
+    this.ui.showOverlay = true;
     this.dataSetToDelete = part;
+  }
+
+  public deleteClose(part){
+    this.dataSetToDelete = null;
+    this.ui.showOverlay = false;
+    this.ui.deleteSuccess = false;
+  }
+
+  public delete(){
+    this.dataService.deleteDisplayPart(this.dataSetToDelete);
   }
 }

@@ -12,6 +12,77 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+* 
+* 
+* 
+-- phpMyAdmin SQL Dump
+-- version 4.5.4.1deb2ubuntu2.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Erstellungszeit: 27. Feb 2019 um 10:57
+-- Server-Version: 5.7.25-0ubuntu0.16.04.2
+-- PHP-Version: 7.0.33-0ubuntu0.16.04.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Datenbank: `grohe`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `actions`
+--
+
+DROP TABLE IF EXISTS `actions`;
+CREATE TABLE `actions` (
+  `id` int(11) NOT NULL,
+  `enviroment_id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `url` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `actions`
+--
+
+INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES
+(1, 1, 'getDisplays', '/getDisplays'),
+(2, 1, 'getDisplaysParts', '/getDisplaysParts'),
+(3, 1, 'isLoggedIn', '/isLoggedIn'),
+(4, 1, 'login', '/login'),
+(5, 1, 'logout', '/logout'),
+(6, 1, 'register', '/register'),
+(7, 1, 'getCountries', '/getCountries'),
+(8, 1, 'getUserRequests', '/getUserRequests'),
+(9, 1, 'acceptUserRequest', '/acceptUserRequest'),
+(10, 1, 'declineUserRequest', '/declineUserRequest'),
+(11, 1, 'getDisplayParts', '/getDisplayParts'),
+(12, 1, 'changeDisplayPart', '/changeDisplayPart'),
+(13, 1, 'deleteDisplayPart', '/deleteDisplayPart');
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `actions`
+--
+ALTER TABLE `actions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `actions`
+--
+ALTER TABLE `actions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 */
 class cActionsModel extends cModel{
 
