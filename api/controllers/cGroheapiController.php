@@ -178,7 +178,13 @@ class cGroheapiController{
 		$oDisplaysPartsModel->set('weight', $postData['weight']);
 		$oDisplaysPartsModel->set('deleted', $postData['deleted']);
 		$oDisplaysPartsModel->save();
-		
 		echo json_encode($postData);
 	}
+	
+	public function deleteDisplayPart(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$oDisplaysPartsModel = new cDisplaysPartsModel($postData['id']);
+		$oDisplaysPartsModel->delete();
+		$this->getDisplayParts();
+	}	
 }

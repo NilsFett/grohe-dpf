@@ -5,6 +5,8 @@ import { UserService } from './user.service';
 export class UiService {
   public view:string='customer';
   public showOverlay:boolean=false;
+  public saveSuccess = false;
+  public deleteSuccess = false;
 
   constructor(
     private user:UserService

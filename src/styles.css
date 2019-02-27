@@ -69,6 +69,10 @@ body th.mat-header-cell, td{
   clear:both;
 }
 
+.spacer{
+  height: 20px;
+}
+
 .span4{
   float:left;
   width:33.333%;
@@ -116,7 +120,7 @@ body th.mat-header-cell, td{
   left:0px;
   height:100%;
   width:100%;
-  background: rgba(255,255,255, 0.8);
+  background: rgba(0,0,0, 0.2);
   z-index:48;
 }
 
@@ -137,6 +141,7 @@ body th.mat-header-cell, td{
 
 .overlay-content{
   padding:20px;
+  min-width:300px;
   max-height:100%;
   max-width:100%;
   background: rgba(255,255,255, 1);
@@ -144,7 +149,7 @@ body th.mat-header-cell, td{
 
 .close{
   float:right;
-  margin: -5px -5px 0 0;
+  margin: -30px -30px 0 0;
   cursor:pointer;
   display:block;
   height:20px;
@@ -153,6 +158,16 @@ body th.mat-header-cell, td{
   border-radius:5px;
   text-align:center;
   line-height:20px;
+}
+
+.delete-button{
+  background-color:red;
+  color:#ffffff;
+}
+
+.abort-button{
+  background-color:#3184b9;
+  color:#ffffff;
 }
 
 body, header, nav{
