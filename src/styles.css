@@ -114,6 +114,12 @@ body th.mat-header-cell, td{
   border-bottom: 1px solid #112038;
 }
 
+.new{
+  text-align:right;
+  float:right;
+  cursor:pointer;
+}
+
 .overlaybg{
   position:fixed;
   top:0px;
