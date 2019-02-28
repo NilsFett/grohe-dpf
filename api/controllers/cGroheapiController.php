@@ -170,7 +170,13 @@ class cGroheapiController{
 	
 	public function changeDisplayPart(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-		$oDisplaysPartsModel = new cDisplaysPartsModel($postData['id']);
+		if(isset($postData['id'])){
+			$oDisplaysPartsModel = new cDisplaysPartsModel($postData['id']);
+		}
+		else{
+			$oDisplaysPartsModel = new cDisplaysPartsModel();
+		}
+		
 		$oDisplaysPartsModel->set('title', $postData['title']);
 		$oDisplaysPartsModel->set('articlenr', $postData['articlenr']);
 		$oDisplaysPartsModel->set('open_format', $postData['open_format']);
