@@ -15,10 +15,10 @@ import { StartComponent } from './components/start/start.component';
 import { OrderComponent } from './components/order/order.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
+import { ArticlesComponent } from './components/articles/articles.component';
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
-
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTableModule} from '@angular/material/table';
@@ -38,6 +38,8 @@ import { ConfigService } from './services/config.service';
 import { DisplaysService } from './services/displays.service';
 import { DataService } from './services/data.service';
 
+import { DisplayPartsFilter } from './pipes/displayParts/displayPartsFilter';
+import { ArticlesFilter } from './pipes/articles/articlesFilter';
 
 @NgModule({
   declarations: [
@@ -50,8 +52,11 @@ import { DataService } from './services/data.service';
     OrderComponent,
     DisplayComposeComponent,
     DisplayPartsComponent,
+    ArticlesComponent,
     DpfContentDirective,
-    DpfOverflowWrapperDirective
+    DpfOverflowWrapperDirective,
+    DisplayPartsFilter,
+    ArticlesFilter
   ],
   imports: [
     BrowserModule,
@@ -70,7 +75,9 @@ import { DataService } from './services/data.service';
     UiService,
     ConfigService,
     DisplaysService,
-    DataService
+    DataService,
+    DisplayPartsFilter,
+    ArticlesFilter
   ],
   bootstrap: [AppComponent]
 })
