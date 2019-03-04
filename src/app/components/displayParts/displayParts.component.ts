@@ -5,6 +5,7 @@ import { DataService} from '../../services/data.service';
 import { DisplaysPart } from '../../classes/DisplaysPart';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
+import { DisplayPartsFilter } from '../../pipes/displayParts/displayPartsFilter'
 
 @Component({
   selector: 'grohe-dpf-display-parts',
@@ -16,6 +17,17 @@ export class DisplayPartsComponent  {
 
   currentDataSet:DisplaysPart = null;
   dataSetToDelete:DisplaysPart = null;
+  displayParts:DisplaysPart[] = [];
+  filter = {
+    articlenr:'',
+    title:'',
+    open_format:'',
+    type:'',
+    stock:'',
+    weight:'',
+
+    hidden:null
+  };
 
   columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted', 'edit', 'delete'];
   dataSource :  MatTableDataSource<DisplaysPart>;
@@ -31,9 +43,10 @@ export class DisplayPartsComponent  {
   constructor(
     public user: UserService,
     public ui: UiService,
-    public dataService: DataService
+    public dataService: DataService,
+    private displayPartsFilter: DisplayPartsFilter
   ) {
-    //this.dataSource = new MatTableDataSource(ELEMENT_DATA);;
+    this.dataSource = new MatTableDataSource(this.displayParts);
 
     if(this.dataService.displayParts){
       //this.displayParts = this.dataService.displayParts;
@@ -57,11 +70,15 @@ export class DisplayPartsComponent  {
     });
   }
 
-
-
   public showNew(){
     this.ui.showOverlay = true;
     this.currentDataSet = new DisplaysPart();
+  }
+
+  filterChanges(){
+      this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+      this.dataSource.data = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+      //this.dataSource = new MatTableDataSource(this.displayParts);
   }
 
   public save(){

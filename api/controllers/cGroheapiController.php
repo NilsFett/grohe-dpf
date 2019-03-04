@@ -134,6 +134,13 @@ class cGroheapiController{
 		}
 	}
 
+	public function getArticles(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$displays = cArticlesModel::getAll();
+			echo json_encode($displays);
+		}
+	}
+
 	public function getUserRequests(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$users = cUserModel::getUserRequests();
@@ -167,7 +174,7 @@ class cGroheapiController{
 			echo json_encode($ocUserModel);
 		}
 	}
-	
+
 	public function changeDisplayPart(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		if(isset($postData['id'])){
@@ -176,7 +183,7 @@ class cGroheapiController{
 		else{
 			$oDisplaysPartsModel = new cDisplaysPartsModel();
 		}
-		
+
 		$oDisplaysPartsModel->set('title', $postData['title']);
 		$oDisplaysPartsModel->set('articlenr', $postData['articlenr']);
 		$oDisplaysPartsModel->set('open_format', $postData['open_format']);
@@ -186,11 +193,32 @@ class cGroheapiController{
 		$oDisplaysPartsModel->save();
 		echo json_encode($postData);
 	}
-	
+
+	public function changeArticle(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		if(isset($postData['id'])){
+			$oArticlesModel = new cArticlesModel($postData['id']);
+		}
+		else{
+			$oArticlesModel = new cArticlesModel();
+		}
+
+		$oArticlesModel->set('articlenr', $postData['articlenr']);
+		$oArticlesModel->set('title', $postData['title']);
+		$oArticlesModel->set('extra', $postData['extra']);
+		$oArticlesModel->set('type', $postData['type']);
+		$oArticlesModel->set('packaging', $postData['packaging']);
+		$oArticlesModel->set('weight', $postData['weight']);
+		$oArticlesModel->set('topsign', $postData['topsign']);
+		$oArticlesModel->set('deleted', $postData['deleted']);
+		$oArticlesModel->save();
+		echo json_encode($postData);
+	}
+
 	public function deleteDisplayPart(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$oDisplaysPartsModel = new cDisplaysPartsModel($postData['id']);
 		$oDisplaysPartsModel->delete();
 		$this->getDisplayParts();
-	}	
+	}
 }
