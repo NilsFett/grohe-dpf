@@ -14,7 +14,7 @@
 
     <ul *ngIf="ui.view == 'admin'">
       <li [ngClass]="{'active': (router.url == '/userRequests')}">
-        <a href="/userRequests" routerLink="/userRequests">User Account Request</a>
+        <a (click)="navClicked()" href="/userRequests" routerLink="/userRequests">User Account Request</a>
       </li>
       <li>
         <a>Frontpage</a>
@@ -23,10 +23,10 @@
         <a href="/displayCompose" routerLink="/displayCompose">Display Compose</a>
       </li>
       <li [ngClass]="{'active': (router.url == '/displayParts')}">
-        <a href="/displayParts" routerLink="/displayParts">Display Parts</a>
+        <a (click)="navClicked()" href="/displayParts" routerLink="/displayParts">Display Parts</a>
       </li>
-      <li>
-        <a>Articles</a>
+      <li [ngClass]="{'active': (router.url == '/articles')}">
+        <a (click)="navClicked()" href="/articles" routerLink="/articles">Articles</a>
       </li>
       <li>
         <a>Topsign</a>
@@ -37,8 +37,7 @@
       <li>
         <a>User</a>
       </li>
-      <li>{{res.width}}/{{res.height}}</li>
-      <li>{{router.url}}</li>
+
     </ul>
   </nav>
   <header *ngIf="router.url != '/' && router.url != '/login' && router.url != '/register' && router.url != '/passwordReset'" [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
