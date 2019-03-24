@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
@@ -7,29 +7,30 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { DisplayPartsFilter } from '../../pipes/displayParts/displayPartsFilter'
 
-
 @Component({
   selector: 'grohe-dpf-display-parts',
   templateUrl: './displayParts.component.html',
   styleUrls: ['./displayParts.component.css']
 })
-export class DisplayPartsComponent  implements OnInit{
+export class DisplayPartsComponent  {
   @ViewChild(MatSort) sort: MatSort;
 
   currentDataSet:DisplaysPart = null;
   dataSetToDelete:DisplaysPart = null;
   displayParts:DisplaysPart[] = [];
   filter = {
-    title:'',
     articlenr:'',
-    weight:'',
+    title:'',
     open_format:'',
+    type:'',
     stock:'',
+    weight:'',
+
     hidden:null
   };
 
-  columnsToDisplay = ['title', 'articlenr', 'weight', 'open_format', 'stock', 'deleted', 'edit', 'delete'];
-  dataSource: MatTableDataSource<DisplaysPart> = null;
+  columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted', 'edit', 'delete'];
+  dataSource :  MatTableDataSource<DisplaysPart>;
   displayPartForm = new FormGroup({
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
@@ -48,16 +49,16 @@ export class DisplayPartsComponent  implements OnInit{
     this.dataSource = new MatTableDataSource(this.displayParts);
 
     if(this.dataService.displayParts){
-      this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
-      this.dataSource = new MatTableDataSource(this.displayParts);
+      //this.displayParts = this.dataService.displayParts;
+      this.dataSource = new MatTableDataSource(this.dataService.displayParts);
       this.dataSource.sort = this.sort;
       //this.currentDataSet = this.displayParts[0];
     }
     else{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
-          this.displayParts = displayParts;
-          this.dataSource = new MatTableDataSource(this.displayParts);
+          //this.displayParts = displayParts;
+          this.dataSource = new MatTableDataSource(displayParts);
           this.dataSource.sort = this.sort;
         }
       );
@@ -69,19 +70,15 @@ export class DisplayPartsComponent  implements OnInit{
     });
   }
 
-  ngOnInit() {
-      this.dataSource.sort = this.sort;
-  }
-
-  filterChanges(){
-    this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
-    this.dataSource.data = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
-    //this.dataSource = new MatTableDataSource(this.displayParts);
-  }
-
   public showNew(){
     this.ui.showOverlay = true;
     this.currentDataSet = new DisplaysPart();
+  }
+
+  filterChanges(){
+      this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+      this.dataSource.data = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+      //this.dataSource = new MatTableDataSource(this.displayParts);
   }
 
   public save(){

@@ -1,53 +1,55 @@
-<div class="order boxshadow">
+<div class="content boxshadow" dpfContent>
   <h2>User Requests</h2>
-  <div class="spacer20"></div>
-  <div class="row hidelt800" *ngIf="userRequests && userRequests.length">
-    <div class="span4">
-      <b>Address</b>
+  <div style="padding:0 20px;" class="dpfoverflowwrapper" dpfOverflowWrapper>
+    <div class="spacer20"></div>
+    <div class="row hidelt800" *ngIf="userRequests && userRequests.length">
+      <div class="span4">
+        <b>Address</b>
+      </div>
+      <div class="span4">
+        <b>Contact / Costnumber</b>
+      </div>
+      <div class="span4">
+        <b>Accept / Decline</b>
+      </div>
     </div>
-    <div class="span4">
-      <b>Contact / Costnumber</b>
-    </div>
-    <div class="span4">
-      <b>Accept / Decline</b>
-    </div>
-  </div>
 
-  <div class="row">
-  <div *ngIf="userRequests && userRequests.length">
-    <div class="row" *ngFor="let user of userRequests">
-      <div class="span4">
-        <b class="hidegt800">Address</b>
-        {{user.name}} {{user.surname}}<br />
-        {{user.street}}<br />
-        {{user.zipcode}} {{user.city}}<br />
-        {{user.country}}
+    <div class="row">
+    <div *ngIf="userRequests && userRequests.length">
+      <div class="row" *ngFor="let user of userRequests">
+        <div class="span4">
+          <b class="hidegt800">Address</b>
+          {{user.name}} {{user.surname}}<br />
+          {{user.street}}<br />
+          {{user.zipcode}} {{user.city}}<br />
+          {{user.country}}
+        </div>
+        <div class="span4">
+          <b class="hidegt800">Contact / Costnumber</b>
+          E-Mail: {{user.email}}<br />
+          Phone: {{user.phone}}<br />
+          Fax: {{user.fax}}<br />
+          Costnumber: {{user.costno}}
+        </div>
+        <div class="span4">
+          <b class="hidegt800">Accept / Decline</b>
+          <mat-form-field>
+            <mat-select (selectionChange)="typeChanged(user, $event)" value="{{user.usertype}}">
+              <mat-option value="user">user</mat-option>
+              <mat-option value="admin">admin</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="accept(user)" mat-raised-button>Accept</button>&nbsp;
+          <button (click)="decline(user)" mat-raised-button>Decline</button>
+        </div>
+        <div class="row spacer20"></div>
       </div>
-      <div class="span4">
-        <b class="hidegt800">Contact / Costnumber</b>
-        E-Mail: {{user.email}}<br />
-        Phone: {{user.phone}}<br />
-        Fax: {{user.fax}}<br />
-        Costnumber: {{user.costno}}
-      </div>
-      <div class="span4">
-        <b class="hidegt800">Accept / Decline</b>
-        <mat-form-field>
-          <mat-select (selectionChange)="typeChanged(user, $event)" value="{{user.usertype}}">
-            <mat-option value="user">user</mat-option>
-            <mat-option value="admin">admin</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button (click)="accept(user)" mat-raised-button>Accept</button>&nbsp;
-        <button (click)="decline(user)" mat-raised-button>Decline</button>
-      </div>
-      <div class="row spacer20 hr"></div>
+      <div class="row spacer20"></div>
     </div>
-    <div class="row spacer20"></div>
-  </div>
-  <div *ngIf="userRequests && userRequests.length == 0">
-    no User-Account-Request found.
-  </div>
-  <div class="row"></div>
+    <div *ngIf="userRequests && userRequests.length == 0">
+      no User-Account-Request found.
+    </div>
+    <div class="row"></div>
+    </div>
 </div>
 <div class="row"></div>
