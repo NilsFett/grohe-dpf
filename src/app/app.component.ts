@@ -86,4 +86,10 @@ export class AppComponent implements AfterViewInit{
   openclosenav(){
     this.navopen = !this.navopen;
   }
+
+  navClicked(){
+    if(this.res.width < 800){
+      this.navopen = false;
+    }
+  }
 }

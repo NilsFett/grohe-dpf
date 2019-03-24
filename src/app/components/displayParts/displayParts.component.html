@@ -2,53 +2,58 @@
   <h2>Display Parts <i class="fa icon-plus-1 new" (click)="showNew()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
+    <table>
+      <tr>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="title" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
+        </td>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="Article Number" (ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class="filter" type="text"  name="articlenrFilter" >
+        </td>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="Weight" (ngModelChange)="filter.weight=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.weight" class="filter" type="text"  name="weightFilter" >
+        </td>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="Open Format" (ngModelChange)="filter.open_format=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.open_format" class="filter" type="text"  name="open_formatFilter" >
+        </td>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="Stock" (ngModelChange)="filter.stock=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.stock" class="filter" type="text"  name="stockFilter" >
+        </td>
+
+      </tr>
+    </table>
       <table mat-table matSort [dataSource]="dataSource" >
         <ng-container matColumnDef="title">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            <div>
-              <input (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
-              <p>Title</p>
-            </div>
+            Title
           </th>
           <td mat-cell *matCellDef="let part"> {{part.title}} </td>
         </ng-container>
 
         <ng-container matColumnDef="articlenr">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
-              <div>
-                <input (ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class="filter" type="text"  name="articlenrFilter" >
-                <p>Articel Number</p>
-              </div>
+              Articel Number
             </th>
           <td mat-cell *matCellDef="let part"> {{part.articlenr}} </td>
         </ng-container>
 
         <ng-container matColumnDef="weight">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            <div>
-              <input (ngModelChange)="filter.weight=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.weight" class="filter" type="text"  name="weightFilter" >
-              <p>Weight</p>
-            </div>
+            Weight
           </th>
           <td mat-cell *matCellDef="let part"> {{part.weight}} </td>
         </ng-container>
 
         <ng-container matColumnDef="open_format">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            <div>
-              <input (ngModelChange)="filter.open_format=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.open_format" class="filter" type="text"  name="open_formatFilter" >
-              <p>Open Format</p>
-            </div>
+            Open Format
           </th>
           <td mat-cell *matCellDef="let part"> {{part.open_format}} </td>
         </ng-container>
 
         <ng-container matColumnDef="stock">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            <div>
-              <input (ngModelChange)="filter.stock=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.stock" class="filter" type="text"  name="stockFilter" >
-              <p>Stock{{filter.stock}}</p>
-            </div>
+            Stock
          </th>
           <td mat-cell *matCellDef="let part">
               {{part.stock}}
@@ -57,30 +62,21 @@
 
         <ng-container matColumnDef="deleted">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            <div>
-              <input (ngModelChange)="filter.deleted=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.deleted" class="filter" type="text"  name="deletedFilter" >
-              <p>Hidden</p>
-            </div>
+            Hidden
           </th>
           <td mat-cell *matCellDef="let part"> {{part.deleted}} </td>
         </ng-container>
 
         <ng-container matColumnDef="edit">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-              <div>
-                <p>&nbsp;</p>
-                <p>Edit</p>
-              </div>
-            </th>
+            Edit
+          </th>
           <td class="edit" (click)="setCurrentDataSet(part)" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
         </ng-container>
 
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef>
-            <div>
-              <p>&nbsp;</p>
-              <p>Delete</p>
-            </div>
+            Delete
           </th>
           <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
         </ng-container>
