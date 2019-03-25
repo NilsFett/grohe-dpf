@@ -139,7 +139,8 @@ class cUserModel extends cModel{
 	}
 
 	public function login($mail, $password){
-		$query = "SELECT * FROM `t_user` WHERE mail = '$mail' AND password = MD5('$password')";
+		$mail = strtolower($mail);
+		$query = "SELECT * FROM `t_user` WHERE mail = LOWER('$mail') AND password = MD5('$password')";
 
 		$stmt = $this->hConnection->prepare($query);
 		$stmt->execute();
