@@ -136,8 +136,15 @@ class cGroheapiController{
 
 	public function getArticles(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
-			$displays = cArticlesModel::getAll();
-			echo json_encode($displays);
+			$articles = cArticlesModel::getAll();
+			echo json_encode($articles);
+		}
+	}
+
+	public function getUsers(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$users = cUserModel::getAll();
+			echo json_encode($users);
 		}
 	}
 
@@ -183,36 +190,71 @@ class cGroheapiController{
 		else{
 			$oDisplaysPartsModel = new cDisplaysPartsModel();
 		}
+		if(isset($postData['title'])){
+			$oDisplaysPartsModel->set('title', $postData['title']);
+		}
+		if(isset($postData['articlenr'])){
+			$oDisplaysPartsModel->set('articlenr', $postData['articlenr']);
+		}
+		if(isset($postData['open_format'])){
+			$oDisplaysPartsModel->set('open_format', $postData['open_format']);
+		}
+		if(isset($postData['stock'])){
+			$oDisplaysPartsModel->set('stock', $postData['stock']);
+		}
+		if(isset($postData['weight'])){
+			$oDisplaysPartsModel->set('weight', $postData['weight']);
+		}
+		if(isset($postData['deleted'])){
+			$oDisplaysPartsModel->set('deleted', $postData['deleted']);
+		}
+		else{
+			$oDisplaysPartsModel->set('deleted', 0);
+		}
 
-		$oDisplaysPartsModel->set('title', $postData['title']);
-		$oDisplaysPartsModel->set('articlenr', $postData['articlenr']);
-		$oDisplaysPartsModel->set('open_format', $postData['open_format']);
-		$oDisplaysPartsModel->set('stock', $postData['stock']);
-		$oDisplaysPartsModel->set('weight', $postData['weight']);
-		$oDisplaysPartsModel->set('deleted', $postData['deleted']);
 		$oDisplaysPartsModel->save();
-		echo json_encode($postData);
+		$this->getDisplayParts();
 	}
 
 	public function changeArticle(){
 		$postData = json_decode(file_get_contents('php://input'),true);
+
+
 		if(isset($postData['id'])){
 			$oArticlesModel = new cArticlesModel($postData['id']);
 		}
 		else{
 			$oArticlesModel = new cArticlesModel();
 		}
-
-		$oArticlesModel->set('articlenr', $postData['articlenr']);
-		$oArticlesModel->set('title', $postData['title']);
-		$oArticlesModel->set('extra', $postData['extra']);
-		$oArticlesModel->set('type', $postData['type']);
-		$oArticlesModel->set('packaging', $postData['packaging']);
-		$oArticlesModel->set('weight', $postData['weight']);
-		$oArticlesModel->set('topsign', $postData['topsign']);
-		$oArticlesModel->set('deleted', $postData['deleted']);
+		if(isset($postData['articlenr'])){
+			$oArticlesModel->set('articlenr', $postData['articlenr']);
+		}
+		if(isset($postData['title'])){
+			$oArticlesModel->set('title', $postData['title']);
+		}
+		if(isset($postData['extra'])){
+			$oArticlesModel->set('extra', $postData['extra']);
+		}
+		if(isset($postData['type'])){
+			$oArticlesModel->set('type', $postData['type']);
+		}
+		if(isset($postData['packaging'])){
+			$oArticlesModel->set('packaging', $postData['packaging']);
+		}
+		if(isset($postData['weight'])){
+			$oArticlesModel->set('weight', $postData['weight']);
+		}
+		if(isset($postData['topsign'])){
+			$oArticlesModel->set('topsign', $postData['topsign']);
+		}
+		if(isset($postData['deleted'])){
+			$oArticlesModel->set('deleted', $postData['deleted']);
+		}
+		else{
+			$oArticlesModel->set('deleted', 0);
+		}
 		$oArticlesModel->save();
-		echo json_encode($postData);
+		$this->getArticles();
 	}
 
 	public function deleteDisplayPart(){
@@ -220,5 +262,12 @@ class cGroheapiController{
 		$oDisplaysPartsModel = new cDisplaysPartsModel($postData['id']);
 		$oDisplaysPartsModel->delete();
 		$this->getDisplayParts();
+	}
+
+	public function deleteArticle(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$oArticlesModel = new cArticlesModel($postData['id']);
+		$oArticlesModel->delete();
+		$this->getArticles();
 	}
 }

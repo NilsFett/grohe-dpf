@@ -25,7 +25,6 @@ export class DisplayPartsComponent  {
     type:'',
     stock:'',
     weight:'',
-
     hidden:null
   };
 
@@ -49,16 +48,16 @@ export class DisplayPartsComponent  {
     this.dataSource = new MatTableDataSource(this.displayParts);
 
     if(this.dataService.displayParts){
-      //this.displayParts = this.dataService.displayParts;
-      this.dataSource = new MatTableDataSource(this.dataService.displayParts);
+      this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+      this.dataSource.data = this.displayParts
       this.dataSource.sort = this.sort;
-      //this.currentDataSet = this.displayParts[0];
     }
     else{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
-          //this.displayParts = displayParts;
-          this.dataSource = new MatTableDataSource(displayParts);
+          console.log(this.dataService.displayParts);
+          this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+          this.dataSource.data = this.displayParts
           this.dataSource.sort = this.sort;
         }
       );
@@ -73,34 +72,46 @@ export class DisplayPartsComponent  {
   public showNew(){
     this.ui.showOverlay = true;
     this.currentDataSet = new DisplaysPart();
+    this.updateForm();
   }
 
   filterChanges(){
       this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
       this.dataSource.data = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
-      //this.dataSource = new MatTableDataSource(this.displayParts);
   }
 
   public save(){
-    this.currentDataSet.title = this.displayPartForm.controls['title'].value;
-    this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
-    this.currentDataSet.open_format = this.displayPartForm.controls['open_format'].value;
-    this.currentDataSet.stock = this.displayPartForm.controls['stock'].value;
-    this.currentDataSet.weight = this.displayPartForm.controls['weight'].value;
-    this.currentDataSet.deleted = this.displayPartForm.controls['deleted'].value;
-    this.dataService.changeDisplayPart(this.currentDataSet);
+    if (this.displayPartForm.status == 'VALID') {
+      this.currentDataSet.title = this.displayPartForm.controls['title'].value;
+      this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
+      this.currentDataSet.open_format = this.displayPartForm.controls['open_format'].value;
+      this.currentDataSet.stock = this.displayPartForm.controls['stock'].value;
+      this.currentDataSet.weight = this.displayPartForm.controls['weight'].value;
+      if( this.displayPartForm.controls['deleted'].value === true ){
+        this.currentDataSet.deleted = 1;
+      }
+      else{
+        this.currentDataSet.deleted = 0;
+      }
+
+      this.dataService.changeDisplayPart(this.currentDataSet);
+    }
   }
 
   public setCurrentDataSet(currentDataSet){
     this.ui.showOverlay = true;
     this.currentDataSet = currentDataSet;
+    this.updateForm();
+  }
+
+  private updateForm(){
     this.displayPartForm.patchValue({
-      title: currentDataSet.title,
-      articlenr: currentDataSet.articlenr,
-      open_format: currentDataSet.open_format,
-      stock: currentDataSet.stock,
-      weight: currentDataSet.weight,
-      deleted: currentDataSet.deleted
+      title: this.currentDataSet.title,
+      articlenr: this.currentDataSet.articlenr,
+      open_format: this.currentDataSet.open_format,
+      stock: this.currentDataSet.stock,
+      weight: this.currentDataSet.weight,
+      deleted: this.currentDataSet.deleted
     });
   }
 
