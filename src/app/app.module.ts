@@ -42,6 +42,8 @@ import { DisplayPartsFilter } from './pipes/displayParts/displayPartsFilter';
 import { ArticlesFilter } from './pipes/articles/articlesFilter';
 import { UserComponent } from './components/user/user.component';
 import { UserFilter } from './pipes/user/userFilter';
+import { DpComponent } from './components/dp/dp.component';
+import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { UserFilter } from './pipes/user/userFilter';
     DisplayPartsFilter,
     ArticlesFilter,
     UserFilter,
-    UserComponent
+    UserComponent,
+    DpComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

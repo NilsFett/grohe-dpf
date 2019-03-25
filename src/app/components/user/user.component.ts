@@ -1,39 +1,41 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { UiService } from '../../services/ui.service';
+import { DataService } from '../../services/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from 'src/app/services/user.service';
-import { UiService } from 'src/app/services/ui.service';
-import { DataService } from 'src/app/services/data.service';
-import { UserFilter } from 'src/app/pipes/user/userFilter';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { User } from 'src/app/classes/User';
+import { UserFilter } from 'src/app/pipes/user/userFilter';
 
 @Component({
-  selector: 'app-user',
+  selector: 'grohe-dpf-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent {
   @ViewChild(MatSort) sort: MatSort;
 
   currentDataSet: User = null;
   dataSetToDelete: User = null;
   users: User[] = [];
   filter = {
-    userEmail: '',
-    firstName: '',
-    lastName: '',
-    type: '',
+    mail: '',
+    name: '',
+    surname: '',
+    department: '',
+    city: '',
     hidden: null
   };
 
-  columnsToDisplay = ['userEmail', 'firstName', 'lastName', 'type', 'hidden', 'edit', 'delete'];
-  dataSource: MatTableDataSource<User> = null;
+  columnsToDisplay = ['mail', 'name', 'surname', 'department', 'city', 'deleted', 'edit', 'delete'];
+  dataSource: MatTableDataSource<User>;
   userForm = new FormGroup({
-    userEmail: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    lastName: new FormControl(''),
-    type: new FormControl(''),
-    hidden: new FormControl('')
+    email: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    surname: new FormControl(''),
+    department: new FormControl(''),
+    city: new FormControl(''),
+    deleted: new FormControl('')
   });
 
   constructor(
@@ -42,33 +44,26 @@ export class UserComponent implements OnInit {
     public dataService: DataService,
     private userFilter: UserFilter
   ) {
-    
     this.dataSource = new MatTableDataSource(this.users);
+
     if (this.dataService.users) {
-      this.users = this.userFilter.transform(this.dataService.users, this.filter);
-      this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource = new MatTableDataSource(this.dataService.users);
       this.dataSource.sort = this.sort;
     }
     else {
       this.dataService.userChange.subscribe(
         (users: User[]) => {
-          this.users = users;
-          this.dataSource = new MatTableDataSource(this.users);
+          this.dataSource = new MatTableDataSource(users);
           this.dataSource.sort = this.sort;
         }
       );
-      this.dataService.loadArticles();
+      this.dataService.loadUsers();
     }
-    console.log(this.users);
-  }
+    console.log(this.dataService.users);
 
-  ngOnInit() {
-    this.dataSource.sort = this.sort;
-  }
-
-  filterChanges() {
-    this.users = this.userFilter.transform(this.dataService.users, this.filter);
-    this.dataSource.data = this.userFilter.transform(this.dataService.users, this.filter);
+    this.userForm.valueChanges.subscribe(val => {
+      console.log(val);
+    });
   }
 
   public showNew() {
@@ -76,22 +71,33 @@ export class UserComponent implements OnInit {
     this.currentDataSet = new User();
   }
 
+  filterChanges() {
+    this.users = this.dataService.users;
+    this.dataSource.data = this.dataService.users;
+    // this.users = this.userFilter.transform(this.dataService.users, this.filter);
+    // this.dataSource.data = this.userFilter.transform(this.dataService.users, this.filter);
+  }
+
   public save() {
-    this.currentDataSet.email = this.userForm.controls['userEmail'].value;
-    this.currentDataSet.firstName = this.userForm.controls['fisrtName'].value;
-    this.currentDataSet.lastName = this.userForm.controls['lastName'].value;
-    this.currentDataSet.type = this.userForm.controls['type'].value;
-    this.currentDataSet.hidden = this.userForm.controls['hidden'].value;
+    this.currentDataSet.mail = this.userForm.controls['mail'].value;
+    this.currentDataSet.name = this.userForm.controls['name'].value;
+    this.currentDataSet.surname = this.userForm.controls['surname'].value;
+    this.currentDataSet.department = this.userForm.controls['department'].value;
+    this.currentDataSet.city = this.userForm.controls['city'].value;
+    this.currentDataSet.deleted = this.userForm.controls['deleted'].value;
+    // this.dataService.changeUSer(this.currentDataSet);
   }
 
   public setCurrentDataSet(currentDataSet) {
     this.ui.showOverlay = true;
     this.currentDataSet = currentDataSet;
     this.userForm.patchValue({
-      userEmail: currentDataSet.userEmail,
-      firstName: currentDataSet.firstName,
-      lastName: currentDataSet.lastName,
-      type: currentDataSet.type
+      mail: currentDataSet.mail,
+      name: currentDataSet.name,
+      surname: currentDataSet.surname,
+      department: currentDataSet.department,
+      city: currentDataSet.city,
+      deleted: currentDataSet.deleted
     });
   }
 
@@ -107,5 +113,6 @@ export class UserComponent implements OnInit {
   }
 
   public delete() {
+    // this.dataService.deleteUser(this.dataSetToDelete);
   }
 }
