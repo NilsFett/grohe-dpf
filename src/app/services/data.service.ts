@@ -8,6 +8,7 @@ import { ErrorService } from './error.service';
 import { DisplaysPart } from '../classes/DisplaysPart';
 import { Article } from '../classes/Article';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
+import { User } from '../classes/User';
 
 @Injectable()
 export class DataService {
@@ -18,6 +19,10 @@ export class DataService {
   public articles:Article[] = null;
   public articlesChange:Subject<Array<Article>>;
   private articlesChangeObserver:Observable<Array<Article>>;
+
+  public users:User[] = null;
+  public userChange:Subject<Array<User>>;
+  private userChangeObserver:Observable<Array<User>>;
 
   constructor(
     private config: ConfigService,
@@ -34,7 +39,20 @@ export class DataService {
 
     this.articlesChange = new Subject<Array<Article>>();
     this.articlesChangeObserver = this.articlesChange.asObservable();
+
+    this.userChange = new Subject<Array<User>>();
+    this.userChangeObserver = this.userChange.asObservable();
   }
+
+  public loadUsers(){
+
+    this.http.get(`${this.config.baseURL}getArticles`,{withCredentials: true}).subscribe((articles:Article[]) => {
+      this.articles = articles;
+      this.users = [{ email : "mc@gmail.com", firstName:"Musa",lastName:"Cavus",password:"1",type:0,hidden:1}];
+      this.userChange.next(this.users);
+    });
+
+  }  
 
   public loadArticles(){
     this.http.get(`${this.config.baseURL}getArticles`,{withCredentials: true}).subscribe((articles:Article[]) => {
