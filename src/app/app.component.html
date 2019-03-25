@@ -34,8 +34,8 @@
       <li>
         <a>Orders</a>
       </li>
-      <li>
-        <a>User</a>
+      <li [ngClass]="{'active': (router.url == '/user')}">
+        <a (click)="navClicked()" href="/user" routerLink="/user">User</a>
       </li>
 
     </ul>

@@ -40,6 +40,10 @@ import { DataService } from './services/data.service';
 
 import { DisplayPartsFilter } from './pipes/displayParts/displayPartsFilter';
 import { ArticlesFilter } from './pipes/articles/articlesFilter';
+import { UserComponent } from './components/user/user.component';
+import { UserFilter } from './pipes/user/userFilter';
+import { DpComponent } from './components/dp/dp.component';
+import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +60,11 @@ import { ArticlesFilter } from './pipes/articles/articlesFilter';
     DpfContentDirective,
     DpfOverflowWrapperDirective,
     DisplayPartsFilter,
-    ArticlesFilter
+    ArticlesFilter,
+    UserFilter,
+    UserComponent,
+    DpComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +85,8 @@ import { ArticlesFilter } from './pipes/articles/articlesFilter';
     DisplaysService,
     DataService,
     DisplayPartsFilter,
-    ArticlesFilter
+    ArticlesFilter,
+    UserFilter
   ],
   bootstrap: [AppComponent]
 })

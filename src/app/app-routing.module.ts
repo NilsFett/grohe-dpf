@@ -12,6 +12,9 @@ import { DisplayPartsComponent } from './components/displayParts/displayParts.co
 import { ArticlesComponent } from './components/articles/articles.component';
 
 import { AuthGuard } from './services/auth.service';
+import { UserComponent } from './components/user/user.component';
+import { DpComponent } from './components/dp/dp.component';
+import { TestComponent } from './components/test/test.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -23,7 +26,10 @@ const routes: Routes = [
   { path: 'start', component: StartComponent, canActivate: [AuthGuard] },
   { path: 'displayCompose', component: DisplayComposeComponent, canActivate: [AuthGuard] },
   { path: 'displayParts', component: DisplayPartsComponent, canActivate: [AuthGuard] },
-  { path: 'articles', component: ArticlesComponent, canActivate: [AuthGuard] }
+  { path: 'articles', component: ArticlesComponent, canActivate: [AuthGuard] },
+  { path: 'user', component: TestComponent, canActivate: [AuthGuard] },
+  { path: 'dp', component: DpComponent, canActivate: [AuthGuard] },
+  { path: 'test', component: TestComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
