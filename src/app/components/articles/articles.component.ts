@@ -58,7 +58,7 @@ export class ArticlesComponent  implements OnInit{
     else{
       this.dataService.articlesChange.subscribe(
         (articles:Article[]) => {
-          this.articles = articles;
+          this.articles = this.articlesFilter.transform(this.dataService.articles, this.filter);;
           this.dataSource = new MatTableDataSource(this.articles);
           this.dataSource.sort = this.sort;
         }
