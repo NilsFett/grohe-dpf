@@ -8,5 +8,5 @@ export class Article {
   public packaging:string;
   public weight:number;
   public topsign:number;
-  public hidden:number;
+  public deleted:number;
 }

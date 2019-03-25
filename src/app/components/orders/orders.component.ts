@@ -27,10 +27,10 @@ export class ArticlesComponent  implements OnInit{
     packaging:'',
     weight:'',
     topsign:'',
-    hidden:null
+    deleted:null
   };
 
-  columnsToDisplay = ['articlenr', 'title', 'extra', 'type', 'packaging', 'weight', 'topsign', 'hidden', 'edit', 'delete'];
+  columnsToDisplay = ['articlenr', 'title', 'extra', 'type', 'packaging', 'weight', 'topsign', 'deleted', 'edit', 'delete'];
   dataSource: MatTableDataSource<Article> = null;
   articleForm = new FormGroup({
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
@@ -40,7 +40,7 @@ export class ArticlesComponent  implements OnInit{
     packaging : new FormControl(''),
     weight : new FormControl('',[Validators.required]),
     topsign : new FormControl('',[Validators.required]),
-    hidden : new FormControl('')
+    deleted : new FormControl('')
   });
 
   constructor(
@@ -96,7 +96,7 @@ export class ArticlesComponent  implements OnInit{
     this.currentDataSet.packaging = this.articleForm.controls['packaging'].value;
     this.currentDataSet.weight = this.articleForm.controls['weight'].value;
     this.currentDataSet.topsign = this.articleForm.controls['topsign'].value;
-    this.currentDataSet.hidden = this.articleForm.controls['hidden'].value;
+    this.currentDataSet.deleted = this.articleForm.controls['deleted'].value;
     this.dataService.changeArticle(this.currentDataSet);
   }
 
