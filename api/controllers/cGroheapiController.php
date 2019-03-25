@@ -136,8 +136,15 @@ class cGroheapiController{
 
 	public function getArticles(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
-			$displays = cArticlesModel::getAll();
-			echo json_encode($displays);
+			$articles = cArticlesModel::getAll();
+			echo json_encode($articles);
+		}
+	}
+	
+	public function getUsers(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$users = cUserModel::getAll();
+			echo json_encode($users);
 		}
 	}
 
