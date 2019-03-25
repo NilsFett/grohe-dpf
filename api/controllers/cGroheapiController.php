@@ -140,7 +140,7 @@ class cGroheapiController{
 			echo json_encode($articles);
 		}
 	}
-	
+
 	public function getUsers(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$users = cUserModel::getAll();
@@ -196,7 +196,7 @@ class cGroheapiController{
 		$oDisplaysPartsModel->set('open_format', $postData['open_format']);
 		$oDisplaysPartsModel->set('stock', $postData['stock']);
 		$oDisplaysPartsModel->set('weight', $postData['weight']);
-		$oDisplaysPartsModel->set('deleted', $postData['deleted']);
+		$oDisplaysPartsModel->set('deleted', $postData['hidden']);
 		$oDisplaysPartsModel->save();
 		echo json_encode($postData);
 	}
@@ -217,7 +217,7 @@ class cGroheapiController{
 		$oArticlesModel->set('packaging', $postData['packaging']);
 		$oArticlesModel->set('weight', $postData['weight']);
 		$oArticlesModel->set('topsign', $postData['topsign']);
-		$oArticlesModel->set('deleted', $postData['deleted']);
+		$oArticlesModel->set('deleted', $postData['hidden']);
 		$oArticlesModel->save();
 		echo json_encode($postData);
 	}
