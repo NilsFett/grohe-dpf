@@ -52,8 +52,9 @@ export class DataService {
 
   public changeDisplayPart(displayPart){
     this.http.post(`${this.config.baseURL}changeDisplayPart`, displayPart,{withCredentials: true}).subscribe(
-      (response:ApiResponseInterface) => {
-        console.log(response.loggedIn);
+      (displayParts:DisplaysPart[]) => {
+        this.displayParts = displayParts;
+        this.displayPartsChange.next(this.displayParts);
         this.ui.saveSuccess = true;
       },
       error => {
@@ -64,8 +65,9 @@ export class DataService {
 
   public changeArticle(dataSet){
     this.http.post(`${this.config.baseURL}changeArticle`, dataSet,{withCredentials: true}).subscribe(
-      (response:ApiResponseInterface) => {
-        console.log(response.loggedIn);
+      (articles:Article[]) => {
+        this.articles = articles;
+        this.articlesChange.next(this.articles);
         this.ui.saveSuccess = true;
       },
       error => {
