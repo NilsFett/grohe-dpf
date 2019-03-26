@@ -19,14 +19,14 @@ export class UserComponent {
   dataSetToDelete: User = null;
   users: User[] = [];
   filter = {
-    mail: '',
     name: '',
     surname: '',
     city: '',
     country: '',
     department: '',
-
-    hidden: null
+    mail: '',
+    usertype: '',
+    deleted:null
   };
 
   columnsToDisplay = [ 'name', 'surname', 'city', 'country', 'department', 'mail', 'usertype', 'deleted', 'edit', 'delete'];
@@ -53,15 +53,15 @@ export class UserComponent {
     this.dataSource = new MatTableDataSource(this.users);
 
     if (this.dataService.users) {
-      this.users = this.articlesFilter.transform(this.dataService.users, this.filter);
+      this.users = this.userFilter.transform(this.dataService.users, this.filter);
       this.dataSource.data = this.users;
       this.dataSource.sort = this.sort;
     }
     else {
       this.dataService.userChange.subscribe(
         (users: User[]) => {
-      this.users = this.articlesFilter.transform(this.dataService.users, this.filter);
-      this.dataSource.data = this.users;
+          this.users = this.userFilter.transform(this.dataService.users, this.filter);
+          this.dataSource.data = this.users;
           this.dataSource.sort = this.sort;
         }
       );
@@ -79,10 +79,9 @@ export class UserComponent {
   }
 
   filterChanges() {
-    this.users = this.dataService.users;
-    this.dataSource.data = this.dataService.users;
-    // this.users = this.userFilter.transform(this.dataService.users, this.filter);
-    // this.dataSource.data = this.userFilter.transform(this.dataService.users, this.filter);
+
+    this.users = this.userFilter.transform(this.dataService.users, this.filter);
+    this.dataSource.data = this.userFilter.transform(this.dataService.users, this.filter);
   }
 
   public showNew() {
@@ -92,18 +91,20 @@ export class UserComponent {
   }
 
   public save() {
-    this.currentDataSet.mail = this.userForm.controls['mail'].value;
-    this.currentDataSet.name = this.userForm.controls['name'].value;
-    this.currentDataSet.surname = this.userForm.controls['surname'].value;
-    this.currentDataSet.department = this.userForm.controls['department'].value;
-    this.currentDataSet.city = this.userForm.controls['city'].value;
-      if( this.articleForm.controls['deleted'].value === true ){
+    if (this.userForm.status == 'VALID') {
+      this.currentDataSet.mail = this.userForm.controls['mail'].value;
+      this.currentDataSet.name = this.userForm.controls['name'].value;
+      this.currentDataSet.surname = this.userForm.controls['surname'].value;
+      this.currentDataSet.department = this.userForm.controls['department'].value;
+      this.currentDataSet.city = this.userForm.controls['city'].value;
+      if( this.userForm.controls['deleted'].value === true ){
         this.currentDataSet.deleted = 1;
       }
       else{
         this.currentDataSet.deleted = 0;
       }
       this.dataService.changeUser(this.currentDataSet);
+    }
   }
 
   public setCurrentDataSet(currentDataSet) {
@@ -113,7 +114,7 @@ export class UserComponent {
   }
 
   private updateFormValues(){
-    this.articleForm.patchValue({
+    this.userForm.patchValue({
       name: this.currentDataSet.name,
       surname: this.currentDataSet.surname,
       city: this.currentDataSet.city,

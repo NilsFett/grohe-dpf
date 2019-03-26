@@ -265,6 +265,59 @@ class cGroheapiController{
 		$this->getArticles();
 	}
 
+	public function changeUser(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+
+
+		if(isset($postData['id'])){
+			$oArticlesModel = new cUserModel($postData['id']);
+		}
+		else{
+			$oArticlesModel = new cUserModel();
+		}
+		if(isset($postData['name'])){
+			$oArticlesModel->set('name', $postData['name']);
+		}
+		if(isset($postData['surname'])){
+			$oArticlesModel->set('surname', $postData['surname']);
+		}
+		if(isset($postData['department'])){
+			$oArticlesModel->set('department', $postData['department']);
+		}
+		if(isset($postData['street'])){
+			$oArticlesModel->set('street', $postData['street']);
+		}
+		if(isset($postData['zipcode'])){
+			$oArticlesModel->set('zipcode', $postData['zipcode']);
+		}
+		if(isset($postData['city'])){
+			$oArticlesModel->set('city', $postData['city']);
+		}
+		if(isset($postData['country'])){
+			$oArticlesModel->set('country', $postData['country']);
+		}
+		if(isset($postData['phone'])){
+			$oArticlesModel->set('phone', $postData['phone']);
+		}
+		if(isset($postData['fax'])){
+			$oArticlesModel->set('fax', $postData['fax']);
+		}
+		if(isset($postData['mail'])){
+			$oArticlesModel->set('mail', $postData['mail']);
+		}
+		if(isset($postData['usertype'])){
+			$oArticlesModel->set('usertype', $postData['usertype']);
+		}
+		if(isset($postData['deleted'])){
+			$oArticlesModel->set('deleted', $postData['deleted']);
+		}
+		else{
+			$oArticlesModel->set('deleted', 0);
+		}
+		$oArticlesModel->save();
+		$this->getArticles();
+	}
+
 	public function deleteDisplayPart(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$oDisplaysPartsModel = new cDisplaysPartsModel($postData['id']);

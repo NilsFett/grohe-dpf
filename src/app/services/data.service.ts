@@ -96,8 +96,9 @@ export class DataService {
 
   public changeDisplayPart(displayPart) {
     this.http.post(`${this.config.baseURL}changeDisplayPart`, displayPart, { withCredentials: true }).subscribe(
-      (response: ApiResponseInterface) => {
-        console.log(response.loggedIn);
+      (displayParts: DisplaysPart[]) => {
+        this.displayParts = displayParts;
+        this.displayPartsChange.next(this.displayParts);
         this.ui.saveSuccess = true;
       },
       error => {
@@ -108,8 +109,9 @@ export class DataService {
 
   public changeArticle(dataSet) {
     this.http.post(`${this.config.baseURL}changeArticle`, dataSet, { withCredentials: true }).subscribe(
-      (response: ApiResponseInterface) => {
-        console.log(response.loggedIn);
+      (articles: Article[]) => {
+        this.articles = articles;
+        this.articlesChange.next(this.articles);
         this.ui.saveSuccess = true;
       },
       error => {
@@ -117,6 +119,20 @@ export class DataService {
       }
     );
   }
+
+  public changeUser(dataSet) {
+    this.http.post(`${this.config.baseURL}changeUser`, dataSet, { withCredentials: true }).subscribe(
+      (users: Users[]) => {
+        this.users = users;
+        this.userChange.next(this.users);
+        this.ui.saveSuccess = true;
+      },
+      error => {
+        this.error.setError(error);
+      }
+    );
+  }
+
 
   public deleteDisplayPart(displayPart) {
     this.http.post(`${this.config.baseURL}deleteDisplayPart`, displayPart, { withCredentials: true }).subscribe(

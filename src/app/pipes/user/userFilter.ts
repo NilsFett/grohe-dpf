@@ -15,12 +15,14 @@ export class UserFilter implements PipeTransform{
 
     return items.filter(
       item => {
-        if( item.mail.toLowerCase().indexOf(filter.mail.toLowerCase()) !== -1
-        &&  item.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1
+        if( item.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1
         &&  item.surname.toLowerCase().indexOf(filter.surname.toLowerCase()) !== -1
-        &&  item.department.toLowerCase().indexOf(filter.department.toLowerCase()) !== -1
         &&  item.city.toLowerCase().indexOf(filter.city.toLowerCase()) !== -1
-        &&  (item.hidden == filter.hidden || filter.hidden == null) ){
+        &&  item.country.toLowerCase().indexOf(filter.country.toLowerCase()) !== -1
+        &&  item.department.toLowerCase().indexOf(filter.department.toLowerCase()) !== -1
+        &&  item.mail.toLowerCase().indexOf(filter.mail.toLowerCase()) !== -1
+        &&  item.usertype.toLowerCase().indexOf(filter.usertype.toLowerCase()) !== -1
+        &&  (item.deleted == filter.deleted || filter.deleted == null) ){
           return true;
         }
       }

@@ -22,13 +22,9 @@
           <td>
             <i class="fa icon-search"></i><input placeholder="mail" (ngModelChange)="filter.mail=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.mail" class="filter" type="text"  name="mailFilter" >
           </td>
-
-
-
           <td>
             <i class="fa icon-search"></i><input placeholder="usertype" (ngModelChange)="filter.usertype=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.usertype" class="filter" type="text"  name="usertypeFilter" >
           </td>
-
         </tr>
       </table>
 
@@ -134,7 +130,7 @@
             <mat-error [hidden]="country.valid || country.pristine">required</mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input type="text" formControlName="mail" matInput name="mail" #mail placeholder="E-Mail">
+            <input type="text" formControlName="mail" matInput name="mail" #mail placeholder="E-Mail*">
             <mat-error [hidden]="mail.valid || mail.pristine">required</mat-error>
           </mat-form-field>
           <mat-form-field>
