@@ -25,6 +25,11 @@
       <li [ngClass]="{'active': (router.url == '/displayParts')}">
         <a (click)="navClicked()" href="/displayParts" routerLink="/displayParts">Display Parts</a>
       </li>
+      
+      <li [ngClass]="{'active': (router.url == '/displayorders')}">
+        <a (click)="navClicked()" href="/displayorders" routerLink="/displayorders">Display Orders</a>
+      </li>
+       
       <li [ngClass]="{'active': (router.url == '/articles')}">
         <a (click)="navClicked()" href="/articles" routerLink="/articles">Articles</a>
       </li>
