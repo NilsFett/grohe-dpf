@@ -7,5 +7,6 @@ export class User {
   public city:string;
   public deleted:number;
   public hidden:number;
+  public parent : number;
 
 }

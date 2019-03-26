@@ -63,7 +63,7 @@
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Packaging
           </th>
-          <td mat-cell *matCellDef="let part"> {{part.packaging}} </td>
+          <td mat-cell *matCellDef="let part"> {{part.type}} </td>
         </ng-container>
 
         <ng-container matColumnDef="weight">
@@ -82,7 +82,7 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="deleted">
+        <ng-container matColumnDef="hidden">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
             Hidden
           </th>
@@ -112,7 +112,7 @@
 <div class="overlay" *ngIf="currentDataSet">
   <div class="overlay-content">
     <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
-    <h3 class="fa icon-edit">Article</h3>
+    <h3 class="fa icon-edit">Display&nbsp;Part</h3>
     <p>{{currentDataSet.title}}</p>
     <hr />
     <div class="container-flex">
@@ -131,34 +131,11 @@
           <mat-error [hidden]="extra.valid || extra.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <!--
           <input type="text" formControlName="type" matInput name="type" #type placeholder="Type">
--->
-          <mat-select formControlName="type"  #type placeholder="Type">
-            <mat-option value="Counter">Counter</mat-option>
-            <mat-option value="Basin">Basin</mat-option>
-            <mat-option value="THM">THM</mat-option>
-            <mat-option value="Handshowers">Handshowers</mat-option>
-            <mat-option value="Kitchen">Kitchen</mat-option>
-            <mat-option value="Euphoria">Euphoria</mat-option>
-            <mat-option value="Eurosmart">Eurosmart</mat-option>
-            <mat-option value="Cosmo">Cosmo</mat-option>
-            <mat-option value="Tempesta">Tempesta</mat-option>
-            <mat-option value="Spare_Parts">Spare Parts</mat-option>
-            <mat-option value="GRT">GRT</mat-option>
-          </mat-select>
-
           <mat-error [hidden]="type.valid || type.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <!--
           <input type="text" formControlName="packaging" matInput name="packaging" #packaging placeholder="Packaging">
--->
-          <mat-select formControlName="packaging"  #packaging placeholder="Package">
-            <mat-option value="carton">carton</mat-option>
-            <mat-option value="carton">blister</mat-option>
-          </mat-select>
-
           <mat-error [hidden]="packaging.valid || packaging.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -169,7 +146,7 @@
           <input type="text" formControlName="topsign" matInput name="topsign" #topsign placeholder="Topsign">
           <mat-error [hidden]="topsign.valid || topsign.pristine">required</mat-error>
         </mat-form-field>
-        <mat-checkbox formControlName="deleted" matInput name="deleted" #deleted placeholder="Visible"></mat-checkbox>&nbsp;Visible
+        <mat-checkbox formControlName="hidden" matInput name="hidden" #hidden placeholder="Visible"></mat-checkbox>&nbsp;Visible
         <hr />
         <div class="spacer20"></div>
         <button (click)="save()" mat-raised-button>Save</button>
@@ -186,11 +163,11 @@
 <div class="overlay" *ngIf="dataSetToDelete">
   <div class="overlay-content">
     <span (click)="deleteClose()" class="close">X</span>
-    <h3 class="fa icon-trash-empty">Article</h3>
+    <h3 class="fa icon-trash-empty">Display&nbsp;Part</h3>
     <p>{{dataSetToDelete.title}}</p>
     <hr />
     <div class="container-flex">
-      <h2>This article will be deleted permanently. Are you sure?</h2>
+      <h2>This Display Part will be deleted permanently. Are you sure?</h2>
       <div class="spacer"></div>
       <div style="display:flex;justify-content:  space-between" *ngIf="!ui.deleteSuccess">
         <button class="delete-button" (click)="delete()" mat-raised-button>Delete</button>
