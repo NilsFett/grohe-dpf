@@ -155,6 +155,14 @@ class cGroheapiController{
 		}
 	}
 
+	public function productTree(){
+		if(true || cSessionUser::getInstance()->bIsLoggedIn){
+			$users = cProductTreeModel::getAll();
+			echo json_encode($users);
+		}
+	}
+
+
 	public function acceptUserRequest(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 
