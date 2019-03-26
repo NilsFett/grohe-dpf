@@ -22,11 +22,13 @@ import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflo
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTableModule} from '@angular/material/table';
-import {MatNativeDateModule, NativeDateAdapter, DateAdapter,  MatSortModule, MatPaginatorModule} from '@angular/material';
+import {MatNativeDateModule, NativeDateAdapter, DateAdapter,  MatSortModule, MatPaginatorModule, MatIconModule} from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule,MatCheckboxModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
+import {MatTreeModule} from '@angular/material/tree';
+import {CdkTreeModule} from '@angular/cdk/tree';
 
 import { UserService } from './services/user.service';
 import { AuthGuard } from './services/auth.service';
@@ -44,6 +46,7 @@ import { UserComponent } from './components/user/user.component';
 import { UserFilter } from './pipes/user/userFilter';
 import { DpComponent } from './components/dp/dp.component';
 import { TestComponent } from './components/test/test.component';
+import { TreeViewComponent } from './components/tree-view/tree-view.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,8 @@ import { TestComponent } from './components/test/test.component';
     UserFilter,
     UserComponent,
     DpComponent,
-    TestComponent
+    TestComponent,
+    TreeViewComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +78,8 @@ import { TestComponent } from './components/test/test.component';
     FormsModule,
     ReactiveFormsModule,
     MatTableModule, MatSortModule, MatPaginatorModule,MatFormFieldModule,MatSelectModule,MatInputModule,MatButtonModule,MatCheckboxModule
+    ,MatTreeModule,MatIconModule
+    ,CdkTreeModule
   ],
   providers: [
     UserService,

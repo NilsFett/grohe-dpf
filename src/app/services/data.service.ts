@@ -72,6 +72,20 @@ export class DataService {
         return u;
   }
 
+  async getProductTrees() {
+    var u:any;
+    await this.http.get(`${this.config.baseURL}productTree`, { withCredentials: true })
+      .toPromise().then(
+        (users) => {
+          u=users;
+        }).catch((err) => {
+          console.log(err);
+        });
+        return u;
+  }
+
+  
+
 
   public loadArticles() {
     this.http.get(`${this.config.baseURL}getArticles`, { withCredentials: true }).subscribe((articles: Article[]) => {
