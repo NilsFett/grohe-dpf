@@ -9,4 +9,5 @@ export class Article {
   public weight:number;
   public topsign:number;
   public deleted:number;
+
 }
