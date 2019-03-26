@@ -50,7 +50,10 @@ class cProductTreeModel extends cModel{
 
 	public static function getAll(){
 		$db = cDatabase::getInstance();
-		$oPDO = $db->hConnection->prepare( 'SELECT * FROM `'.static::$sTable.'` WHERE 1', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
+		$oPDO = $db->hConnection->prepare( 'SELECT * FROM
+																				`'.static::$sTable.'`
+																				WHERE 1
+																				ORDER BY parent, sorting', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
 		$oPDO->execute(  );
 		$aResult = array();
 		while( $row = $oPDO->fetch(PDO::FETCH_ASSOC) ){
