@@ -193,4 +193,15 @@ class cUserModel extends cModel{
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public static function getAll(){
+		$db = cDatabase::getInstance();
+		$oPDO = $db->hConnection->prepare( '	SELECT id, name, surname, department, street, zipcode, city, country, phone, fax, mail, usertype, deleted 
+												FROM `'.static::$sTable.'` WHERE 1', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
+		$oPDO->execute(  );
+		$aResult = array();
+		while( $row = $oPDO->fetch(PDO::FETCH_ASSOC) ){
+			$aResult[$row['id']] = $row;
+		}
+		return $aResult;
+	}
 }
