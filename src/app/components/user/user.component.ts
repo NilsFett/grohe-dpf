@@ -53,13 +53,15 @@ export class UserComponent {
     this.dataSource = new MatTableDataSource(this.users);
 
     if (this.dataService.users) {
-      this.dataSource = new MatTableDataSource(this.dataService.users);
+      this.users = this.articlesFilter.transform(this.dataService.users, this.filter);
+      this.dataSource.data = this.users;
       this.dataSource.sort = this.sort;
     }
     else {
       this.dataService.userChange.subscribe(
         (users: User[]) => {
-          this.dataSource = new MatTableDataSource(users);
+      this.users = this.articlesFilter.transform(this.dataService.users, this.filter);
+      this.dataSource.data = this.users;
           this.dataSource.sort = this.sort;
         }
       );
@@ -72,9 +74,8 @@ export class UserComponent {
     });
   }
 
-  public showNew() {
-    this.ui.showOverlay = true;
-    this.currentDataSet = new User();
+  ngOnInit() {
+      this.dataSource.sort = this.sort;
   }
 
   filterChanges() {
@@ -84,26 +85,45 @@ export class UserComponent {
     // this.dataSource.data = this.userFilter.transform(this.dataService.users, this.filter);
   }
 
+  public showNew() {
+    this.ui.showOverlay = true;
+    this.currentDataSet = new User();
+    this.updateFormValues();
+  }
+
   public save() {
     this.currentDataSet.mail = this.userForm.controls['mail'].value;
     this.currentDataSet.name = this.userForm.controls['name'].value;
     this.currentDataSet.surname = this.userForm.controls['surname'].value;
     this.currentDataSet.department = this.userForm.controls['department'].value;
     this.currentDataSet.city = this.userForm.controls['city'].value;
-    this.currentDataSet.deleted = this.userForm.controls['deleted'].value;
-    // this.dataService.changeUSer(this.currentDataSet);
+      if( this.articleForm.controls['deleted'].value === true ){
+        this.currentDataSet.deleted = 1;
+      }
+      else{
+        this.currentDataSet.deleted = 0;
+      }
+      this.dataService.changeUser(this.currentDataSet);
   }
 
   public setCurrentDataSet(currentDataSet) {
     this.ui.showOverlay = true;
     this.currentDataSet = currentDataSet;
-    this.userForm.patchValue({
-      mail: currentDataSet.mail,
-      name: currentDataSet.name,
-      surname: currentDataSet.surname,
-      department: currentDataSet.department,
-      city: currentDataSet.city,
-      deleted: currentDataSet.deleted
+    this.updateFormValues();
+  }
+
+  private updateFormValues(){
+    this.articleForm.patchValue({
+      name: this.currentDataSet.name,
+      surname: this.currentDataSet.surname,
+      city: this.currentDataSet.city,
+      country: this.currentDataSet.country,
+      department: this.currentDataSet.department,
+      mail: this.currentDataSet.mail,
+      phone: this.currentDataSet.phone,
+      fax: this.currentDataSet.fax,
+      usertype: this.currentDataSet.usertype,
+      deleted: this.currentDataSet.deleted
     });
   }
 
@@ -119,6 +139,6 @@ export class UserComponent {
   }
 
   public delete() {
-    // this.dataService.deleteUser(this.dataSetToDelete);
+    this.dataService.deleteUser(this.dataSetToDelete);
   }
 }
