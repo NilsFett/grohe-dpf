@@ -9,4 +9,4 @@ RewriteEngine On
 
 RewriteCond %{QUERY_STRING} (.*)
 #RewriteCond %{REQUEST_URI} !^/(public|usage|admin)
-RewriteRule ^((?!public|images|de/public|usage|favicon.ico|data).*) index.php [L]
+RewriteRule ^((?!uploads|public|images|de/public|usage|favicon.ico|data).*) index.php [L]

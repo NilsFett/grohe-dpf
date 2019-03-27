@@ -1,5 +1,5 @@
 <div class="content boxshadow" dpfContent>
-  <h2>Displays <i class="fa icon-plus-1 new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
+  <h2>Displays <i class="fa icon-plus new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
     <table>
@@ -87,9 +87,12 @@
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
 <div class="overlay" *ngIf="currentDataSet">
   <div class="overlay-content">
-    <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
+    <span (click)="currentDataSet = null;ui.showOverlay = false" class="close icon-cancel"></span>
     <h3 class="fa icon-edit">Display</h3>
-    <p>{{currentDataSet.title}}&nbsp;&nbsp;<button style="float:right;" (click)="showAssembly=true" mat-raised-button>Show Assembly</button></p>
+    <p>{{currentDataSet.title}}&nbsp;&nbsp;
+      <button *ngIf="!showAssembly" style="float:right;" (click)="showAssembly=true" mat-raised-button>Show Assembly</button>
+      <button *ngIf="showAssembly" style="float:right;" (click)="showAssembly=false" mat-raised-button>Show Display Data</button>
+    </p>
     <hr />
     <div class="container-flex" *ngIf="!showAssembly">
       <form name="displayPartForm" [formGroup]="displayForm">
@@ -131,14 +134,42 @@
         </div>
       </form>
     </div>
-    <div class="container-flex" *ngIf="!showAssembly">
+    <div class="container-flex display-parts-assembly" *ngIf="showAssembly">
+      <ul>
+        <li *ngFor="let part of currentDisplaysParts">
+          <span class="artnr">{{part.sapid}}</span>
+          <span class="title">{{part.title}}</span>
+          <span class="units">{{part.units}}</span>
+          <span class="icon-minus"></span>
+        </li>
+      </ul>
+      <button mat-raised-button>Save</button>
+      <div class="spacer20"></div>
+      <hr />
+      <div class="spacer20"></div>
+      <p>Add Display Part</p>
+      <mat-form-field>
+        <input type="text" matInput name="partsearch" placeholder="Search by SAP Number or Title" (keyup)="partsSearchwordChanged($event.target.value)">
+      </mat-form-field>
+      <div class="chooseDisplayPart">
+
+        <ul>
+          <li *ngFor="let part of displayParts">
+            <ng-container *ngIf="part.deleted == 0 && ( part.title.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 || part.articlenr.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 )">
+              <span class="artnr">{{part.articlenr}}</span>
+              <span class="title">{{part.title}}</span>
+              <span class="icon-plus"></span>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="overlay" *ngIf="dataSetToDelete">
   <div class="overlay-content">
-    <span (click)="deleteClose()" class="close">X</span>
+    <span (click)="deleteClose()" class="close icon-cancel"></span>
     <h3 class="fa icon-trash-empty">Display</h3>
     <p>{{dataSetToDelete.title}}</p>
     <hr />
@@ -158,21 +189,19 @@
 
 <div class="overlay templates" *ngIf="showChooseTemplate">
   <div class="overlay-content">
-    <span (click)="hideChooseTemplateOverlay()" class="close">X</span>
+    <span (click)="hideChooseTemplateOverlay()" class="close icon-cancel"></span>
     <h3 class="fa icon-trash-empty">Choose Display Template</h3>
     <hr />
     <div class="container-flex">
       <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
       <div class="spacer"></div>
 
-        <img src="{{config.baseURL}}uploads/dp1.jpg" />
-        <img src="{{config.baseURL}}uploads/dp2.jpg" />
-        <img src="{{config.baseURL}}uploads/dp3.jpg" />
+      <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp1.jpg" />
+      <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp2.jpg" />
+      <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp3.jpg" />
 
       <hr />
-      <button class="delete-button" (click)="showNew()" mat-raised-button>Or create a new one without template</button>
-
-
+      <button class="delete-button" (click)="currentDisplaysParts = []; showNew()" mat-raised-button>Or create a new one without template</button>
     </div>
   </div>
 </div>

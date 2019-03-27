@@ -5,6 +5,7 @@ import { DataService } from '../../services/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { Display } from '../../classes/display';
+import { DisplaysPart } from '../../classes/DisplaysPart';
 import { ConfigService } from '../../services/config.service';
 import { DisplaysFilter } from '../../pipes/displays/displaysFilter';
 
@@ -20,6 +21,8 @@ export class DisplayComposeComponent{
   displays:Display[] = [];
   showAssembly:boolean=false;
   showChooseTemplate:boolean=false;
+  displayParts:DisplaysPart[] = [];
+  partsSearchword:string = '';
 
   columnsToDisplay = [ 'image', 'title', 'articlenr', 'displaytype', 'topsign_punch', 'instruction', 'edit', 'delete'];
   dataSource: MatTableDataSource<Display>;
@@ -46,6 +49,68 @@ export class DisplayComposeComponent{
     16: 'uploads/1e7d0d4eeb42492d8138a3decc90955f.jpg',
   };
 
+  public partsList = {
+      1:[{
+        sapid:'98001202',
+        title:'Sockel gestanzt, aus 2 gleichen Teilen zusammen ge	',
+        units:1
+      },{
+        sapid:'98001206',
+        title:'Stapelschütte gestanzt, zum Krempeln	',
+        units:2
+      },{
+        sapid:'98001220',
+        title:'Stapelschütte gestanzt, zum Krempeln	',
+        units:2
+      },{
+        sapid:'98001240',
+        title:'	Stülper groß - Halbfaltkiste mit zusammen stoßende',
+        units:1
+      },{
+        sapid:'98001200',
+        title:'Technosteg',
+        units:1
+      }
+    ],
+    2:[{
+      sapid:'98001209',
+      title:'Halterung gestanzt, zum Einkleben mit 2 Dekopunkte',
+      units:1
+    },{
+      sapid:'98001210',
+      title:'Dekopunkt Durchmesser 30 mm',
+      units:2
+    },{
+      sapid:'98001240',
+      title:'Stülper groß - Halbfaltkiste mit zusammen stoßende',
+      units:1
+    },{
+      sapid:'98001295',
+      title:'Mantel gestanzt, 2-tlg. Geklebt',
+      units:1
+    }
+    ],
+    3:[{
+      sapid:'98001202',
+      title:'Sockel gestanzt, aus 2 gleichen Teilen zusammen ge',
+      units:1
+    },{
+      sapid:'98001205',
+      title:'Dekopunkt Durchmesser 30 mm',
+      units:2
+    },{
+      sapid:'98001208',
+      title:'Abdeckplatte gestanzt, wird in der Ummantelung auf',
+      units:1
+    },{
+      sapid:'98001240',
+      title:'Stülper groß - Halbfaltkiste mit zusammen stoßende',
+      units:1
+    }
+    ]
+  };
+  public currentDisplaysParts = null;
+
   constructor(
     public user: UserService,
     public ui: UiService,
@@ -70,6 +135,19 @@ export class DisplayComposeComponent{
       );
       this.dataService.loadDisplays();
     }
+
+    if(this.dataService.displayParts){
+      this.displayParts = this.dataService.displayParts;
+    }
+    else{
+      this.dataService.displayPartsChange.subscribe(
+        (displayParts:DisplaysPart[]) => {
+          this.displayParts = displayParts;
+
+        }
+      );
+      this.dataService.loadDisplayParts();
+    }
   }
 
 
@@ -85,16 +163,28 @@ export class DisplayComposeComponent{
 
   public showNew() {
     this.ui.showOverlay = true;
+    this.showChooseTemplate = false;
     this.currentDataSet = new Display();
     this.updateFormValues();
   }
 
+  public templateChoosen(templateid){
+    console.log(templateid);
+    console.log(this.partsList);
+    this.currentDisplaysParts = this.partsList[templateid];
+    console.log(this.currentDisplaysParts);
+    this.showNew();
+    this.showAssembly = true;
+  }
+
   public showChooseTemplateOverlay(){
     this.showChooseTemplate = true;
+    this.ui.showOverlay = true;
   }
 
   public hideChooseTemplateOverlay(){
     this.showChooseTemplate = false;
+    this.ui.showOverlay = false;
   }
 
 
@@ -143,5 +233,10 @@ export class DisplayComposeComponent{
 
   public delete() {
     this.dataService.deleteUser(this.dataSetToDelete);
+  }
+
+  public partsSearchwordChanged(searchword){
+    console.log(searchword);
+    this.partsSearchword = searchword;
   }
 }

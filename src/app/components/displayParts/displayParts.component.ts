@@ -77,7 +77,7 @@ export class DisplayPartsComponent  {
 
   filterChanges(){
       this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
-      this.dataSource.data = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+      this.dataSource.data = this.displayParts;
       //this.dataSource = new MatTableDataSource(this.displayParts);
   }
 

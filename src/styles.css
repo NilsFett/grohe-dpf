@@ -497,8 +497,37 @@ header.login .span6{
 }
 
 .templates img{
-  max-width:25%;
+  width:25%;
+  min-width:200px;
+  max-width:200px;
   margin-right:20px;
+}
+
+.display-parts-assembly ul{
+  list-style-type: none;
+  padding:0px
+}
+
+.display-parts-assembly ul li{
+  margin-bottom:20px;
+}
+
+.display-parts-assembly ul li .artnr{
+  display:inline-block;
+  width:100px;
+}
+.display-parts-assembly ul li .title{
+  display:inline-block;
+  width:300px;
+}
+.display-parts-assembly ul li .units{
+  display:inline-block;
+  width:50px;
+}
+
+.display-parts-assembly .chooseDisplayPart{
+  max-height:300px;
+  overflow-y:scroll;
 }
 /* TRANSITIONS */
 /*
