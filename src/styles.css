@@ -496,6 +496,10 @@ header.login .span6{
   margin: 5px 0;
 }
 
+.templates img{
+  max-width:25%;
+  margin-right:20px;
+}
 /* TRANSITIONS */
 /*
 nav{

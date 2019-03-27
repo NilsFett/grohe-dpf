@@ -19,6 +19,7 @@ export class DisplayComposeComponent{
   dataSetToDelete: Display = null;
   displays:Display[] = [];
   showAssembly:boolean=false;
+  showChooseTemplate:boolean=false;
 
   columnsToDisplay = [ 'image', 'title', 'articlenr', 'displaytype', 'topsign_punch', 'instruction', 'edit', 'delete'];
   dataSource: MatTableDataSource<Display>;
@@ -87,6 +88,15 @@ export class DisplayComposeComponent{
     this.currentDataSet = new Display();
     this.updateFormValues();
   }
+
+  public showChooseTemplateOverlay(){
+    this.showChooseTemplate = true;
+  }
+
+  public hideChooseTemplateOverlay(){
+    this.showChooseTemplate = false;
+  }
+
 
   public save() {
     if (this.displayForm.status == 'VALID') {
