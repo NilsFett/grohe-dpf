@@ -11,7 +11,9 @@ export class UserFilter implements PipeTransform{
     }
 
     return items.filter(
+
       item => {
+        console.log(item);
         if( item.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1
         &&  item.surname.toLowerCase().indexOf(filter.surname.toLowerCase()) !== -1
         &&  item.city.toLowerCase().indexOf(filter.city.toLowerCase()) !== -1
