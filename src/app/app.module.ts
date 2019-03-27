@@ -16,6 +16,7 @@ import { OrderComponent } from './components/order/order.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
 import { ArticlesComponent } from './components/articles/articles.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
@@ -60,6 +61,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     DisplayComposeComponent,
     DisplayPartsComponent,
     ArticlesComponent,
+    OrdersComponent,
     DpfContentDirective,
     DpfOverflowWrapperDirective,
     DisplayPartsFilter,

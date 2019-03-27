@@ -10,10 +10,10 @@ import { DisplayPartsFilter } from '../../pipes/displayParts/displayPartsFilter'
 
 @Component({
   selector: 'grohe-dpf-articles',
-  templateUrl: './articles.component.html',
-  styleUrls: ['./articles.component.css']
+  templateUrl: './orders.component.html',
+  styleUrls: ['./orders.component.css']
 })
-export class ArticlesComponent  implements OnInit{
+export class OrdersComponent  implements OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   currentDataSet:Article = null;

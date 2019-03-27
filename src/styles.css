@@ -125,7 +125,7 @@ th{
   height:100%;
   width:100%;
   background: rgba(0,0,0, 0.2);
-  z-index:100;
+  z-index:2100;
 }
 
 .overlay{
@@ -136,7 +136,7 @@ th{
   height:100%;
   width:100%;
   color:#000;
-  z-index:150;
+  z-index:2150;
   padding:20px;
   display: flex;
   align-items: center;
