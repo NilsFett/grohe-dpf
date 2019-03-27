@@ -57,9 +57,7 @@ hr{
 th{
   white-space: nowrap;
 }
-body th.mat-header-cell, td{
-  padding: 0 5px;
-}
+
 
 .right{
   float:right;
@@ -209,7 +207,7 @@ i.icon-search{
   font-size:40px;
 }
 */
-td.mat-cell{
+td.mat-cell, th.mat-header-cell{
   padding:0 20px !important;
 }
 body, header, nav{
@@ -236,7 +234,7 @@ nav{
   position:fixed;
   height:100%;
   width:260px;
-  z-index:215;
+  z-index:1215;
   padding:20px;
   margin-left:-240px;
 }
@@ -268,6 +266,7 @@ header .openclose{
 header{
   height:80px;
   width:100%;
+  z-index:1000;
 }
 
 .hwrapper{

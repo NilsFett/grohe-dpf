@@ -6,12 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class UserFilter implements PipeTransform{
   transform(items:any[], filter: any): any {
-    console.log('UserFilter');
-    console.log(filter);
     if( !items  || ! filter ){
       return items;
     }
-    console.log(filter);
 
     return items.filter(
       item => {

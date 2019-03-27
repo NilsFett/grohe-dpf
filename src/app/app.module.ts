@@ -35,10 +35,10 @@ import { CountryService } from './services/country.service';
 import { ErrorService } from './services/error.service';
 import { UiService } from './services/ui.service';
 import { ConfigService } from './services/config.service';
-import { DisplaysService } from './services/displays.service';
 import { DataService } from './services/data.service';
 
 import { DisplayPartsFilter } from './pipes/displayParts/displayPartsFilter';
+import { DisplaysFilter } from './pipes/displays/displaysFilter';
 import { ArticlesFilter } from './pipes/articles/articlesFilter';
 import { UserComponent } from './components/user/user.component';
 import { UserFilter } from './pipes/user/userFilter';
@@ -60,6 +60,7 @@ import { TestComponent } from './components/test/test.component';
     DpfContentDirective,
     DpfOverflowWrapperDirective,
     DisplayPartsFilter,
+    DisplaysFilter,
     ArticlesFilter,
     UserFilter,
     UserComponent,
@@ -82,9 +83,9 @@ import { TestComponent } from './components/test/test.component';
     ErrorService,
     UiService,
     ConfigService,
-    DisplaysService,
     DataService,
     DisplayPartsFilter,
+    DisplaysFilter,
     ArticlesFilter,
     UserFilter
   ],
