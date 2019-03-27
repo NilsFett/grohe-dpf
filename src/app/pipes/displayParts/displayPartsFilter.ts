@@ -13,10 +13,8 @@ export class DisplayPartsFilter implements PipeTransform{
     }
     console.log(filter);
 
-
     return items.filter(
       item => {
-        console.log(item);
         if( item.title.toLowerCase().indexOf(filter.title.toLowerCase()) !== -1
         &&  item.articlenr.toLowerCase().indexOf(filter.articlenr.toLowerCase()) !== -1
         &&  item.weight.toLowerCase().indexOf(filter.weight.toLowerCase()) !== -1
