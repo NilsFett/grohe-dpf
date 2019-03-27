@@ -93,9 +93,6 @@ export class DataService {
         return u;
   }
 
-  
-
-
   public loadArticles() {
     this.http.get(`${this.config.baseURL}getArticles`, { withCredentials: true }).subscribe((articles: Article[]) => {
       this.articles = articles;
