@@ -24,14 +24,14 @@ export class TestComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await this.getUsers();
+    //await this.getUsers();
     this.dataSource.sort = this.sort;
     console.log("mapping...");
     var a= this.flatListToTreeViewData(this.users);
     console.log(a);
-    
+
     console.log("mapping...OK");
-    
+
   }
 
   flatListToTreeViewData(dataList) {
@@ -50,7 +50,7 @@ export class TestComponent implements OnInit {
       console.log(id);
         if (mappedArr.hasOwnProperty(id)) {
           console.log("-1");
-          
+
             mappedElem = mappedArr[id];
             console.log("-2");
 
@@ -65,7 +65,7 @@ export class TestComponent implements OnInit {
     }
     return tree;
 }
-
+/*
   async getUsers() {
     let r = await this.dataService.getUsers();
     if (r != null) {
@@ -81,7 +81,7 @@ export class TestComponent implements OnInit {
           element.parent = 0;
         }
         else if(i<20){
-          element.parent = this.users[0].id; 
+          element.parent = this.users[0].id;
         }
         else if(i<30){
           element.parent = this.users[1].id;
@@ -93,16 +93,16 @@ export class TestComponent implements OnInit {
           element.parent = this.users[12].id;
         }
         // else if(i<100){
-        //   element.parent = 6; 
-        // } 
+        //   element.parent = 6;
+        // }
         else element.parent = this.users[3].id;
 
       });
     }
     else {
       console.log("err");
-      
+
     }
   }
-
+*/
 }
