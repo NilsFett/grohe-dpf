@@ -6,6 +6,8 @@ import { ConfigService } from './config.service';
 import { UiService } from './ui.service';
 import { ErrorService } from './error.service';
 import { DisplaysPart } from '../classes/DisplaysPart';
+import { Display } from '../classes/display';
+
 import { Article } from '../classes/Article';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { User } from '../classes/User';
@@ -17,6 +19,10 @@ export class DataService {
   public displayParts: DisplaysPart[] = null;
   public displayPartsChange: Subject<Array<DisplaysPart>>;
   private displayPartsChangeObserver: Observable<Array<DisplaysPart>>;
+
+  public displays: Display[] = null;
+  public displaysChange: Subject<Array<Display>>;
+  private displaysChangeObserver: Observable<Array<Display>>;
 
   public dps: Dp[] = null;
   public dpsChange: Subject<Array<Dp>>;
@@ -42,6 +48,9 @@ export class DataService {
   init() {
     this.displayPartsChange = new Subject<Array<DisplaysPart>>();
     this.displayPartsChangeObserver = this.displayPartsChange.asObservable();
+
+    this.displaysChange = new Subject<Array<Display>>();
+    this.displaysChangeObserver = this.displaysChange.asObservable();
 
     this.dpsChange = new Subject<Array<Dp>>();
     this.dpsObserver = this.dpsChange.asObservable();
@@ -87,6 +96,13 @@ export class DataService {
     });
   }
 
+  public loadDisplays() {
+    this.http.get(`${this.config.baseURL}getDisplays`, { withCredentials: true }).subscribe((displays: Display[]) => {
+      this.displays = displays;
+      this.displaysChange.next(this.displays);
+    });
+  }
+
   public loadDps() {
     this.http.get(`${this.config.baseURL}getArticles`, { withCredentials: true }).subscribe((dps: Dp[]) => {
       this.dps = dps;
@@ -122,7 +138,7 @@ export class DataService {
 
   public changeUser(dataSet) {
     this.http.post(`${this.config.baseURL}changeUser`, dataSet, { withCredentials: true }).subscribe(
-      (users: Users[]) => {
+      (users: User[]) => {
         this.users = users;
         this.userChange.next(this.users);
         this.ui.saveSuccess = true;
@@ -133,6 +149,18 @@ export class DataService {
     );
   }
 
+  public deleteUser(dataSet) {
+    this.http.post(`${this.config.baseURL}deleteUser`, dataSet, { withCredentials: true }).subscribe(
+      (users: User[]) => {
+        this.users = users;
+        this.userChange.next(this.users);
+        this.ui.saveSuccess = true;
+      },
+      error => {
+        this.error.setError(error);
+      }
+    );
+  }
 
   public deleteDisplayPart(displayPart) {
     this.http.post(`${this.config.baseURL}deleteDisplayPart`, displayPart, { withCredentials: true }).subscribe(

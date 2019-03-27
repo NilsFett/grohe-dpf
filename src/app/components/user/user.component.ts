@@ -67,11 +67,12 @@ export class UserComponent {
       );
       this.dataService.loadUsers();
     }
-    console.log(this.dataService.users);
 
+/*
     this.userForm.valueChanges.subscribe(val => {
       console.log(val);
     });
+*/
   }
 
   ngOnInit() {
@@ -79,7 +80,6 @@ export class UserComponent {
   }
 
   filterChanges() {
-
     this.users = this.userFilter.transform(this.dataService.users, this.filter);
     this.dataSource.data = this.userFilter.transform(this.dataService.users, this.filter);
   }
