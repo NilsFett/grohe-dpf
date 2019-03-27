@@ -41,3 +41,16 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+#SQL Dumps/Patches
+/grohe.sql
+
+# Uploads
+/api/uploads
+
+#Logs
+/log.log
+/error.log
+
+#Config
+/api/cConfig.php
