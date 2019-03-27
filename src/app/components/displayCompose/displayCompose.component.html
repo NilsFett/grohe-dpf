@@ -1,5 +1,5 @@
 <div class="content boxshadow" dpfContent>
-  <h2>Displays <i class="fa icon-plus-1 new" (click)="showNew()">Add new</i></h2>
+  <h2>Displays <i class="fa icon-plus-1 new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
     <table>
@@ -152,6 +152,27 @@
       <div *ngIf="ui.deleteSuccess">
         Delete Success
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay templates" *ngIf="showChooseTemplate">
+  <div class="overlay-content">
+    <span (click)="hideChooseTemplateOverlay()" class="close">X</span>
+    <h3 class="fa icon-trash-empty">Choose Display Template</h3>
+    <hr />
+    <div class="container-flex">
+      <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
+      <div class="spacer"></div>
+
+        <img src="{{config.baseURL}}uploads/dp1.jpg" />
+        <img src="{{config.baseURL}}uploads/dp2.jpg" />
+        <img src="{{config.baseURL}}uploads/dp3.jpg" />
+
+      <hr />
+      <button class="delete-button" (click)="showNew()" mat-raised-button>Or create a new one without template</button>
+
+
     </div>
   </div>
 </div>
