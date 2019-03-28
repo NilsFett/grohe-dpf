@@ -331,4 +331,11 @@ class cGroheapiController{
 		$oArticlesModel->delete();
 		$this->getArticles();
 	}
+
+	public function loadDisplasPartsByDisplayId(){
+		if(cSessionUser::getInstance()->bIsLoggedIn && isset($_GET['display_id']) && is_numeric($_GET['display_id'])){
+			$displays = cDisplaysPartsModel::getByDisplayId((int)$_GET['display_id']);
+			echo json_encode($displays);
+		}
+	}
 }

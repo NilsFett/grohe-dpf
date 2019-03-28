@@ -13,8 +13,6 @@ import { ArticlesComponent } from './components/articles/articles.component';
 
 import { AuthGuard } from './services/auth.service';
 import { UserComponent } from './components/user/user.component';
-import { DpComponent } from './components/dp/dp.component';
-import { TestComponent } from './components/test/test.component';
 import { TreeViewComponent } from './components/tree-view/tree-view.component';
 
 const routes: Routes = [
@@ -29,8 +27,6 @@ const routes: Routes = [
   { path: 'displayParts', component: DisplayPartsComponent, canActivate: [AuthGuard] },
   { path: 'articles', component: ArticlesComponent, canActivate: [AuthGuard] },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
-  { path: 'dp', component: DpComponent, canActivate: [AuthGuard] },
-  { path: 'test', component: TestComponent, canActivate: [AuthGuard] },
   { path: 'displayorders', component: TreeViewComponent, canActivate: [AuthGuard] }
 ];
 
