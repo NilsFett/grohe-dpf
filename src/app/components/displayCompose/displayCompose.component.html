@@ -136,11 +136,11 @@
     </div>
     <div class="container-flex display-parts-assembly" *ngIf="showAssembly">
       <ul>
-        <li *ngFor="let part of currentDisplaysParts">
-          <span class="artnr">{{part.sapid}}</span>
+        <li *ngFor="let part of partsList">
+          <span class="artnr">{{part.articlenr}}</span>
           <span class="title">{{part.title}}</span>
           <span class="units">{{part.units}}</span>
-          <span class="icon-minus"></span>
+          <span (click)="removeDisplayPartFromPartList(part)" class="icon-minus"></span>
         </li>
       </ul>
       <button mat-raised-button>Save</button>
@@ -158,7 +158,7 @@
             <ng-container *ngIf="part.deleted == 0 && ( part.title.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 || part.articlenr.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 )">
               <span class="artnr">{{part.articlenr}}</span>
               <span class="title">{{part.title}}</span>
-              <span class="icon-plus"></span>
+              <span (click)="addDisplayPartToPartList(part)" class="icon-plus"></span>
             </ng-container>
           </li>
         </ul>
@@ -201,7 +201,7 @@
       <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp3.jpg" />
 
       <hr />
-      <button class="delete-button" (click)="currentDisplaysParts = []; showNew()" mat-raised-button>Or create a new one without template</button>
+      <button class="delete-button" (click)="partsList = []; showNew()" mat-raised-button>Or create a new one without template</button>
     </div>
   </div>
 </div>

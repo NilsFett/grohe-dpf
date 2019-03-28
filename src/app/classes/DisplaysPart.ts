@@ -6,4 +6,6 @@ export class DisplaysPart {
   public stock:number;
   public weight:number;
   public deleted:number;
+
+  public units:number;
 }

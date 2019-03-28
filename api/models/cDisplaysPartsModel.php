@@ -77,4 +77,21 @@ class cDisplaysPartsModel extends cModel{
 		return $displays;
 	}
 
+	public static function getByDisplayId($displayId){
+		$query = '	SELECT `t_display_parts`.*, `r_display-part`.`units`
+								FROM `t_displays`
+								JOIN `r_display-part` ON `r_display-part`.`display_id` = `t_displays`.`id`
+								JOIN `t_display_parts` ON `r_display-part`.`part_id` = `t_display_parts`.`id`
+								WHERE `t_displays`.`id` = '.$displayId;
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute();
+		$displays = array();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		while( $display = $stmt->fetch(PDO::FETCH_ASSOC) ){
+			$displays[] = $display;
+		}
+		return $displays;
+	}
+
 }

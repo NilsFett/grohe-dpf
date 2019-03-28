@@ -24,9 +24,6 @@ export class DataService {
   public displaysChange: Subject<Array<Display>>;
   private displaysChangeObserver: Observable<Array<Display>>;
 
-  public dps: Dp[] = null;
-  public dpsChange: Subject<Array<Dp>>;
-  private dpsObserver: Observable<Array<Dp>>;
 
   public articles: Article[] = null;
   public articlesChange: Subject<Array<Article>>;
@@ -35,6 +32,11 @@ export class DataService {
   public users: User[] = null;
   public userChange: Subject<Array<User>>;
   private userChangeObserver: Observable<Array<User>>;
+
+  public displayPartsByDisplayId: Array<Array<DisplaysPart>> = [];
+
+  public displayPartsByDisplayIdChange: Subject<Array<DisplaysPart>>;
+  private displayPartsByDisplayIdChangeObserver: Observable<Array<DisplaysPart>>;
 
   constructor(
     private config: ConfigService,
@@ -52,14 +54,14 @@ export class DataService {
     this.displaysChange = new Subject<Array<Display>>();
     this.displaysChangeObserver = this.displaysChange.asObservable();
 
-    this.dpsChange = new Subject<Array<Dp>>();
-    this.dpsObserver = this.dpsChange.asObservable();
-
     this.articlesChange = new Subject<Array<Article>>();
     this.articlesChangeObserver = this.articlesChange.asObservable();
 
     this.userChange = new Subject<Array<User>>();
     this.userChangeObserver = this.userChange.asObservable();
+
+    this.displayPartsByDisplayIdChange = new Subject<Array<DisplaysPart>>();
+    this.displayPartsByDisplayIdChangeObserver = this.displayPartsByDisplayIdChange.asObservable();
   }
 
   public loadUsers() {
@@ -114,10 +116,10 @@ export class DataService {
     });
   }
 
-  public loadDps() {
-    this.http.get(`${this.config.baseURL}getArticles`, { withCredentials: true }).subscribe((dps: Dp[]) => {
-      this.dps = dps;
-      this.dpsChange.next(this.dps);
+  public loadDisplasPartsByDisplayId(displayId) {
+    this.http.get(`${this.config.baseURL}loadDisplasPartsByDisplayId?display_id=${displayId}`, { withCredentials: true }).subscribe((displayParts: DisplaysPart[]) => {
+      this.displayPartsByDisplayId[displayId] = displayParts;
+      this.displayPartsByDisplayIdChange.next(this.displayPartsByDisplayId[displayId]);
     });
   }
 

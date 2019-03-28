@@ -45,8 +45,6 @@ import { DisplaysFilter } from './pipes/displays/displaysFilter';
 import { ArticlesFilter } from './pipes/articles/articlesFilter';
 import { UserComponent } from './components/user/user.component';
 import { UserFilter } from './pipes/user/userFilter';
-import { DpComponent } from './components/dp/dp.component';
-import { TestComponent } from './components/test/test.component';
 import { TreeViewComponent } from './components/tree-view/tree-view.component';
 
 @NgModule({
@@ -69,8 +67,6 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     ArticlesFilter,
     UserFilter,
     UserComponent,
-    DpComponent,
-    TestComponent,
     TreeViewComponent
   ],
   imports: [

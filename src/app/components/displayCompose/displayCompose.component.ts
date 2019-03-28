@@ -49,66 +49,7 @@ export class DisplayComposeComponent{
     16: 'uploads/1e7d0d4eeb42492d8138a3decc90955f.jpg',
   };
 
-  public partsList = {
-      1:[{
-        sapid:'98001202',
-        title:'Sockel gestanzt, aus 2 gleichen Teilen zusammen ge	',
-        units:1
-      },{
-        sapid:'98001206',
-        title:'Stapelschütte gestanzt, zum Krempeln	',
-        units:2
-      },{
-        sapid:'98001220',
-        title:'Stapelschütte gestanzt, zum Krempeln	',
-        units:2
-      },{
-        sapid:'98001240',
-        title:'	Stülper groß - Halbfaltkiste mit zusammen stoßende',
-        units:1
-      },{
-        sapid:'98001200',
-        title:'Technosteg',
-        units:1
-      }
-    ],
-    2:[{
-      sapid:'98001209',
-      title:'Halterung gestanzt, zum Einkleben mit 2 Dekopunkte',
-      units:1
-    },{
-      sapid:'98001210',
-      title:'Dekopunkt Durchmesser 30 mm',
-      units:2
-    },{
-      sapid:'98001240',
-      title:'Stülper groß - Halbfaltkiste mit zusammen stoßende',
-      units:1
-    },{
-      sapid:'98001295',
-      title:'Mantel gestanzt, 2-tlg. Geklebt',
-      units:1
-    }
-    ],
-    3:[{
-      sapid:'98001202',
-      title:'Sockel gestanzt, aus 2 gleichen Teilen zusammen ge',
-      units:1
-    },{
-      sapid:'98001205',
-      title:'Dekopunkt Durchmesser 30 mm',
-      units:2
-    },{
-      sapid:'98001208',
-      title:'Abdeckplatte gestanzt, wird in der Ummantelung auf',
-      units:1
-    },{
-      sapid:'98001240',
-      title:'Stülper groß - Halbfaltkiste mit zusammen stoßende',
-      units:1
-    }
-    ]
-  };
+  public partsList:DisplaysPart[] = [];
   public currentDisplaysParts = null;
 
   constructor(
@@ -199,15 +140,21 @@ export class DisplayComposeComponent{
     }
   }
 
-  public setCurrentDataSet(currentDataSet) {
+  public setCurrentDataSet(currentDataSet:Display) {
     this.ui.showOverlay = true;
     this.currentDataSet = currentDataSet;
     this.updateFormValues();
-    /*
-    this.DisplayPart = this.dataService.loadDisplayPartsByDisplayId(currentDataSet.id).subscripe(
 
-    );
-    */
+    if(this.dataService.displayPartsByDisplayId[currentDataSet.id]){
+      this.partsList = this.dataService.displayPartsByDisplayId[currentDataSet.id];
+    }
+    else{
+      this.dataService.displayPartsByDisplayIdChange.subscribe((displayParts: DisplaysPart[]) => {
+        this.partsList = displayParts;
+      });
+      this.dataService.loadDisplasPartsByDisplayId(currentDataSet.id);
+    }
+
   }
 
   private updateFormValues(){
@@ -239,4 +186,32 @@ export class DisplayComposeComponent{
     console.log(searchword);
     this.partsSearchword = searchword;
   }
+
+  public removeDisplayPartFromPartList(diplayPart:DisplaysPart){
+    if( diplayPart.units == 1){
+      let index = this.partsList.indexOf(diplayPart);
+      if( index > -1 ){
+        this.partsList.splice(index,1);
+      }
+    }
+    else{
+      diplayPart.units--;
+    }
+  }
+
+  public addDisplayPartToPartList(diplayPart:DisplaysPart){
+    var i;
+    var found = false;
+    for(i = 0; i < this.partsList.length; i++){
+      if( this.partsList[i].articlenr  == diplayPart.articlenr ){
+        this.partsList[i].units++;
+        found = true;
+      }
+    }
+    if(!found){
+      diplayPart.units = 1;
+      this.partsList.push(diplayPart);
+    }
+  }
+
 }
