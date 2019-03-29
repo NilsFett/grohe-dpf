@@ -8,6 +8,8 @@ import { Display } from '../../classes/display';
 import { DisplaysPart } from '../../classes/DisplaysPart';
 import { ConfigService } from '../../services/config.service';
 import { DisplaysFilter } from '../../pipes/displays/displaysFilter';
+import { displayTemplates } from '../../classes/displayTemplates';
+
 
 @Component({
   selector: 'grohe-dpf-login',
@@ -31,7 +33,7 @@ export class DisplayComposeComponent{
     articlenr: new FormControl('', [Validators.required, Validators.minLength(2)]),
     displaytype: new FormControl(''),
     topsign_punch: new FormControl(''),
-    instruction: new FormControl('')
+    instruction: new FormControl('', [Validators.required])
   });
   filter = {
     title: '',
@@ -40,6 +42,7 @@ export class DisplayComposeComponent{
     topsign_punch: ''
   };
   public images = {
+    1: 'uploads/dp1.jpg',
     10: 'uploads/afd1707d12f77e13ad77ba0fc17e9f83.jpg',
     11: 'uploads/773a7998644c720179ac7636d13db2c8.jpg',
     12: 'uploads/3858f5b37715465e7d7407d14f664a5f.jpg',
@@ -50,7 +53,6 @@ export class DisplayComposeComponent{
   };
 
   public partsList:DisplaysPart[] = [];
-  public currentDisplaysParts = null;
 
   constructor(
     public user: UserService,
@@ -91,12 +93,10 @@ export class DisplayComposeComponent{
     }
   }
 
-
   public filterChanges() {
     this.displays = this.displayFilter.transform(this.dataService.displays, this.filter);
     this.dataSource.data = this.displays;
   }
-
 
   public getImage(imageid){
       return `${this.config.baseURL}${this.images[imageid]}`;
@@ -110,12 +110,16 @@ export class DisplayComposeComponent{
   }
 
   public templateChoosen(templateid){
-    console.log(templateid);
+    console.log('templateChoosen');
+    console.log(displayTemplates.displayTemplates);
+    this.currentDataSet = displayTemplates.displayTemplates[templateid].display;
+    console.log(this.currentDataSet);
+    this.partsList = displayTemplates.displayTemplates[templateid].parts;
     console.log(this.partsList);
-    this.currentDisplaysParts = this.partsList[templateid];
-    console.log(this.currentDisplaysParts);
-    this.showNew();
+    this.ui.showOverlay = true;
+    this.showChooseTemplate = false;
     this.showAssembly = true;
+    this.updateFormValues();
   }
 
   public showChooseTemplateOverlay(){
@@ -128,7 +132,7 @@ export class DisplayComposeComponent{
     this.ui.showOverlay = false;
   }
 
-
+/*
   public save() {
     if (this.displayForm.status == 'VALID') {
       this.currentDataSet.title = this.displayForm.controls['title'].value;
@@ -139,7 +143,7 @@ export class DisplayComposeComponent{
       this.dataService.changeUser(this.currentDataSet);
     }
   }
-
+*/
   public setCurrentDataSet(currentDataSet:Display) {
     this.ui.showOverlay = true;
     this.currentDataSet = currentDataSet;
@@ -214,4 +218,17 @@ export class DisplayComposeComponent{
     }
   }
 
+  public saveDisplaysAndPartList(){
+    if (this.displayForm.status == 'VALID') {
+      this.currentDataSet.title = this.displayForm.controls['title'].value;
+      this.currentDataSet.articlenr = this.displayForm.controls['articlenr'].value;
+      this.currentDataSet.displaytype = this.displayForm.controls['displaytype'].value;
+      this.currentDataSet.topsign_punch = this.displayForm.controls['topsign_punch'].value;
+      this.currentDataSet.instruction = this.displayForm.controls['instruction'].value;
+      this.dataService.saveDisplayAndPartList(this.currentDataSet, this.partsList);
+    }
+    else{
+      this.showAssembly = false;
+    }
+  }
 }
