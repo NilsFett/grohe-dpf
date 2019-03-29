@@ -11,7 +11,6 @@ import { Display } from '../classes/display';
 import { Article } from '../classes/Article';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { User } from '../classes/User';
-import { Dp } from '../classes/Dp';
 import { UserService } from './user.service';
 
 @Injectable()
@@ -194,6 +193,17 @@ export class DataService {
         this.articles = articles;
         this.articlesChange.next(this.articles);
         this.ui.deleteSuccess = true;
+      },
+      error => {
+        this.error.setError(error);
+      }
+    );
+  }
+
+  public saveDisplayAndPartList(display:Display, partsList:DisplaysPart[]){
+    this.http.post(`${this.config.baseURL}saveDisplayAndPartList`, {display:display,partsList:partsList}, { withCredentials: true }).subscribe(
+      ( response:ApiResponseInterface ) => {
+        this.ui.saveSuccess = true;
       },
       error => {
         this.error.setError(error);

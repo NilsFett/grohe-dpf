@@ -5,7 +5,7 @@
     <table>
       <tr>
         <td>
-          <i class="fa icon-search"></i><input placeholder="Article Number" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class=" filter" type="text"  name="articlenrFilter" >
+          <i class="fa icon-search"></i><input placeholder="Article Number" (ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class=" filter" type="text"  name="articlenrFilter" >
         </td>
         <td>
             <i class="fa icon-search"></i><input placeholder="Title" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
@@ -121,12 +121,16 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input type="text" formControlName="instruction" matInput name="instruction" #instruction placeholder="Instruction">
+          <mat-select formControlName="instruction"  #instruction placeholder="Instruction">
+            <mat-option value="1">Euphoria</mat-option>
+            <mat-option value="2">Rainshower</mat-option>
+            <mat-option value="3">Standard</mat-option>
+          </mat-select>
           <mat-error [hidden]="instruction.valid || instruction.pristine">required</mat-error>
         </mat-form-field>
         <hr />
         <div class="spacer20"></div>
-        <button (click)="save()" mat-raised-button>Save</button>
+        <button  (click)="saveDisplaysAndPartList()" mat-raised-button>Save</button>
         <div class="spacer20"></div>
         <div *ngIf="ui.saveSuccess">
           <div class="spacer20"></div>
@@ -143,7 +147,7 @@
           <span (click)="removeDisplayPartFromPartList(part)" class="icon-minus"></span>
         </li>
       </ul>
-      <button mat-raised-button>Save</button>
+      <button mat-raised-button (click)="saveDisplaysAndPartList()">Save</button>
       <div class="spacer20"></div>
       <hr />
       <div class="spacer20"></div>
