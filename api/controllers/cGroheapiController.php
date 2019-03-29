@@ -407,11 +407,26 @@ class cGroheapiController{
 
 		if( isset ($postData['display'][id]) ){
 			$oDisplay = new cDisplaysModel($postData['display']['id']);
+			cDisplaysPartsModel::deleteByDisplayId($postData['display']['id']);
 		}
 		else{
 			$oDisplay = new cDisplaysModel();
 		}
-		$oDisplay ->set('title', $postData['display']['title']);
-		$oDisplay ->set('articlenr', $postData['display']['articlenr']);
+		$oDisplay->set('title', $postData['display']['title']);
+		$oDisplay->set('articlenr', $postData['display']['articlenr']);
+		$oDisplay->set('image', $postData['display']['image']);
+		$oDisplay->set('displaytype', $postData['display']['displaytype']);
+		$oDisplay->set('topsign_punch', $postData['display']['topsign_punch']);
+		$oDisplay->set('instruction', $postData['display']['instruction']);
+		$oDisplay->set('hide', 0);
+		if( isset($postData['display']['hide']) && $postData['display']['hide'] ){
+			$oDisplay->set('hide', 1);
+		}
+		$oDisplay->save();
+		foreach( $postData['display']['partsList'] as $part ){
+			$oDisplaysPartsModel = new cDisplaysPartsModel();
+			$oDisplaysPartsModel
+		}
+
 	}
 }
