@@ -95,7 +95,7 @@
     </p>
     <hr />
     <div class="container-flex" *ngIf="!showAssembly">
-      <form name="displayPartForm" [formGroup]="displayForm">
+      <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="displayForm.updateValueAndValidity()">
         <div class="spacer20"></div>
 
         <mat-form-field>
@@ -104,7 +104,7 @@
         </mat-form-field>
         <mat-form-field>
           <input type="text" formControlName="articlenr" matInput name="articlenr" #articlenr placeholder="Articlenr*">
-          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
+          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required, 8 signs maximum</mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="displaytype"  #type placeholder="Display Type">
@@ -194,15 +194,15 @@
 <div class="overlay templates" *ngIf="showChooseTemplate">
   <div class="overlay-content">
     <span (click)="hideChooseTemplateOverlay()" class="close icon-cancel"></span>
-    <h3 class="fa icon-trash-empty">Choose Display Template</h3>
+    <h3 class="fa icon-plus">Choose Display Template</h3>
     <hr />
     <div class="container-flex">
       <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
       <div class="spacer"></div>
 
-      <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp1.jpg" />
-      <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp2.jpg" />
-      <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp3.jpg" />
+      <img (click)="templateChoosen(0)" src="{{config.baseURL}}uploads/dp1.jpg" />
+      <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp2.jpg" />
+      <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp3.jpg" />
 
       <hr />
       <button class="delete-button" (click)="partsList = []; showNew()" mat-raised-button>Or create a new one without template</button>

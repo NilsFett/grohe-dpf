@@ -8,7 +8,7 @@ import { Display } from '../../classes/display';
 import { DisplaysPart } from '../../classes/DisplaysPart';
 import { ConfigService } from '../../services/config.service';
 import { DisplaysFilter } from '../../pipes/displays/displaysFilter';
-import { displayTemplates } from '../../classes/displayTemplates';
+import { displayTemplates } from '../../classes/DisplayTemplates';
 
 
 @Component({
@@ -30,7 +30,7 @@ export class DisplayComposeComponent{
   dataSource: MatTableDataSource<Display>;
   displayForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    articlenr: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    articlenr: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(8)]),
     displaytype: new FormControl(''),
     topsign_punch: new FormControl(''),
     instruction: new FormControl('', [Validators.required])
@@ -86,7 +86,6 @@ export class DisplayComposeComponent{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
           this.displayParts = displayParts;
-
         }
       );
       this.dataService.loadDisplayParts();
@@ -110,12 +109,8 @@ export class DisplayComposeComponent{
   }
 
   public templateChoosen(templateid){
-    console.log('templateChoosen');
-    console.log(displayTemplates.displayTemplates);
     this.currentDataSet = displayTemplates.displayTemplates[templateid].display;
-    console.log(this.currentDataSet);
     this.partsList = displayTemplates.displayTemplates[templateid].parts;
-    console.log(this.partsList);
     this.ui.showOverlay = true;
     this.showChooseTemplate = false;
     this.showAssembly = true;
@@ -187,7 +182,6 @@ export class DisplayComposeComponent{
   }
 
   public partsSearchwordChanged(searchword){
-    console.log(searchword);
     this.partsSearchword = searchword;
   }
 
@@ -229,6 +223,11 @@ export class DisplayComposeComponent{
     }
     else{
       this.showAssembly = false;
+      this.displayForm.updateValueAndValidity();
     }
+  }
+
+  public testOutput(){
+    console.log('testOutput');
   }
 }

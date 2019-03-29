@@ -60,5 +60,8 @@ ALTER TABLE `t_articles` CHANGE `deleted` `deleted` TINYINT(4) NOT NULL DEFAULT 
 ALTER TABLE `t_display_parts` CHANGE `open_format` `open_format` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 ALTER TABLE `t_display_parts` CHANGE `stock` `stock` INT(11) NULL;
 INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'productTree', '/productTree');
+<<<<<<< HEAD
 INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'loadDisplasPartsByDisplayId', '/loadDisplasPartsByDisplayId');
+=======
+>>>>>>> 3a6702c829534eb2d05f1603655a7e3ba6380387
 INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'saveDisplayAndPartList', '/saveDisplayAndPartList');

@@ -1,15 +1,19 @@
+import { Display } from './display';
+
 export abstract class displayTemplates {
   public static displayTemplates = [
     {
-      display:{
-        title:'new Display 1',
-        articlenr:'154680008',
-        image:1,
-        hide:false,
-        displaytype:"1_4_chep_pallet",
-        topsign_punch:'',
-        instruction:3
-      },
+      display: (new Display (
+        {
+          id:null,
+          title:'new Display 1',
+          articlenr:'15468008',
+          image:1,
+          hide:false,
+          displaytype:"1_4_chep_pallet",
+          topsign_punch:'',
+          instruction:3
+        })),
       parts:[{
         id:98001209,
         title:'Halterung gestanzt, zum Einkleben mit 2 Dekopunkte',
@@ -48,15 +52,17 @@ export abstract class displayTemplates {
         units:1
       }]
       }, {
-      display:{
-        title:'Counter Display',
-        articlenr:'154680010',
-        image:2,
-        hide:false,
-        displaytype:"1_4_chep_pallet",
-        topsign_punch:'',
-        instruction:3
-      },
+      display:(new Display ({
+          id:null,
+          title:'Counter Display',
+          articlenr:'154680010',
+          image:2,
+          hide:false,
+          displaytype:"1_4_chep_pallet",
+          topsign_punch:'',
+          instruction:3
+        })
+      ),
       parts:[{
         id:98001209,
         title:'Phantasie Display Teil',
@@ -95,15 +101,18 @@ export abstract class displayTemplates {
         units:1
       }]
     },{
-    display:{
-      title:'Super Display',
-      articlenr:'154680011',
-      image:3,
-      hide:false,
-      displaytype:"1_4_chep_pallet",
-      topsign_punch:'',
-      instruction:3
-    },
+
+    display:(new Display ({
+        id:null,
+        title:'Super Display',
+        articlenr:'154680011',
+        image:3,
+        hide:false,
+        displaytype:"1_4_chep_pallet",
+        topsign_punch:'',
+        instruction:3
+      })
+    ),
     parts:[{
       id:98001209,
       title:'Phantasie Display Teil2',

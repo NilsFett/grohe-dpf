@@ -183,7 +183,6 @@ th{
   padding:5px;
   margin:0 7px 0 30px;
   width:100px;
-
 }
 
 i.icon-search{
@@ -194,6 +193,28 @@ i.icon-search{
   color:rgba(90, 90, 90, 1);
   margin: 0 0 5px 10px;
   line-height:22px;
+}
+
+#message-window{
+  position:fixed;
+  top:20px;
+  width:300px;
+  left:-100%;
+  margin-left:-150px;
+  background-color:#FFF;
+  color:#112038;
+  border:3px solid #e9e9e9;
+  font-weight:bold;
+  padding:20px;
+  text-align:center;
+  z-index:3000;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  opacity:0.0;
+}
+#message-window.active{
+  left:50%;
+  opacity:1.0;
 }
 /*
 .filter:before {
@@ -366,7 +387,7 @@ nav ul li:hover a, nav ul li.active a{
   font-weight:bold;
 }
 nav ul li:hover a:before, nav ul li.active a:before{
-  content: '\e802';
+  content: '\e805';
   font-family: "fontello";
   position:absolute;
   margin-left:-20px;
