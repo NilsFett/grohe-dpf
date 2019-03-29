@@ -127,10 +127,11 @@ export class DataService {
       (displayParts: DisplaysPart[]) => {
         this.displayParts = displayParts;
         this.displayPartsChange.next(this.displayParts);
-        this.ui.saveSuccess = true;
+        this.ui.setMessage('Save success');
       },
       error => {
         this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
       }
     );
   }
@@ -140,10 +141,11 @@ export class DataService {
       (articles: Article[]) => {
         this.articles = articles;
         this.articlesChange.next(this.articles);
-        this.ui.saveSuccess = true;
+        this.ui.setMessage('Save success');
       },
       error => {
         this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
       }
     );
   }
@@ -153,10 +155,11 @@ export class DataService {
       (users: User[]) => {
         this.users = users;
         this.userChange.next(this.users);
-        this.ui.saveSuccess = true;
+        this.ui.setMessage('Save success');
       },
       error => {
         this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
       }
     );
   }
@@ -166,10 +169,11 @@ export class DataService {
       (users: User[]) => {
         this.users = users;
         this.userChange.next(this.users);
-        this.ui.saveSuccess = true;
+        this.ui.setMessage('Save success');
       },
       error => {
         this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
       }
     );
   }
@@ -179,10 +183,11 @@ export class DataService {
       (displayParts: DisplaysPart[]) => {
         this.displayParts = displayParts;
         this.displayPartsChange.next(this.displayParts);
-        this.ui.deleteSuccess = true;
+        this.ui.setMessage('Delete success');
       },
       error => {
         this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
       }
     );
   }
@@ -192,10 +197,11 @@ export class DataService {
       (articles: Article[]) => {
         this.articles = articles;
         this.articlesChange.next(this.articles);
-        this.ui.deleteSuccess = true;
+        this.ui.setMessage('Delete success');
       },
       error => {
         this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
       }
     );
   }
@@ -203,10 +209,11 @@ export class DataService {
   public saveDisplayAndPartList(display:Display, partsList:DisplaysPart[]){
     this.http.post(`${this.config.baseURL}saveDisplayAndPartList`, {display:display,partsList:partsList}, { withCredentials: true }).subscribe(
       ( response:ApiResponseInterface ) => {
-        this.ui.saveSuccess = true;
+        this.ui.setMessage('Save success');
       },
       error => {
         this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
       }
     );
   }

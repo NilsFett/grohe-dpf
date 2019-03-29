@@ -20,6 +20,7 @@ import { OrdersComponent } from './components/orders/orders.component';
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
+import { DpfFormValidateAfterIfDirective } from './components/directives/dpf-form-validate-after-if.directive';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTableModule} from '@angular/material/table';
@@ -33,7 +34,6 @@ import {CdkTreeModule} from '@angular/cdk/tree';
 
 import { UserService } from './services/user.service';
 import { AuthGuard } from './services/auth.service';
-
 import { CountryService } from './services/country.service';
 import { ErrorService } from './services/error.service';
 import { UiService } from './services/ui.service';
@@ -62,6 +62,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     OrdersComponent,
     DpfContentDirective,
     DpfOverflowWrapperDirective,
+    DpfFormValidateAfterIfDirective,
     DisplayPartsFilter,
     DisplaysFilter,
     ArticlesFilter,
