@@ -156,7 +156,7 @@ class cGroheapiController{
 	}
 
 	public function productTree(){
-		if(true || cSessionUser::getInstance()->bIsLoggedIn){
+		if( cSessionUser::getInstance()->bIsLoggedIn){
 			$users = cProductTreeModel::getAll();
 			echo json_encode($users);
 		}
@@ -346,66 +346,7 @@ class cGroheapiController{
 
 	public function saveDisplayAndPartList(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-
-
-
-		$postData = array(
-	  	"display"=> array(
-	    	"title"=>"Super Display",
-	    	"articlenr"=>"154680011",
-	    	"image"=>3,
-	    	"hide"=>false,
-	    	"displaytype"=>"1_4_chep_pallet",
-	    	"topsign_punch"=>"",
-	    	"instruction"=>3
-	  ),
-	  "partsList"=>array(
-	    array(
-				"id"=>98001210,
-	      "title"=>"Dekopunkt Durchmesser 30 mm",
-	      "articlenr"=>98001210,
-	      "open_format"=>"30 x 30",
-	      "stock"=>2147475999,
-	      "weight"=>1,
-	      "deleted"=>0,
-	      "units"=>2
-	    ),
-	    array(
-	      "id"=>98001240,
-	      "title"=> "Stülper groß - Halbfaltkiste mit zusammen stoßende",
-	      "articlenr"=>98001240,
-	      "open_format"=>"1375 x 2009",
-	      "stock"=>2147473740,
-	      "weight"=>1783,
-	      "deleted"=>0,
-	      "units"=>1
-	    ),
-	    array(
-	      "id"=>98001295,
-	      "title"=>"Mantel gestanzt, 2-tlg. geklebt",
-	      "articlenr"=>98001295,
-	      "open_format"=>"1012 x 1395,5",
-	      "stock"=>2147483437,
-	      "weight"=>700,
-	      "deleted"=>0,
-	      "units"=>1
-	    ),
-	    array(
-	      "id"=>98001202,
-	      "title"=>"Sockel gestanzt, aus 2 gleichen Teilen zusammen ge",
-	      "articlenr"=>"98001202",
-	      "open_format"=>"562 x 1001",
-	      "stock"=>2147474272,
-	      "weight"=>"270",
-	      "deleted"=>0,
-	      "units"=>1
-	    )
-		  )
-		);
-		echo '<pre>';
-		var_dump($postData);
-
-		if( isset ($postData['display'][id]) ){
+		if( isset ($postData['display']['id']) ){
 			$oDisplay = new cDisplaysModel($postData['display']['id']);
 			cDisplaysPartsModel::deleteByDisplayId($postData['display']['id']);
 		}
@@ -423,10 +364,10 @@ class cGroheapiController{
 			$oDisplay->set('hide', 1);
 		}
 		$oDisplay->save();
-		foreach( $postData['display']['partsList'] as $part ){
-			$oDisplaysPartsModel = new cDisplaysPartsModel();
-			$oDisplaysPartsModel
+		foreach( $postData['partsList'] as $part ){
+			cRDisplayPartModel::replace($oDisplay->get('id'), $part['id'], $part['units']);
 		}
 
+		$this->getDisplays();
 	}
 }
