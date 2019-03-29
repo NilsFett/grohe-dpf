@@ -27,7 +27,7 @@
       </li>
       <li [ngClass]="{'active': (router.url == '/displayParts')}">
         <a (click)="navClicked()" href="/displayParts" routerLink="/displayParts">Display Parts</a>
-      </li>        
+      </li>
       <li [ngClass]="{'active': (router.url == '/articles')}">
         <a (click)="navClicked()" href="/articles" routerLink="/articles">Articles</a>
       </li>
@@ -71,3 +71,6 @@
     <p *ngFor="let error of error.errors">{{error}}</p>
   </div>
 </div>
+<div class="boxshadow" id="message-window" [ngClass]="{'active': ui.messageWindowShow}">
+  <p *ngFor="let message of ui.messages">{{message}}</p>
+<div>

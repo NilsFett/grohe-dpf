@@ -7,6 +7,8 @@ export class UiService {
   public showOverlay:boolean=false;
   public saveSuccess = false;
   public deleteSuccess = false;
+  public messageWindowShow = false;
+  private messages:Array<String> = [];
 
   constructor(
     private user:UserService
@@ -19,5 +21,14 @@ export class UiService {
         }
       }
     });
+  }
+
+  public setMessage(message:string){
+    this.messages.push(message);
+    this.messageWindowShow = true;
+    setTimeout(()=>{
+      this.messageWindowShow = false;
+      this.messages = [];
+    },3000)
   }
 }
