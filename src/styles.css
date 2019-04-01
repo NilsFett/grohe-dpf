@@ -609,7 +609,7 @@ grohe-dpf-medias{
 
 
 
-#medias div{
+#medias > div{
   display:block;
 }
 

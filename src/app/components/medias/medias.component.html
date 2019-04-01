@@ -6,7 +6,7 @@
     <button mat-raised-button type="button" class="btn btn-success btn-s"
         (click)="uploader.uploadAll()" *ngIf="uploader.getNotUploadedItems().length">Upload
     </button>
-  <div>
+  </div>
   <span (click)="ui.doHideMedias();" class="close icon-cancel"></span>
   <div class="imagelist">
     <div class="image" *ngFor="let image of images">
