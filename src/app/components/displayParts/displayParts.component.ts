@@ -102,10 +102,11 @@ export class DisplayPartsComponent  {
       weight: currentDataSet.weight,
       deleted: currentDataSet.deleted
     });
+    this.ui.doShowEditNew();
   }
 
   public showDelete(part){
-    this.ui.showOverlay = true;
+    this.ui.doShowDelete();
     this.dataSetToDelete = part;
   }
 

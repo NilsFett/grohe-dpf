@@ -42,6 +42,13 @@ class cRDisplayPartModel extends cModel{
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute(array($display_id, $part_id, $units));
+	}
 
+	public static function deleteByDisplayId($display_id){
+		$query = '	DELETE FROM `'.self::$sTable.'`
+								WHERE `display_id` = ?';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute(array($display_id));
 	}
 }

@@ -1,4 +1,4 @@
-<div class="content boxshadow" dpfContent>
+<div class="display-compose content boxshadow" dpfContent>
   <h2>Displays <i class="fa icon-plus new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
@@ -16,19 +16,17 @@
         <td>
             <i class="fa icon-search"></i><input placeholder="Topsign Punch" (ngModelChange)="filter.topsign_punch=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topsign_punch" class="filter" type="text"  name="topsign_punchFilter" >
         </td>
-
       </tr>
     </table>
-
     <div class="hr"></div>
       <table mat-table matSort [dataSource]="dataSource" >
-
         <ng-container matColumnDef="image">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Image
             </th>
           <td mat-cell *matCellDef="let display"> <img src="{{getImage(display.image)}}" /></td>
         </ng-container>
+
         <ng-container matColumnDef="articlenr">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Articel Number
@@ -56,14 +54,12 @@
           <td mat-cell *matCellDef="let display"> {{display.topsign_punch}} </td>
         </ng-container>
 
-
         <ng-container matColumnDef="instruction">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Instruction
           </th>
           <td mat-cell *matCellDef="let display"> {{display.instruction}} </td>
         </ng-container>
-
 
         <ng-container matColumnDef="edit">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
@@ -85,9 +81,9 @@
     </div>
 </div>
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
-<div class="overlay" *ngIf="currentDataSet">
+<div class="overlay" *ngIf="ui.showEditNew">
   <div class="overlay-content">
-    <span (click)="currentDataSet = null;ui.showOverlay = false" class="close icon-cancel"></span>
+    <span (click)="ui.doCloseEditNew();" class="close icon-cancel"></span>
     <h3 class="fa icon-edit">Display</h3>
     <p>{{currentDataSet.title}}&nbsp;&nbsp;
       <button *ngIf="!showAssembly" style="float:right;" (click)="showAssembly=true" mat-raised-button>Show Assembly</button>
@@ -95,9 +91,10 @@
     </p>
     <hr />
     <div class="container-flex" *ngIf="!showAssembly">
-      <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="displayForm.updateValueAndValidity()">
+      <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="formValidateAfterIf()">
         <div class="spacer20"></div>
-
+        <img (click)="selectImage();" src="{{getImage(this.currentDataSet.image)}}" class="display" />
+        <input type="hidden" formControlName="image" name="image" #title>
         <mat-form-field>
           <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
           <mat-error [hidden]="title.valid || title.pristine">required</mat-error>
@@ -171,9 +168,9 @@
   </div>
 </div>
 
-<div class="overlay" *ngIf="dataSetToDelete">
+<div class="overlay" *ngIf="ui.showDelete">
   <div class="overlay-content">
-    <span (click)="deleteClose()" class="close icon-cancel"></span>
+    <span (click)="ui.doCloseDelete()" class="close icon-cancel"></span>
     <h3 class="fa icon-trash-empty">Display</h3>
     <p>{{dataSetToDelete.title}}</p>
     <hr />
@@ -182,7 +179,7 @@
       <div class="spacer"></div>
       <div style="display:flex;justify-content:  space-between" *ngIf="!ui.deleteSuccess">
         <button class="delete-button" (click)="delete()" mat-raised-button>Delete</button>
-        <button class="abort-button" (click)="dataSetToDelete = null;ui.showOverlay = false;" mat-raised-button>Abort</button>
+        <button class="abort-button" (click)="dataSetToDelete = null;ui.doCloseDelete();" mat-raised-button>Abort</button>
       </div>
       <div *ngIf="ui.deleteSuccess">
         Delete Success

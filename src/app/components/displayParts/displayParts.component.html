@@ -87,7 +87,7 @@
     </div>
 </div>
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
-<div class="overlay" *ngIf="currentDataSet">
+<div class="overlay" *ngIf="ui.showEditNew">
   <div class="overlay-content">
     <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
     <h3 class="fa icon-edit">Display&nbsp;Part</h3>
@@ -131,7 +131,7 @@
   </div>
 </div>
 
-<div class="overlay" *ngIf="dataSetToDelete">
+<div class="overlay" *ngIf="ui.showDelete">
   <div class="overlay-content">
     <span (click)="deleteClose()" class="close">X</span>
     <h3 class="fa icon-trash-empty">Display&nbsp;Part</h3>

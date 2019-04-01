@@ -13,7 +13,7 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-class cDisplaysModel extends cModel{
+class cProductsModel extends cModel{
 
 	protected $aColumns = array(
 		'id' => array(
@@ -24,62 +24,81 @@ class cDisplaysModel extends cModel{
 			'value' => false,
 			'type' => 'varchar'
 		),
-		'articlenr' => array(
+		'DFID' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+		'empty_display' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'display_id' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'SAP' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+		'product_tree' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'price' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+		'pallet_select' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'pallet_disabled' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'topsign_upload_disabled' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'notopsign_order_disabled' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'deliverytime' => array(
 			'value' => false,
 			'type' => 'int'
 		),
 		'image' => array(
 			'value' => false,
-			'type' => 'int'
+			'type' => 'varchar'
+		),
+		'image_thumb' => array(
+			'value' => false,
+			'type' => 'varchar'
 		),
 		'hide' => array(
-			'value' => false,
-			'type' => 'varchar'
-		),
-		'displaytype' => array(
-			'value' => false,
-			'type' => 'varchar'
-		),
-		'topsign_punch' => array(
-			'value' => false,
-			'type' => 'varchar'
-		),
-		'instruction' => array(
 			'value' => false,
 			'type' => 'int'
 		)
 	);
-	static $sTable = 't_displays';
+	static $sTable = 't_display_position';
 	protected $sPrimary = 'id';
 
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
 
+
+
 	public static function getAll(){
 		$query = '	SELECT *
-					FROM `t_displays`';
-		$db = cDatabase::getInstance();
-		$stmt = $db->hConnection->prepare($query);
-		$stmt->execute();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-	/*
-	public static function getAll(){
-		$query = '	SELECT *
-					FROM `t_displays`';
+					FROM `t_display_position`';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
 		$displays = array();
-		while( $display = $stmt->fetch(PDO::FETCH_ASSOC) ){
-			$displays[$display['id']] = $display;
-		}
-		return $displays;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 	}
-	*/
-	public function delete(){
-		cRDisplayPartModel::deleteByDisplayId($this->get('id'));
-		parent::delete();
-	}
+
 }

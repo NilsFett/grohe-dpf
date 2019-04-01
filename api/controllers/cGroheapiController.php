@@ -141,12 +141,28 @@ class cGroheapiController{
 		}
 	}
 
+	public function getProducts(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$articles = cProductsModel::getAll();
+			echo json_encode($articles);
+		}
+	}
+
+
 	public function getUsers(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$users = cUserModel::getAll();
 			echo json_encode($users);
 		}
 	}
+
+	public function loadImages(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$images = cImageModel::getAll();
+			echo json_encode($images);
+		}
+	}
+
 
 	public function getUserRequests(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
@@ -222,6 +238,83 @@ class cGroheapiController{
 
 		$oDisplaysPartsModel->save();
 		$this->getDisplayParts();
+	}
+
+
+	public function changeProduct(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		if(isset($postData['id'])){
+			$oDisplaysPartsModel = new cProductsModel($postData['id']);
+		}
+		else{
+			$oDisplaysPartsModel = new cProductsModel();
+		}
+		if(isset($postData['title'])){
+			$oDisplaysPartsModel->set('title', $postData['title']);
+		}
+		if(isset($postData['DFID'])){
+			$oDisplaysPartsModel->set('DFID', $postData['DFID']);
+		}
+		if(isset($postData['empty_display'])){
+			$oDisplaysPartsModel->set('empty_display', $postData['empty_display']);
+		}
+		else{
+			$oDisplaysPartsModel->set('empty_display', 0);
+		}
+		if(isset($postData['display_id'])){
+			$oDisplaysPartsModel->set('display_id', $postData['display_id']);
+		}
+		if(isset($postData['SAP'])){
+			$oDisplaysPartsModel->set('SAP', $postData['SAP']);
+		}
+		if(isset($postData['product_tree'])){
+			$oDisplaysPartsModel->set('product_tree', $postData['product_tree']);
+		}
+		if(isset($postData['price'])){
+			$oDisplaysPartsModel->set('price', $postData['price']);
+		}
+		if(isset($postData['pallet_select'])){
+			$oDisplaysPartsModel->set('pallet_select', $postData['pallet_select']);
+		}
+		else{
+			$oDisplaysPartsModel->set('pallet_select', 0);
+		}
+		if(isset($postData['pallet_disabled'])){
+			$oDisplaysPartsModel->set('pallet_disabled', $postData['pallet_disabled']);
+		}
+		else{
+			$oDisplaysPartsModel->set('pallet_disabled', 0);
+		}
+		if(isset($postData['topsign_upload_disabled'])){
+			$oDisplaysPartsModel->set('topsign_upload_disabled', $postData['topsign_upload_disabled']);
+		}
+		else{
+			$oDisplaysPartsModel->set('topsign_upload_disabled', 0);
+		}
+		if(isset($postData['notopsign_order_disabled'])){
+			$oDisplaysPartsModel->set('notopsign_order_disabled', $postData['notopsign_order_disabled']);
+		}
+		else{
+			$oDisplaysPartsModel->set('notopsign_order_disabled', 0);
+		}
+		if(isset($postData['deliverytime'])){
+			$oDisplaysPartsModel->set('deliverytime', $postData['deliverytime']);
+		}
+		if(isset($postData['image'])){
+			$oDisplaysPartsModel->set('image', $postData['image']);
+		}
+		if(isset($postData['image_thumb'])){
+			$oDisplaysPartsModel->set('image_thumb', $postData['image_thumb']);
+		}
+		if(isset($postData['hide'])){
+			$oDisplaysPartsModel->set('hide', $postData['hide']);
+		}
+		else{
+			$oDisplaysPartsModel->set('hide', 0);
+		}
+
+		$oDisplaysPartsModel->save();
+		$this->getProducts();
 	}
 
 	public function changeArticle(){
@@ -327,6 +420,15 @@ class cGroheapiController{
 		}
 	}
 
+	public function deleteDisplay(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$postData = json_decode(file_get_contents('php://input'),true);
+			$oDisplayModel = new cDisplaysModel($postData['id']);
+			$oDisplayModel->delete();
+			$this->getDisplays();
+		}
+	}
+
 	public function deleteArticle(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$postData = json_decode(file_get_contents('php://input'),true);
@@ -334,7 +436,15 @@ class cGroheapiController{
 			$oArticlesModel->delete();
 			$this->getArticles();
 		}
+	}
 
+	public function deleteProduct(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$postData = json_decode(file_get_contents('php://input'),true);
+			$oArticlesModel = new cProductsModel($postData['id']);
+			$oArticlesModel->delete();
+			$this->getProducts();
+		}
 	}
 
 	public function loadDisplasPartsByDisplayId(){
@@ -348,7 +458,7 @@ class cGroheapiController{
 		$postData = json_decode(file_get_contents('php://input'),true);
 		if( isset ($postData['display']['id']) ){
 			$oDisplay = new cDisplaysModel($postData['display']['id']);
-			cDisplaysPartsModel::deleteByDisplayId($postData['display']['id']);
+			cRDisplayPartModel::deleteByDisplayId($postData['display']['id']);
 		}
 		else{
 			$oDisplay = new cDisplaysModel();
@@ -370,4 +480,79 @@ class cGroheapiController{
 
 		$this->getDisplays();
 	}
+
+	public function uploadImage(){
+
+		if( count($_FILES) ){
+			foreach( $_FILES as $aImage ){
+				$aSize = getimagesize($aImage['tmp_name']);
+
+				if($aImage['type'] == 'application/octet-stream'){
+					if($aSize !== false){
+						$aFile['type'] = $aSize['mime'];
+					}
+				}
+				if($aImage['error'][0] == 0 && ( $aImage['type'] == 'image/jpeg' || $aImage['type'] == 'image/gif' || $aImage['type'] == 'image/png' || $aImage['type'] == 'application/pdf' )){
+
+				}
+				else if( $aImage['error'] == 0 ){
+					$aErrors [] = 'File '.$aImage['tmp_name'].' konnte hochgeladen werden.';
+					continue;
+				}
+
+				$sExtension = explode('/', $aSize['mime']);
+				$sExtension = $sExtension[1];
+				$sHash = sha1(file_get_contents($aImage['tmp_name']));
+
+				if(cImageModel::imageExists($sHash, 1)){
+					$aErrors[] = 'File '.$aImage['name'].' existiert bereits in diesem Ordner.';
+				}
+				else{
+					if(move_uploaded_file($aImage['tmp_name'], cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension)) {
+						$oImage = new cImageModel();
+						$oImage->set('title', $aImage['name']);
+						$oImage->set('path', $sHash);
+
+
+
+						if( $aImage['type'] == 'image/jpeg' || $aImage['type'] == 'image/gif' || $aImage['type'] == 'image/png' ){
+							/*
+							if(isset($aSize[0])){
+								$oResource->set('width', $aSize[0]);
+							}
+							if(isset($aSize[1])){
+								$oResource->set('height', $aSize[1]);
+							}
+							*/
+							if($aSize[0] > $aSize[1]){
+								$newHeight = $aSize[1] / ( $aSize[0] / 100 );
+								$newWidth = 100;
+							}
+							elseif($aSize[0] < $aSize[1]){
+								$newHeight = 100;
+								$newWidth = $aSize[0] / ( $aSize[1] / 100 );
+							}
+							else{
+								$newHeight = 100;
+								$newWidth = 100;
+							}
+
+							$image = new Imagick(cConfig::getInstance()->get('basepath')."uploads/".$sHash.".".$sExtension);
+
+							$image->resizeImage($newWidth, $newHeight, imagick::FILTER_CUBIC, 1, true);
+							//$image->cropThumbnailImage($newWidth,$newHeight);
+							$image->writeImage( cConfig::getInstance()->get('basepath')."uploads/thumbs/".$sHash.".".$sExtension );
+						}
+						$oImage->save();
+						echo json_encode(array('success'=>true));
+					}
+					else{
+						$aErrors[] = 'File '.$aImage['name'].' konnte nicht hochgeladen werden.';
+						echo json_encode(array('success'=>false,'errors'=>$aErrors));
+					}
+				}
+			}
+		}
+	}
+
 }

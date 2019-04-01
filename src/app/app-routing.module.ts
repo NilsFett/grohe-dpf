@@ -10,6 +10,7 @@ import { StartComponent } from './components/start/start.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
 import { ArticlesComponent } from './components/articles/articles.component';
+import { ProductsComponent } from './components/products/products.component';
 
 import { AuthGuard } from './services/auth.service';
 import { UserComponent } from './components/user/user.component';
@@ -27,7 +28,8 @@ const routes: Routes = [
   { path: 'displayParts', component: DisplayPartsComponent, canActivate: [AuthGuard] },
   { path: 'articles', component: ArticlesComponent, canActivate: [AuthGuard] },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
-  { path: 'displayorders', component: TreeViewComponent, canActivate: [AuthGuard] }
+  { path: 'displayorders', component: TreeViewComponent, canActivate: [AuthGuard] },
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
