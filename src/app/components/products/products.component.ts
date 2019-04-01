@@ -102,7 +102,7 @@ export class ProductsComponent  {
   public save(){
     this.currentDataSet.image = this.productForm.controls['image'].value;
     this.currentDataSet.title = this.productForm.controls['title'].value;
-    this.currentDataSet.DFIS = this.productForm.controls['DFID'].value;
+    this.currentDataSet.DFID = this.productForm.controls['DFID'].value;
     this.currentDataSet.SAP = this.productForm.controls['SAP'].value;
     this.currentDataSet.product_tree = this.productForm.controls['product_tree'].value;
     this.currentDataSet.price = this.productForm.controls['price'].value;
@@ -118,7 +118,7 @@ export class ProductsComponent  {
     this.productForm.patchValue({
       image: currentDataSet.image,
       title: currentDataSet.title,
-      DFID: currentDataSet.DFIS,
+      DFID: currentDataSet.DFID,
       SAP: currentDataSet.SAP,
       product_tree: currentDataSet.product_tree,
       price: currentDataSet.price,
