@@ -1,0 +1,16 @@
+<div class="overlay-content" id="medias">
+  <div class="upload">
+    <p>Upload</p>
+    <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+
+    <button mat-raised-button type="button" class="btn btn-success btn-s"
+        (click)="uploader.uploadAll()" *ngIf="uploader.getNotUploadedItems().length">Upload
+    </button>
+  <div>
+  <span (click)="ui.doHideMedias();" class="close icon-cancel"></span>
+  <div class="imagelist">
+    <div class="image" *ngFor="let image of images">
+      <img (click)="imageChoosen(image);" src="{{config.baseURL}}{{image.path}}" />{{image.title}}&nbsp;<span (click)="deleteImage(image)" class="fa icon-trash-empty"></span>
+    </div>
+  </div>
+</div>

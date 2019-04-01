@@ -31,6 +31,9 @@
       <li [ngClass]="{'active': (router.url == '/articles')}">
         <a (click)="navClicked()" href="/articles" routerLink="/articles">Articles</a>
       </li>
+      <li [ngClass]="{'active': (router.url == '/products')}">
+        <a (click)="navClicked()" href="/products" routerLink="/products">Products</a>
+      </li>
       <li>
         <a>Topsign</a>
       </li>
@@ -73,4 +76,6 @@
 </div>
 <div class="boxshadow" id="message-window" [ngClass]="{'active': ui.messageWindowShow}">
   <p *ngFor="let message of ui.messages">{{message}}</p>
-<div>
+</div>
+
+<grohe-dpf-medias *ngIf="ui.showMedias"></grohe-dpf-medias>

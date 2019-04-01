@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable"
 import { Subject } from 'rxjs/Subject';
@@ -9,8 +9,10 @@ import { DisplaysPart } from '../classes/DisplaysPart';
 import { Display } from '../classes/display';
 
 import { Article } from '../classes/Article';
+import { Product } from '../classes/Product';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { User } from '../classes/User';
+import { Image } from '../classes/Image';
 import { UserService } from './user.service';
 
 @Injectable()
@@ -23,19 +25,28 @@ export class DataService {
   public displaysChange: Subject<Array<Display>>;
   private displaysChangeObserver: Observable<Array<Display>>;
 
-
   public articles: Article[] = null;
   public articlesChange: Subject<Array<Article>>;
   private articlesChangeObserver: Observable<Array<Article>>;
+
+  public products: Product[] = null;
+  public productsChange: Subject<Array<Product>>;
+  private productsChangeObserver: Observable<Array<Product>>;
 
   public users: User[] = null;
   public userChange: Subject<Array<User>>;
   private userChangeObserver: Observable<Array<User>>;
 
-  public displayPartsByDisplayId: Array<Array<DisplaysPart>> = [];
+  public images: Image[] = null;
+  public imagesChange: Subject<Array<Image>>;
+  private imagesChangeObserver: Observable<Array<Image>>;
 
+  public displayPartsByDisplayId: Array<Array<DisplaysPart>> = [];
   public displayPartsByDisplayIdChange: Subject<Array<DisplaysPart>>;
   private displayPartsByDisplayIdChangeObserver: Observable<Array<DisplaysPart>>;
+
+  public saveSuccess: EventEmitter<boolean> = new EventEmitter();
+  public deleteSuccess: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
     private config: ConfigService,
@@ -56,8 +67,14 @@ export class DataService {
     this.articlesChange = new Subject<Array<Article>>();
     this.articlesChangeObserver = this.articlesChange.asObservable();
 
+    this.productsChange = new Subject<Array<Product>>();
+    this.productsChangeObserver = this.productsChange.asObservable();
+
     this.userChange = new Subject<Array<User>>();
     this.userChangeObserver = this.userChange.asObservable();
+
+    this.imagesChange = new Subject<Array<Image>>();
+    this.imagesChangeObserver = this.imagesChange.asObservable();
 
     this.displayPartsByDisplayIdChange = new Subject<Array<DisplaysPart>>();
     this.displayPartsByDisplayIdChangeObserver = this.displayPartsByDisplayIdChange.asObservable();
@@ -70,6 +87,14 @@ export class DataService {
     });
   }
 
+  public loadImages() {
+    this.http.get(`${this.config.baseURL}loadImages`, { withCredentials: true }).subscribe((images: Image[]) => {
+      this.images = images;
+      this.imagesChange.next(this.images);
+    });
+  }
+
+/*
   async getUsers() {
     var u:any;
     await this.http.get(`${this.config.baseURL}getUsers`, { withCredentials: true })
@@ -81,7 +106,7 @@ export class DataService {
         });
         return u;
   }
-
+*/
   async getProductTrees() {
     var u:any;
     await this.http.get(`${this.config.baseURL}productTree`, { withCredentials: true })
@@ -98,6 +123,13 @@ export class DataService {
     this.http.get(`${this.config.baseURL}getArticles`, { withCredentials: true }).subscribe((articles: Article[]) => {
       this.articles = articles;
       this.articlesChange.next(this.articles);
+    });
+  }
+
+  public loadProducts() {
+    this.http.get(`${this.config.baseURL}getProducts`, { withCredentials: true }).subscribe((products: Product[]) => {
+      this.products = products;
+      this.productsChange.next(this.products);
     });
   }
 
@@ -128,6 +160,8 @@ export class DataService {
         this.displayParts = displayParts;
         this.displayPartsChange.next(this.displayParts);
         this.ui.setMessage('Save success');
+        this.ui.doCloseEditNew();
+        this.saveSuccess.next(true)
       },
       error => {
         this.error.setError(error);
@@ -142,6 +176,8 @@ export class DataService {
         this.articles = articles;
         this.articlesChange.next(this.articles);
         this.ui.setMessage('Save success');
+        this.saveSuccess.next(true);
+        this.ui.doCloseEditNew();
       },
       error => {
         this.error.setError(error);
@@ -150,12 +186,31 @@ export class DataService {
     );
   }
 
+  public changeProduct(dataSet) {
+    this.http.post(`${this.config.baseURL}changeProduct`, dataSet, { withCredentials: true }).subscribe(
+      (products: Product[]) => {
+        this.products = products;
+        this.productsChange.next(this.products);
+        this.ui.setMessage('Save success');
+        this.saveSuccess.next(true);
+        this.ui.doCloseEditNew();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
+
   public changeUser(dataSet) {
     this.http.post(`${this.config.baseURL}changeUser`, dataSet, { withCredentials: true }).subscribe(
       (users: User[]) => {
         this.users = users;
         this.userChange.next(this.users);
         this.ui.setMessage('Save success');
+        this.saveSuccess.next(true)
+        this.ui.doCloseEditNew();
       },
       error => {
         this.error.setError(error);
@@ -169,11 +224,13 @@ export class DataService {
       (users: User[]) => {
         this.users = users;
         this.userChange.next(this.users);
-        this.ui.setMessage('Save success');
+        this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
       },
       error => {
         this.error.setError(error);
         this.ui.setMessage('An Error occoured');
+        this.ui.doCloseDelete();
       }
     );
   }
@@ -184,6 +241,24 @@ export class DataService {
         this.displayParts = displayParts;
         this.displayPartsChange.next(this.displayParts);
         this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
+        this.ui.doCloseDelete();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
+  public deleteDisplay(display) {
+    this.http.post(`${this.config.baseURL}deleteDisplay`, display, { withCredentials: true }).subscribe(
+      (displays: Display[]) => {
+        this.displays = displays;
+        this.displaysChange.next(this.displays);
+        this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
+        this.ui.doCloseDelete();
       },
       error => {
         this.error.setError(error);
@@ -198,6 +273,24 @@ export class DataService {
         this.articles = articles;
         this.articlesChange.next(this.articles);
         this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
+        this.ui.doCloseDelete();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
+  public deleteProduct(dataSet) {
+    this.http.post(`${this.config.baseURL}deleteProduct`, dataSet, { withCredentials: true }).subscribe(
+      (products: Product[]) => {
+        this.products = products;
+        this.productsChange.next(this.products);
+        this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
+        this.ui.doCloseDelete();
       },
       error => {
         this.error.setError(error);
@@ -208,8 +301,12 @@ export class DataService {
 
   public saveDisplayAndPartList(display:Display, partsList:DisplaysPart[]){
     this.http.post(`${this.config.baseURL}saveDisplayAndPartList`, {display:display,partsList:partsList}, { withCredentials: true }).subscribe(
-      ( response:ApiResponseInterface ) => {
+      ( displays:Display[] ) => {
         this.ui.setMessage('Save success');
+        this.displays = displays;
+        this.displaysChange.next(this.displays);
+        this.saveSuccess.next(true);
+        this.ui.doCloseEditNew();
       },
       error => {
         this.error.setError(error);

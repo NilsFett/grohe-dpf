@@ -248,7 +248,7 @@ class cModel extends cDatabase{
 		$oPDO->execute(  );
 		$aResult = array();
 		while( $row = $oPDO->fetch(PDO::FETCH_ASSOC) ){
-			$aResult[$row['id']] = $row;
+			$aResult[] = $row;
 		}
 		return $aResult;
 	}

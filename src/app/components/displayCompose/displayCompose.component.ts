@@ -1,10 +1,11 @@
-import { Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, OnDestroy} from '@angular/core';
 import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService } from '../../services/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { Display } from '../../classes/display';
+import { Image } from '../../classes/Image';
 import { DisplaysPart } from '../../classes/DisplaysPart';
 import { ConfigService } from '../../services/config.service';
 import { DisplaysFilter } from '../../pipes/displays/displaysFilter';
@@ -16,7 +17,7 @@ import { displayTemplates } from '../../classes/DisplayTemplates';
   templateUrl: './displayCompose.component.html',
   styleUrls: ['./displayCompose.component.css']
 })
-export class DisplayComposeComponent{
+export class DisplayComposeComponent implements OnDestroy{
   @ViewChild(MatSort) sort: MatSort;
   currentDataSet: Display = null;
   dataSetToDelete: Display = null;
@@ -29,6 +30,7 @@ export class DisplayComposeComponent{
   columnsToDisplay = [ 'image', 'title', 'articlenr', 'displaytype', 'topsign_punch', 'instruction', 'edit', 'delete'];
   dataSource: MatTableDataSource<Display>;
   displayForm = new FormGroup({
+    image: new FormControl(''),
     title: new FormControl('', [Validators.required, Validators.minLength(2)]),
     articlenr: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(8)]),
     displaytype: new FormControl(''),
@@ -43,6 +45,8 @@ export class DisplayComposeComponent{
   };
   public images = {
     1: 'uploads/dp1.jpg',
+    2: 'uploads/dp2.jpg',
+    3: 'uploads/dp3.jpg',
     10: 'uploads/afd1707d12f77e13ad77ba0fc17e9f83.jpg',
     11: 'uploads/773a7998644c720179ac7636d13db2c8.jpg',
     12: 'uploads/3858f5b37715465e7d7407d14f664a5f.jpg',
@@ -90,6 +94,11 @@ export class DisplayComposeComponent{
       );
       this.dataService.loadDisplayParts();
     }
+    this.ui.imageChoosen.subscribe( (image:Image)=>{
+      this.currentDataSet.image = image.id;
+      this.ui.doHideMedias();
+
+    });
   }
 
   public filterChanges() {
@@ -102,7 +111,7 @@ export class DisplayComposeComponent{
   }
 
   public showNew() {
-    this.ui.showOverlay = true;
+    this.ui.doShowEditNew();
     this.showChooseTemplate = false;
     this.currentDataSet = new Display();
     this.updateFormValues();
@@ -114,6 +123,7 @@ export class DisplayComposeComponent{
     this.ui.showOverlay = true;
     this.showChooseTemplate = false;
     this.showAssembly = true;
+    this.ui.doShowEditNew();
     this.updateFormValues();
   }
 
@@ -127,21 +137,10 @@ export class DisplayComposeComponent{
     this.ui.showOverlay = false;
   }
 
-/*
-  public save() {
-    if (this.displayForm.status == 'VALID') {
-      this.currentDataSet.title = this.displayForm.controls['title'].value;
-      this.currentDataSet.articlenr = this.displayForm.controls['articlenr'].value;
-      this.currentDataSet.displaytype = this.displayForm.controls['displaytype'].value;
-      this.currentDataSet.topsign_punch = this.displayForm.controls['topsign_punch'].value;
-      this.currentDataSet.instruction = this.displayForm.controls['instruction'].value;
-      this.dataService.changeUser(this.currentDataSet);
-    }
-  }
-*/
   public setCurrentDataSet(currentDataSet:Display) {
-    this.ui.showOverlay = true;
+
     this.currentDataSet = currentDataSet;
+    this.ui.doShowEditNew();
     this.updateFormValues();
 
     if(this.dataService.displayPartsByDisplayId[currentDataSet.id]){
@@ -153,7 +152,6 @@ export class DisplayComposeComponent{
       });
       this.dataService.loadDisplasPartsByDisplayId(currentDataSet.id);
     }
-
   }
 
   private updateFormValues(){
@@ -167,18 +165,17 @@ export class DisplayComposeComponent{
   }
 
   public showDelete(part) {
-    this.ui.showOverlay = true;
     this.dataSetToDelete = part;
+    this.ui.doShowDelete();
   }
 
   public deleteClose(part) {
     this.dataSetToDelete = null;
-    this.ui.showOverlay = false;
-    this.ui.deleteSuccess = false;
+    this.ui.doCloseDelete();
   }
 
   public delete() {
-    this.dataService.deleteUser(this.dataSetToDelete);
+    this.dataService.deleteDisplay(this.dataSetToDelete);
   }
 
   public partsSearchwordChanged(searchword){
@@ -228,6 +225,21 @@ export class DisplayComposeComponent{
   }
 
   public testOutput(){
-    console.log('testOutput');
+    this.updateFormValues();
+  }
+
+  public formValidateAfterIf(){
+    Object.keys(this.displayForm.controls).forEach(field => { // {1}
+      const control = this.displayForm.get(field);            // {2}
+      control.markAsTouched({ onlySelf: true });       // {3}
+    });
+  }
+
+  public selectImage(){
+    this.ui.doShowMedias();
+  }
+
+  ngOnDestroy(){
+    this.ui.imageChoosen.unsubscribe();
   }
 }

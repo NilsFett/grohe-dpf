@@ -13,7 +13,7 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-class cDisplaysModel extends cModel{
+class cImageModel extends cModel{
 
 	protected $aColumns = array(
 		'id' => array(
@@ -24,62 +24,26 @@ class cDisplaysModel extends cModel{
 			'value' => false,
 			'type' => 'varchar'
 		),
-		'articlenr' => array(
-			'value' => false,
-			'type' => 'int'
-		),
-		'image' => array(
-			'value' => false,
-			'type' => 'int'
-		),
-		'hide' => array(
+		'path' => array(
 			'value' => false,
 			'type' => 'varchar'
-		),
-		'displaytype' => array(
-			'value' => false,
-			'type' => 'varchar'
-		),
-		'topsign_punch' => array(
-			'value' => false,
-			'type' => 'varchar'
-		),
-		'instruction' => array(
-			'value' => false,
-			'type' => 'int'
 		)
 	);
-	static $sTable = 't_displays';
+	static $sTable = 't_images';
 	protected $sPrimary = 'id';
 
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
 
-	public static function getAll(){
+	public static function imageExists($sPath, $nPathId){
 		$query = '	SELECT *
-					FROM `t_displays`';
+					FROM `'.self::$sTable.'`
+					WHERE `path` = ?';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
-		$stmt->execute();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-	/*
-	public static function getAll(){
-		$query = '	SELECT *
-					FROM `t_displays`';
-		$db = cDatabase::getInstance();
-		$stmt = $db->hConnection->prepare($query);
-		$stmt->execute();
-		$displays = array();
-		while( $display = $stmt->fetch(PDO::FETCH_ASSOC) ){
-			$displays[$display['id']] = $display;
-		}
-		return $displays;
-	}
-	*/
-	public function delete(){
-		cRDisplayPartModel::deleteByDisplayId($this->get('id'));
-		parent::delete();
+		$stmt->execute(array($sPath));
+		$aImages = $stmt->fetchAll();
+		return count($aImages);
 	}
 }

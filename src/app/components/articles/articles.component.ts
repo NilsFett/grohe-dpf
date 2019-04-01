@@ -99,7 +99,6 @@ export class ArticlesComponent  implements OnInit{
   }
 
   public setCurrentDataSet(currentDataSet){
-    this.ui.showOverlay = true;
     this.currentDataSet = currentDataSet;
     this.articleForm.patchValue({
       articlenr: currentDataSet.articlenr,
@@ -111,17 +110,18 @@ export class ArticlesComponent  implements OnInit{
       topsign: currentDataSet.topsign,
       deleted: currentDataSet.deleted
     });
+    this.ui.doShowEditNew();
   }
 
   public showDelete(part){
     this.ui.showOverlay = true;
     this.dataSetToDelete = part;
+    this.ui.doShowDelete();
   }
 
   public deleteClose(part){
     this.dataSetToDelete = null;
-    this.ui.showOverlay = false;
-    this.ui.deleteSuccess = false;
+    this.ui.doCloseDelete();
   }
 
   public delete(){
