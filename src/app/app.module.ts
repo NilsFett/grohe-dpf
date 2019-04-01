@@ -34,8 +34,8 @@ import { MatInputModule,MatCheckboxModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
 import { CdkTreeModule } from '@angular/cdk/tree';
-//import { FileUploadModule } from 'ng2-file-upload';
-import { FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
+//import { FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
 
 import { UserService } from './services/user.service';
 import { AuthGuard } from './services/auth.service';
@@ -74,11 +74,12 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     DisplayPartsFilter,
     DisplaysFilter,
     ArticlesFilter,
+    ProductsFilter,
     UserFilter,
     UserComponent,
     TreeViewComponent,
-    MediasComponent,
-    FileSelectDirective
+    MediasComponent/*,
+    FileSelectDirective*/
   ],
   imports: [
     BrowserModule,
@@ -89,7 +90,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     ReactiveFormsModule,
     MatTableModule, MatSortModule, MatPaginatorModule,MatFormFieldModule,MatSelectModule,MatInputModule,MatButtonModule,MatCheckboxModule
     ,MatTreeModule,MatIconModule
-    ,CdkTreeModule
+    ,CdkTreeModule,FileUploadModule
   ],
   providers: [
     UserService,

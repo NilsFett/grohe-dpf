@@ -17,7 +17,7 @@ export class MediasComponent{
   public images:Image[]=[];
   constructor(
     private dataService:DataService,
-    private ui:UiService,
+    public ui:UiService,
     public config:ConfigService
   ) {
     if (this.dataService.images) {

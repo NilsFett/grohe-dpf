@@ -12,7 +12,7 @@ export class UiService {
   public saveSuccess = false;
   public deleteSuccess = false;
   public messageWindowShow = false;
-  private messages:Array<String> = [];
+  public messages:Array<String> = [];
   public imageChoosen: EventEmitter<Image> = new EventEmitter();
 
   constructor(
