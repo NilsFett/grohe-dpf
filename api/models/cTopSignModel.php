@@ -51,4 +51,15 @@ class cTopSignModel extends cModel{
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
+
+	public static function getAll(){
+		$db = cDatabase::getInstance();
+		$oPDO = $db->hConnection->prepare( 'SELECT * FROM `'.static::$sTable.'` WHERE `old_system` = 0', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
+		$oPDO->execute(  );
+		$aResult = array();
+		while( $row = $oPDO->fetch(PDO::FETCH_ASSOC) ){
+			$aResult[] = $row;
+		}
+		return $aResult;
+	}
 }
