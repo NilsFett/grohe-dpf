@@ -71,7 +71,7 @@
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Packaging
           </th>
-          <td mat-cell *matCellDef="let part"> {{part.type}} </td>
+          <td mat-cell *matCellDef="let part"> {{part.packaging}} </td>
         </ng-container>
 
         <ng-container matColumnDef="weight">
@@ -152,8 +152,21 @@
           <input type="text" formControlName="extra" matInput name="extra" #extra placeholder="Extra">
           <mat-error [hidden]="extra.valid || extra.pristine">required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
-          <input type="text" formControlName="type" matInput name="type" #type placeholder="Type">
+          <mat-select formControlName="type"  #type placeholder="Type*">
+            <mat-option value="Counter">Counter</mat-option>
+            <mat-option value="Basin">Basin</mat-option>
+            <mat-option value="THM">THM</mat-option>
+            <mat-option value="Handshowers">Handshowers</mat-option>
+            <mat-option value="Kitchen">Kitchen</mat-option>
+            <mat-option value="Euphoria">Euphoria</mat-option>
+            <mat-option value="Eurosmart">Eurosmart</mat-option>
+            <mat-option value="Cosmo">Cosmo</mat-option>
+            <mat-option value="Tempesta">Tempesta</mat-option>
+            <mat-option value="Spare_Parts">Spare Parts</mat-option>
+            <mat-option value="GRT">Spare GRT</mat-option>
+          </mat-select>
           <mat-error [hidden]="type.valid || type.pristine">required</mat-error>
         </mat-form-field>
 

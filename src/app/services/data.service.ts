@@ -186,6 +186,22 @@ export class DataService {
     );
   }
 
+  public changeTopSign(topSign) {
+    this.http.post(`${this.config.baseURL}changeTopSign`, topSign, { withCredentials: true }).subscribe(
+      (topSigns: TopSigns[]) => {
+        this.topSigns = topSigns;
+        this.topSignsChange.next(this.topSigns);
+        this.ui.setMessage('Save success');
+        this.ui.doCloseEditNew();
+        this.saveSuccess.next(true)
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
   public changeArticle(dataSet) {
     this.http.post(`${this.config.baseURL}changeArticle`, dataSet, { withCredentials: true }).subscribe(
       (articles: Article[]) => {
@@ -267,6 +283,21 @@ export class DataService {
     );
   }
 
+  public deleteTopSign(topSign) {
+    this.http.post(`${this.config.baseURL}deleteTopSign`, topSign, { withCredentials: true }).subscribe(
+      (topSigns: TopSign[]) => {
+        this.topSigns = displayParts;
+        this.topSignsChange.next(this.displayParts);
+        this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
+        this.ui.doCloseDelete();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
   public deleteDisplay(display) {
     this.http.post(`${this.config.baseURL}deleteDisplay`, display, { withCredentials: true }).subscribe(
       (displays: Display[]) => {

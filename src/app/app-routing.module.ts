@@ -9,6 +9,7 @@ import { OrderComponent } from './components/order/order.component';
 import { StartComponent } from './components/start/start.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
+import { TopSignsComponent } from './components/topSigns/topSigns.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ProductsComponent } from './components/products/products.component';
 
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'start', component: StartComponent, canActivate: [AuthGuard] },
   { path: 'displayCompose', component: DisplayComposeComponent, canActivate: [AuthGuard] },
   { path: 'displayParts', component: DisplayPartsComponent, canActivate: [AuthGuard] },
+  { path: 'topSigns', component: TopSignsComponent, canActivate: [AuthGuard] },
   { path: 'articles', component: ArticlesComponent, canActivate: [AuthGuard] },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
   { path: 'displayorders', component: TreeViewComponent, canActivate: [AuthGuard] },
