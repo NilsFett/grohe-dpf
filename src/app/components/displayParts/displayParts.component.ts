@@ -23,21 +23,16 @@ export class DisplayPartsComponent  {
     title:'',
     open_format:'',
     type:'',
-    stock:'',
-    weight:'',
-
-    hidden:null
+    weight:''
   };
 
-  columnsToDisplay = ['title', 'weight', 'articlenr', 'open_format', 'stock', 'deleted', 'edit', 'delete'];
+  columnsToDisplay = ['articlenr','title', 'weight', 'open_format', 'edit', 'delete'];
   dataSource :  MatTableDataSource<DisplaysPart>;
   displayPartForm = new FormGroup({
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
-    open_format : new FormControl(''),
-    stock : new FormControl(''),
-    weight : new FormControl('',[Validators.required]),
-    deleted : new FormControl('')
+    open_format : new FormControl('',[Validators.required, Validators.minLength(2)]),
+    weight : new FormControl('',[Validators.required])
   });
 
   constructor(
@@ -49,46 +44,39 @@ export class DisplayPartsComponent  {
     this.dataSource = new MatTableDataSource(this.displayParts);
 
     if(this.dataService.displayParts){
-      //this.displayParts = this.dataService.displayParts;
-      this.dataSource = new MatTableDataSource(this.dataService.displayParts);
-      this.dataSource.sort = this.sort;
-      //this.currentDataSet = this.displayParts[0];
+      this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+      this.dataSource.data = this.displayParts;
     }
     else{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
-          //this.displayParts = displayParts;
-          this.dataSource = new MatTableDataSource(displayParts);
+          this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
+          this.dataSource.data = this.displayParts;
           this.dataSource.sort = this.sort;
         }
       );
       this.dataService.loadDisplayParts();
     }
-
-    this.displayPartForm.valueChanges.subscribe(val => {
-      console.log(val);
-    });
   }
 
   public showNew(){
-    this.ui.showOverlay = true;
+    this.ui.doShowEditNew();;
     this.currentDataSet = new DisplaysPart();
   }
 
   filterChanges(){
       this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
       this.dataSource.data = this.displayParts;
-      //this.dataSource = new MatTableDataSource(this.displayParts);
   }
 
   public save(){
-    this.currentDataSet.title = this.displayPartForm.controls['title'].value;
-    this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
-    this.currentDataSet.open_format = this.displayPartForm.controls['open_format'].value;
-    this.currentDataSet.stock = this.displayPartForm.controls['stock'].value;
-    this.currentDataSet.weight = this.displayPartForm.controls['weight'].value;
-    this.currentDataSet.deleted = this.displayPartForm.controls['deleted'].value;
-    this.dataService.changeDisplayPart(this.currentDataSet);
+    if (this.displayPartForm.status == 'VALID') {
+      this.currentDataSet.title = this.displayPartForm.controls['title'].value;
+      this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
+      this.currentDataSet.open_format = this.displayPartForm.controls['open_format'].value;
+      this.currentDataSet.weight = this.displayPartForm.controls['weight'].value;
+      this.dataService.changeDisplayPart(this.currentDataSet);
+    }
   }
 
   public setCurrentDataSet(currentDataSet){

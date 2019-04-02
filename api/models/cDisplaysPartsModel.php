@@ -65,16 +65,13 @@ class cDisplaysPartsModel extends cModel{
 
 	public static function getAll(){
 		$query = '	SELECT *
-					FROM `t_display_parts`';
+					FROM `'.self::$sTable.'`
+					WHERE `old_system` = 0';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
 		$displays = array();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-		while( $display = $stmt->fetch(PDO::FETCH_ASSOC) ){
-			$displays[$display['id']] = $display;
-		}
-		return $displays;
 	}
 
 	public static function getByDisplayId($displayId){

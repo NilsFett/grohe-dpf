@@ -9,6 +9,8 @@ import { DisplaysPart } from '../classes/DisplaysPart';
 import { Display } from '../classes/display';
 
 import { Article } from '../classes/Article';
+import { TopSign } from '../classes/TopSign';
+
 import { Product } from '../classes/Product';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { User } from '../classes/User';
@@ -28,6 +30,10 @@ export class DataService {
   public articles: Article[] = null;
   public articlesChange: Subject<Array<Article>>;
   private articlesChangeObserver: Observable<Array<Article>>;
+
+  public topSigns: TopSign[] = null;
+  public topSignsChange: Subject<Array<TopSign>>;
+  private topSignsChangeObserver: Observable<Array<TopSign>>;
 
   public products: Product[] = null;
   public productsChange: Subject<Array<Product>>;
@@ -66,6 +72,9 @@ export class DataService {
 
     this.articlesChange = new Subject<Array<Article>>();
     this.articlesChangeObserver = this.articlesChange.asObservable();
+
+    this.topSignsChange = new Subject<Array<TopSign>>();
+    this.topSignsChangeObserver = this.topSignsChange.asObservable();
 
     this.productsChange = new Subject<Array<Product>>();
     this.productsChangeObserver = this.productsChange.asObservable();
@@ -123,6 +132,13 @@ export class DataService {
     this.http.get(`${this.config.baseURL}getArticles`, { withCredentials: true }).subscribe((articles: Article[]) => {
       this.articles = articles;
       this.articlesChange.next(this.articles);
+    });
+  }
+
+  public loadTopSigns() {
+    this.http.get(`${this.config.baseURL}loadTopSigns`, { withCredentials: true }).subscribe((topSigns: TopSign[]) => {
+      this.topSigns = topSigns;
+      this.topSignsChange.next(this.topSigns);
     });
   }
 

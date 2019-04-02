@@ -5,10 +5,10 @@
     <table>
       <tr>
         <td>
-          <i class="fa icon-search"></i><input placeholder="title" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
+          <i class="fa icon-search"></i><input placeholder="Article Number" (ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class="filter" type="text"  name="articlenrFilter" >
         </td>
         <td>
-          <i class="fa icon-search"></i><input placeholder="Article Number" (ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class="filter" type="text"  name="articlenrFilter" >
+          <i class="fa icon-search"></i><input placeholder="title" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
         </td>
         <td>
           <i class="fa icon-search"></i><input placeholder="Weight" (ngModelChange)="filter.weight=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.weight" class="filter" type="text"  name="weightFilter" >
@@ -16,25 +16,21 @@
         <td>
           <i class="fa icon-search"></i><input placeholder="Open Format" (ngModelChange)="filter.open_format=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.open_format" class="filter" type="text"  name="open_formatFilter" >
         </td>
-        <td>
-          <i class="fa icon-search"></i><input placeholder="Stock" (ngModelChange)="filter.stock=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.stock" class="filter" type="text"  name="stockFilter" >
-        </td>
-
       </tr>
     </table>
       <table mat-table matSort [dataSource]="dataSource" >
-        <ng-container matColumnDef="title">
-          <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            Title
-          </th>
-          <td mat-cell *matCellDef="let part"> {{part.title}} </td>
-        </ng-container>
-
         <ng-container matColumnDef="articlenr">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Articel Number
             </th>
           <td mat-cell *matCellDef="let part"> {{part.articlenr}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="title">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+            Title
+          </th>
+          <td mat-cell *matCellDef="let part"> {{part.title}} </td>
         </ng-container>
 
         <ng-container matColumnDef="weight">
@@ -50,16 +46,6 @@
           </th>
           <td mat-cell *matCellDef="let part"> {{part.open_format}} </td>
         </ng-container>
-
-        <ng-container matColumnDef="stock">
-          <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            Stock
-         </th>
-          <td mat-cell *matCellDef="let part">
-              {{part.stock}}
-          </td>
-        </ng-container>
-
         <ng-container matColumnDef="deleted">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
             Hidden
@@ -109,23 +95,13 @@
           <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input type="text" formControlName="stock" matInput name="stock" #stock placeholder="Stock">
-          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
-        </mat-form-field>
-        <mat-form-field>
           <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight">
           <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
         </mat-form-field>
-
-        <mat-checkbox formControlName="deleted" matInput name="deleted" #deleted placeholder="Visible"></mat-checkbox>&nbsp;Visible
         <hr />
         <div class="spacer20"></div>
         <button (click)="save()" mat-raised-button>Save</button>
         <div class="spacer20"></div>
-        <div *ngIf="ui.saveSuccess">
-          <div class="spacer20"></div>
-          Save Success
-        </div>
       </form>
     </div>
   </div>

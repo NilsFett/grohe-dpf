@@ -61,3 +61,13 @@ ALTER TABLE `t_display_parts` CHANGE `open_format` `open_format` VARCHAR(20) CHA
 ALTER TABLE `t_display_parts` CHANGE `stock` `stock` INT(11) NULL;
 INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'productTree', '/productTree');
 INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'saveDisplayAndPartList', '/saveDisplayAndPartList');
+ALTER TABLE `t_display_parts` ADD `old_system` TINYINT NOT NULL DEFAULT '0' AFTER `deleted`;
+ALTER TABLE `t_articles` ADD `old_system` TINYINT NOT NULL DEFAULT '0' AFTER `deleted`;
+UPDATE `t_articles` SET `old_system` = 1 WHERE 1
+ALTER TABLE `t_articles` ADD `height` INT NOT NULL AFTER `weight`;
+ALTER TABLE `t_articles` ADD `width` INT NOT NULL AFTER `height`
+ALTER TABLE `t_articles` ADD `depth` INT NOT NULL AFTER `width`
+DELETE FROM `t_topsign` WHERE `deleted` = 1
+ALTER TABLE `t_topsign` ADD `old_system` TINYINT NOT NULL DEFAULT '0' AFTER `deleted`;
+UPDATE `t_topsign` SET `old_system` = 1 WHERE 1
+INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'loadTopSignes', '/loadTopSignes');

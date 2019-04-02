@@ -23,9 +23,17 @@
             <i class="fa icon-search"></i><input placeholder="Weight" (ngModelChange)="filter.weight=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.weight" class="filter" type="text"  name="weightFilter" >
         </td>
         <td>
+            <i class="fa icon-search"></i><input placeholder="Height" (ngModelChange)="filter.height=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.height" class="filter" type="text"  name="heightFilter" >
+        </td>
+        <td>
+            <i class="fa icon-search"></i><input placeholder="Width" (ngModelChange)="filter.width=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.width" class="filter" type="text"  name="widthFilter" >
+        </td>
+        <td>
+            <i class="fa icon-search"></i><input placeholder="Depth" (ngModelChange)="filter.depth=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.depth" class="filter" type="text"  name="depthFilter" >
+        </td>
+        <td>
             <i class="fa icon-search"></i><input placeholder="Topsign" (ngModelChange)="filter.topsign=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topsign" class="filter" type="text"  name="topsignFilter" >
         </td>
-
       </tr>
     </table>
     <div class="hr"></div>
@@ -73,6 +81,27 @@
           <td mat-cell *matCellDef="let part"> {{part.weight}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="height">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Height
+          </th>
+          <td mat-cell *matCellDef="let part"> {{part.height}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="width">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Width
+          </th>
+          <td mat-cell *matCellDef="let part"> {{part.width}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="depth">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Depth
+          </th>
+          <td mat-cell *matCellDef="let part"> {{part.depth}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="topsign">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
             Topsign
@@ -80,13 +109,6 @@
           <td mat-cell *matCellDef="let part">
               {{part.topsign}}
           </td>
-        </ng-container>
-
-        <ng-container matColumnDef="hidden">
-          <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            Hidden
-          </th>
-          <td mat-cell *matCellDef="let part"> {{part.deleted}} </td>
         </ng-container>
 
         <ng-container matColumnDef="edit">
@@ -112,7 +134,7 @@
 <div class="overlay" *ngIf="ui.showEditNew">
   <div class="overlay-content">
     <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
-    <h3 class="fa icon-edit">Display&nbsp;Part</h3>
+    <h3 class="fa icon-edit">Article</h3>
     <p>{{currentDataSet.title}}</p>
     <hr />
     <div class="container-flex">
@@ -134,19 +156,36 @@
           <input type="text" formControlName="type" matInput name="type" #type placeholder="Type">
           <mat-error [hidden]="type.valid || type.pristine">required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
-          <input type="text" formControlName="packaging" matInput name="packaging" #packaging placeholder="Packaging">
+          <mat-select formControlName="packaging"  #packaging placeholder="Packaging*">
+            <mat-option value="blister">Blister</mat-option>
+            <mat-option value="carton">Carton</mat-option>
+          </mat-select>
           <mat-error [hidden]="packaging.valid || packaging.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight">
+          <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight (gr.)*">
           <mat-error [hidden]="weight.valid || weight.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input type="text" formControlName="topsign" matInput name="topsign" #topsign placeholder="Topsign">
+          <input type="text" formControlName="height" matInput name="height" #height placeholder="Height (cm.)*">
+          <mat-error [hidden]="height.valid || height.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" formControlName="width" matInput name="width" #width placeholder="Width (cm.)*">
+          <mat-error [hidden]="width.valid || width.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" formControlName="depth" matInput name="depth" #depth placeholder="Depth (cm.)*">
+          <mat-error [hidden]="depth.valid || depth.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="topsign"  #topsign placeholder="Topsign">
+            <mat-option *ngFor="let topsign of topSigns" value="{{topsign.id}}">{{topsign.title}}</mat-option>
+          </mat-select>
           <mat-error [hidden]="topsign.valid || topsign.pristine">required</mat-error>
         </mat-form-field>
-        <mat-checkbox formControlName="hidden" matInput name="hidden" #hidden placeholder="Visible"></mat-checkbox>&nbsp;Visible
         <hr />
         <div class="spacer20"></div>
         <button (click)="save()" mat-raised-button>Save</button>
