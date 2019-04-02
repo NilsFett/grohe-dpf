@@ -3,6 +3,7 @@ import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
 import { Article } from '../../classes/Article';
+import { TopSign } from '../../classes/TopSign';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { ArticlesFilter } from '../../pipes/articles/articlesFilter'
@@ -19,6 +20,7 @@ export class ArticlesComponent  implements OnInit{
   currentDataSet:Article = null;
   dataSetToDelete:Article = null;
   articles:Article[] = [];
+  topSigns:TopSign[] = [];
   filter = {
     articlenr:'',
     title:'',
@@ -26,21 +28,25 @@ export class ArticlesComponent  implements OnInit{
     type:'',
     packaging:'',
     weight:'',
-    topsign:'',
-    hidden:null
+    height:'',
+    width:'',
+    depth:'',
+    topsign:''
   };
 
-  columnsToDisplay = ['articlenr', 'title', 'extra', 'type', 'packaging', 'weight', 'topsign', 'hidden', 'edit', 'delete'];
+  columnsToDisplay = ['articlenr', 'title', 'extra', 'type', 'packaging', 'weight', 'height', 'width', 'depth', 'topsign', 'edit', 'delete'];
   dataSource: MatTableDataSource<Article> = null;
   articleForm = new FormGroup({
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
     extra : new FormControl(''),
-    type : new FormControl(''),
-    packaging : new FormControl(''),
+    type : new FormControl('',[Validators.required]),
+    packaging : new FormControl('',[Validators.required]),
     weight : new FormControl('',[Validators.required]),
-    topsign : new FormControl('',[Validators.required]),
-    hidden : new FormControl('')
+    height : new FormControl('',[Validators.required]),
+    width : new FormControl('',[Validators.required]),
+    depth : new FormControl('',[Validators.required]),
+    topsign : new FormControl('',[Validators.required])
   });
 
   constructor(
@@ -50,25 +56,31 @@ export class ArticlesComponent  implements OnInit{
     private articlesFilter: ArticlesFilter
   ) {
     this.dataSource = new MatTableDataSource(this.articles);
+
     if(this.dataService.articles){
       this.articles = this.articlesFilter.transform(this.dataService.articles, this.filter);
-      this.dataSource = new MatTableDataSource(this.articles);
-      this.dataSource.sort = this.sort;
+      this.dataSource.data = this.articles;
     }
     else{
       this.dataService.articlesChange.subscribe(
         (articles:Article[]) => {
-          this.articles = articles;
-          this.dataSource = new MatTableDataSource(this.articles);
-          this.dataSource.sort = this.sort;
+          this.articles = this.articlesFilter.transform(this.dataService.articles, this.filter);
+          this.dataSource.data = this.articles;
         }
       );
       this.dataService.loadArticles();
     }
-
-    this.articleForm.valueChanges.subscribe(val => {
-      console.log(val);
-    });
+    if(this.dataService.topSigns){
+      this.topSigns = this.dataService.topSigns;
+    }
+    else{
+      this.dataService.topSignsChange.subscribe(
+        (topSigns:TopSign[]) => {
+          this.topSigns = this.dataService.topSigns;
+        }
+      );
+      this.dataService.loadTopSigns();
+    }
   }
 
   ngOnInit() {
@@ -78,24 +90,28 @@ export class ArticlesComponent  implements OnInit{
   filterChanges(){
     this.articles = this.articlesFilter.transform(this.dataService.articles, this.filter);
     this.dataSource.data = this.articlesFilter.transform(this.dataService.articles, this.filter);
-    //this.dataSource = new MatTableDataSource(this.displayParts);
+
   }
 
   public showNew(){
-    this.ui.showOverlay = true;
     this.currentDataSet = new Article();
+    this.ui.doShowEditNew();
   }
 
   public save(){
-    this.currentDataSet.articlenr = this.articleForm.controls['articlenr'].value;
-    this.currentDataSet.title = this.articleForm.controls['title'].value;
-    this.currentDataSet.extra = this.articleForm.controls['extra'].value;
-    this.currentDataSet.type = this.articleForm.controls['type'].value;
-    this.currentDataSet.packaging = this.articleForm.controls['packaging'].value;
-    this.currentDataSet.weight = this.articleForm.controls['weight'].value;
-    this.currentDataSet.topsign = this.articleForm.controls['topsign'].value;
-    this.currentDataSet.hidden = this.articleForm.controls['hidden'].value;
-    this.dataService.changeArticle(this.currentDataSet);
+    if (this.articleForm.status == 'VALID') {
+      this.currentDataSet.articlenr = this.articleForm.controls['articlenr'].value;
+      this.currentDataSet.title = this.articleForm.controls['title'].value;
+      this.currentDataSet.extra = this.articleForm.controls['extra'].value;
+      this.currentDataSet.type = this.articleForm.controls['type'].value;
+      this.currentDataSet.packaging = this.articleForm.controls['packaging'].value;
+      this.currentDataSet.weight = this.articleForm.controls['weight'].value;
+      this.currentDataSet.height = this.articleForm.controls['height'].value;
+      this.currentDataSet.width = this.articleForm.controls['width'].value;
+      this.currentDataSet.depth = this.articleForm.controls['depth'].value;
+      this.currentDataSet.topsign = this.articleForm.controls['topsign'].value;
+      this.dataService.changeArticle(this.currentDataSet);
+    }
   }
 
   public setCurrentDataSet(currentDataSet){
@@ -107,14 +123,15 @@ export class ArticlesComponent  implements OnInit{
       type: currentDataSet.type,
       packaging: currentDataSet.packaging,
       weight: currentDataSet.weight,
-      topsign: currentDataSet.topsign,
-      deleted: currentDataSet.deleted
+      height: currentDataSet.height,
+      width: currentDataSet.width,
+      depth: currentDataSet.depth,
+      topsign: currentDataSet.topsign
     });
     this.ui.doShowEditNew();
   }
 
   public showDelete(part){
-    this.ui.showOverlay = true;
     this.dataSetToDelete = part;
     this.ui.doShowDelete();
   }

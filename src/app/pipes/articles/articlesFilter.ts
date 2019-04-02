@@ -6,12 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ArticlesFilter implements PipeTransform{
   transform(items:any[], filter: any): any {
-    console.log('DisplayPartsFilter');
-    console.log(filter);
     if( !items  || ! filter ){
       return items;
     }
-    console.log(filter);
 
     return items.filter(
       item => {
@@ -21,8 +18,11 @@ export class ArticlesFilter implements PipeTransform{
         &&  item.type.toLowerCase().indexOf(filter.type.toLowerCase()) !== -1
         &&  item.packaging.toLowerCase().indexOf(filter.packaging.toLowerCase()) !== -1
         &&  item.weight.toLowerCase().indexOf(filter.weight.toLowerCase()) !== -1
+        &&  item.height.toLowerCase().indexOf(filter.height.toLowerCase()) !== -1
+        &&  item.width.toLowerCase().indexOf(filter.width.toLowerCase()) !== -1
+        &&  item.depth.toLowerCase().indexOf(filter.depth.toLowerCase()) !== -1
         &&  item.topsign.toLowerCase().indexOf(filter.topsign.toLowerCase()) !== -1
-        &&  (item.hidden == filter.hidden || filter.hidden == null) ){
+        ){
           return true;
         }
       }

@@ -141,6 +141,14 @@ class cGroheapiController{
 		}
 	}
 
+	public function loadTopSigns(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$articles = cTopSignModel::getAll();
+			echo json_encode($articles);
+		}
+	}
+
+
 	public function getProducts(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$articles = cProductsModel::getAll();
@@ -344,6 +352,15 @@ class cGroheapiController{
 		}
 		if(isset($postData['weight'])){
 			$oArticlesModel->set('weight', $postData['weight']);
+		}
+		if(isset($postData['height'])){
+			$oArticlesModel->set('height', $postData['height']);
+		}
+		if(isset($postData['width'])){
+			$oArticlesModel->set('width', $postData['width']);
+		}
+		if(isset($postData['depth'])){
+			$oArticlesModel->set('depth', $postData['depth']);
 		}
 		if(isset($postData['topsign'])){
 			$oArticlesModel->set('topsign', $postData['topsign']);

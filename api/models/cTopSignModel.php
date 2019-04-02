@@ -13,7 +13,7 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-class cArticlesModel extends cModel{
+class cTopSignModel extends cModel{
 
 	protected $aColumns = array(
 		'id' => array(
@@ -28,66 +28,27 @@ class cArticlesModel extends cModel{
 			'value' => false,
 			'type' => 'varchar'
 		),
-		'extra' => array(
+		'path' => array(
 			'value' => false,
 			'type' => 'varchar'
 		),
-		'type' => array(
+		'image' => array(
 			'value' => false,
 			'type' => 'varchar'
 		),
-		'packaging' => array(
+		'image_thumb' => array(
 			'value' => false,
 			'type' => 'varchar'
 		),
-		'weight' => array(
-			'value' => false,
-			'type' => 'int'
-		),
-		'topsign' => array(
-			'value' => false,
-			'type' => 'int'
-		),
-		'height' => array(
-			'value' => false,
-			'type' => 'int'
-		),
-		'width' => array(
-			'value' => false,
-			'type' => 'int'
-		),
-		'depth' => array(
-				'value' => false,
-				'type' => 'int'
-			),
-		'deleted' => array(
-			'value' => false,
-			'type' => 'int'
-		),
-		'old_system' => array(
+		'weigth' => array(
 			'value' => false,
 			'type' => 'int'
 		)
 	);
-	static $sTable = 't_articles';
+	static $sTable = 't_topsign';
 	protected $sPrimary = 'id';
 
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
-
-
-
-	public static function getAll(){
-		$query = '	SELECT *
-					FROM `'.self::$sTable.'`
-					WHERE `old_system` = 0';
-		$db = cDatabase::getInstance();
-		$stmt = $db->hConnection->prepare($query);
-		$stmt->execute();
-		$displays = array();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-	}
-
 }
