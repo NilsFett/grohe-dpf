@@ -21,6 +21,7 @@ export class ArticlesComponent  implements OnInit{
   dataSetToDelete:Article = null;
   articles:Article[] = [];
   topSigns:TopSign[] = [];
+  topSignsById = {};
   filter = {
     articlenr:'',
     title:'',
@@ -28,13 +29,13 @@ export class ArticlesComponent  implements OnInit{
     type:'',
     packaging:'',
     weight:'',
-    height:'',
-    width:'',
     depth:'',
+    width:'',
+    height:'',
     topsign:''
   };
 
-  columnsToDisplay = ['articlenr', 'title', 'extra', 'type', 'packaging', 'weight', 'height', 'width', 'depth', 'topsign', 'edit', 'delete'];
+  columnsToDisplay = ['articlenr', 'title', 'extra', 'type', 'packaging', 'weight', 'depth', 'width', 'height',  'topsign', 'edit', 'delete'];
   dataSource: MatTableDataSource<Article> = null;
   articleForm = new FormGroup({
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
@@ -43,10 +44,10 @@ export class ArticlesComponent  implements OnInit{
     type : new FormControl('',[Validators.required]),
     packaging : new FormControl('',[Validators.required]),
     weight : new FormControl('',[Validators.required]),
-    height : new FormControl('',[Validators.required]),
-    width : new FormControl('',[Validators.required]),
     depth : new FormControl('',[Validators.required]),
-    topsign : new FormControl('',[Validators.required])
+    width : new FormControl('',[Validators.required]),
+    height : new FormControl(''),
+    topsign : new FormControl('')
   });
 
   constructor(
@@ -72,11 +73,19 @@ export class ArticlesComponent  implements OnInit{
     }
     if(this.dataService.topSigns){
       this.topSigns = this.dataService.topSigns;
+      for(var i = 0; i < this.topSigns.length; i++ ){
+        this.topSignsById[this.topSigns[i].id] = this.topSigns[i];
+      }
     }
     else{
       this.dataService.topSignsChange.subscribe(
         (topSigns:TopSign[]) => {
           this.topSigns = this.dataService.topSigns;
+          this.topSigns = this.dataService.topSigns;
+          for(var i = 0; i < this.topSigns.length; i++ ){
+            this.topSignsById[this.topSigns[i].id] = this.topSigns[i];
+          }
+          console.log(this.topSignsById);
         }
       );
       this.dataService.loadTopSigns();
@@ -96,6 +105,22 @@ export class ArticlesComponent  implements OnInit{
   public showNew(){
     this.currentDataSet = new Article();
     this.ui.doShowEditNew();
+    this.clearForm();
+  }
+
+  public clearForm(){
+    this.articleForm = new FormGroup({
+      articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      title : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      extra : new FormControl(''),
+      type : new FormControl('',[Validators.required]),
+      packaging : new FormControl('',[Validators.required]),
+      weight : new FormControl('',[Validators.required]),
+      depth : new FormControl('',[Validators.required]),
+      width : new FormControl('',[Validators.required]),
+      height : new FormControl(''),
+      topsign : new FormControl('')
+    });
   }
 
   public save(){

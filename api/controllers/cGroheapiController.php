@@ -464,6 +464,15 @@ class cGroheapiController{
 		}
 	}
 
+	public function deleteImage(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$postData = json_decode(file_get_contents('php://input'),true);
+			$oImageModel = new cImageModel($postData['id']);
+			$oImageModel->delete();
+			$this->loadImages();
+		}
+	}
+
 	public function loadDisplasPartsByDisplayId(){
 		if(cSessionUser::getInstance()->bIsLoggedIn && isset($_GET['display_id']) && is_numeric($_GET['display_id'])){
 			$displays = cDisplaysPartsModel::getByDisplayId((int)$_GET['display_id']);
@@ -528,7 +537,15 @@ class cGroheapiController{
 					if(move_uploaded_file($aImage['tmp_name'], cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension)) {
 						$oImage = new cImageModel();
 						$oImage->set('title', $aImage['name']);
-						$oImage->set('path', $sHash);
+						$oImage->set('path', $sHash.'.'.$sExtension);
+						$type = 1;
+						if($_GET['type'] == 'tsimages'){
+							$type = 2;
+						}
+						elseif($_GET['type'] == 'tspdf'){
+							$type = 3;
+						}
+						$oImage->set('type', $type);
 
 
 

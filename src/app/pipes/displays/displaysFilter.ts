@@ -17,7 +17,7 @@ export class DisplaysFilter implements PipeTransform{
         if( item.title.toLowerCase().indexOf(filter.title.toLowerCase()) !== -1
         &&  item.articlenr.toLowerCase().indexOf(filter.articlenr.toLowerCase()) !== -1
         &&  item.displaytype.toLowerCase().indexOf(filter.displaytype.toLowerCase()) !== -1
-        &&  item.topsign_punch.toLowerCase().indexOf(filter.topsign_punch.toLowerCase()) !== -1
+
         ){
           return true;
         }

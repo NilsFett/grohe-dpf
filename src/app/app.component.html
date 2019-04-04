@@ -34,8 +34,8 @@
       <li [ngClass]="{'active': (router.url == '/products')}">
         <a (click)="navClicked()" href="/products" routerLink="/products">Products</a>
       </li>
-      <li>
-        <a>Topsign</a>
+      <li [ngClass]="{'active': (router.url == '/products')}">
+        <a (click)="navClicked()" href="/topSigns" routerLink="/topSigns">Topsign</a>
       </li>
       <li>
         <a>Orders</a>
@@ -43,7 +43,9 @@
       <li [ngClass]="{'active': (router.url == '/user')}">
         <a (click)="navClicked()" href="/user" routerLink="/user">User</a>
       </li>
-
+      <li [ngClass]="{'active': (router.url == '/medias')}">
+        <a (click)="navClicked()" href="/medias" routerLink="/medias">Medias</a>
+      </li>
     </ul>
   </nav>
   <header *ngIf="router.url != '/' && router.url != '/login' && router.url != '/register' && router.url != '/passwordReset'" [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >

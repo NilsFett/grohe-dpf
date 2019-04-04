@@ -25,7 +25,7 @@
             </th>
           <td mat-cell *matCellDef="let part"> {{part.articlenr}} </td>
         </ng-container>
-        
+
         <ng-container matColumnDef="title">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
             Title
@@ -73,9 +73,9 @@
     </div>
 </div>
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
-<div class="overlay" *ngIf="ui.showEditNew">
+<div class="overlay" *ngIf="ui.showEditNew && currentDataSet">
   <div class="overlay-content">
-    <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
+    <span (click)="currentDataSet = null;ui.doCloseEditNew();" class="close">X</span>
     <h3 class="fa icon-edit">Display&nbsp;Part</h3>
     <p>{{currentDataSet.title}}</p>
     <hr />
@@ -107,7 +107,7 @@
   </div>
 </div>
 
-<div class="overlay" *ngIf="ui.showDelete">
+<div class="overlay" *ngIf="ui.showDelete && dataSetToDelete">
   <div class="overlay-content">
     <span (click)="deleteClose()" class="close">X</span>
     <h3 class="fa icon-trash-empty">Display&nbsp;Part</h3>

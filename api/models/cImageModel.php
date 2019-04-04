@@ -27,6 +27,10 @@ class cImageModel extends cModel{
 		'path' => array(
 			'value' => false,
 			'type' => 'varchar'
+		),
+		'type' => array(
+			'value' => false,
+			'type' => 'int'
 		)
 	);
 	static $sTable = 't_images';

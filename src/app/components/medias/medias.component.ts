@@ -15,6 +15,8 @@ export class MediasComponent{
   //public uploader:FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage`});
   public uploader: FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage`, itemAlias: 'media'});
   public images:Image[]=[];
+  public tab:string = 'aimages';
+  public tabs:any = {1:'aimages',2:'tsimages',3:'tspdf'};
   constructor(
     private dataService:DataService,
     public ui:UiService,
@@ -44,5 +46,19 @@ export class MediasComponent{
 
   public imageChoosen(image){
     this.ui.emitImageChoosen(image);
+  }
+
+  public deleteImage(image){
+    this.dataService.deleteImage(image);
+  }
+
+  public openFileBrowser(){
+    document.getElementById('fileinput').click();
+  }
+
+  public uploadAll(){
+    this.uploader.setOptions({url:`${this.config.baseURL}uploadImage?type=${this.tab}`});
+    this.uploader.uploadAll();
+    //this.uploader.clearQueue();
   }
 }

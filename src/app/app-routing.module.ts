@@ -12,6 +12,7 @@ import { DisplayPartsComponent } from './components/displayParts/displayParts.co
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ProductsComponent } from './components/products/products.component';
+import { MediasComponent } from './components/medias/medias.component';
 
 import { AuthGuard } from './services/auth.service';
 import { UserComponent } from './components/user/user.component';
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'articles', component: ArticlesComponent, canActivate: [AuthGuard] },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
   { path: 'displayorders', component: TreeViewComponent, canActivate: [AuthGuard] },
-  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] }
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
+  { path: 'medias', component: MediasComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

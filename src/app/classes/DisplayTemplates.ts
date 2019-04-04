@@ -6,8 +6,8 @@ export abstract class displayTemplates {
       display: (new Display (
         {
           id:null,
-          title:'new Display 1',
-          articlenr:'15468008',
+          title:'Manteldisplay mit niedrigem Sockel für Duschsysteme',
+          articlenr:'9800111F',
           image:1,
           hide:false,
           displaytype:"1_4_chep_pallet",
@@ -15,48 +15,24 @@ export abstract class displayTemplates {
           instruction:3
         })),
       parts:[{
-        id:98001209,
-        title:'Halterung gestanzt, zum Einkleben mit 2 Dekopunkte',
-        articlenr:98001209,
-        open_format:'569 x 80',
-        stock:2147479951,
-        weight:27,
-        deleted:0,
+        articlenr:98001242,
         units:1
       },{
-        id:98001210,
-        title:'Dekopunkt Durchmesser 30 mm',
-        articlenr:98001210,
-        open_format:'30 x 30',
-        stock:2147475999,
-        weight:1,
-        deleted:0,
-        units:2
-      },{
-        id:98001240,
-        title:'Stülper groß - Halbfaltkiste mit zusammen stoßende',
-        articlenr:98001240,
-        open_format:'1375 x 2009',
-        stock:2147473740,
-        weight:1783,
-        deleted:0,
+        articlenr:98001508,
         units:1
       },{
-        id:98001295,
-        title:'Mantel gestanzt, 2-tlg. geklebt',
-        articlenr:98001295,
-        open_format:'1012 x 1395,5',
-        stock:2147483437,
-        weight:700,
-        deleted:0,
+        articlenr:98001503,
+        units:1
+      },{
+        articlenr:98001540,
         units:1
       }]
       }, {
       display:(new Display ({
           id:null,
-          title:'Counter Display',
-          articlenr:'154680010',
-          image:2,
+          title:'Manteldisplay mit hohem Sockel für Stangensets',
+          articlenr:'9800150H',
+          image:1,
           hide:false,
           displaytype:"1_4_chep_pallet",
           topsign_punch:'',
@@ -64,48 +40,65 @@ export abstract class displayTemplates {
         })
       ),
       parts:[{
-        id:98001209,
-        title:'Phantasie Display Teil',
-        articlenr:98001209,
-        open_format:'999 x 180',
-        stock:300,
-        weight:777,
-        deleted:0,
+        articlenr:98001242,
         units:1
       },{
-        id:98001210,
-        title:'Dekopunkt Durchmesser 30 mm',
-        articlenr:98001210,
-        open_format:'30 x 30',
-        stock:2147475999,
-        weight:1,
-        deleted:0,
-        units:2
-      },{
-        id:98001240,
-        title:'Stülper groß - Halbfaltkiste mit zusammen stoßende',
-        articlenr:98001240,
-        open_format:'1375 x 2009',
-        stock:2147473740,
-        weight:1783,
-        deleted:0,
+        articlenr:98001508,
         units:1
       },{
-        id:98001295,
-        title:'Mantel gestanzt, 2-tlg. geklebt',
-        articlenr:98001295,
-        open_format:'1012 x 1395,5',
-        stock:2147483437,
-        weight:700,
-        deleted:0,
+        articlenr:98001502,
+        units:1
+      },{
+        articlenr:98001500,
+        units:1
+      },{
+        articlenr:98001509,
+        units:1
+      },{
+        articlenr:98001205,
+        units:1
+      },{
+        articlenr:98001540,
         units:1
       }]
     },{
 
     display:(new Display ({
         id:null,
-        title:'Super Display',
-        articlenr:'154680011',
+        title:'2 Schüttendisplay',
+        articlenr:'9800120S',
+        image:2,
+        hide:false,
+        displaytype:"1_4_chep_pallet",
+        topsign_punch:'',
+        instruction:3
+      })
+    ),
+    parts:[{
+      articlenr:98001242,
+      units:1
+    },{
+      articlenr:98001508,
+      units:1
+    },{
+      articlenr:98001500,
+      units:1
+    },{
+      articlenr:98001502,
+      units:1
+    },{
+      articlenr:98001506,
+      units:2
+    },{
+      articlenr:98001540,
+      units:1
+    }]
+  },{
+
+    display:(new Display ({
+        id:null,
+        title:'3 Schüttendisplay',
+        articlenr:'9800130S',
         image:3,
         hide:false,
         displaytype:"1_4_chep_pallet",
@@ -114,40 +107,22 @@ export abstract class displayTemplates {
       })
     ),
     parts:[{
-      id:98001209,
-      title:'Phantasie Display Teil2',
-      articlenr:98001209,
-      open_format:'999 x 180',
-      stock:300,
-      weight:777,
-      deleted:0,
+      articlenr:98001242,
       units:1
     },{
-      id:98001210,
-      title:'Dekopunkt Durchmesser 30 mm',
-      articlenr:98001210,
-      open_format:'30 x 30',
-      stock:2147475999,
-      weight:1,
-      deleted:0,
-      units:2
-    },{
-      id:98001240,
-      title:'Stülper groß - Halbfaltkiste mit zusammen stoßende',
-      articlenr:98001240,
-      open_format:'1375 x 2009',
-      stock:2147473740,
-      weight:1783,
-      deleted:0,
+      articlenr:98001508,
       units:1
     },{
-      id:98001295,
-      title:'Mantel gestanzt, 2-tlg. geklebt',
-      articlenr:98001295,
-      open_format:'1012 x 1395,5',
-      stock:2147483437,
-      weight:700,
-      deleted:0,
+      articlenr:98001501,
+      units:1
+    },{
+      articlenr:98001503,
+      units:1
+    },{
+      articlenr:98001506,
+      units:3
+    },{
+      articlenr:98001540,
       units:1
     }]
   }

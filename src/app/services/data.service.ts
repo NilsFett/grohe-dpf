@@ -188,7 +188,7 @@ export class DataService {
 
   public changeTopSign(topSign) {
     this.http.post(`${this.config.baseURL}changeTopSign`, topSign, { withCredentials: true }).subscribe(
-      (topSigns: TopSigns[]) => {
+      (topSigns: TopSign[]) => {
         this.topSigns = topSigns;
         this.topSignsChange.next(this.topSigns);
         this.ui.setMessage('Save success');
@@ -286,8 +286,8 @@ export class DataService {
   public deleteTopSign(topSign) {
     this.http.post(`${this.config.baseURL}deleteTopSign`, topSign, { withCredentials: true }).subscribe(
       (topSigns: TopSign[]) => {
-        this.topSigns = displayParts;
-        this.topSignsChange.next(this.displayParts);
+        this.topSigns = topSigns;
+        this.topSignsChange.next(this.topSigns);
         this.ui.setMessage('Delete success');
         this.deleteSuccess.next(true);
         this.ui.doCloseDelete();
@@ -338,6 +338,21 @@ export class DataService {
         this.ui.setMessage('Delete success');
         this.deleteSuccess.next(true);
         this.ui.doCloseDelete();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
+  public deleteImage(dataSet) {
+    this.http.post(`${this.config.baseURL}deleteImage`, dataSet, { withCredentials: true }).subscribe(
+      (images: Image[]) => {
+        this.images = images;
+        this.imagesChange.next(this.images);
+        this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
       },
       error => {
         this.error.setError(error);

@@ -25,35 +25,29 @@ export class DisplayComposeComponent implements OnDestroy{
   showAssembly:boolean=false;
   showChooseTemplate:boolean=false;
   displayParts:DisplaysPart[] = [];
+  displayPartsById = {}
   partsSearchword:string = '';
 
-  columnsToDisplay = [ 'image', 'title', 'articlenr', 'displaytype', 'topsign_punch', 'instruction', 'edit', 'delete'];
+  columnsToDisplay = [ 'image', 'title', 'articlenr', 'displaytype'/*, 'topsign_punch'*/, 'instruction', 'edit', 'delete'];
   dataSource: MatTableDataSource<Display>;
   displayForm = new FormGroup({
     image: new FormControl(''),
     title: new FormControl('', [Validators.required, Validators.minLength(2)]),
     articlenr: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(8)]),
     displaytype: new FormControl(''),
-    topsign_punch: new FormControl(''),
+    /*topsign_punch: new FormControl(''),*/
     instruction: new FormControl('', [Validators.required])
   });
   filter = {
     title: '',
     articlenr: '',
-    displaytype: '',
-    topsign_punch: ''
+    displaytype: ''/*,
+    topsign_punch: ''*/
   };
   public images = {
     1: 'uploads/dp1.jpg',
     2: 'uploads/dp2.jpg',
-    3: 'uploads/dp3.jpg',
-    10: 'uploads/afd1707d12f77e13ad77ba0fc17e9f83.jpg',
-    11: 'uploads/773a7998644c720179ac7636d13db2c8.jpg',
-    12: 'uploads/3858f5b37715465e7d7407d14f664a5f.jpg',
-    13: 'uploads/b8ab04829399a0a70fdaa2abb4ef7924.jpg',
-    14: 'uploads/5f78313fceb9d1ab61815e1cb7ed1969.jpg',
-    15: 'uploads/e2f35a7d3761f87697d032ac43fe7081.jpg',
-    16: 'uploads/1e7d0d4eeb42492d8138a3decc90955f.jpg',
+    3: 'uploads/dp3.jpg'
   };
 
   public partsList:DisplaysPart[] = [];
@@ -85,11 +79,17 @@ export class DisplayComposeComponent implements OnDestroy{
 
     if(this.dataService.displayParts){
       this.displayParts = this.dataService.displayParts;
+      for(let i = 0; i < this.displayParts.length ; i++ ){
+        this.displayPartsById[this.displayParts[i].articlenr] = this.displayParts[i];
+      }
     }
     else{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
           this.displayParts = displayParts;
+          for(let i = 0; i < this.displayParts.length ; i++ ){
+            this.displayPartsById[this.displayParts[i].articlenr] = this.displayParts[i];
+          }
         }
       );
       this.dataService.loadDisplayParts();
@@ -119,7 +119,17 @@ export class DisplayComposeComponent implements OnDestroy{
 
   public templateChoosen(templateid){
     this.currentDataSet = displayTemplates.displayTemplates[templateid].display;
-    this.partsList = displayTemplates.displayTemplates[templateid].parts;
+
+    this.partsList = [];
+    for(let i = 0; i < displayTemplates.displayTemplates[templateid].parts.length; i++){
+      if(this.displayPartsById[displayTemplates.displayTemplates[templateid].parts[i].articlenr]){
+        let displayPart = this.displayPartsById[displayTemplates.displayTemplates[templateid].parts[i].articlenr];
+        displayPart.units = displayTemplates.displayTemplates[templateid].parts[i].units;
+        this.partsList.push(this.displayPartsById[displayTemplates.displayTemplates[templateid].parts[i].articlenr]);
+      }
+    }
+
+    //this.partsList = displayTemplates.displayTemplates[templateid].parts;
     this.ui.showOverlay = true;
     this.showChooseTemplate = false;
     this.showAssembly = true;
@@ -159,7 +169,7 @@ export class DisplayComposeComponent implements OnDestroy{
       title: this.currentDataSet.title,
       articlenr: this.currentDataSet.articlenr,
       displaytype: this.currentDataSet.displaytype,
-      topsign_punch: this.currentDataSet.topsign_punch,
+      /*topsign_punch: this.currentDataSet.topsign_punch,*/
       instruction: this.currentDataSet.instruction
     });
   }
@@ -214,7 +224,7 @@ export class DisplayComposeComponent implements OnDestroy{
       this.currentDataSet.title = this.displayForm.controls['title'].value;
       this.currentDataSet.articlenr = this.displayForm.controls['articlenr'].value;
       this.currentDataSet.displaytype = this.displayForm.controls['displaytype'].value;
-      this.currentDataSet.topsign_punch = this.displayForm.controls['topsign_punch'].value;
+      /*this.currentDataSet.topsign_punch = this.displayForm.controls['topsign_punch'].value;*/
       this.currentDataSet.instruction = this.displayForm.controls['instruction'].value;
       this.dataService.saveDisplayAndPartList(this.currentDataSet, this.partsList);
     }
@@ -240,6 +250,7 @@ export class DisplayComposeComponent implements OnDestroy{
   }
 
   ngOnDestroy(){
-    this.ui.imageChoosen.unsubscribe();
+    //this.ui.imageChoosen.unsubscribe();
   }
+
 }
