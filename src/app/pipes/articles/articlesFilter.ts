@@ -21,7 +21,6 @@ export class ArticlesFilter implements PipeTransform{
         &&  item.height.toLowerCase().indexOf(filter.height.toLowerCase()) !== -1
         &&  item.width.toLowerCase().indexOf(filter.width.toLowerCase()) !== -1
         &&  item.depth.toLowerCase().indexOf(filter.depth.toLowerCase()) !== -1
-        &&  item.topsign.toLowerCase().indexOf(filter.topsign.toLowerCase()) !== -1
         ){
           return true;
         }

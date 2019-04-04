@@ -1,9 +1,13 @@
-import { Injectable,EventEmitter } from '@angular/core';
+import { Injectable,EventEmitter,HostListener } from '@angular/core';
 import { UserService } from './user.service';
 import { Image } from '../classes/Image';
 
 @Injectable()
 export class UiService {
+  @HostListener('window:resize', ['$event']) onResize(event) {
+    this.adjustHeight();
+  }
+
   public view:string='customer';
   public showOverlay:boolean=false;
   public showEditNew:boolean=false;
@@ -14,11 +18,14 @@ export class UiService {
   public messageWindowShow = false;
   public messages:Array<String> = [];
   public imageChoosen: EventEmitter<Image> = new EventEmitter();
+  public res: any = {width:null,height:null}
+  public navopen = true;
+  public mainheight : number;
 
   constructor(
     private user:UserService
   ) {
-
+    this.mainheight = window.innerHeight - 20;
     this.user.loggedInStateObserver.subscribe(loggedIn => {
       if(loggedIn){
         if(this.user.data.usertype.value == 'admin'){
@@ -65,8 +72,15 @@ export class UiService {
     this.showMedias = false;
   }
 
-
   public emitImageChoosen(image){
     this.imageChoosen.next(image);
+  }
+
+  adjustHeight(){
+    this.mainheight = window.innerHeight - 20;
+    this.res = {width:window.innerWidth,height:window.innerHeight};
+    if(this.res.width < 800){
+      this.navopen = false;
+    }
   }
 }

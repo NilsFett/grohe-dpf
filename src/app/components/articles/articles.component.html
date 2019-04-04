@@ -23,14 +23,16 @@
             <i class="fa icon-search"></i><input placeholder="Weight" (ngModelChange)="filter.weight=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.weight" class="filter" type="text"  name="weightFilter" >
         </td>
         <td>
-            <i class="fa icon-search"></i><input placeholder="Height" (ngModelChange)="filter.height=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.height" class="filter" type="text"  name="heightFilter" >
+            <i class="fa icon-search"></i><input placeholder="Length" (ngModelChange)="filter.depth=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.depth" class="filter" type="text"  name="depthFilter" >
         </td>
         <td>
             <i class="fa icon-search"></i><input placeholder="Width" (ngModelChange)="filter.width=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.width" class="filter" type="text"  name="widthFilter" >
         </td>
         <td>
-            <i class="fa icon-search"></i><input placeholder="Depth" (ngModelChange)="filter.depth=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.depth" class="filter" type="text"  name="depthFilter" >
+            <i class="fa icon-search"></i><input placeholder="Height" (ngModelChange)="filter.height=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.height" class="filter" type="text"  name="heightFilter" >
         </td>
+
+
         <td>
             <i class="fa icon-search"></i><input placeholder="Topsign" (ngModelChange)="filter.topsign=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topsign" class="filter" type="text"  name="topsignFilter" >
         </td>
@@ -81,11 +83,11 @@
           <td mat-cell *matCellDef="let part"> {{part.weight}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="height">
+        <ng-container matColumnDef="depth">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-              Height
+              Length
           </th>
-          <td mat-cell *matCellDef="let part"> {{part.height}} </td>
+          <td mat-cell *matCellDef="let part"> {{part.depth}} </td>
         </ng-container>
 
         <ng-container matColumnDef="width">
@@ -95,11 +97,11 @@
           <td mat-cell *matCellDef="let part"> {{part.width}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="depth">
+        <ng-container matColumnDef="height">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-              Depth
+              Height
           </th>
-          <td mat-cell *matCellDef="let part"> {{part.depth}} </td>
+          <td mat-cell *matCellDef="let part"> {{part.height}} </td>
         </ng-container>
 
         <ng-container matColumnDef="topsign">
@@ -107,7 +109,9 @@
             Topsign
          </th>
           <td mat-cell *matCellDef="let part">
-              {{part.topsign}}
+            <span *ngIf="topSignsById[part.topsign]">
+            {{topSignsById[part.topsign].title}}
+            </span>
           </td>
         </ng-container>
 
@@ -131,7 +135,7 @@
     </div>
 </div>
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
-<div class="overlay" *ngIf="ui.showEditNew">
+<div class="overlay" *ngIf="ui.showEditNew && currentDataSet">
   <div class="overlay-content">
     <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
     <h3 class="fa icon-edit">Article</h3>
@@ -155,17 +159,12 @@
 
         <mat-form-field>
           <mat-select formControlName="type"  #type placeholder="Type*">
-            <mat-option value="Counter">Counter</mat-option>
-            <mat-option value="Basin">Basin</mat-option>
-            <mat-option value="THM">THM</mat-option>
-            <mat-option value="Handshowers">Handshowers</mat-option>
+            <mat-option value="Bath">Bath</mat-option>
+            <mat-option value="Basin">Shower</mat-option>
             <mat-option value="Kitchen">Kitchen</mat-option>
-            <mat-option value="Euphoria">Euphoria</mat-option>
-            <mat-option value="Eurosmart">Eurosmart</mat-option>
-            <mat-option value="Cosmo">Cosmo</mat-option>
-            <mat-option value="Tempesta">Tempesta</mat-option>
+            <mat-option value="Pro">Pro</mat-option>
+            <mat-option value="Ceramic">Ceramic</mat-option>
             <mat-option value="Spare_Parts">Spare Parts</mat-option>
-            <mat-option value="GRT">Spare GRT</mat-option>
           </mat-select>
           <mat-error [hidden]="type.valid || type.pristine">required</mat-error>
         </mat-form-field>
@@ -181,18 +180,21 @@
           <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight (gr.)*">
           <mat-error [hidden]="weight.valid || weight.pristine">required</mat-error>
         </mat-form-field>
+
+
         <mat-form-field>
-          <input type="text" formControlName="height" matInput name="height" #height placeholder="Height (cm.)*">
-          <mat-error [hidden]="height.valid || height.pristine">required</mat-error>
+          <input type="text" formControlName="depth" matInput name="depth" #depth placeholder="Length (cm.)*">
+          <mat-error [hidden]="depth.valid || depth.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
           <input type="text" formControlName="width" matInput name="width" #width placeholder="Width (cm.)*">
           <mat-error [hidden]="width.valid || width.pristine">required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input type="text" formControlName="depth" matInput name="depth" #depth placeholder="Depth (cm.)*">
-          <mat-error [hidden]="depth.valid || depth.pristine">required</mat-error>
+          <input type="text" formControlName="height" matInput name="height" #height placeholder="Height (cm.)">
+          <mat-error [hidden]="height.valid || height.pristine">required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
           <mat-select formControlName="topsign"  #topsign placeholder="Topsign">
             <mat-option *ngFor="let topsign of topSigns" value="{{topsign.id}}">{{topsign.title}}</mat-option>
@@ -215,15 +217,15 @@
 <div class="overlay" *ngIf="ui.showDelete">
   <div class="overlay-content">
     <span (click)="deleteClose()" class="close">X</span>
-    <h3 class="fa icon-trash-empty">Display&nbsp;Part</h3>
+    <h3 class="fa icon-trash-empty">Article</h3>
     <p>{{dataSetToDelete.title}}</p>
     <hr />
     <div class="container-flex">
-      <h2>This Display Part will be deleted permanently. Are you sure?</h2>
+      <h2>This Article will be deleted permanently. Are you sure?</h2>
       <div class="spacer"></div>
       <div style="display:flex;justify-content:  space-between" *ngIf="!ui.deleteSuccess">
         <button class="delete-button" (click)="delete()" mat-raised-button>Delete</button>
-        <button class="abort-button" (click)="dataSetToDelete = null;ui.showOverlay = false;" mat-raised-button>Abort</button>
+        <button class="abort-button" (click)="deleteClose();" mat-raised-button>Abort</button>
       </div>
       <div *ngIf="ui.deleteSuccess">
         Delete Success

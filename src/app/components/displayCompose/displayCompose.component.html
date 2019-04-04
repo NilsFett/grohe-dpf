@@ -13,13 +13,16 @@
         <td>
             <i class="fa icon-search"></i><input placeholder="Displaytype" (ngModelChange)="filter.displaytype=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.displaytype" class="filter" type="text"  name="displaytypeFilter" >
         </td>
+        <!--
         <td>
             <i class="fa icon-search"></i><input placeholder="Topsign Punch" (ngModelChange)="filter.topsign_punch=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topsign_punch" class="filter" type="text"  name="topsign_punchFilter" >
         </td>
+        -->
       </tr>
     </table>
     <div class="hr"></div>
       <table mat-table matSort [dataSource]="dataSource" >
+
         <ng-container matColumnDef="image">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Image
@@ -46,14 +49,14 @@
           </th>
           <td mat-cell *matCellDef="let display"> {{display.displaytype}} </td>
         </ng-container>
-
+<!--
         <ng-container matColumnDef="topsign_punch">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Topsign Punch
           </th>
           <td mat-cell *matCellDef="let display"> {{display.topsign_punch}} </td>
         </ng-container>
-
+-->
         <ng-container matColumnDef="instruction">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Instruction
@@ -85,11 +88,15 @@
   <div class="overlay-content">
     <span (click)="ui.doCloseEditNew();" class="close icon-cancel"></span>
     <h3 class="fa icon-edit">Display</h3>
-    <p>{{currentDataSet.title}}&nbsp;&nbsp;
-      <button *ngIf="!showAssembly" style="float:right;" (click)="showAssembly=true" mat-raised-button>Show Assembly</button>
-      <button *ngIf="showAssembly" style="float:right;" (click)="showAssembly=false" mat-raised-button>Show Display Data</button>
-    </p>
-    <hr />
+    <p>{{currentDataSet.title}}&nbsp;&nbsp;</p>
+    <ul class="tab">
+      <li (click)="showAssembly=false" [ngClass]="{'active': showAssembly == false}">Display Data</li><li>&nbsp;|&nbsp;</li>
+      <li (click)="showAssembly=true" [ngClass]="{'active': showAssembly == true}">Assembly</li>
+
+    </ul>
+
+
+    <hr class="clear" />
     <div class="container-flex" *ngIf="!showAssembly">
       <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="formValidateAfterIf()">
         <div class="spacer20"></div>
@@ -109,6 +116,7 @@
           </mat-select>
           <mat-error [hidden]="type.valid || type.pristine">required</mat-error>
         </mat-form-field>
+        <!--
         <mat-form-field>
           <mat-select formControlName="topsign_punch"  #packaging placeholder="Topsign Punch">
             <mat-option value="old Punch">old Punch</mat-option>
@@ -116,7 +124,7 @@
           </mat-select>
           <mat-error [hidden]="packaging.valid || packaging.pristine">required</mat-error>
         </mat-form-field>
-
+-->
         <mat-form-field>
           <mat-select formControlName="instruction"  #instruction placeholder="Instruction">
             <mat-option value="1">Euphoria</mat-option>
@@ -129,10 +137,6 @@
         <div class="spacer20"></div>
         <button  (click)="saveDisplaysAndPartList()" mat-raised-button>Save</button>
         <div class="spacer20"></div>
-        <div *ngIf="ui.saveSuccess">
-          <div class="spacer20"></div>
-          Save Success
-        </div>
       </form>
     </div>
     <div class="container-flex display-parts-assembly" *ngIf="showAssembly">
@@ -196,12 +200,27 @@
     <div class="container-flex">
       <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
       <div class="spacer"></div>
+      <div class="span3 padding">
 
-      <img (click)="templateChoosen(0)" src="{{config.baseURL}}uploads/dp1.jpg" />
-      <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp2.jpg" />
-      <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp3.jpg" />
+        <img (click)="templateChoosen(0)" src="{{config.baseURL}}uploads/dp1.jpg" />
+        <p>Manteldisplay mit niedrigem Sockel für Duschsysteme</p>
+      </div>
+      <div class="span3 padding">
 
-      <hr />
+        <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp1.jpg" />
+        <p>Manteldisplay mit hohem Sockel für Stangensets</p>
+      </div>
+      <div class="span3 padding">
+
+        <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp2.jpg" />
+        <p>2 Schüttendisplay</p>
+      </div>
+      <div class="span3 padding">
+
+        <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp3.jpg" />
+        <p>3 Schüttendisplay</p>
+      </div>
+      <hr class="clear" />
       <button class="delete-button" (click)="partsList = []; showNew()" mat-raised-button>Or create a new one without template</button>
     </div>
   </div>

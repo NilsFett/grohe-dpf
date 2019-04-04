@@ -71,6 +71,11 @@ th{
   height: 20px;
 }
 
+.span3{
+  float:left;
+  width:25%;
+}
+
 .span4{
   float:left;
   width:33.333%;
@@ -88,6 +93,9 @@ th{
   padding-right:20px;
 }
 
+.padding{
+    padding:20px;
+}
 .clear{
   clear:both;
 }
@@ -301,6 +309,26 @@ header{
   min-width:720px;
 }
 
+ul.tab{
+    list-style-type: none;
+    margin:0px;
+    background-color: #e9e9e9;
+    height: 40px;
+    line-height: 40px;
+}
+
+ul.tab li{
+  display:block;
+  float:left;
+  color:#3184b9;
+  cursor:pointer;
+}
+
+ul.tab li.active{
+  font-weight:bold;
+  text-decoration:underline;
+}
+
 header .hleft{
   float:left;
 }
@@ -508,7 +536,7 @@ header.login .span6{
 
 .mat-form-field {
   width:100%;
-  max-width:300px;
+  /*max-width:300px;*/
   display:block !important;
 }
 
@@ -517,11 +545,18 @@ header.login .span6{
   margin: 5px 0;
 }
 
+.templates{
+  width:100%;
+}
 .templates img{
   width:25%;
   min-width:200px;
   max-width:200px;
   margin-right:20px;
+}
+
+.templates{
+    font-weight:bold;
 }
 
 .display-parts-assembly ul{
@@ -607,7 +642,13 @@ grohe-dpf-medias{
   justify-content: center;
 }
 
-
+#medias{
+  max-height:90%;
+  max-width:90%;
+  background-color:#FFF;
+  overflow:hidden;
+  padding:20px;
+}
 
 #medias > div{
   display:block;
@@ -621,20 +662,31 @@ grohe-dpf-medias{
   overflow:auto;
   margin:0 auto;
 }
+
 .upload{
-  position: absolute;
-  top:0;
   padding:20px;
-  background-color: #FFF;
 }
 
 .image{
     padding: 20px 0;
     border-bottom:1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fileinputframe input{
+  visibility:hidden;
 }
 
 .image img{
   margin: 0 20px 0 0;
+  width:100px;
+}
+
+.imagefilename{
+    width:50%;
+    overflow:hidden;
 }
 
 @media screen and (max-width: 800px) {

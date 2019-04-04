@@ -62,6 +62,16 @@ export class DisplayPartsComponent  {
   public showNew(){
     this.ui.doShowEditNew();;
     this.currentDataSet = new DisplaysPart();
+    this.clearForm();
+  }
+
+  public clearForm(){
+    this.displayPartForm = new FormGroup({
+      title : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      open_format : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      weight : new FormControl('',[Validators.required])
+    });
   }
 
   filterChanges(){

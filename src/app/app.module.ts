@@ -19,6 +19,7 @@ import { ArticlesComponent } from './components/articles/articles.component';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { MediasComponent } from './components/medias/medias.component';
+import { TopSignsComponent } from './components/topSigns/topSigns.component';
 
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
@@ -49,6 +50,7 @@ import { DisplayPartsFilter } from './pipes/displayParts/displayPartsFilter';
 import { DisplaysFilter } from './pipes/displays/displaysFilter';
 import { ArticlesFilter } from './pipes/articles/articlesFilter';
 import { ProductsFilter } from './pipes/product/productFilter';
+import { TopSignsFilter } from './pipes/topSigns/topSignsFilter';
 
 import { UserComponent } from './components/user/user.component';
 import { UserFilter } from './pipes/user/userFilter';
@@ -66,6 +68,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     DisplayComposeComponent,
     DisplayPartsComponent,
     ArticlesComponent,
+    TopSignsComponent,
     ProductsComponent,
     OrdersComponent,
     DpfContentDirective,
@@ -75,6 +78,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     DisplaysFilter,
     ArticlesFilter,
     ProductsFilter,
+    TopSignsFilter,
     UserFilter,
     UserComponent,
     TreeViewComponent,
@@ -104,7 +108,8 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     DisplaysFilter,
     ArticlesFilter,
     ProductsFilter,
-    UserFilter
+    UserFilter,
+    TopSignsFilter
   ],
   bootstrap: [AppComponent]
 })
