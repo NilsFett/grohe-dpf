@@ -92,4 +92,13 @@ export class AppComponent implements AfterViewInit{
       this.navopen = false;
     }
   }
+
+  public userInfoOpenClicked(event){
+    event.stopPropagation();
+    this.userInfoOpen = ! this.userInfoOpen;
+  }
+
+  public clicked(){
+    if(this.userInfoOpen)this.userInfoOpen = false;
+  }
 }

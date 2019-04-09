@@ -18,7 +18,9 @@
   </div>
   <hr />
   <ul class="tab">
-    <li (click)="tab = 'aimages'" [ngClass]="{'active': tab == 'aimages'}">Articel Images</li>
+    <li style="margin-left:10px;" (click)="tab = 'dimages'" [ngClass]="{'active': tab == 'dimages'}">Display Images</li>
+    <li>&nbsp;|&nbsp;</li>
+    <li (click)="tab = 'pimages'" [ngClass]="{'active': tab == 'pimages'}">Product Images</li>
     <li>&nbsp;|&nbsp;</li>
     <li (click)="tab = 'tsimages'" [ngClass]="{'active': tab == 'tsimages'}">Top Sign Images</li>
     <li>&nbsp;|&nbsp;</li>

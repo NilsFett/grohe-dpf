@@ -15,8 +15,9 @@ export class MediasComponent{
   //public uploader:FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage`});
   public uploader: FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage`, itemAlias: 'media'});
   public images:Image[]=[];
-  public tab:string = 'aimages';
-  public tabs:any = {1:'aimages',2:'tsimages',3:'tspdf'};
+  public tab:string = 'dimages';
+  public tabs:any = {1:'dimages',2:'pimages', 3:'tsimages',4:'tspdf'};
+  private timeoutHandle;
   constructor(
     private dataService:DataService,
     public ui:UiService,
@@ -36,8 +37,12 @@ export class MediasComponent{
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
          let obj = JSON.parse(response);
+         item.remove();
          if(obj.success == true){
-           setTimeout(()=>{
+           if(this.timeoutHandle){
+             clearTimeout(this.timeoutHandle);
+           }
+           this.timeoutHandle = setTimeout(()=>{
              this.dataService.loadImages();
            },500);
          }

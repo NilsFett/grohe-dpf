@@ -21,7 +21,7 @@
       </tr>
     </table>
     <div class="hr"></div>
-      <table mat-table matSort [dataSource]="dataSource" >
+      <table mat-table matSort [dataSource]="dataSource" matSortActive="articlenr" matSortDirection="asc" >
 
         <ng-container matColumnDef="image">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
@@ -61,7 +61,7 @@
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Instruction
           </th>
-          <td mat-cell *matCellDef="let display"> {{display.instruction}} </td>
+          <td mat-cell *matCellDef="let display"> {{instructions[display.instruction]}} </td>
         </ng-container>
 
         <ng-container matColumnDef="edit">
@@ -92,7 +92,6 @@
     <ul class="tab">
       <li (click)="showAssembly=false" [ngClass]="{'active': showAssembly == false}">Display Data</li><li>&nbsp;|&nbsp;</li>
       <li (click)="showAssembly=true" [ngClass]="{'active': showAssembly == true}">Assembly</li>
-
     </ul>
 
 
@@ -157,7 +156,6 @@
         <input type="text" matInput name="partsearch" placeholder="Search by SAP Number or Title" (keyup)="partsSearchwordChanged($event.target.value)">
       </mat-form-field>
       <div class="chooseDisplayPart">
-
         <ul>
           <li *ngFor="let part of displayParts">
             <ng-container *ngIf="part.deleted == 0 && ( part.title.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 || part.articlenr.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 )">
@@ -197,27 +195,27 @@
     <span (click)="hideChooseTemplateOverlay()" class="close icon-cancel"></span>
     <h3 class="fa icon-plus">Choose Display Template</h3>
     <hr />
-    <div class="container-flex">
+    <div class="row">
       <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
       <div class="spacer"></div>
       <div class="span3 padding">
 
-        <img (click)="templateChoosen(0)" src="{{config.baseURL}}uploads/dp1.jpg" />
+        <img (click)="templateChoosen(0)" src="{{config.baseURL}}uploads/dp1f.jpg" />
         <p>Manteldisplay mit niedrigem Sockel für Duschsysteme</p>
       </div>
       <div class="span3 padding">
 
-        <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp1.jpg" />
+        <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp1f.jpg" />
         <p>Manteldisplay mit hohem Sockel für Stangensets</p>
       </div>
       <div class="span3 padding">
 
-        <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp2.jpg" />
+        <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp2f.jpg" />
         <p>2 Schüttendisplay</p>
       </div>
       <div class="span3 padding">
 
-        <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp3.jpg" />
+        <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp3f.jpg" />
         <p>3 Schüttendisplay</p>
       </div>
       <hr class="clear" />

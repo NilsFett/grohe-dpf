@@ -32,8 +32,6 @@ class cGroheapiController{
 		return self::$oInstance;
 	}
 
-
-
 	public function index(){
 		echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'data'=>cSessionUser::getInstance()->data()));
 	}
@@ -186,6 +184,13 @@ class cGroheapiController{
 		}
 	}
 
+	public function loadCategories(){
+		if( cSessionUser::getInstance()->bIsLoggedIn){
+			$tree = cProductTreeModel::getAllAsTree();
+			echo json_encode($tree);
+		}
+	}
+
 
 	public function acceptUserRequest(){
 		$postData = json_decode(file_get_contents('php://input'),true);
@@ -228,8 +233,14 @@ class cGroheapiController{
 		if(isset($postData['articlenr'])){
 			$oDisplaysPartsModel->set('articlenr', $postData['articlenr']);
 		}
-		if(isset($postData['open_format'])){
-			$oDisplaysPartsModel->set('open_format', $postData['open_format']);
+		if(isset($postData['length'])){
+			$oDisplaysPartsModel->set('length', $postData['length']);
+		}
+		if(isset($postData['width'])){
+			$oDisplaysPartsModel->set('width', $postData['width']);
+		}
+		if(isset($postData['height'])){
+			$oDisplaysPartsModel->set('height', $postData['height']);
 		}
 		if(isset($postData['stock'])){
 			$oDisplaysPartsModel->set('stock', $postData['stock']);
@@ -311,15 +322,8 @@ class cGroheapiController{
 		if(isset($postData['image'])){
 			$oDisplaysPartsModel->set('image', $postData['image']);
 		}
-		if(isset($postData['image_thumb'])){
-			$oDisplaysPartsModel->set('image_thumb', $postData['image_thumb']);
-		}
-		if(isset($postData['hide'])){
-			$oDisplaysPartsModel->set('hide', $postData['hide']);
-		}
-		else{
-			$oDisplaysPartsModel->set('hide', 0);
-		}
+
+
 
 		$oDisplaysPartsModel->save();
 		$this->getProducts();
@@ -480,6 +484,13 @@ class cGroheapiController{
 		}
 	}
 
+	public function loadArticlesByProductId(){
+		if(cSessionUser::getInstance()->bIsLoggedIn && isset($_GET['article_id']) && is_numeric($_GET['article_id'])){
+			$articles = cArticlesModel::getByProductId((int)$_GET['article_id']);
+			echo json_encode($articles);
+		}
+	}
+
 	public function saveDisplayAndPartList(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		if( isset ($postData['display']['id']) ){
@@ -505,6 +516,46 @@ class cGroheapiController{
 		}
 
 		$this->getDisplays();
+	}
+
+	public function saveProductAndArticleList(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		if( isset ($postData['product']['id']) ){
+			$oProduct = new cProductsModel($postData['product']['id']);
+			cRProductArticleModel::deleteByProductId($postData['product']['id']);
+		}
+		else{
+			$oProduct = new cProductsModel();
+		}
+		$oProduct->set('title', $postData['product']['title']);
+		$oProduct->set('DFID', $postData['product']['DFID']);
+		if(isset($postData['product']['image'])){
+			$oProduct->set('image', $postData['product']['image']);
+		}
+
+		$oProduct->set('SAP', $postData['product']['SAP']);
+		$oProduct->set('price', $postData['product']['price']);
+		$oProduct->set('pallet_disabled', (int)$postData['product']['pallet_disabled']);
+		$oProduct->set('pallet_select', (int)$postData['product']['pallet_select']);
+		$oProduct->set('bypack_disabled', (int)$postData['product']['bypack_disabled']);
+		$oProduct->set('topsign_upload_disabled', (int)$postData['product']['topsign_upload_disabled']);
+		$oProduct->set('notopsign_order_disabled', (int)$postData['product']['notopsign_order_disabled']);
+		$oProduct->set('deliverytime', (int)$postData['product']['deliverytime']);
+		$oProduct->set('empty_display', (int)$postData['product']['empty_display']);
+		$oProduct->set('product_tree', (int)$postData['product']['product_tree']);
+		if(isset($postData['product']['display_id'])){
+			$oProduct->set('display_id', $postData['product']['display_id']);
+		}
+		else{
+			$oProduct->set('display_id', 1);
+		}
+
+		$oProduct->save();
+		foreach( $postData['articleList'] as $article ){
+			cRProductArticleModel::replace($oProduct->get('id'), $article['id'], $article['units']);
+		}
+
+		$this->getProducts();
 	}
 
 	public function uploadImage(){
@@ -538,12 +589,18 @@ class cGroheapiController{
 						$oImage = new cImageModel();
 						$oImage->set('title', $aImage['name']);
 						$oImage->set('path', $sHash.'.'.$sExtension);
+
+
+
 						$type = 1;
-						if($_GET['type'] == 'tsimages'){
+						if($_GET['type'] == 'pimages'){
 							$type = 2;
 						}
-						elseif($_GET['type'] == 'tspdf'){
+						elseif($_GET['type'] == 'tsimages'){
 							$type = 3;
+						}
+						elseif($_GET['type'] == 'tspdf'){
+							$type = 4;
 						}
 						$oImage->set('type', $type);
 
@@ -559,16 +616,16 @@ class cGroheapiController{
 							}
 							*/
 							if($aSize[0] > $aSize[1]){
-								$newHeight = $aSize[1] / ( $aSize[0] / 100 );
-								$newWidth = 100;
+								$newHeight = $aSize[1] / ( $aSize[0] / 150 );
+								$newWidth = 150;
 							}
 							elseif($aSize[0] < $aSize[1]){
-								$newHeight = 100;
-								$newWidth = $aSize[0] / ( $aSize[1] / 100 );
+								$newHeight = 150;
+								$newWidth = $aSize[0] / ( $aSize[1] / 150 );
 							}
 							else{
-								$newHeight = 100;
-								$newWidth = 100;
+								$newHeight = 150;
+								$newWidth = 150;
 							}
 
 							$image = new Imagick(cConfig::getInstance()->get('basepath')."uploads/".$sHash.".".$sExtension);

@@ -64,6 +64,10 @@ class cProductsModel extends cModel{
 			'value' => false,
 			'type' => 'int'
 		),
+		'bypack_disabled' => array(
+			'value' => false,
+			'type' => 'int'
+		),
 		'deliverytime' => array(
 			'value' => false,
 			'type' => 'int'
@@ -92,7 +96,8 @@ class cProductsModel extends cModel{
 
 	public static function getAll(){
 		$query = '	SELECT *
-					FROM `t_display_position`';
+					FROM `t_display_position`
+					WHERE `old_system` = 0';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();

@@ -14,7 +14,6 @@ export class ArticlesFilter implements PipeTransform{
       item => {
         if( item.articlenr.toLowerCase().indexOf(filter.articlenr.toLowerCase()) !== -1
         &&  item.title.toLowerCase().indexOf(filter.title.toLowerCase()) !== -1
-        &&  item.extra.toLowerCase().indexOf(filter.extra.toLowerCase()) !== -1
         &&  item.type.toLowerCase().indexOf(filter.type.toLowerCase()) !== -1
         &&  item.packaging.toLowerCase().indexOf(filter.packaging.toLowerCase()) !== -1
         &&  item.weight.toLowerCase().indexOf(filter.weight.toLowerCase()) !== -1

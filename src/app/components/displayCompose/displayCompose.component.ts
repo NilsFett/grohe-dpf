@@ -44,12 +44,13 @@ export class DisplayComposeComponent implements OnDestroy{
     displaytype: ''/*,
     topsign_punch: ''*/
   };
-  public images = {
-    1: 'uploads/dp1.jpg',
-    2: 'uploads/dp2.jpg',
-    3: 'uploads/dp3.jpg'
-  };
 
+  instructions = [
+    "","Euphoria","Rainshower","Standard"
+  ];
+
+  public images:Image[] = [];
+  public imagesById = {};
   public partsList:DisplaysPart[] = [];
 
   constructor(
@@ -94,10 +95,28 @@ export class DisplayComposeComponent implements OnDestroy{
       );
       this.dataService.loadDisplayParts();
     }
+
+    if(this.dataService.images){
+      this.images = this.dataService.images;
+      for(let i = 0; i < this.images.length ; i++ ){
+        this.imagesById[this.images[i].id] = this.images[i];
+      }
+    }
+    else{
+      this.dataService.imagesChange.subscribe(
+        (images:Image[]) => {
+          this.images = images;
+          for(let i = 0; i < this.images.length ; i++ ){
+            this.imagesById[this.images[i].id] = this.images[i];
+          }
+        }
+      );
+      this.dataService.loadImages();
+    }
+
     this.ui.imageChoosen.subscribe( (image:Image)=>{
       this.currentDataSet.image = image.id;
       this.ui.doHideMedias();
-
     });
   }
 
@@ -107,7 +126,12 @@ export class DisplayComposeComponent implements OnDestroy{
   }
 
   public getImage(imageid){
-      return `${this.config.baseURL}${this.images[imageid]}`;
+    if(this.imagesById[imageid]){
+      return `${this.config.baseURL}uploads/${this.imagesById[imageid].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
   }
 
   public showNew() {

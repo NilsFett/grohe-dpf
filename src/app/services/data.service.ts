@@ -12,6 +12,7 @@ import { Article } from '../classes/Article';
 import { TopSign } from '../classes/TopSign';
 
 import { Product } from '../classes/Product';
+import { ProductTree } from '../classes/ProductTree';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { User } from '../classes/User';
 import { Image } from '../classes/Image';
@@ -47,9 +48,17 @@ export class DataService {
   public imagesChange: Subject<Array<Image>>;
   private imagesChangeObserver: Observable<Array<Image>>;
 
+  public categories: ProductTree[] = null;
+  public categoriesChange: Subject<Array<ProductTree>>;
+  private categoriesChangeObserver: Observable<Array<ProductTree>>;
+
   public displayPartsByDisplayId: Array<Array<DisplaysPart>> = [];
   public displayPartsByDisplayIdChange: Subject<Array<DisplaysPart>>;
   private displayPartsByDisplayIdChangeObserver: Observable<Array<DisplaysPart>>;
+
+  public articlesByProductId: Array<Array<Article>> = [];
+  public articlesByProductIdChange: Subject<Array<Article>>;
+  private articlesByProductIdChangeObserver: Observable<Array<Article>>;
 
   public saveSuccess: EventEmitter<boolean> = new EventEmitter();
   public deleteSuccess: EventEmitter<boolean> = new EventEmitter();
@@ -85,8 +94,14 @@ export class DataService {
     this.imagesChange = new Subject<Array<Image>>();
     this.imagesChangeObserver = this.imagesChange.asObservable();
 
+    this.categoriesChange = new Subject<Array<ProductTree>>();
+    this.categoriesChangeObserver = this.categoriesChange.asObservable();
+
     this.displayPartsByDisplayIdChange = new Subject<Array<DisplaysPart>>();
     this.displayPartsByDisplayIdChangeObserver = this.displayPartsByDisplayIdChange.asObservable();
+
+    this.articlesByProductIdChange = new Subject<Array<Article>>();
+    this.articlesByProductIdChangeObserver = this.articlesByProductIdChange.asObservable();
   }
 
   public loadUsers() {
@@ -103,19 +118,13 @@ export class DataService {
     });
   }
 
-/*
-  async getUsers() {
-    var u:any;
-    await this.http.get(`${this.config.baseURL}getUsers`, { withCredentials: true })
-      .toPromise().then(
-        (users) => {
-          u=users;
-        }).catch((err) => {
-          console.log(err);
-        });
-        return u;
+  public loadCategories() {
+    this.http.get(`${this.config.baseURL}loadCategories`, { withCredentials: true }).subscribe((categories: ProductTree[]) => {
+      this.categories = categories;
+      this.categoriesChange.next(this.categories);
+    });
   }
-*/
+
   async getProductTrees() {
     var u:any;
     await this.http.get(`${this.config.baseURL}productTree`, { withCredentials: true })
@@ -167,6 +176,13 @@ export class DataService {
     this.http.get(`${this.config.baseURL}loadDisplasPartsByDisplayId?display_id=${displayId}`, { withCredentials: true }).subscribe((displayParts: DisplaysPart[]) => {
       this.displayPartsByDisplayId[displayId] = displayParts;
       this.displayPartsByDisplayIdChange.next(this.displayPartsByDisplayId[displayId]);
+    });
+  }
+
+  public loadArticlesByProductId(product_id) {
+    this.http.get(`${this.config.baseURL}loadArticlesByProductId?article_id=${product_id}`, { withCredentials: true }).subscribe((articles: Article[]) => {
+      this.articlesByProductId[product_id] = articles;
+      this.articlesByProductIdChange.next(this.articlesByProductId[product_id]);
     });
   }
 
@@ -376,4 +392,21 @@ export class DataService {
       }
     );
   }
+
+  public saveProductAndArticleList(product:Product, articleList:Article[]){
+    this.http.post(`${this.config.baseURL}saveProductAndArticleList`, {product:product,articleList:articleList}, { withCredentials: true }).subscribe(
+      ( products:Product[] ) => {
+        this.ui.setMessage('Save success');
+        this.products = products;
+        this.productsChange.next(this.products);
+        this.saveSuccess.next(true);
+        this.ui.doCloseEditNew();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
 }

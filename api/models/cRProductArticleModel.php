@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright (c) 2018 Nils Fett
+Copyright (c) 2020 Nils Fett
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,51 +13,42 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-class cImageModel extends cModel{
+class cRProductArticleModel extends cModel{
 
 	protected $aColumns = array(
-		'id' => array(
+		'position' => array(
 			'value' => false,
 			'type' => 'int'
 		),
-		'title' => array(
+		'article_id' => array(
 			'value' => false,
-			'type' => 'varchar'
+			'type' => 'int'
 		),
-		'path' => array(
-			'value' => false,
-			'type' => 'varchar'
-		),
-		'type' => array(
+		'units' => array(
 			'value' => false,
 			'type' => 'int'
 		)
 	);
-	static $sTable = 't_images';
-	protected $sPrimary = 'id';
+	static $sTable = 'r_display-article';
+
 
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
 
-	public static function imageExists($sPath, $nPathId){
-		$query = '	SELECT *
-					FROM `'.self::$sTable.'`
-					WHERE `path` = ?';
+	public static function replace($product_id, $article_id, $units){
+		$query = '	REPLACE INTO `'.self::$sTable.'`
+								SET `position` = ?, `article_id` = ?, `units` = ?';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
-		$stmt->execute(array($sPath));
-		$aImages = $stmt->fetchAll();
-		return count($aImages);
+		$stmt->execute(array($product_id, $article_id, $units));
 	}
 
-	public static function getAll(){
-		$query = '	SELECT *
-					FROM `'.self::$sTable.'`
-					WHERE ( `type` > 0 || `id`=0)';
+	public static function deleteByProductId($product_id){
+		$query = '	DELETE FROM `'.self::$sTable.'`
+								WHERE `position` = ?';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
-		$stmt->execute();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->execute(array($product_id));
 	}
 }

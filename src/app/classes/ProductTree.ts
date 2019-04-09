@@ -5,4 +5,5 @@ export class ProductTree {
   public hide:number;
   public sorting:number;
   public deleted:number;
+  public children:ProductTree[];
 }

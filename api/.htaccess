@@ -7,6 +7,16 @@
 
 RewriteEngine On
 
-RewriteCond %{QUERY_STRING} (.*)
+#RewriteCond %{QUERY_STRING} (.*)
+#RewriteCond ^(uploads) - [L]
 
-RewriteRule ^((?!uploads).*) index.php [L]
+#RewriteRule !^/api/uploads($|/)index.php [L]
+
+RewriteCond %{REQUEST_URI} "/api/uploads/"
+RewriteRule (.*) $1 [L]
+
+
+#RewriteCond %{REQUEST_URI} ^((?!/api/uploads).*)
+#RewriteRule (.*) index.php [L]
+
+RewriteRule ^((?!api/uploads).*) index.php [L]

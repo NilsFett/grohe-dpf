@@ -15,7 +15,9 @@ export class DisplayPartsFilter implements PipeTransform{
         if( item.title.toLowerCase().indexOf(filter.title.toLowerCase()) !== -1
         &&  item.articlenr.toLowerCase().indexOf(filter.articlenr.toLowerCase()) !== -1
         &&  item.weight.toLowerCase().indexOf(filter.weight.toLowerCase()) !== -1
-        &&  item.open_format.toLowerCase().indexOf(filter.open_format.toLowerCase()) !== -1){
+        &&  item.length.toLowerCase().indexOf(filter.length.toLowerCase()) !== -1
+        &&  item.width.toLowerCase().indexOf(filter.width.toLowerCase()) !== -1
+        &&  item.height.toLowerCase().indexOf(filter.height.toLowerCase()) !== -1){
           return true;
         }
       }

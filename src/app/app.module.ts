@@ -12,12 +12,12 @@ import { PasswordResetComponent } from './components/passwordReset/passwordReset
 import { RegisterComponent } from './components/register/register.component';
 import { UserRequestsComponent } from './components/userrequests/userrequests.component';
 import { StartComponent } from './components/start/start.component';
-import { OrderComponent } from './components/order/order.component';
+/*import { OrderComponent } from './components/order/order.component';*/
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ProductsComponent } from './components/products/products.component';
-import { OrdersComponent } from './components/orders/orders.component';
+//import { OrdersComponent } from './components/orders/orders.component';
 import { MediasComponent } from './components/medias/medias.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
 
@@ -25,6 +25,8 @@ import { TopSignsComponent } from './components/topSigns/topSigns.component';
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
 import { DpfFormValidateAfterIfDirective } from './components/directives/dpf-form-validate-after-if.directive';
+import { DpfSyncWidth } from './components/directives/dpf-sync-width.directive';
+import { DpfSyncWidthSource } from './components/directives/dpf-sync-width-source.directive';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTableModule } from '@angular/material/table';
@@ -64,16 +66,18 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     UserRequestsComponent,
     RegisterComponent,
     StartComponent,
-    OrderComponent,
+    /*OrderComponent,*/
     DisplayComposeComponent,
     DisplayPartsComponent,
     ArticlesComponent,
     TopSignsComponent,
     ProductsComponent,
-    OrdersComponent,
+    /*OrdersComponent,*/
     DpfContentDirective,
     DpfOverflowWrapperDirective,
     DpfFormValidateAfterIfDirective,
+    DpfSyncWidth,
+    DpfSyncWidthSource,
     DisplayPartsFilter,
     DisplaysFilter,
     ArticlesFilter,

@@ -71,6 +71,11 @@ th{
   height: 20px;
 }
 
+.row{
+  width:100%;
+  clear:both;
+}
+
 .span3{
   float:left;
   width:25%;
@@ -203,6 +208,11 @@ i.icon-search{
   line-height:22px;
 }
 
+.mat-table img{
+  max-width:100px;
+  max-height:100px;
+}
+
 #message-window{
   position:fixed;
   top:20px;
@@ -312,16 +322,18 @@ header{
 ul.tab{
     list-style-type: none;
     margin:0px;
+    padding:0px;
     background-color: #e9e9e9;
-    height: 40px;
+
     line-height: 40px;
 }
 
 ul.tab li{
-  display:block;
-  float:left;
+  display:inline-block;
+
   color:#3184b9;
   cursor:pointer;
+  margin:0 5px;
 }
 
 ul.tab li.active{
@@ -549,10 +561,9 @@ header.login .span6{
   width:100%;
 }
 .templates img{
-  width:25%;
-  min-width:200px;
-  max-width:200px;
-  margin-right:20px;
+  width:100%;
+  max-width:300px;
+  padding-right:20px;
 }
 
 .templates{

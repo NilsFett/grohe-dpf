@@ -28,7 +28,15 @@ class cDisplaysPartsModel extends cModel{
 			'value' => false,
 			'type' => 'int'
 		),
-		'open_format' => array(
+		'length' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'width' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'height' => array(
 			'value' => false,
 			'type' => 'int'
 		),
