@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,  Input } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { UiService } from 'src/app/services/ui.service';
 import { DataService } from 'src/app/services/data.service';
@@ -7,51 +7,94 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
 interface FoodNode {
+  id:number;
   name: string;
   children?: FoodNode[];
 }
 
 interface FlatNode {
+  id:number;
   expandable: boolean;
   name: string;
   level: number;
 }
 
 @Component({
-  selector: 'app-tree-view',
+  selector: 'grohe-dpf-tree-view',
   templateUrl: './tree-view.component.html',
   styleUrls: ['./tree-view.component.css']
 })
-export class TreeViewComponent implements OnInit {
-  pts: ProductTree[] = [];
-
+export class TreeViewComponent  {
+  @Input() selectedCategory:number=1;
+  @Input() label:string;
+  public selecting:boolean=false;
+  public categories: ProductTree[] = [];
+  public categoriesById={};
   private transformer = (node: FoodNode, level: number) => {
     return {
+      id: node.id,
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
-      level: level,
+      level: level
     };
   }
-
-  treeControl = new FlatTreeControl<FlatNode>(
-    node => node.level, node => node.expandable);
-
-  treeFlattener = new MatTreeFlattener(
-    this.transformer, node => node.level, node => node.expandable, node => node.children);
-
+  treeControl = new FlatTreeControl<FlatNode>(node => node.level, node => node.expandable);
+  treeFlattener = new MatTreeFlattener(this.transformer, node => node.level, node => node.expandable, node => node.children);
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  hasChild = (_: number, node: FlatNode) => node.expandable;
+  public ready = false
+
+
 
   constructor(
     public user: UserService,
     public ui: UiService,
     public dataService: DataService,
-  ) { }
+  ) {
+    if(this.dataService.categories){
+      this.categories = this.dataService.categories;
+      this.dataSource.data = this.categories;
+      this.flatenCategories(this.categories);
+    }
+    else{
+      this.dataService.categoriesChange.subscribe(
+        (categories:ProductTree[]) => {
+          this.categories = categories;
+          this.dataSource.data = this.categories;
+          this.flatenCategories(this.categories);
+        }
+      );
+      this.dataService.loadCategories();
+    }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
 
+  }
+
+  private flatenCategories(categories:ProductTree[]){
+    for(let i = 0; i < categories.length; i++){
+      this.categoriesById[categories[i].id] = categories[i];
+      if(categories[i].children.length){
+        this.flatenCategories(categories[i].children);
+      }
+    }
+    this.ready = true;
+  }
+
+  public nodeClicked(node){
+    this.selecting = false;
+    this.selectedCategory=node.id;
+    this.ui.emitCategorySelected(node.id);
+  }
+
+
+/*
   async ngOnInit() {
+
     await this.getProductTrees();
     var a = this.flatListToTreeViewData(this.pts);
+    console.log('TREE');
+    console.log(a);
+    return;
     this.dataSource.data = a;
   }
 
@@ -105,5 +148,5 @@ export class TreeViewComponent implements OnInit {
       console.log("err");
     }
   }
-
+*/
 }

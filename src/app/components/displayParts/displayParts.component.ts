@@ -21,18 +21,22 @@ export class DisplayPartsComponent  {
   filter = {
     articlenr:'',
     title:'',
-    open_format:'',
+    length:'',
+    width:'',
+    height:'',
     type:'',
     weight:''
   };
 
-  columnsToDisplay = ['articlenr','title', 'weight', 'open_format', 'edit', 'delete'];
+  columnsToDisplay = ['articlenr','title', 'weight', 'length', 'width', 'height', 'edit', 'delete'];
   dataSource :  MatTableDataSource<DisplaysPart>;
   displayPartForm = new FormGroup({
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
-    open_format : new FormControl('',[Validators.required, Validators.minLength(2)]),
-    weight : new FormControl('',[Validators.required])
+    weight : new FormControl('',[Validators.required]),
+    length : new FormControl(''),
+    width : new FormControl(''),
+    height : new FormControl('')
   });
 
   constructor(
@@ -69,8 +73,10 @@ export class DisplayPartsComponent  {
     this.displayPartForm = new FormGroup({
       title : new FormControl('',[Validators.required, Validators.minLength(2)]),
       articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      open_format : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      weight : new FormControl('',[Validators.required])
+      weight : new FormControl('',[Validators.required]),
+      length : new FormControl(''),
+      width : new FormControl(''),
+      height : new FormControl('')
     });
   }
 
@@ -83,8 +89,11 @@ export class DisplayPartsComponent  {
     if (this.displayPartForm.status == 'VALID') {
       this.currentDataSet.title = this.displayPartForm.controls['title'].value;
       this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
-      this.currentDataSet.open_format = this.displayPartForm.controls['open_format'].value;
+
       this.currentDataSet.weight = this.displayPartForm.controls['weight'].value;
+      this.currentDataSet.length = this.displayPartForm.controls['length'].value;
+      this.currentDataSet.width = this.displayPartForm.controls['width'].value;
+      this.currentDataSet.height = this.displayPartForm.controls['height'].value;
       this.dataService.changeDisplayPart(this.currentDataSet);
     }
   }
@@ -95,7 +104,9 @@ export class DisplayPartsComponent  {
     this.displayPartForm.patchValue({
       title: currentDataSet.title,
       articlenr: currentDataSet.articlenr,
-      open_format: currentDataSet.open_format,
+      length: currentDataSet.length,
+      width: currentDataSet.width,
+      height: currentDataSet.height,
       stock: currentDataSet.stock,
       weight: currentDataSet.weight,
       deleted: currentDataSet.deleted

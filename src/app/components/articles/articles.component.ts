@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, ViewChildren, OnInit, ElementRef, QueryList, AfterViewInit } from '@angular/core';
 import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
@@ -6,7 +6,8 @@ import { Article } from '../../classes/Article';
 import { TopSign } from '../../classes/TopSign';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { ArticlesFilter } from '../../pipes/articles/articlesFilter'
+import { ArticlesFilter } from '../../pipes/articles/articlesFilter';
+import { DpfSyncWidthSource } from '../directives/dpf-sync-width-source.directive';
 
 
 @Component({
@@ -14,8 +15,10 @@ import { ArticlesFilter } from '../../pipes/articles/articlesFilter'
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.css']
 })
-export class ArticlesComponent  implements OnInit{
+export class ArticlesComponent  implements OnInit, AfterViewInit{
   @ViewChild(MatSort) sort: MatSort;
+
+  @ViewChildren(DpfSyncWidthSource, { read: ElementRef }) syncWidthSources : QueryList<ElementRef>;
 
   currentDataSet:Article = null;
   dataSetToDelete:Article = null;
@@ -25,7 +28,6 @@ export class ArticlesComponent  implements OnInit{
   filter = {
     articlenr:'',
     title:'',
-    extra:'',
     type:'',
     packaging:'',
     weight:'',
@@ -35,12 +37,11 @@ export class ArticlesComponent  implements OnInit{
     topsign:''
   };
 
-  columnsToDisplay = ['articlenr', 'title', 'extra', 'type', 'packaging', 'weight', 'depth', 'width', 'height',  'topsign', 'edit', 'delete'];
+  columnsToDisplay = ['articlenr', 'title', 'type', 'packaging', 'weight', 'depth', 'width', 'height',  'topsign', 'edit', 'delete'];
   dataSource: MatTableDataSource<Article> = null;
   articleForm = new FormGroup({
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
-    extra : new FormControl(''),
     type : new FormControl('',[Validators.required]),
     packaging : new FormControl('',[Validators.required]),
     weight : new FormControl('',[Validators.required]),
@@ -85,7 +86,6 @@ export class ArticlesComponent  implements OnInit{
           for(var i = 0; i < this.topSigns.length; i++ ){
             this.topSignsById[this.topSigns[i].id] = this.topSigns[i];
           }
-          console.log(this.topSignsById);
         }
       );
       this.dataService.loadTopSigns();
@@ -96,10 +96,15 @@ export class ArticlesComponent  implements OnInit{
       this.dataSource.sort = this.sort;
   }
 
+  ngAfterViewInit() {
+      console.log('articles AfterViewInit');
+      console.log(this.syncWidthSources);
+  }
+
+
   filterChanges(){
     this.articles = this.articlesFilter.transform(this.dataService.articles, this.filter);
     this.dataSource.data = this.articlesFilter.transform(this.dataService.articles, this.filter);
-
   }
 
   public showNew(){
@@ -112,7 +117,6 @@ export class ArticlesComponent  implements OnInit{
     this.articleForm = new FormGroup({
       articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
       title : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      extra : new FormControl(''),
       type : new FormControl('',[Validators.required]),
       packaging : new FormControl('',[Validators.required]),
       weight : new FormControl('',[Validators.required]),
@@ -127,7 +131,6 @@ export class ArticlesComponent  implements OnInit{
     if (this.articleForm.status == 'VALID') {
       this.currentDataSet.articlenr = this.articleForm.controls['articlenr'].value;
       this.currentDataSet.title = this.articleForm.controls['title'].value;
-      this.currentDataSet.extra = this.articleForm.controls['extra'].value;
       this.currentDataSet.type = this.articleForm.controls['type'].value;
       this.currentDataSet.packaging = this.articleForm.controls['packaging'].value;
       this.currentDataSet.weight = this.articleForm.controls['weight'].value;
@@ -144,7 +147,6 @@ export class ArticlesComponent  implements OnInit{
     this.articleForm.patchValue({
       articlenr: currentDataSet.articlenr,
       title: currentDataSet.title,
-      extra: currentDataSet.extra,
       type: currentDataSet.type,
       packaging: currentDataSet.packaging,
       weight: currentDataSet.weight,
@@ -169,4 +171,5 @@ export class ArticlesComponent  implements OnInit{
   public delete(){
     this.dataService.deleteArticle(this.dataSetToDelete);
   }
+
 }

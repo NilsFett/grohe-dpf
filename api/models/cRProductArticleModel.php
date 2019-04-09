@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright (c) 2018 Nils Fett
+Copyright (c) 2020 Nils Fett
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,48 +13,42 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-class cConfig{
+class cRProductArticleModel extends cModel{
 
-	static $oInstance = NULL;
+	protected $aColumns = array(
+		'position' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'article_id' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'units' => array(
+			'value' => false,
+			'type' => 'int'
+		)
+	);
+	static $sTable = 'r_display-article';
 
-	private $aConfig = array();
 
-
-	private function __construct(){
-		$this->aConfig['debug'] = false;
-
-
-		$this->aConfig['enviroment'] = 'grohedpf';
-		$this->aConfig['senderMail'] = 'mail@nils-fett.de';
-		$this->aConfig['hosts'] = array(
-			'grohe-dpf.localdomain' => 'groheapi'
-			 //everything.localdomain
-		);
-		$this->aConfig['dbname'] = 'grohe-dpf';
-		$this->aConfig['user'] = 'root';
-		$this->aConfig['password'] = 'iCasaful:06123';
-		$this->aConfig['host'] = 'localhost';
-
-		$this->aConfig['basepath'] = '/Users/nilsfett/Sites/grohe-dpf/api/';
-
+	public function __construct($aData = false){
+		parent::__construct($aData);
 	}
 
-	static public function getInstance(){
-		if(self::$oInstance == NULL){
-			self::$oInstance = new cConfig();
-		}
-		return self::$oInstance;
+	public static function replace($product_id, $article_id, $units){
+		$query = '	REPLACE INTO `'.self::$sTable.'`
+								SET `position` = ?, `article_id` = ?, `units` = ?';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute(array($product_id, $article_id, $units));
 	}
 
-	public function get($sKey = NULL){
-		if($sKey == NULL){
-			return $this->aConfig;
-		}
-		if(isset($this->aConfig[$sKey])){
-			return $this->aConfig[$sKey];
-		}
-		else{
-			return false;
-		}
+	public static function deleteByProductId($product_id){
+		$query = '	DELETE FROM `'.self::$sTable.'`
+								WHERE `position` = ?';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute(array($product_id));
 	}
 }

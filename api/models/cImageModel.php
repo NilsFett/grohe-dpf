@@ -50,4 +50,14 @@ class cImageModel extends cModel{
 		$aImages = $stmt->fetchAll();
 		return count($aImages);
 	}
+
+	public static function getAll(){
+		$query = '	SELECT *
+					FROM `'.self::$sTable.'`
+					WHERE ( `type` > 0 || `id`=0)';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 }

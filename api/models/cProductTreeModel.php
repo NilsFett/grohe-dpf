@@ -61,4 +61,71 @@ class cProductTreeModel extends cModel{
 		}
 		return $aResult;
 	}
+
+	public static function getAllAsTree(){
+
+		$query = '	SELECT *
+					FROM `'.static::$sTable.'`
+					WHERE deleted = 0
+					ORDER BY parent, sorting';
+
+
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute();
+		$all = array();
+		$dangling = array();
+		$output = array();
+		// Initialize arrays
+		while ( $entry = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$entry['children'] = array();
+
+			$id = $entry['id'];
+
+			// If this is a top-level node, add it to the output immediately
+			if ($entry['parent'] == 0) {
+				$all[$id] = array(
+					'id'=> $entry['id'],
+					'name'=> $entry['name'],
+					'parent'=> $entry['parent'],
+					'sorting'=> $entry['sorting'],
+					'children'=> array()
+				);
+				$all[$id] = $entry;
+				$all[$id]['children']= array();
+
+				$output[] =& $all[$id];
+
+			// If this isn't a top-level node, we have to process it later
+			} else {
+				$dangling[$id] = $entry;
+				$dangling[$id]['children']= array();
+			}
+		}
+
+
+		// Process all 'dangling' nodes
+		$counter = 1;
+		while (count($dangling) > 0 && $counter < 5) {
+			foreach($dangling as $entry) {
+				$id = $entry['id'];
+				$pid = $entry['parent'];
+
+				// If the parent has already been added to the output, it's
+				// safe to add this node too
+				if (isset($all[$pid])) {
+					$all[$id] = $entry;
+					$all[$pid]['children'][] =& $all[$id];
+					/*
+					 * $all[$pid]['children'][$entry['order_number']] =& $all[$id];
+					ksort($all[$pid]['children']);
+					$all[$pid]['children'] = array_values($all[$pid]['children']);
+					*/
+					unset($dangling[$entry['id']]);
+				}
+			}
+			$counter++;
+		}
+		return $output;
+	}
 }

@@ -1,5 +1,5 @@
 <div class="content boxshadow" dpfContent>
-  <h2>Display Parts <i class="fa icon-plus new" (click)="showNew()">Add new</i></h2>
+  <h2>Products <i class="fa icon-plus new" (click)="showNew()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
     <table>
@@ -14,74 +14,71 @@
           <i class="fa icon-search"></i><input placeholder="SAP" (ngModelChange)="filter.SAP=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.SAP" class="filter" type="text"  name="sapFilter" >
       </tr>
     </table>
-      <table mat-table matSort [dataSource]="dataSource" >
 
-        <ng-container matColumnDef="image">
-            <th mat-sort-header mat-header-cell *matHeaderCellDef>
-              Image
-            </th>
-          <td mat-cell *matCellDef="let display"> <img src="{{getImage(display.image)}}" /></td>
-        </ng-container>
-
-        <ng-container matColumnDef="title">
+    <table mat-table matSort [dataSource]="dataSource" >
+      <ng-container matColumnDef="image">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            Title
+            Image
           </th>
-          <td mat-cell *matCellDef="let part"> {{part.title}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="DFID">
-            <th mat-sort-header mat-header-cell *matHeaderCellDef>
-              DFID
-            </th>
-          <td mat-cell *matCellDef="let part"> {{part.DFID}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="SAP">
+        <td mat-cell *matCellDef="let product"> <img src="{{getImage(product.image)}}" /></td>
+      </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>
+          Title
+        </th>
+        <td mat-cell *matCellDef="let part"> {{part.title}} </td>
+      </ng-container>
+      <ng-container matColumnDef="DFID">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            SAP
+            DFID
           </th>
-          <td mat-cell *matCellDef="let part"> {{part.SAP}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-          <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            Price
-          </th>
-          <td mat-cell *matCellDef="let part"> {{part.price}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="edit">
-          <th mat-sort-header mat-header-cell *matHeaderCellDef>
-              Edit
-          </th>
-          <td class="edit" (click)="setCurrentDataSet(part)" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
-        </ng-container>
-
-        <ng-container matColumnDef="delete">
-          <th mat-header-cell *matHeaderCellDef>
-              Delete
-          </th>
-          <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
-        <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
-      </table>
-    </div>
+        <td mat-cell *matCellDef="let part"> {{part.DFID}} </td>
+      </ng-container>
+      <ng-container matColumnDef="SAP">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>
+          SAP
+        </th>
+        <td mat-cell *matCellDef="let part"> {{part.SAP}} </td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>
+          Price
+        </th>
+        <td mat-cell *matCellDef="let part"> {{part.price}} </td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>
+            Edit
+        </th>
+        <td class="edit" (click)="setCurrentDataSet(part)" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>
+            Delete
+        </th>
+        <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+      <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
+    </table>
+  </div>
 </div>
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
-<div class="overlay" *ngIf="ui.showEditNew">
+<div class="overlay" *ngIf="ui.showEditNew && currentDataSet">
   <div class="overlay-content">
     <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
     <h3 class="fa icon-edit">Product</h3>
     <p>{{currentDataSet.title}}</p>
+    <ul class="tab">
+      <li (click)="showArticles=false" [ngClass]="{'active': showArticles == false}">Product Data</li><li>&nbsp;|&nbsp;</li>
+      <li (click)="showArticles=true" [ngClass]="{'active': showArticles == true}">Articles</li>
+    </ul>
     <hr />
-    <div class="container-flex">
+    <div class="container-flex" *ngIf="!showArticles">
       <form name="productForm" [formGroup]="productForm">
         <div class="spacer20"></div>
         <img (click)="selectImage();" src="{{getImage(this.currentDataSet.image)}}" class="display" />
         <input type="hidden" formControlName="image" name="image" #title>
-
         <mat-form-field>
           <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
           <mat-error [hidden]="title.valid || title.pristine">required</mat-error>
@@ -94,10 +91,16 @@
           <input type="text" formControlName="SAP" matInput name="SAP" #SAP placeholder="SAP">
           <mat-error [hidden]="SAP.valid || SAP.pristine">required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
-          <input type="text" formControlName="product_tree" matInput name="product_tree" #product_tree placeholder="Category">
-          <mat-error [hidden]="product_tree.valid || product_tree.pristine">required</mat-error>
+          <mat-select formControlName="display_id"  #display_id placeholder="Display">
+            <mat-option value="{{display.id}}" *ngFor="let display of displays">{{display.title}}</mat-option>
+          </mat-select>
+          <mat-error [hidden]="display_id.valid || display_id.pristine">required</mat-error>
         </mat-form-field>
+
+        <grohe-dpf-tree-view [label]="catString" [selectedCategory]="currentDataSet.product_tree"></grohe-dpf-tree-view>
+
         <mat-form-field>
           <input type="text" formControlName="price" matInput name="price" #price placeholder="Price">
           <mat-error [hidden]="price.valid || price.pristine">required</mat-error>
@@ -112,21 +115,51 @@
         <br />
         <mat-checkbox formControlName="notopsign_order_disabled" matInput name="notopsign_order_disabled" #notopsign_order_disabled ></mat-checkbox>&nbsp;No Topsign Order Disabled
         <br />
-        <mat-checkbox formControlName="notopsign_order_disabled" matInput name="notopsign_order_disabled" #notopsign_order_disabled ></mat-checkbox>&nbsp;No Topsign Order Disabled
+        <mat-checkbox formControlName="empty_display" matInput name="empty_display" #empty_display ></mat-checkbox>&nbsp;Empty Display
         <br />
+
         <mat-form-field>
           <input type="text" formControlName="deliverytime" matInput name="deliverytime" #deliverytime placeholder="Deliverytime">
           <mat-error [hidden]="deliverytime.valid || deliverytime.pristine">required</mat-error>
         </mat-form-field>
-
-        <mat-checkbox formControlName="hide" matInput name="hide" #hide ></mat-checkbox>&nbsp;Visible
         <hr />
         <div class="spacer20"></div>
-        <button (click)="save()" mat-raised-button>Save</button>
+        <button (click)="saveProductAndArticleList()" mat-raised-button>Save</button>
         <div class="spacer20"></div>
-
       </form>
     </div>
+
+    <div class="container-flex display-parts-assembly" *ngIf="showArticles">
+      <ul>
+        <li *ngFor="let article of articleList">
+          <span class="artnr">{{article.articlenr}}</span>
+          <span class="title">{{article.title}}</span>
+          <span class="units">{{article.units}}</span>
+          <span (click)="removeArticleFromArticleList(article)" class="icon-minus"></span>
+        </li>
+      </ul>
+      <button mat-raised-button (click)="saveProductAndArticleList()">Save</button>
+      <div class="spacer20"></div>
+      <hr />
+      <div class="spacer20"></div>
+      <p>Add Article</p>
+      <mat-form-field>
+        <input type="text" matInput name="partsearch" placeholder="Search by Articlenr. or Title" (keyup)="articlesSearchwordChanged($event.target.value)">
+      </mat-form-field>
+      <div class="chooseDisplayPart">
+        <ul>
+          <li *ngFor="let article of articles">
+            <ng-container *ngIf="article.deleted == 0 && ( article.title.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 || article.articlenr.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 )">
+              <span class="artnr">{{article.articlenr}}</span>
+              <span class="title">{{article.title}}</span>
+              <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
   </div>
 </div>
 
@@ -141,7 +174,7 @@
       <div class="spacer"></div>
       <div style="display:flex;justify-content:  space-between" *ngIf="!ui.deleteSuccess">
         <button class="delete-button" (click)="delete()" mat-raised-button>Delete</button>
-        <button class="abort-button" (click)="dataSetToDelete = null;ui.showOverlay = false;" mat-raised-button>Abort</button>
+        <button class="abort-button" (click)="deleteClose()" mat-raised-button>Abort</button>
       </div>
 
     </div>

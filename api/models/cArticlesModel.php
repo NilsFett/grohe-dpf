@@ -76,8 +76,6 @@ class cArticlesModel extends cModel{
 		parent::__construct($aData);
 	}
 
-
-
 	public static function getAll(){
 		$query = '	SELECT *
 					FROM `'.self::$sTable.'`
@@ -87,7 +85,24 @@ class cArticlesModel extends cModel{
 		$stmt->execute();
 		$displays = array();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
+
+	public static function getByProductId($productId){
+		$query = '	SELECT `t_articles`.*, `r_display-article`.`units`
+								FROM `t_articles`
+								JOIN `r_display-article` ON `r_display-article`.`article_id` = `t_articles`.`id`
+								JOIN `t_display_position` ON `r_display-article`.`position` = `t_display_position`.`id`
+								WHERE `t_display_position`.`id` = '.$productId;
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute();
+		$products = array();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		while( $product = $stmt->fetch(PDO::FETCH_ASSOC) ){
+			$products[] = $product;
+		}
+		return $products;
 	}
 
 }

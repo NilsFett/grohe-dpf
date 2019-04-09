@@ -18,6 +18,7 @@ export class UiService {
   public messageWindowShow = false;
   public messages:Array<String> = [];
   public imageChoosen: EventEmitter<Image> = new EventEmitter();
+  public categorySelected: EventEmitter<number> = new EventEmitter();
   public res: any = {width:null,height:null}
   public navopen = true;
   public mainheight : number;
@@ -74,6 +75,10 @@ export class UiService {
 
   public emitImageChoosen(image){
     this.imageChoosen.next(image);
+  }
+
+  public emitCategorySelected(catId){
+    this.categorySelected.next(catId);
   }
 
   adjustHeight(){

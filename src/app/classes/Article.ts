@@ -12,4 +12,6 @@ export class Article {
   public depth:number;
   public topsign:number;
   public hidden:number;
+
+  public units:number;
 }
