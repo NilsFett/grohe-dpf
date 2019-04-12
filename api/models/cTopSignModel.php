@@ -32,6 +32,10 @@ class cTopSignModel extends cModel{
 			'value' => false,
 			'type' => 'varchar'
 		),
+		'type' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
 		'image' => array(
 			'value' => false,
 			'type' => 'varchar'
@@ -40,7 +44,7 @@ class cTopSignModel extends cModel{
 			'value' => false,
 			'type' => 'varchar'
 		),
-		'weigth' => array(
+		'weight' => array(
 			'value' => false,
 			'type' => 'int'
 		)

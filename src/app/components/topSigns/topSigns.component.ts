@@ -37,14 +37,16 @@ export class TopSignsComponent  {
     15: 'uploads/e2f35a7d3761f87697d032ac43fe7081.jpg',
     16: 'uploads/1e7d0d4eeb42492d8138a3decc90955f.jpg',
   };
-  columnsToDisplay = ['image','articlenr','title', 'weight', 'edit', 'delete'];
+  columnsToDisplay = ['image','articlenr','title', 'weight', 'type', 'edit', 'delete'];
   dataSource :  MatTableDataSource<TopSign>;
   topSignForm = new FormGroup({
     image: new FormControl(''),
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
+    type: new FormControl(''),
     articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
     weight : new FormControl('',[Validators.required])
   });
+  types=['','Top Sign', 'Promotion Material'];
 
   constructor(
     public user: UserService,
@@ -95,6 +97,7 @@ export class TopSignsComponent  {
     if (this.topSignForm.status == 'VALID') {
       this.currentDataSet.title = this.topSignForm.controls['title'].value;
       this.currentDataSet.articlenr = this.topSignForm.controls['articlenr'].value;
+      this.currentDataSet.type = this.topSignForm.controls['type'].value;
       this.currentDataSet.weight = this.topSignForm.controls['weight'].value;
       this.dataService.changeTopSign(this.currentDataSet);
     }
@@ -106,6 +109,7 @@ export class TopSignsComponent  {
     this.topSignForm.patchValue({
       title: currentDataSet.title,
       articlenr: currentDataSet.articlenr,
+      type: currentDataSet.type,
       weight: currentDataSet.weight
     });
     this.ui.doShowEditNew();

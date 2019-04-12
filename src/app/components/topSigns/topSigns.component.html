@@ -45,11 +45,11 @@
           <td mat-cell *matCellDef="let part"> {{part.weight}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="open_format">
+        <ng-container matColumnDef="type">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
-            Open Format
+            Type
           </th>
-          <td mat-cell *matCellDef="let part"> {{part.open_format}} </td>
+          <td mat-cell *matCellDef="let part"> {{types[part.type]}} </td>
         </ng-container>
         <ng-container matColumnDef="deleted">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
@@ -100,6 +100,12 @@
         <mat-form-field>
           <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight">
           <mat-error [hidden]="articlenr.valid || articlenr.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="type"  #type placeholder="Type">
+            <mat-option value="1">Top Sign</mat-option>
+            <mat-option value="2">Promotion Material</mat-option>
+          </mat-select>
         </mat-form-field>
         <hr />
         <div class="spacer20"></div>

@@ -44,6 +44,11 @@ class cProductsModel extends cModel{
 			'value' => false,
 			'type' => 'int'
 		),
+		'topsign_id' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+
 		'price' => array(
 			'value' => false,
 			'type' => 'varchar'

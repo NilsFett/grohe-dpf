@@ -79,3 +79,12 @@ INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 
 
 
 ALTER TABLE `t_articles` CHANGE `topsign` `topsign` INT(11) NULL;
+INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'loadArticlesByProductId', '/loadArticlesByProductId');
+INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'saveProductAndArticleList', '/saveProductAndArticleList');
+ALTER TABLE `t_display_position` CHANGE `DFID` `DFID` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+ALTER TABLE `t_display_parts` CHANGE `open_format` `length` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `t_display_parts` ADD `width` VARCHAR(20) NOT NULL AFTER `length`;
+ALTER TABLE `t_display_parts` ADD `height` VARCHAR(20) NOT NULL AFTER `width`;
+ALTER TABLE `t_topsign` ADD `type` INT NOT NULL AFTER `articlenr`;
+INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'changeTopSign', '/changeTopSign');

@@ -11,6 +11,7 @@ import { Image } from '../../classes/Image';
 import { ProductTree } from '../../classes/ProductTree';
 import { Article } from '../../classes/Article';
 import { Display } from '../../classes/display';
+import { TopSign } from '../../classes/TopSign';
 
 @Component({
   selector: 'grohe-dpf-products',
@@ -39,13 +40,9 @@ export class ProductsComponent  {
     SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
     product_tree : new FormControl(''),
     display_id : new FormControl('',[Validators.required]),
+    topsign_id : new FormControl('',[Validators.required]),
     price : new FormControl('',[Validators.required, Validators.minLength(2)]),
-    pallet_select : new FormControl(''),
-    pallet_disabled : new FormControl(''),
-    bypack_disabled : new FormControl(''),
-    topsign_upload_disabled : new FormControl(''),
-    notopsign_order_disabled : new FormControl(''),
-    empty_display : new FormControl(''),
+
     deliverytime : new FormControl('')
   });
   public showArticles = false;
@@ -53,8 +50,10 @@ export class ProductsComponent  {
   public imagesById = {};
   public displays:Display[] = [];
   public articles:Article[] = [];
+  public topSigns:TopSign[] = [];
   public articlesById = {};
   public displaysById = {};
+  public topSignsById = {};
   public articleList:Article[] = [];
   public articleSearchword:string = '';
 
@@ -131,8 +130,6 @@ export class ProductsComponent  {
     }
     if (this.dataService.displays) {
       this.displays = this.dataService.displays;
-      console.log('this.displays');
-      console.log(this.displays);
       for(var i = 0; i < this.displays.length; i++ ){
         this.displaysById[this.displays[i].id] = this.displays[i];
       }
@@ -141,8 +138,6 @@ export class ProductsComponent  {
       this.dataService.displaysChange.subscribe(
         (displays: Display[]) => {
           this.displays = this.dataService.displays;
-          console.log('this.displays');
-          console.log(this.displays);
           for(var i = 0; i < this.displays.length; i++ ){
             this.displaysById[this.displays[i].id] = this.displays[i];
           }
@@ -150,6 +145,26 @@ export class ProductsComponent  {
       );
       this.dataService.loadDisplays();
     }
+
+    if (this.dataService.topSigns) {
+      this.topSigns = this.dataService.topSigns;
+      for(var i = 0; i < this.topSigns.length; i++ ){
+        this.topSignsById[this.topSigns[i].id] = this.topSigns[i];
+      }
+    }
+    else {
+      this.dataService.topSignsChange.subscribe(
+        (topSigns: TopSign[]) => {
+          this.topSigns = this.dataService.topSigns;
+          for(var i = 0; i < this.topSigns.length; i++ ){
+            this.topSignsById[this.topSigns[i].id] = this.topSigns[i];
+          }
+        }
+      );
+      this.dataService.loadTopSigns();
+    }
+
+
     this.ui.imageChoosen.subscribe( (image:Image)=>{
       this.currentDataSet.image = image.id;
       this.ui.doHideMedias();
@@ -171,17 +186,14 @@ export class ProductsComponent  {
       title : new FormControl('',[Validators.required, Validators.minLength(2)]),
       DFID : new FormControl('',[Validators.required, Validators.minLength(2)]),
       SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      display_id : new FormControl('',[Validators.required]),
+      topsign_id : new FormControl(''),
       product_tree : new FormControl(''),
       price : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      pallet_select : new FormControl(''),
-      pallet_disabled : new FormControl(''),
-      bypack_disabled : new FormControl(''),
-      topsign_upload_disabled : new FormControl(''),
-      notopsign_order_disabled : new FormControl(''),
-      empty_display : new FormControl(''),
       deliverytime : new FormControl(''),
       hide : new FormControl('')
     });
+    this.articleList = [];
   }
 
   filterChanges(){
@@ -211,16 +223,27 @@ export class ProductsComponent  {
   }
 
   public addArticleToArticleList(article:Article){
+    var count = (document.getElementById('countArticle'+article.articlenr) as HTMLTextAreaElement).value
     var i;
     var found = false;
     for(i = 0; i < this.articleList.length; i++){
       if( this.articleList[i].articlenr  == article.articlenr ){
-        this.articleList[i].units++;
+        if(count == ''){
+          this.articleList[i].units++;
+        }
+        else{
+          this.articleList[i].units = parseInt(count);
+        }
         found = true;
       }
     }
     if(!found){
-      article.units = 1;
+      if(count == ''){
+        article.units = 1;
+      }
+      else{
+        article.units = parseInt(count);
+      }
       this.articleList.push(article);
     }
   }
@@ -243,8 +266,9 @@ export class ProductsComponent  {
   }
 */
   public setCurrentDataSet(currentDataSet){
-    console.log('setCurrentDataSet');
-    console.log(currentDataSet);
+
+console.log(currentDataSet);
+
     this.currentDataSet = currentDataSet;
     this.ui.doShowEditNew();
     this.updateFormValues();
@@ -262,38 +286,17 @@ export class ProductsComponent  {
 
   private updateFormValues(){
     var pallet_select,pallet_disabled,bypack_disabled,topsign_upload_disabled,notopsign_order_disabled,empty_display=true;
-    if(this.currentDataSet.pallet_select == 1){
-      pallet_select = true;
-    }
-    if(this.currentDataSet.pallet_disabled == 1){
-      pallet_disabled = true;
-    }
-    if(this.currentDataSet.bypack_disabled == 1){
-      bypack_disabled = true;
-    }
-    if(this.currentDataSet.topsign_upload_disabled == 1){
-      topsign_upload_disabled = true;
-    }
-    if(this.currentDataSet.notopsign_order_disabled == 1){
-      notopsign_order_disabled = true;
-    }
-    if(this.currentDataSet.empty_display == 1){
-      empty_display = true;
-    }
+
 
     this.productForm.patchValue({
       image: this.currentDataSet.image,
       title: this.currentDataSet.title,
       DFID: this.currentDataSet.DFID,
       SAP: this.currentDataSet.SAP,
+      display_id : this.currentDataSet.display_id,
+      topsign_id : this.currentDataSet.topsign_id,
       product_tree: this.currentDataSet.product_tree,
       price: this.currentDataSet.price,
-      pallet_select: pallet_select,
-      pallet_disabled: pallet_disabled,
-      bypack_disabled: bypack_disabled,
-      topsign_upload_disabled: topsign_upload_disabled,
-      notopsign_order_disabled: notopsign_order_disabled,
-      empty_display:empty_display,
       deliverytime:this.currentDataSet.deliverytime
     });
   }
@@ -303,45 +306,9 @@ export class ProductsComponent  {
       this.currentDataSet.title = this.productForm.controls['title'].value;
       this.currentDataSet.DFID = this.productForm.controls['DFID'].value;
       this.currentDataSet.SAP = this.productForm.controls['SAP'].value;
-      //this.currentDataSet.product_tree = this.productForm.controls['product_tree'].value;
+      this.currentDataSet.display_id = this.productForm.controls['display_id'].value,
+      this.currentDataSet.topsign_id = this.productForm.controls['topsign_id'].value,
       this.currentDataSet.price = this.productForm.controls['price'].value;
-      if(this.productForm.controls['pallet_select'].value){
-        this.currentDataSet.pallet_select = 1;
-      }
-      else{
-        this.currentDataSet.pallet_select = 0;
-      }
-      if(this.productForm.controls['pallet_disabled'].value){
-        this.currentDataSet.pallet_disabled = 1;
-      }
-      else{
-        this.currentDataSet.pallet_disabled = 0;
-      }
-      if(this.productForm.controls['bypack_disabled'].value){
-        this.currentDataSet.bypack_disabled = 1;
-      }
-      else{
-        this.currentDataSet.bypack_disabled = 0;
-      }
-      if(this.productForm.controls['topsign_upload_disabled'].value){
-        this.currentDataSet.topsign_upload_disabled = 1;
-      }
-      else{
-        this.currentDataSet.topsign_upload_disabled = 0;
-      }
-      if(this.productForm.controls['notopsign_order_disabled'].value){
-        this.currentDataSet.notopsign_order_disabled = 1;
-      }
-      else{
-        this.currentDataSet.notopsign_order_disabled = 0;
-      }
-      if(this.productForm.controls['empty_display'].value){
-        this.currentDataSet.empty_display = 1;
-      }
-      else{
-        this.currentDataSet.empty_display = 0;
-      }
-
       this.currentDataSet.deliverytime = this.productForm.controls['deliverytime'].value;
       console.log(this.currentDataSet);
       this.dataService.saveProductAndArticleList(this.currentDataSet, this.articleList);

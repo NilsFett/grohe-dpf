@@ -8,11 +8,7 @@ export class Product {
   public SAP:string;
   public product_tree:number=1;
   public price:number;
-  public pallet_select : number;
-  public pallet_disabled : number;
-  public bypack_disabled : number;
-  public topsign_upload_disabled : number;
-  public notopsign_order_disabled : number;
+  public topsign_id:number;
   public deliverytime : number;
   public hide : number;
 }

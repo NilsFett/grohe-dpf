@@ -83,8 +83,8 @@
       </table>
     </div>
 </div>
-<div class="overlaybg" *ngIf="ui.showOverlay"></div>
-<div class="overlay" *ngIf="ui.showEditNew">
+<div class="overlaybg" *ngIf="ui.showOverlay currentDataSet"></div>
+<div class="overlay" *ngIf="ui.showEditNew && currentDataSet">
   <div class="overlay-content">
     <span (click)="ui.doCloseEditNew();" class="close icon-cancel"></span>
     <h3 class="fa icon-edit">Display</h3>
@@ -99,7 +99,7 @@
     <div class="container-flex" *ngIf="!showAssembly">
       <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="formValidateAfterIf()">
         <div class="spacer20"></div>
-        <img (click)="selectImage();" src="{{getImage(this.currentDataSet.image)}}" class="display" />
+        <img (click)="selectImage();" src="{{getImage(currentDataSet.image)}}" class="display" />
         <input type="hidden" formControlName="image" name="image" #title>
         <mat-form-field>
           <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
