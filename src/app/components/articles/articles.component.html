@@ -5,31 +5,31 @@
 
     <table [toSyncWith]="syncWidthSources" dpfSyncWidth>
       <tr>
-        <td>
+        <td #td>
           <i class="fa icon-search"></i><input placeholder="Article Number"(ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class=" filter" type="text"  name="articlenrFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Title" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Type" (ngModelChange)="filter.type=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.type" class="filter" type="text"  name="typeFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Packaging" (ngModelChange)="filter.packaging=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.packaging" class="filter" type="text"  name="packagingFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Weight" (ngModelChange)="filter.weight=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.weight" class="filter" type="text"  name="weightFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Length" (ngModelChange)="filter.depth=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.depth" class="filter" type="text"  name="depthFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Width" (ngModelChange)="filter.width=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.width" class="filter" type="text"  name="widthFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Height" (ngModelChange)="filter.height=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.height" class="filter" type="text"  name="heightFilter" >
         </td>
-        <td>
+        <td #td>
             <i class="fa icon-search"></i><input placeholder="Topsign" (ngModelChange)="filter.topsign=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topsign" class="filter" type="text"  name="topsignFilter" >
         </td>
       </tr>

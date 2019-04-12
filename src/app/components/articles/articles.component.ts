@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ViewChildren, OnInit, ElementRef, QueryList, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, ViewChildren, OnInit, ElementRef, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
@@ -15,7 +15,7 @@ import { DpfSyncWidthSource } from '../directives/dpf-sync-width-source.directiv
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.css']
 })
-export class ArticlesComponent  implements OnInit, AfterViewInit{
+export class ArticlesComponent  implements OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChildren(DpfSyncWidthSource, { read: ElementRef }) syncWidthSources : QueryList<ElementRef>;
@@ -55,7 +55,8 @@ export class ArticlesComponent  implements OnInit, AfterViewInit{
     public user: UserService,
     public ui: UiService,
     public dataService: DataService,
-    private articlesFilter: ArticlesFilter
+    private articlesFilter: ArticlesFilter,
+    private cd: ChangeDetectorRef
   ) {
     this.dataSource = new MatTableDataSource(this.articles);
 
@@ -93,14 +94,9 @@ export class ArticlesComponent  implements OnInit, AfterViewInit{
   }
 
   ngOnInit() {
-      this.dataSource.sort = this.sort;
+    this.cd.detectChanges();
+    this.dataSource.sort = this.sort;
   }
-
-  ngAfterViewInit() {
-      console.log('articles AfterViewInit');
-      console.log(this.syncWidthSources);
-  }
-
 
   filterChanges(){
     this.articles = this.articlesFilter.transform(this.dataService.articles, this.filter);
