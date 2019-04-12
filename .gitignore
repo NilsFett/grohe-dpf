@@ -47,6 +47,7 @@ Thumbs.db
 
 # Uploads
 /api/uploads
+/api/uploads/*
 
 #Logs
 /log.log
@@ -54,3 +55,5 @@ Thumbs.db
 
 #Config
 /api/cConfig.php
+/api/topsign/
+/api/topsign/*

@@ -79,7 +79,8 @@ class cArticlesModel extends cModel{
 	public static function getAll(){
 		$query = '	SELECT *
 					FROM `'.self::$sTable.'`
-					WHERE `old_system` = 0';
+					WHERE `old_system` = 0
+					ORDER BY `t_articles`.articlenr ';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
@@ -93,7 +94,8 @@ class cArticlesModel extends cModel{
 								FROM `t_articles`
 								JOIN `r_display-article` ON `r_display-article`.`article_id` = `t_articles`.`id`
 								JOIN `t_display_position` ON `r_display-article`.`position` = `t_display_position`.`id`
-								WHERE `t_display_position`.`id` = '.$productId;
+								WHERE `t_display_position`.`id` = '.$productId.'
+								ORDER BY `t_articles`.articlenr ';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();

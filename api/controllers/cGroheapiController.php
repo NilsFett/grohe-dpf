@@ -289,6 +289,7 @@ class cGroheapiController{
 		if(isset($postData['product_tree'])){
 			$oDisplaysPartsModel->set('product_tree', $postData['product_tree']);
 		}
+
 		if(isset($postData['price'])){
 			$oDisplaysPartsModel->set('price', $postData['price']);
 		}
@@ -429,8 +430,47 @@ class cGroheapiController{
 			$oArticlesModel->set('deleted', 0);
 		}
 		$oArticlesModel->save();
-		$this->getArticles();
+		$this->getUsers();
 	}
+
+
+		public function changeTopSign(){
+			$postData = json_decode(file_get_contents('php://input'),true);
+
+
+			if(isset($postData['id'])){
+				$oArticlesModel = new cTopSignModel($postData['id']);
+			}
+			else{
+				$oArticlesModel = new cTopSignModel();
+			}
+			if(isset($postData['articlenr'])){
+				$oArticlesModel->set('articlenr', $postData['articlenr']);
+			}
+			if(isset($postData['type'])){
+				$oArticlesModel->set('type', $postData['type']);
+			}
+			if(isset($postData['title'])){
+				$oArticlesModel->set('title', $postData['title']);
+			}
+			if(isset($postData['path'])){
+				$oArticlesModel->set('path', $postData['path']);
+			}
+			if(isset($postData['image'])){
+				$oArticlesModel->set('image', $postData['image']);
+			}
+			if(isset($postData['image_thumb'])){
+				$oArticlesModel->set('image_thumb', $postData['image_thumb']);
+			}
+			if(isset($postData['weight'])){
+				$oArticlesModel->set('weight', $postData['weight']);
+			}
+
+
+			$oArticlesModel->save();
+			$this->loadTopSigns();
+		}
+
 
 	public function deleteDisplayPart(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
@@ -535,13 +575,19 @@ class cGroheapiController{
 
 		$oProduct->set('SAP', $postData['product']['SAP']);
 		$oProduct->set('price', $postData['product']['price']);
+		if(isset($postData['product']['topsign_id'])){
+			$oProduct->set('topsign_id', $postData['product']['topsign_id']);
+		}
+		/*
 		$oProduct->set('pallet_disabled', (int)$postData['product']['pallet_disabled']);
 		$oProduct->set('pallet_select', (int)$postData['product']['pallet_select']);
 		$oProduct->set('bypack_disabled', (int)$postData['product']['bypack_disabled']);
 		$oProduct->set('topsign_upload_disabled', (int)$postData['product']['topsign_upload_disabled']);
 		$oProduct->set('notopsign_order_disabled', (int)$postData['product']['notopsign_order_disabled']);
-		$oProduct->set('deliverytime', (int)$postData['product']['deliverytime']);
 		$oProduct->set('empty_display', (int)$postData['product']['empty_display']);
+		*/
+		$oProduct->set('deliverytime', (int)$postData['product']['deliverytime']);
+
 		$oProduct->set('product_tree', (int)$postData['product']['product_tree']);
 		if(isset($postData['product']['display_id'])){
 			$oProduct->set('display_id', $postData['product']['display_id']);

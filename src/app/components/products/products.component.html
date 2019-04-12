@@ -15,7 +15,7 @@
       </tr>
     </table>
 
-    <table mat-table matSort [dataSource]="dataSource" >
+    <table matSortActive="DFID" matSortDirection="asc" mat-table matSort [dataSource]="dataSource" >
       <ng-container matColumnDef="image">
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
             Image
@@ -98,26 +98,18 @@
           </mat-select>
           <mat-error [hidden]="display_id.valid || display_id.pristine">required</mat-error>
         </mat-form-field>
-
+        <mat-form-field>
+          <mat-select formControlName="topsign_id"  #topsign_id placeholder="Top Sign">
+            <mat-option value="{{topsign.id}}" *ngFor="let topsign of topSigns">{{topsign.title}}</mat-option>
+          </mat-select>
+          <mat-error [hidden]="topsign_id.valid || topsign_id.pristine">required</mat-error>
+        </mat-form-field>
         <grohe-dpf-tree-view [label]="catString" [selectedCategory]="currentDataSet.product_tree"></grohe-dpf-tree-view>
 
         <mat-form-field>
           <input type="text" formControlName="price" matInput name="price" #price placeholder="Price">
           <mat-error [hidden]="price.valid || price.pristine">required</mat-error>
         </mat-form-field>
-        <mat-checkbox formControlName="pallet_select" matInput name="pallet_select" #pallet_select ></mat-checkbox>&nbsp;Pallet Select
-        <br />
-        <mat-checkbox formControlName="pallet_disabled" matInput name="pallet_disabled" #pallet_disabled ></mat-checkbox>&nbsp;Pallet Disabled
-        <br />
-        <mat-checkbox formControlName="bypack_disabled" matInput name="bypack_disabled" #bypack_disabled ></mat-checkbox>&nbsp;Bypack Disabled
-        <br />
-        <mat-checkbox formControlName="topsign_upload_disabled" matInput name="topsign_upload_disabled" #topsign_upload_disabled ></mat-checkbox>&nbsp;Topsign upload Disabled
-        <br />
-        <mat-checkbox formControlName="notopsign_order_disabled" matInput name="notopsign_order_disabled" #notopsign_order_disabled ></mat-checkbox>&nbsp;No Topsign Order Disabled
-        <br />
-        <mat-checkbox formControlName="empty_display" matInput name="empty_display" #empty_display ></mat-checkbox>&nbsp;Empty Display
-        <br />
-
         <mat-form-field>
           <input type="text" formControlName="deliverytime" matInput name="deliverytime" #deliverytime placeholder="Deliverytime">
           <mat-error [hidden]="deliverytime.valid || deliverytime.pristine">required</mat-error>
@@ -152,6 +144,7 @@
             <ng-container *ngIf="article.deleted == 0 && ( article.title.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 || article.articlenr.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 )">
               <span class="artnr">{{article.articlenr}}</span>
               <span class="title">{{article.title}}</span>
+              <input type="text" id="countArticle{{article.articlenr}}" />
               <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
             </ng-container>
           </li>
