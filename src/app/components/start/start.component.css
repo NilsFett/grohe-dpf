@@ -1,7 +1,7 @@
 .start{
   width:55%;
   padding:2%;
-  margin:5% 0 0 20%;
+  margin:15% 0 0 20%;
   color:#6c737d;
   border:3px solid #6c737d;
 }
@@ -13,17 +13,24 @@
   float:left;
 }
 
+button{
+  margin:40px auto;
+  background-color: #3184b9;
+  display:block;
+  color:#FFF;
+}
+
 @media screen and (max-width: 800px) {
   .start{
     width:85%;
-    margin:10% 0 0 8%;
+    margin:20% 0 0 8%;
   }
 }
 
 @media screen and (max-width: 800px) {
   .start{
     width:85%;
-    margin:10% 0 0 8%;
+    margin:20% 0 0 8%;
   }
 }
 

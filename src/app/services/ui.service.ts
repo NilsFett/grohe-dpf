@@ -30,7 +30,8 @@ export class UiService {
     this.user.loggedInStateObserver.subscribe(loggedIn => {
       if(loggedIn){
         if(this.user.data.usertype.value == 'admin'){
-          this.view = 'admin';
+          //this.view = 'admin';
+          this.view = 'customer';
         }
       }
     });

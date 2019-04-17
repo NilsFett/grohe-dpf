@@ -40,6 +40,10 @@ class cDisplaysModel extends cModel{
 			'value' => false,
 			'type' => 'varchar'
 		),
+		'base_display_template_id' => array(
+			'value' => false,
+			'type' => 'int'
+		),		
 		'topsign_punch' => array(
 			'value' => false,
 			'type' => 'varchar'

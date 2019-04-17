@@ -56,25 +56,8 @@ class cGroheapiController{
 
 	public function register(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-/*
-		$postData['city'] = "Iserlohn";
-		$postData['costcentre'] = "23423423";
-		$postData['costcentrecountry'] = "DEU";
-		$postData['country'] = "Germany";
-		$postData['department'] = "Development";
-		$postData['fax'] = "";
-		$postData['mail'] = "nils.fett@gmail.com";
-		$postData['name'] = "Nils";
-		$postData['name'] = "Fett";
-
-		$postData['phone'] = "023719309399";
-		$postData['street'] = "Am großen Teich 20";
-		$postData['zipcode'] = "58640";
-*/
 		$postData['usertype'] = 'user';
 		$postData['createdate'] = date( 'Y-m-d H:m:i', time());
-
-
 		$user = cUserModel::register($postData);
 		if($user){
 			$oCostNo = new cCostNoModel();
@@ -149,8 +132,15 @@ class cGroheapiController{
 
 	public function getProducts(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
-			$articles = cProductsModel::getAll();
-			echo json_encode($articles);
+			$products = cProductsModel::getAll();
+			echo json_encode($products);
+		}
+	}
+
+	public function getAllProductsWithArticlesAndProductPath(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$products = cProductsModel::getAllWithArticlesAndProductPath();
+			echo json_encode($products);
 		}
 	}
 
@@ -577,6 +567,9 @@ class cGroheapiController{
 		$oProduct->set('price', $postData['product']['price']);
 		if(isset($postData['product']['topsign_id'])){
 			$oProduct->set('topsign_id', $postData['product']['topsign_id']);
+		}
+		if(isset($postData['product']['promotion_material_id'])){
+			$oProduct->set('promotion_material_id', $postData['product']['promotion_material_id']);
 		}
 		/*
 		$oProduct->set('pallet_disabled', (int)$postData['product']['pallet_disabled']);

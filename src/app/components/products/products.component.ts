@@ -40,7 +40,8 @@ export class ProductsComponent  {
     SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
     product_tree : new FormControl(''),
     display_id : new FormControl('',[Validators.required]),
-    topsign_id : new FormControl('',[Validators.required]),
+    topsign_id : new FormControl(''),
+    promotion_material_id : new FormControl(''),
     price : new FormControl('',[Validators.required, Validators.minLength(2)]),
 
     deliverytime : new FormControl('')
@@ -69,14 +70,14 @@ export class ProductsComponent  {
     this.dataSource = new MatTableDataSource(this.products);
 
     if(this.dataService.products){
-      this.dataSource = new MatTableDataSource(this.dataService.products);
-      this.dataSource.sort = this.sort;
+      this.products = this.productsFilter.transform(this.dataService.products, this.filter);
+      this.dataSource = new MatTableDataSource(this.products);
     }
     else{
       this.dataService.productsChange.subscribe(
         (products:Product[]) => {
-          this.dataSource = new MatTableDataSource(products);
-          this.dataSource.sort = this.sort;
+          this.products = this.productsFilter.transform(this.dataService.products, this.filter);
+          this.dataSource = new MatTableDataSource(this.products);
         }
       );
       this.dataService.loadProducts();
@@ -188,6 +189,7 @@ export class ProductsComponent  {
       SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
       display_id : new FormControl('',[Validators.required]),
       topsign_id : new FormControl(''),
+      promotion_material_id : new FormControl(''),
       product_tree : new FormControl(''),
       price : new FormControl('',[Validators.required, Validators.minLength(2)]),
       deliverytime : new FormControl(''),
@@ -295,6 +297,7 @@ console.log(currentDataSet);
       SAP: this.currentDataSet.SAP,
       display_id : this.currentDataSet.display_id,
       topsign_id : this.currentDataSet.topsign_id,
+      promotion_material_id : this.currentDataSet.promotion_material_id,
       product_tree: this.currentDataSet.product_tree,
       price: this.currentDataSet.price,
       deliverytime:this.currentDataSet.deliverytime
@@ -308,6 +311,7 @@ console.log(currentDataSet);
       this.currentDataSet.SAP = this.productForm.controls['SAP'].value;
       this.currentDataSet.display_id = this.productForm.controls['display_id'].value,
       this.currentDataSet.topsign_id = this.productForm.controls['topsign_id'].value,
+      this.currentDataSet.promotion_material_id = this.productForm.controls['promotion_material_id'].value,
       this.currentDataSet.price = this.productForm.controls['price'].value;
       this.currentDataSet.deliverytime = this.productForm.controls['deliverytime'].value;
       console.log(this.currentDataSet);

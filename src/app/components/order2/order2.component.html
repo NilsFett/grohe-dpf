@@ -1,0 +1,22 @@
+<div class="order">
+  <h1>Please choose your Products settings</h1>
+  <div class="spacer20"></div>
+  <div class="spacer20"></div>
+  <div class="span6">
+    <img *ngIf="order.displayTypeChoosen < 3" src="{{config.baseURL}}uploads/dp1f.jpg" />
+    <img *ngIf="order.displayTypeChoosen > 2" src="{{config.baseURL}}uploads/dp{{order.displayTypeChoosen-1}}f.jpg" />
+  </div>
+  <div class="span6">
+    <ul class="products">
+      <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
+        <li *ngIf="product.base_display_template_id == order.displayTypeChoosen"><h3>DFID: {{product.DFID}} | SAP: {{product.SAP}}</h3>
+          <ul>
+            <li *ngFor="let article of product.article">
+              <p>{{article.articlenr}} | {{article.title}} x {{article.units}}</p>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>

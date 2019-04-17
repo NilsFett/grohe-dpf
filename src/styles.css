@@ -26,7 +26,6 @@ html{
 body{
   height:100%;
   width:100%;
-
   background-color: #e9e9e9;
   color:#ffffff;
   font-family: 'Montserrat', sans-serif;
@@ -198,6 +197,9 @@ th{
   width:100px;
 }
 
+.icon-cancel{
+  color:#3184b9;
+}
 i.icon-search{
   display:block;
   float:left;
@@ -275,11 +277,11 @@ nav{
   width:260px;
   z-index:1215;
   padding:20px;
-  margin-left:-240px;
+  margin-left:-260px;
 }
 
 .open nav{
-  margin-left:0px;
+  margin-left:-20px;
 }
 
 nav ul{
@@ -311,7 +313,8 @@ header{
 .hwrapper{
   width:100%;
   /*min-width:440px;*/
-  padding: 0 20px;
+  padding: 0 40px 0 0px;
+
 }
 
 .open .hwrapper{
@@ -345,7 +348,6 @@ header .hleft{
   float:left;
 }
 
-
 header p{
   line-height: 60px;
 }
@@ -362,6 +364,7 @@ header .hright p{
   height:100%;
   width:100%;
   position:fixed;
+  padding:0 20px;
   /* overflow-y: scroll;*/
 }
 
@@ -372,7 +375,6 @@ header .hright p{
 .main{
   padding:100px 20px 20px 60px;
   width:100%;
-
   margin-left: -20px;
   min-height:100%;
   height:100% !important;
@@ -385,6 +387,11 @@ header .hright p{
 
 .open .main{
   padding:100px 20px 20px 300px;
+}
+
+.view_customer .main{
+  padding:20px;
+  margin:0px;
 }
 
 .main h2{
@@ -699,6 +706,14 @@ grohe-dpf-medias{
     width:50%;
     overflow:hidden;
 }
+
+.order{
+  margin: 80px 0 0 0;
+  color:#000;
+  text-align:center;
+}
+
+
 
 @media screen and (max-width: 800px) {
 

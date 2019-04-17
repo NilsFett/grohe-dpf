@@ -100,9 +100,17 @@
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="topsign_id"  #topsign_id placeholder="Top Sign">
-            <mat-option value="{{topsign.id}}" *ngFor="let topsign of topSigns">{{topsign.title}}</mat-option>
+            <ng-container *ngFor="let topsign of topSigns" >
+              <mat-option *ngIf="topsign.type == 1" value="{{topsign.id}}" >{{topsign.title}}</mat-option>
+            </ng-container>
           </mat-select>
-          <mat-error [hidden]="topsign_id.valid || topsign_id.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="promotion_material_id"  #promotion_material_id placeholder="Promotion Material">
+            <ng-container *ngFor="let topsign of topSigns">
+              <mat-option value="{{topsign.id}}" *ngIf="topsign.type == 2" >{{topsign.title}}</mat-option>
+            </ng-container>
+          </mat-select>
         </mat-form-field>
         <grohe-dpf-tree-view [label]="catString" [selectedCategory]="currentDataSet.product_tree"></grohe-dpf-tree-view>
 
@@ -126,7 +134,8 @@
         <li *ngFor="let article of articleList">
           <span class="artnr">{{article.articlenr}}</span>
           <span class="title">{{article.title}}</span>
-          <span class="units">{{article.units}}</span>
+          <span class="units"><b>{{article.units}}</b></span>
+          <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
           <span (click)="removeArticleFromArticleList(article)" class="icon-minus"></span>
         </li>
       </ul>
