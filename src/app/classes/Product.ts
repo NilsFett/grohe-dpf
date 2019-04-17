@@ -9,6 +9,8 @@ export class Product {
   public product_tree:number=1;
   public price:number;
   public topsign_id:number;
+  public promotion_material_id:number;
   public deliverytime : number;
+  public base_display_template_id : number;
   public hide : number;
 }

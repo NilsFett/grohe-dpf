@@ -1,0 +1,26 @@
+<div class="order">
+  <h1>Please choose your Display Type</h1>
+  <div class="spacer"></div>
+
+  <div routerLink="/order2" class="span6 padding">
+    <img (click)="displayChoosen(1)" src="{{config.baseURL}}uploads/dp1f.jpg" />
+    <p>Manteldisplay mit niedrigem Sockel für Duschsysteme</p>
+    <button mat-raised-button>Choose</button>
+  </div>
+
+  <div routerLink="/order2" class="span6 padding">
+    <img (click)="displayChoosen(2)" src="{{config.baseURL}}uploads/dp1f.jpg" />
+    <p>Universal Display low base</p>
+    <button mat-raised-button>Choose</button>
+  </div>
+  <div routerLink="/order2" class="span6 padding">
+    <img (click)="displayChoosen(3)" src="{{config.baseURL}}uploads/dp2f.jpg" />
+    <p>2 Schüttendisplay</p>
+    <button mat-raised-button>Choose</button>
+  </div>
+  <div routerLink="/order2" (click)="displayChoosen(4)" class="span6 padding">
+    <img src="{{config.baseURL}}uploads/dp3f.jpg" />
+    <p>3 Schüttendisplay</p>
+    <button mat-raised-button>Choose</button>
+  </div>
+</div>

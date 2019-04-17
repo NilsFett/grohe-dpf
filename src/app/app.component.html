@@ -1,5 +1,5 @@
-<div (click)="clicked()" [ngStyle]="{'height': mainheight+'px'}" #wrapper id="wrapper" [ngClass]="{'open': navopen, 'login': (router.url == '/' || router.url == '/login' || router.url == '/register' || router.url == '/passwordReset'), 'pad': (res.width < 1000)}">
-  <nav *ngIf="user.isLoggedIn"  [ngStyle]="navstyle">
+<div (click)="clicked()" [ngStyle]="{'height': mainheight+'px'}" #wrapper id="wrapper" class="view_{{ui.view}}" [ngClass]="{'open': (navopen && ui.view == 'admin'), 'login': (router.url == '/' || router.url == '/login' || router.url == '/register' || router.url == '/passwordReset'), 'pad': (res.width < 1000)}">
+  <nav *ngIf="user.isLoggedIn && ui.view == 'admin'"  [ngStyle]="navstyle">
     <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
     <span (click)="openclosenav()" class="openclose fa icon-menu"></span>
 
@@ -54,8 +54,8 @@
     <div class="hwrapper">
       <div *ngIf="user.isLoggedIn" class="hleft tright">
         <p>
-          <span *ngIf="!navopen" (click)="openclosenav()" class="openclose fa icon-menu"></span>
-          <span (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button"><span class="highwidth">Customer View</span><span class="lowwidth fa icon-eye">C</span></span>
+          <span *ngIf="!navopen && user.isLoggedIn && ui.view == 'admin'" (click)="openclosenav()" class="openclose fa icon-menu"></span>
+          <span routerLink="/start" (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button"><span class="highwidth">Customer View</span><span class="lowwidth fa icon-eye">C</span></span>
           <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button"><span class="highwidth">Admin View</span><span class="lowwidth fa icon-eye">A</span></span>
         </p>
       </div>

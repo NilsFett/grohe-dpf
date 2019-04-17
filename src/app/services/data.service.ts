@@ -40,6 +40,10 @@ export class DataService {
   public productsChange: Subject<Array<Product>>;
   private productsChangeObserver: Observable<Array<Product>>;
 
+  public productsWithArticlesAndProductPath: Product[] = null;
+  public productsWithArticlesAndProductPathChange: Subject<Array<Product>>;
+  private productsWithArticlesAndProductPathChangeObserver: Observable<Array<Product>>;
+
   public users: User[] = null;
   public userChange: Subject<Array<User>>;
   private userChangeObserver: Observable<Array<User>>;
@@ -87,6 +91,9 @@ export class DataService {
 
     this.productsChange = new Subject<Array<Product>>();
     this.productsChangeObserver = this.productsChange.asObservable();
+
+    this.productsWithArticlesAndProductPathChange = new Subject<Array<Product>>();
+    this.productsWithArticlesAndProductPathChangeObserver = this.productsWithArticlesAndProductPathChange.asObservable();
 
     this.userChange = new Subject<Array<User>>();
     this.userChangeObserver = this.userChange.asObservable();
@@ -157,6 +164,14 @@ export class DataService {
       this.productsChange.next(this.products);
     });
   }
+
+  public loadProductsWithArticlesAndProductPath() {
+    this.http.get(`${this.config.baseURL}getAllProductsWithArticlesAndProductPath`, { withCredentials: true }).subscribe((products: Product[]) => {
+      this.productsWithArticlesAndProductPath = products;
+      this.productsWithArticlesAndProductPathChange.next(this.products);
+    });
+  }
+
 
   public loadDisplayParts() {
     this.http.get(`${this.config.baseURL}getDisplayParts`, { withCredentials: true }).subscribe((displayParts: DisplaysPart[]) => {

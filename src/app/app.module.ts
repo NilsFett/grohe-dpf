@@ -12,15 +12,14 @@ import { PasswordResetComponent } from './components/passwordReset/passwordReset
 import { RegisterComponent } from './components/register/register.component';
 import { UserRequestsComponent } from './components/userrequests/userrequests.component';
 import { StartComponent } from './components/start/start.component';
-/*import { OrderComponent } from './components/order/order.component';*/
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ProductsComponent } from './components/products/products.component';
-//import { OrdersComponent } from './components/orders/orders.component';
+import { Order1Component } from './components/order1/order1.component';
+import { Order2Component } from './components/order2/order2.component';
 import { MediasComponent } from './components/medias/medias.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
-
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
@@ -47,6 +46,7 @@ import { ErrorService } from './services/error.service';
 import { UiService } from './services/ui.service';
 import { ConfigService } from './services/config.service';
 import { DataService } from './services/data.service';
+import { OrderService } from './services/order.service';
 
 import { DisplayPartsFilter } from './pipes/displayParts/displayPartsFilter';
 import { DisplaysFilter } from './pipes/displays/displaysFilter';
@@ -66,13 +66,13 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     UserRequestsComponent,
     RegisterComponent,
     StartComponent,
-    /*OrderComponent,*/
+    Order1Component,
+    Order2Component,
     DisplayComposeComponent,
     DisplayPartsComponent,
     ArticlesComponent,
     TopSignsComponent,
     ProductsComponent,
-    /*OrdersComponent,*/
     DpfContentDirective,
     DpfOverflowWrapperDirective,
     DpfFormValidateAfterIfDirective,
@@ -113,7 +113,8 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     ArticlesFilter,
     ProductsFilter,
     UserFilter,
-    TopSignsFilter
+    TopSignsFilter,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })

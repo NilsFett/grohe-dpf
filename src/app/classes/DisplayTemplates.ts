@@ -11,6 +11,7 @@ export abstract class displayTemplates {
           image:19,
           hide:false,
           displaytype:"1_4_chep_pallet",
+          base_display_template_id:1,
           topsign_punch:'',
           instruction:3
         })),
@@ -35,6 +36,7 @@ export abstract class displayTemplates {
           image:19,
           hide:false,
           displaytype:"1_4_chep_pallet",
+          base_display_template_id:2,
           topsign_punch:'',
           instruction:3
         })
@@ -70,6 +72,7 @@ export abstract class displayTemplates {
         image:21,
         hide:false,
         displaytype:"1_4_chep_pallet",
+        base_display_template_id:3,
         topsign_punch:'',
         instruction:3
       })
@@ -102,6 +105,7 @@ export abstract class displayTemplates {
         image:23,
         hide:false,
         displaytype:"1_4_chep_pallet",
+        base_display_template_id:4,
         topsign_punch:'',
         instruction:3
       })

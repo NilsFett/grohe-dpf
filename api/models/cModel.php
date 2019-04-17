@@ -188,10 +188,10 @@ class cModel extends cDatabase{
 						$aColsValuePairs[':'.$sColumn] = PDO::PARAM_NULL;
 					}
 					else{
-						if( $sValue['value'] == '' && $sValue['type'] != 'varchar' ){
+						if( $sValue['value'] == '' && $sValue['type'] == 'int' ){
 							$aColsValuePairs[':'.$sColumn] = PDO::PARAM_NULL;
 						}
-						elseif( ( $sValue['value'] == '0000-00-00 00:00:00' && $sValue['type'] == 'datetime' ) ){
+						elseif(  ( ! $sValue['value'] || $sValue['value'] == '0000-00-00 00:00:00' || $sValue['value'] == '0' || empty($sValue['value']) ) && $sValue['type'] == 'datetime' )   {
 							$aColsValuePairs[':'.$sColumn] = NULL;
 						}
 						else{

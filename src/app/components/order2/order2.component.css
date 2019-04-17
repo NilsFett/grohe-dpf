@@ -1,0 +1,36 @@
+.order{
+  margin: 80px 0 0 0;
+  color:#000;
+  text-align:center;
+}
+
+p{
+  margin:20px 0 0 0;
+
+}
+
+img{
+  display:block;
+  max-width:100%;
+  width:300px;
+  margin: 0 auto;
+}
+
+ul.products{
+  padding: 0 20px 0 0;
+}
+
+ul.products > li{
+  margin: 0 0 20px 0;
+}
+
+ul{
+  list-style-type: none;
+  text-align:right;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+ul li{
+  margin: 0 0 0 20px;
+
+}
