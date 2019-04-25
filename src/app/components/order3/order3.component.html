@@ -1,0 +1,105 @@
+<div class="order">
+  <div class="displays">
+    <h3>ORDER PROCESS</h3>
+    <ul class="order_prozess">
+      <li routerLink="/order1"><span>1</span>SELECT</li>
+      <li routerLink="/order2"><span>2</span>CONFIGURATION</li>
+      <li class="active"><span>3</span>SUMMERY</li>
+    </ul>
+    <div class="row">
+      <div class="span6">
+        <div class="orderbox">
+          <h4>Buyer-Information</h4>
+          <div class="inner">
+            <div class="span6"><b>Name</b></div><div class="span6">{{user.data.name.value}} {{user.data.surname.value}}</div>
+            <div class="span6"><b>Department</b></div><div class="span6">{{user.data.department.value}} </div>
+            <div class="span6"><b>Cost Centre</b></div>
+            <div class="span6">
+              <mat-form-field>
+                <mat-select [(ngModel)]="order.costcentre">
+                  <mat-option *ngFor="let costcentre of user.data.costcentres" value="{{costcentre.id}}">{{costcentre.costno}} {{costcentre.description}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="span6"><b>E-Mail</b></div><div class="span6">{{user.data.mail.value}} </div>
+            <div class="span6"><b>Phone</b></div><div class="span6">{{user.data.phone.value}} </div>
+            <div class="span6"><b>Address</b></div><div class="span6">{{user.data.street.value}}, {{user.data.zipcode.value}} {{user.data.city.value}}, {{user.data.country.value}}</div>
+            <div class="span6"><b>Order Date</b></div><div class="span6">{{getDateStringToday()}} </div>
+
+
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="orderbox">
+          <h4>New Order Process</h4>
+          <div class="inner">
+            <ul>
+              <li class="warning">Please book you order in SAP now!</li>
+              <li>Transaction: ZDF01</li>
+              <li>Fill in the requested information
+                <ul>
+                  <li>Under "Items" simply add this information:</li>
+                  <li>ID: <span class="warning">order.productChoosen.DFID</span></li>
+                  <li>Quantity: <span class="warning">1</span></li>
+                </ul>
+              </li>
+              <li>Then press F8 (the clock symbol)</li>
+              <li>Then add the SAP order number in the field below</li>
+              <li>For further and detailed information please check the new display factory manual.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6">
+        <div class="orderbox">
+          <h4>Promotion Identification Title</h4>
+          <div class="inner">
+            <mat-form-field>
+              <input type="text" matInput name="pit" #pit placeholder="Promotion Identification Title">
+              <mat-error [hidden]="pit.valid || pit.pristine">required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="orderbox">
+          <h4>SAP Product Order Number (8 digits)</h4>
+          <div class="inner">
+            <mat-form-field>
+              <input type="text" matInput name="SAP" #SAP placeholder="SAP Product Order Number" [(ngModel)]="order.SAP">
+              <mat-error [hidden]="SAP.valid || SAP.pristine">required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="order.SAP.length == 8" class="row">
+      <div class="span6">
+        <div class="inner">
+          <p><b>Product Category</b>: {{order.productChoosen.path.path}}</p>
+          <div class="span2">
+            <img src="{{config.baseURL}}uploads/no_pic_thumb.jpg" />
+          </div>
+          <div class="span5">
+            <p><span><b>DF-ID:</b></span><span>{{order.productChoosen.DFID}}</span></p>
+            <p><span><b>Display SAP No.:</b></span><span>{{order.productChoosen.SAP}}</span></p>
+            <p><span><b>Display Title:</b></span><span>{{order.productChoosen.title}}</span></p>
+          </div>
+          <div class="span5">
+            <ul>
+              <li *ngFor="let article of order.productChoosen.article">
+                <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
+              </li>
+            </ul>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+      {{order.SAP}}
+    </div>
+  </div>
+</div>

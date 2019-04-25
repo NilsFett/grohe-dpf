@@ -1,26 +1,42 @@
 <div class="order">
-  <h1>Please choose your Display Type</h1>
-  <div class="spacer"></div>
-
-  <div routerLink="/order2" class="span6 padding">
-    <img (click)="displayChoosen(1)" src="{{config.baseURL}}uploads/dp1f.jpg" />
-    <p>Manteldisplay mit niedrigem Sockel für Duschsysteme</p>
-    <button mat-raised-button>Choose</button>
-  </div>
-
-  <div routerLink="/order2" class="span6 padding">
-    <img (click)="displayChoosen(2)" src="{{config.baseURL}}uploads/dp1f.jpg" />
-    <p>Universal Display low base</p>
-    <button mat-raised-button>Choose</button>
-  </div>
-  <div routerLink="/order2" class="span6 padding">
-    <img (click)="displayChoosen(3)" src="{{config.baseURL}}uploads/dp2f.jpg" />
-    <p>2 Schüttendisplay</p>
-    <button mat-raised-button>Choose</button>
-  </div>
-  <div routerLink="/order2" (click)="displayChoosen(4)" class="span6 padding">
-    <img src="{{config.baseURL}}uploads/dp3f.jpg" />
-    <p>3 Schüttendisplay</p>
-    <button mat-raised-button>Choose</button>
+  <div class="displays">
+    <h3>ORDER PROCESS</h3>
+    <ul class="order_prozess">
+      <li class="active"><span>1</span>SELECT</li>
+      <li><span>2</span>CONFIGURATION</li>
+      <li><span>3</span>SUMMERY</li>
+    </ul>
+    <div (click)="displayChoosen(1)" routerLink="/order2" class="display displaySelect padding">
+      <h4>Universal Display hight base</h4>
+      <div class="inner">
+        <img src="{{config.baseURL}}uploads/dp1f.jpg" />
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>
+        <button mat-raised-button>SELECT</button>
+      </div>
+    </div>
+    <div (click)="displayChoosen(2)" routerLink="/order2" class="displaySelect padding">
+      <h4>Universal Display low base</h4>
+      <div class="inner">
+        <img src="{{config.baseURL}}uploads/dp1f.jpg" />
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>
+        <button mat-raised-button>SELECT</button>
+      </div>
+    </div>
+    <div (click)="displayChoosen(3)" routerLink="/order2" class="displaySelect padding">
+      <h4>2 Tray Display</h4>
+      <div class="inner">
+        <img src="{{config.baseURL}}uploads/dp2f.jpg" />
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>
+        <button mat-raised-button>SELECT</button>
+      </div>
+    </div>
+    <div (click)="displayChoosen(4)" routerLink="/order2" class="displaySelect padding">
+      <h4>3 Tray Display</h4>
+      <div class="inner">
+        <img src="{{config.baseURL}}uploads/dp3f.jpg" />
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>
+        <button mat-raised-button>SELECT</button>
+      </div>
+    </div>
   </div>
 </div>

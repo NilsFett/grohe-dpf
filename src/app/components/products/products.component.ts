@@ -269,8 +269,6 @@ export class ProductsComponent  {
 */
   public setCurrentDataSet(currentDataSet){
 
-console.log(currentDataSet);
-
     this.currentDataSet = currentDataSet;
     this.ui.doShowEditNew();
     this.updateFormValues();

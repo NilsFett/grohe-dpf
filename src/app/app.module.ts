@@ -18,6 +18,7 @@ import { ArticlesComponent } from './components/articles/articles.component';
 import { ProductsComponent } from './components/products/products.component';
 import { Order1Component } from './components/order1/order1.component';
 import { Order2Component } from './components/order2/order2.component';
+import { Order3Component } from './components/order3/order3.component';
 import { MediasComponent } from './components/medias/medias.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
 
@@ -68,6 +69,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     StartComponent,
     Order1Component,
     Order2Component,
+    Order3Component,
     DisplayComposeComponent,
     DisplayPartsComponent,
     ArticlesComponent,
@@ -96,8 +98,9 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatTableModule, MatSortModule, MatPaginatorModule,MatFormFieldModule,MatSelectModule,MatInputModule,MatButtonModule,MatCheckboxModule
-    ,MatTreeModule,MatIconModule
+    MatTableModule, MatSortModule, MatPaginatorModule,MatFormFieldModule,
+    MatSelectModule,MatInputModule,MatButtonModule,MatCheckboxModule
+    ,MatTreeModule,MatIconModule, MatDatepickerModule, MatNativeDateModule
     ,CdkTreeModule,FileUploadModule
   ],
   providers: [

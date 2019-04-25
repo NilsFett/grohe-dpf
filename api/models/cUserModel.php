@@ -204,4 +204,15 @@ class cUserModel extends cModel{
 		}
 		return $aResult;
 	}
+
+	public function data(){
+		$data = parent::data();
+		$data['costcentres'] = array();
+		$query = "SELECT * FROM `t_costno` WHERE `userid` = ?";
+
+		$stmt = $this->hConnection->prepare($query);
+		$stmt->execute(array($this->get('id')));
+		$data['costcentres'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $data;
+	}
 }

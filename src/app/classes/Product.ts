@@ -4,7 +4,7 @@ export class Product {
   public title:string;
   public DFID:string;
   public empty_display:number;
-  public display_id:string;
+  public display_id:number;
   public SAP:string;
   public product_tree:number=1;
   public price:number;
@@ -12,5 +12,8 @@ export class Product {
   public promotion_material_id:number;
   public deliverytime : number;
   public base_display_template_id : number;
+  public article : Array<any>;
+  public display_parts : Array<any>;
   public hide : number;
+  public path : any;
 }

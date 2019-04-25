@@ -1,22 +1,193 @@
 <div class="order">
-  <h1>Please choose your Products settings</h1>
-  <div class="spacer20"></div>
-  <div class="spacer20"></div>
-  <div class="span6">
-    <img *ngIf="order.displayTypeChoosen < 3" src="{{config.baseURL}}uploads/dp1f.jpg" />
-    <img *ngIf="order.displayTypeChoosen > 2" src="{{config.baseURL}}uploads/dp{{order.displayTypeChoosen-1}}f.jpg" />
-  </div>
-  <div class="span6">
-    <ul class="products">
-      <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
-        <li *ngIf="product.base_display_template_id == order.displayTypeChoosen"><h3>DFID: {{product.DFID}} | SAP: {{product.SAP}}</h3>
+  <div class="products">
+    <h3>ORDER PROCESS</h3>
+    <ul class="order_prozess">
+      <li routerLink="/order1"><span>1</span>SELECT</li>
+      <li class="active"><span>2</span>CONFIGURATION</li>
+      <li><span>3</span>SUMMERY</li>
+    </ul>
+    <div routerLink="/order2" class="displaySelect">
+      <h4>Universal Display hight base</h4>
+      <div class="inner display">
+        <img *ngIf="order.displayTypeChoosen < 3" src="{{config.baseURL}}uploads/dp1f.jpg" />
+        <img *ngIf="order.displayTypeChoosen > 2" src="{{config.baseURL}}uploads/dp{{order.displayTypeChoosen-1}}f.jpg" />
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>
+      </div>
+
+    </div>
+    <div class="productSelect">
+      <div class="search" *ngIf="!order.productChoosen">
+        <h4>Product search</h4>
+        <div class="inner">
+          <input type="text" class="search" placeholder="Input.." (keyup)="productsSearchWordChanged($event.target.value)">
+        </div>
+        <br />
+        <p *ngIf="! productsWithArticlesAndProductPath.length"><b>Loading Products, please wait...</b></p>
+        <ul class="products">
+          <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
+            <li *ngIf="product.base_display_template_id == order.displayTypeChoosen && ( product.DFID.toLowerCase().indexOf(productsSearchWord.toLowerCase()) !== -1 || product.article[0].title.toLowerCase().indexOf(productsSearchWord.toLowerCase()) !== -1 || product.article[0].articlenr.toLowerCase().indexOf(productsSearchWord.toLowerCase()) !== -1 || product.SAP.toLowerCase().indexOf(productsSearchWord.toLowerCase()) !== -1)" class="row">
+              <span (click)="productSelected(product)" class="add icon-plus"></span>
+              <p><b>Product Category</b>: {{product.path.path}}</p>
+              <div class="span2">
+                <img src="{{config.baseURL}}uploads/no_pic_thumb.jpg" />
+              </div>
+              <div class="span5">
+                <p><span><b>DF-ID:</b></span><span>{{product.DFID}}</span></p>
+                <p><span><b>Display SAP No.:</b></span><span>{{product.SAP}}</span></p>
+                <p><span><b>Display Title:</b></span><span>{{product.title}}</span></p>
+              </div>
+              <div class="span5">
+                <ul>
+                  <li *ngFor="let article of product.article">
+                    <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}}</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="clear"></div>
+            </li>
+          </ng-container>
+        </ul>
+
+      </div>
+
+      <div *ngIf="order.productChoosen" class="inner product-choosen">
+        <span (click)="removeSelected(product)" class="cancel icon-cancel"></span>
+        <p><b>Product Category</b>: {{order.productChoosen.path.path}}</p>
+        <div class="span2">
+          <img src="{{config.baseURL}}uploads/no_pic_thumb.jpg" />
+        </div>
+        <div class="span5">
+          <p><span><b>DF-ID:</b></span><span>{{order.productChoosen.DFID}}</span></p>
+          <p><span><b>Display SAP No.:</b></span><span>{{order.productChoosen.SAP}}</span></p>
+          <p><span><b>Display Title:</b></span><span>{{order.productChoosen.title}}</span></p>
+        </div>
+        <div class="span5">
           <ul>
-            <li *ngFor="let article of product.article">
-              <p>{{article.articlenr}} | {{article.title}} x {{article.units}}</p>
+            <li *ngFor="let article of order.productChoosen.article">
+              <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
             </li>
           </ul>
+          <button (click)="showEditArticleList()" class="grey" mat-raised-button>Edit</button>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="spacer20"></div>
+      <div *ngIf="order.productChoosen" class="inner">
+        <mat-form-field>
+          <input type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select [(ngModel)]="order.topSign" placeholder="Top Sign">
+            <ng-container *ngFor="let topsign of topSigns" >
+              <mat-option *ngIf="topsign.type == 1" value="{{topsign.id}}" >{{topsign.title}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="clear"></div>
+      </div>
+      <div class="spacer20"></div>
+      <div *ngIf="order.productChoosen" class="inner">
+        <table>
+          <tr>
+            <th>SAP-No.</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>quantity</th>
+            <th>Weight</th>
+          </tr>
+          <tr>
+            <td>{{order.productChoosen.SAP}}</td>
+            <td>{{order.productChoosen.title}}</td>
+            <td>Display</td>
+            <td>{{order.displayQuantity}}</td>
+            <td>{{getDisplayWeight()}}&nbsp;kg</td>
+          </tr>
+          <tr  *ngIf="order.topSign">
+            <td>{{topSignsById[order.topSign].articlenr}}</td>
+            <td>{{topSignsById[order.topSign].title}}</td>
+            <td>TopSign</td>
+            <td>{{order.displayQuantity}}</td>
+            <td>{{getTopSignWeight()}}&nbsp;kg</td>
+          </tr>
+          <tr *ngFor="let article of order.productChoosen.article">
+            <td>{{article.articlenr}}</td>
+            <td>{{article.title}}</td>
+            <td>Article</td>
+            <td>{{article.units}}</td>
+            <td>{{getArticleWeight(article)}}&nbsp;kg</td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              Total Weight
+            </td>
+            <td>
+              {{getDisplayWeight() + getTopSignWeight() + getArticlesWeight() }}&nbsp;kg
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+      <div *ngIf="order.productChoosen" class="inner">
+        <div class="spacer20"></div>
+        <mat-form-field>
+          <input matInput [matDatepicker]="dp3" placeholder="Desired date of delivery" disabled>
+          <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+          <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="order.productChoosen" class="inner">
+        <div class="spacer20"></div>
+        <button mat-raised-button routerLink="/order3">Continue</button>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="overlaybg" *ngIf="ui.showOverlay"></div>
+<div class="overlay" *ngIf="ui.showEditNew && order.productChoosenCopy">
+  <div class="overlay-content">
+    <span (click)="ui.showOverlay = false; order.productChoosenCopy = null" class="close">X</span>
+    <h3 class="fa icon-edit">Change Artcile List</h3>
+    <p class="warning">WARNING! Changing the Article List can result in an invalid display setting. If you set up an article List that is not possible, your order will be canceled.</p>
+    <hr />
+    <div class="container-flex display-parts-assembly" >
+      <ul class="choosen">
+        <li *ngFor="let article of order.productChoosenCopy.article">
+          <span class="artnr">{{article.articlenr}}</span>
+          <span class="title">{{article.title}}</span>
+          <span class="units"><b>{{article.units}}</b></span>
+          <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
+          <span (click)="removeArticleFromArticleList(article)" class="icon-minus"></span>
         </li>
-      </ng-container>
-    </ul>
+      </ul>
+      <button mat-raised-button (click)="changeArticleList()">Change</button>
+      <div class="spacer20"></div>
+      <hr />
+      <div class="spacer20"></div>
+      <p>Add Article</p>
+      <mat-form-field>
+        <input type="text" matInput name="partsearch" placeholder="Search by Articlenr. or Title" (keyup)="articleSearchwordChanged($event.target.value)">
+      </mat-form-field>
+      <div class="chooseDisplayPart">
+        <ul>
+          <li *ngFor="let article of articles">
+            <ng-container *ngIf="article.deleted == 0 && ( article.title.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 || article.articlenr.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 )">
+              <span class="artnr">{{article.articlenr}}</span>
+              <span class="title">{{article.title}}</span>
+              <input type="text" id="countArticle{{article.articlenr}}" />
+              <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
+            </ng-container>
+          </li>
+        </ul>
+
+      </div>
+    </div>
   </div>
 </div>

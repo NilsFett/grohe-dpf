@@ -63,11 +63,23 @@ class cDisplaysPartsModel extends cModel{
 	public static function getPartsToDisplays(){
 		$query = '	SELECT *
 					FROM `t_displays`
-					LEFT JOIN `r_display_parts` ON (`t_displays`.id = `r_display_parts`.`display_id`)
-					LEFT JOIN `t_display_parts` ON ( `r_display_parts`.`part_id` = `t_display_parts`.`id` )';
+					LEFT JOIN `r_display-part` ON (`t_displays`.`id` = `r_display-part`.`display_id`)
+					LEFT JOIN `t_display_parts` ON ( `r_display-part`.`part_id` = `t_display_parts`.`id` )';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public static function getPartsToDisplayByDisplayId($id){
+		$query = '	SELECT *
+					FROM `t_displays`
+					LEFT JOIN `r_display-part` ON (`t_displays`.id = `r_display-part`.`display_id`)
+					LEFT JOIN `t_display_parts` ON ( `r_display-part`.`part_id` = `t_display_parts`.`id` )
+					WHERE `t_displays`.`id` = ?';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute(array($id));
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
