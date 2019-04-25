@@ -120,6 +120,7 @@ class cProductsModel extends cModel{
 		foreach( $products as $index => $product ){
 			$products[$index]['path'] = self::getProductPath($product['product_tree']);
 			$products[$index]['article'] = self::getArticles($product['id']);
+			$products[$index]['display_parts'] = cDisplaysPartsModel::getPartsToDisplayByDisplayId($product['display_id']);
 		}
 		return $products;
 	}

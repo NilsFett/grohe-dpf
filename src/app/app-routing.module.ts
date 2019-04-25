@@ -7,6 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserRequestsComponent } from './components/userrequests/userrequests.component';
 import { Order1Component } from './components/order1/order1.component';
 import { Order2Component } from './components/order2/order2.component';
+import { Order3Component } from './components/order3/order3.component';
 import { StartComponent } from './components/start/start.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'userRequests', component: UserRequestsComponent, canActivate: [AuthGuard] },
   { path: 'order1', component: Order1Component, canActivate: [AuthGuard] },
   { path: 'order2', component: Order2Component, canActivate: [AuthGuard] },
+  { path: 'order3', component: Order3Component, canActivate: [AuthGuard] },
   { path: 'start', component: StartComponent, canActivate: [AuthGuard] },
   { path: 'displayCompose', component: DisplayComposeComponent, canActivate: [AuthGuard] },
   { path: 'displayParts', component: DisplayPartsComponent, canActivate: [AuthGuard] },

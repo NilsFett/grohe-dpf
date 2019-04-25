@@ -13,13 +13,14 @@ export class Order1Component{
     private order: OrderService,
     public config: ConfigService
   ) {
-
+    order.displayTypeChoosen = 1;
+    order.displayQuantity = 1;
+    order.topSign = null;
+    order.productChoosen = null;
+    order.SAP = '';
   }
 
   public displayChoosen(id){
-    console.log('displayChoosen');
-    console.log(id);
     this.order.displayTypeChoosen = id;
-    console.log(this.order.displayTypeChoosen);
   }
 }
