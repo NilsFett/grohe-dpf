@@ -52,7 +52,7 @@ class cProductTreeModel extends cModel{
 		$db = cDatabase::getInstance();
 		$oPDO = $db->hConnection->prepare( 'SELECT * FROM
 																				`'.static::$sTable.'`
-																				WHERE 1
+																				WHERE old_system = 0
 																				ORDER BY parent, sorting', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
 		$oPDO->execute(  );
 		$aResult = array();
@@ -67,6 +67,7 @@ class cProductTreeModel extends cModel{
 		$query = '	SELECT *
 					FROM `'.static::$sTable.'`
 					WHERE deleted = 0
+					AND old_system = 0
 					ORDER BY parent, sorting';
 
 

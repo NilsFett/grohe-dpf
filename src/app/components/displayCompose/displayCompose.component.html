@@ -87,7 +87,7 @@
 <div class="overlay" *ngIf="ui.showEditNew && currentDataSet">
   <div class="overlay-content">
     <span (click)="ui.doCloseEditNew();" class="close icon-cancel"></span>
-    <h3 class="fa icon-edit">Display</h3>
+    <h3 class="fa icon-edit">Display Type</h3>
     <p>{{currentDataSet.title}}&nbsp;&nbsp;</p>
     <ul class="tab">
       <li (click)="showAssembly=false" [ngClass]="{'active': showAssembly == false}">Display Data</li><li>&nbsp;|&nbsp;</li>

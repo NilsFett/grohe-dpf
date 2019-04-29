@@ -5,11 +5,11 @@ import { Product } from '../classes/Product';
 
 @Injectable()
 export class OrderService {
-  public displayTypeChoosen:number = 1;
+  public displayTypeChoosen:number = null;
   public displayQuantity:number = 1;
   public topSign:number = null;
   public costcentre:number;
-  public productChoosen:Product = {
+  public productChoosen:Product = null;/*{
     id: 901,
     title: "Universal Display low base",
     DFID: "DF1015",
@@ -129,8 +129,8 @@ export class OrderService {
             stock: 0,
             weight: 2400,
             deleted: 0 } ] };
-  public SAP:string = "12345678";
-
+*/
+  public SAP:string = null;
 
   constructor(
     private data:DataService,
