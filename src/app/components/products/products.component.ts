@@ -58,7 +58,7 @@ export class ProductsComponent  {
   public articleList:Article[] = [];
   public articleSearchword:string = '';
 
-  public catString:string= "Category*";
+  public catString:string= "Display Types*";
 
   constructor(
     public user: UserService,

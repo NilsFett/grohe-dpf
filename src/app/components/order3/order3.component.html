@@ -25,8 +25,6 @@
             <div class="span6"><b>Phone</b></div><div class="span6">{{user.data.phone.value}} </div>
             <div class="span6"><b>Address</b></div><div class="span6">{{user.data.street.value}}, {{user.data.zipcode.value}} {{user.data.city.value}}, {{user.data.country.value}}</div>
             <div class="span6"><b>Order Date</b></div><div class="span6">{{getDateStringToday()}} </div>
-
-
             <div class="clear"></div>
           </div>
         </div>
@@ -59,7 +57,7 @@
           <h4>Promotion Identification Title</h4>
           <div class="inner">
             <mat-form-field>
-              <input type="text" matInput name="pit" #pit placeholder="Promotion Identification Title">
+              <input type="text" matInput name="pit" #pit placeholder="Customer or Promotion ID">
               <mat-error [hidden]="pit.valid || pit.pristine">required</mat-error>
             </mat-form-field>
           </div>
@@ -78,28 +76,82 @@
       </div>
     </div>
     <div *ngIf="order.SAP.length == 8" class="row">
-      <div class="span6">
-        <div class="inner">
-          <p><b>Product Category</b>: {{order.productChoosen.path.path}}</p>
-          <div class="span2">
-            <img src="{{config.baseURL}}uploads/no_pic_thumb.jpg" />
+      <div class="span12">
+        <div class="orderbox">
+          <div class="inner">
+            <p><b>Product Category</b>: {{order.productChoosen.path.path}}</p>
+            <p><b>Price</b>: {{order.productChoosen.price}} €</p>
+            <div class="span2">
+              <img src="{{config.baseURL}}uploads/no_pic_thumb.jpg" />
+            </div>
+            <div class="span5" style="padding-left:10px;">
+              <p><span><b>DF-ID:</b></span><span>{{order.productChoosen.DFID}}</span></p>
+              <p><span><b>Display SAP No.:</b></span><span>{{order.productChoosen.SAP}}</span></p>
+              <p><span><b>Display Title:</b></span><span>{{order.productChoosen.title}}</span></p>
+            </div>
+            <div class="span5">
+              <ul style="list-style-type:none;">
+                <li *ngFor="let article of order.productChoosen.article">
+                  <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
+                </li>
+              </ul>
+            </div>
+            <div class="clear"></div>
           </div>
-          <div class="span5">
-            <p><span><b>DF-ID:</b></span><span>{{order.productChoosen.DFID}}</span></p>
-            <p><span><b>Display SAP No.:</b></span><span>{{order.productChoosen.SAP}}</span></p>
-            <p><span><b>Display Title:</b></span><span>{{order.productChoosen.title}}</span></p>
-          </div>
-          <div class="span5">
-            <ul>
-              <li *ngFor="let article of order.productChoosen.article">
-                <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
-              </li>
-            </ul>
-          </div>
-          <div class="clear"></div>
         </div>
       </div>
-      {{order.SAP}}
+      <div class="span12">
+        <div class="orderbox">
+          <div *ngIf="order.productChoosen" class="inner">
+            <table>
+              <tr>
+                <th>SAP-No.</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>quantity</th>
+                <th>Weight</th>
+              </tr>
+              <tr>
+                <td>{{order.productChoosen.SAP}}</td>
+                <td>{{order.productChoosen.title}}</td>
+                <td>Display</td>
+                <td>{{order.displayQuantity}}</td>
+                <td>{{getDisplayWeight()}}&nbsp;kg</td>
+              </tr>
+              <tr  *ngIf="order.topSign">
+                <td>{{topSignsById[order.topSign].articlenr}}</td>
+                <td>{{topSignsById[order.topSign].title}}</td>
+                <td>TopSign</td>
+                <td>{{order.displayQuantity}}</td>
+                <td>{{getTopSignWeight()}}&nbsp;kg</td>
+              </tr>
+              <tr *ngFor="let article of order.productChoosen.article">
+                <td>{{article.articlenr}}</td>
+                <td>{{article.title}}</td>
+                <td>Article</td>
+                <td>{{article.units}}</td>
+                <td>{{getArticleWeight(article)}}&nbsp;kg</td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <b>Total Weight</b>
+                </td>
+                <td>
+                  <b>{{getTotalWeight() }}&nbsp;kg</b>
+                </td>
+              </tr>
+            </table>
+
+            <div class="clear"></div>
+            <div class="spacer20"></div>
+            <button mat-raised-button>Finish order</button>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="clear"></div>
+    <div class="spacer20"></div>
+    <div class="spacer20"></div>
   </div>
 </div>

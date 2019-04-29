@@ -23,16 +23,16 @@
         <a>Frontpage</a>
       </li>
       <li>
-        <a href="/displayCompose" routerLink="/displayCompose">Display Compose</a>
+        <a href="/displayCompose" routerLink="/displayCompose">Display Types</a>
       </li>
       <li [ngClass]="{'active': (router.url == '/displayParts')}">
         <a (click)="navClicked()" href="/displayParts" routerLink="/displayParts">Display Parts</a>
       </li>
       <li [ngClass]="{'active': (router.url == '/articles')}">
-        <a (click)="navClicked()" href="/articles" routerLink="/articles">Articles</a>
+        <a (click)="navClicked()" href="/articles" routerLink="/articles">SKU</a>
       </li>
       <li [ngClass]="{'active': (router.url == '/products')}">
-        <a (click)="navClicked()" href="/products" routerLink="/products">Products</a>
+        <a (click)="navClicked()" href="/products" routerLink="/products">DF ID</a>
       </li>
       <li [ngClass]="{'active': (router.url == '/topSigns')}">
         <a (click)="navClicked()" href="/topSigns" routerLink="/topSigns">Topsign / Promotion Material</a>

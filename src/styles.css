@@ -820,10 +820,14 @@ grohe-dpf-medias{
   /*height:372px;*/
 }
 
+.order .productSelect *{
+  vertical-align: top;
+}
+/*
 .order .productSelect{
   width:700px;
 }
-
+*/
 .order .inner{
   background-color:#fff;
   padding:20px;
@@ -922,6 +926,7 @@ grohe-dpf-medias{
 
 .order table{
   border-bottom:1px solid #e9e9e9;
+  border-right:1px solid #e9e9e9;
 }
 
 .order td, .order th{

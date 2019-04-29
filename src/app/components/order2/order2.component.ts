@@ -34,11 +34,6 @@ export class Order2Component{
     public ui: UiService,
     private router: Router
   ) {
-    if(this.order.displayTypeChoosen === null){
-      this.router.navigate(['/order1']);
-      return;
-    }
-
     if(this.dataService.productsWithArticlesAndProductPath){
       this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
     }
@@ -162,7 +157,7 @@ export class Order2Component{
     for(var i = 0; i < this.order.productChoosen.display_parts.length; i++){
       weight = weight + ( parseInt(this.order.productChoosen.display_parts[i].weight) * this.order.displayQuantity );
     }
-    return weight/1000;
+    return Number((weight/1000).toFixed(2));
   }
 
   public getTopSignWeight(){
@@ -172,7 +167,7 @@ export class Order2Component{
     }
 
     weight = weight + ( this.topSigns[this.order.topSign].weight * this.order.displayQuantity );
-    return weight/1000;
+    return Number((weight/1000).toFixed(2));
   }
 
   public getArticleWeight(article){
@@ -180,11 +175,8 @@ export class Order2Component{
     if(! this.order.productChoosen ){
       return weight;
     }
-
-
     weight = weight + ( parseInt(article.weight) * article.units * this.order.displayQuantity );
-
-    return weight/1000;
+    return Number((weight/1000).toFixed(2));
   }
 
   public getArticlesWeight(){
@@ -196,7 +188,33 @@ export class Order2Component{
     for(var i = 0; i < this.order.productChoosen.article.length; i++){
       weight = weight + ( parseInt(this.order.productChoosen.article[i].weight) * this.order.productChoosen.article[i].units * this.order.displayQuantity );
     }
-    return weight/1000;
+    return Number((weight/1000).toFixed(2));
+  }
+
+  public getTotalWeight(){
+    var total = this.getDisplayWeight() + this.getTopSignWeight() + this.getArticlesWeight();
+    return Number((total).toFixed(2));
+  }
+
+  public filterArticleList(product){
+    var matching = false;
+    if(
+          product.DFID.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
+      ||  product.SAP.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
+      ||  product.path.path.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
+    )
+    {
+      matching = true;
+    }
+    for(var i = 0; i < product.article.length; i++){
+      if(
+          product.article[i].title.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
+      ||  product.article[i].articlenr.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
+      ){
+        matching = true;
+      }
+    }
+    return matching;
   }
 
 }

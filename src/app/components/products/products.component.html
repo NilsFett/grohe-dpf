@@ -67,7 +67,7 @@
 <div class="overlay" *ngIf="ui.showEditNew && currentDataSet">
   <div class="overlay-content">
     <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
-    <h3 class="fa icon-edit">Product</h3>
+    <h3 class="fa icon-edit">DF ID</h3>
     <p>{{currentDataSet.title}}</p>
     <ul class="tab">
       <li (click)="showArticles=false" [ngClass]="{'active': showArticles == false}">Product Data</li><li>&nbsp;|&nbsp;</li>
@@ -168,7 +168,7 @@
 <div class="overlay" *ngIf="ui.showDelete">
   <div class="overlay-content">
     <span (click)="deleteClose()" class="close">X</span>
-    <h3 class="fa icon-trash-empty">Product</h3>
+    <h3 class="fa icon-trash-empty">DF ID</h3>
     <p>{{dataSetToDelete.title}}</p>
     <hr />
     <div class="container-flex">
