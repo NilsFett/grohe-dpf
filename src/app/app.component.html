@@ -13,11 +13,11 @@
     </ul>
 
     <ul *ngIf="ui.view == 'admin'">
-      <li [ngClass]="{'active': (router.url == '/displayorders')}">
-        <a (click)="navClicked()" href="/displayorders" routerLink="/displayorders">Display Order</a>
+      <li (click)="navClicked($event)" routerLink="/displayorders" [ngClass]="{'active': (router.url == '/displayorders')}">
+        <a>Display Order</a>
       </li>
-      <li [ngClass]="{'active': (router.url == '/userRequests')}">
-        <a (click)="navClicked()" href="/userRequests" routerLink="/userRequests">User Account Request</a>
+      <li (click)="navClicked($event)" routerLink="/userRequests" [ngClass]="{'active': (router.url == '/userRequests')}">
+        <a>User Account Request</a>
       </li>
       <li>
         <a>Frontpage</a>
@@ -25,23 +25,37 @@
       <li>
         <a href="/displayCompose" routerLink="/displayCompose">Display Types</a>
       </li>
-      <li [ngClass]="{'active': (router.url == '/displayParts')}">
-        <a (click)="navClicked()" href="/displayParts" routerLink="/displayParts">Display Parts</a>
+      <li (click)="navClicked($event)" routerLink="/displayParts" [ngClass]="{'active': (router.url == '/displayParts')}">
+        <a>Display Parts</a>
       </li>
-      <li [ngClass]="{'active': (router.url == '/articles')}">
-        <a (click)="navClicked()" href="/articles" routerLink="/articles">SKU</a>
+      <li (click)="navClicked($event)" routerLink="/articles" [ngClass]="{'active': (router.url == '/articles')}">
+        <a>SKU</a>
       </li>
-      <li [ngClass]="{'active': (router.url == '/products')}">
-        <a (click)="navClicked()" href="/products" routerLink="/products">DF ID</a>
+      <li (click)="navClicked($event)" routerLink="/products" [ngClass]="{'active': (router.url == '/products')}">
+        <a>DF ID</a>
+        <ul>
+          <li (click)="navClicked($event)" routerLink="/products/102" [ngClass]="{'active': (router.url == '/products/102')}">
+            <a>¼ Pallet</a>
+          </li>
+          <li (click)="navClicked($event)" routerLink="/products/103" [ngClass]="{'active': (router.url == '/products/103')}">
+            <a>Full Pallet</a>
+          </li>
+          <li (click)="navClicked($event)" routerLink="/products/104" [ngClass]="{'active': (router.url == '/products/104')}">
+            <a>Counter</a>
+          </li>
+          <li (click)="navClicked($event)" routerLink="/products/105" [ngClass]="{'active': (router.url == '/products/105')}">
+            <a>Bundle</a>
+          </li>
+        </ul>
       </li>
-      <li [ngClass]="{'active': (router.url == '/topSigns')}">
-        <a (click)="navClicked()" href="/topSigns" routerLink="/topSigns">Topsign / Promotion Material</a>
+      <li (click)="navClicked($event)" routerLink="/topSigns" [ngClass]="{'active': (router.url == '/topSigns')}">
+        <a>Topsign / Promotion Material</a>
       </li>
       <li>
         <a>Orders</a>
       </li>
-      <li [ngClass]="{'active': (router.url == '/user')}">
-        <a (click)="navClicked()" href="/user" routerLink="/user">User</a>
+      <li (click)="navClicked($event)" routerLink="/user" [ngClass]="{'active': (router.url == '/user')}">
+        <a>User</a>
       </li>
       <!--
       <li [ngClass]="{'active': (router.url == '/medias')}">

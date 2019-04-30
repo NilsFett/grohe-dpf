@@ -87,10 +87,11 @@ export class AppComponent implements AfterViewInit{
     this.navopen = !this.navopen;
   }
 
-  navClicked(){
+  navClicked(event){
     if(this.res.width < 800){
       this.navopen = false;
     }
+    event.stopPropagation();
   }
 
   public userInfoOpenClicked(event){

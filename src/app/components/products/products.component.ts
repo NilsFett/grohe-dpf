@@ -12,13 +12,14 @@ import { ProductTree } from '../../classes/ProductTree';
 import { Article } from '../../classes/Article';
 import { Display } from '../../classes/display';
 import { TopSign } from '../../classes/TopSign';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'grohe-dpf-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent  {
+export class ProductsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   currentDataSet:Product = null;
@@ -65,23 +66,13 @@ export class ProductsComponent  {
     public ui: UiService,
     public dataService: DataService,
     public config: ConfigService,
-    private productsFilter: ProductsFilter
+    private productsFilter: ProductsFilter,
+    private activeRoute: ActivatedRoute
   ) {
+    console.log('constructor products');
     this.dataSource = new MatTableDataSource(this.products);
 
-    if(this.dataService.products){
-      this.products = this.productsFilter.transform(this.dataService.products, this.filter);
-      this.dataSource = new MatTableDataSource(this.products);
-    }
-    else{
-      this.dataService.productsChange.subscribe(
-        (products:Product[]) => {
-          this.products = this.productsFilter.transform(this.dataService.products, this.filter);
-          this.dataSource = new MatTableDataSource(this.products);
-        }
-      );
-      this.dataService.loadProducts();
-    }
+
 
     if(this.dataService.images){
       this.images = this.dataService.images;
@@ -173,6 +164,31 @@ export class ProductsComponent  {
     this.ui.categorySelected.subscribe( (catId:number)=>{
       this.currentDataSet.product_tree = catId;
     });
+
+  }
+
+  ngOnInit(){
+    console.log('this.activeRoute.snapshot.params');
+    console.log(this.activeRoute.snapshot.params);
+    if(this.dataService.products){
+      this.products = this.productsFilter.transform(this.dataService.products, this.filter);
+      this.dataSource = new MatTableDataSource(this.products);
+    }
+    else{
+      this.dataService.productsChange.subscribe(
+        (products:Product[]) => {
+          this.products = this.productsFilter.transform(this.dataService.products, this.filter);
+          this.dataSource = new MatTableDataSource(this.products);
+        }
+      );
+      //this.dataService.loadProducts(this.activeRoute.snapshot.params);
+    }
+
+    this.activeRoute.params.subscribe(
+      routeParams => {
+        this.dataService.loadProducts(routeParams);
+      }
+    )
   }
 
   public showNew(){
@@ -338,8 +354,6 @@ export class ProductsComponent  {
   public selectImage(){
     this.ui.doShowMedias();
   }
-
-
   public articlesSearchwordChanged(searchword){
     this.articleSearchword = searchword;
   }

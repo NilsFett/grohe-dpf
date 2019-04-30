@@ -37,6 +37,7 @@ const routes: Routes = [
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
   { path: 'displayorders', component: TreeViewComponent, canActivate: [AuthGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
+  { path: 'products/:id', component: ProductsComponent, canActivate: [AuthGuard] },
   { path: 'medias', component: MediasComponent, canActivate: [AuthGuard] }
 ];
 

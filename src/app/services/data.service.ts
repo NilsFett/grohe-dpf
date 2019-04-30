@@ -158,8 +158,12 @@ export class DataService {
     });
   }
 
-  public loadProducts() {
-    this.http.get(`${this.config.baseURL}getProducts`, { withCredentials: true }).subscribe((products: Product[]) => {
+  public loadProducts(routerParam) {
+    let id = 0;
+    if(routerParam.id){
+      id = routerParam.id;
+    }
+    this.http.get(`${this.config.baseURL}getProducts?id=${id}`, { withCredentials: true }).subscribe((products: Product[]) => {
       this.products = products;
       this.productsChange.next(this.products);
     });
