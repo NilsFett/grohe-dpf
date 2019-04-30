@@ -434,6 +434,7 @@ nav ul{
 
 nav ul ul{
   margin-top:0px;
+  padding-top: 0px;
 }
 
 nav ul li{
@@ -445,10 +446,10 @@ nav ul li a{
   color: #fff;
 }
 
-nav ul li:hover a, nav ul li.active a{
+nav ul li:hover > a, nav ul li.active > a{
   font-weight:bold;
 }
-nav ul li:hover a:before, nav ul li.active a:before{
+nav ul li:hover > a:before, nav ul li.active > a:before{
   content: '\e805';
   font-family: "fontello";
   position:absolute;
