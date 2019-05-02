@@ -38,7 +38,7 @@ export class DataService {
 
   public products: Product[] = null;
   public productsChange: Subject<Array<Product>>;
-  private productsChangeObserver: Observable<Array<Product>>;
+  public productsChangeObserver: Observable<Array<Product>>;
 
   public productsWithArticlesAndProductPath: Product[] = null;
   public productsWithArticlesAndProductPathChange: Subject<Array<Product>>;
