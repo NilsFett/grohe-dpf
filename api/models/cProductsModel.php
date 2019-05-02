@@ -114,6 +114,21 @@ class cProductsModel extends cModel{
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public static function getAllByProductTreeId($productTreeId){
+		$query = '	SELECT `t_display_position`.*, `t_displays`.`base_display_template_id`, `t_displays`.`id`  AS displayID
+								FROM `t_display_position`
+								LEFT JOIN `t_displays` ON(`t_displays`.`id` = `t_display_position`.`display_id`)
+								WHERE `t_display_position`.`old_system` = 0
+								AND `t_displays`.`id`  IS NOT NULL
+								AND `t_displays`.`old_system` = 0
+								AND `t_display_position`.`product_tree` = ?';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute(array($productTreeId));
+		$displays = array();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	public static function getAllWithArticlesAndProductPath(){
 		$products = self::getAll();
 
