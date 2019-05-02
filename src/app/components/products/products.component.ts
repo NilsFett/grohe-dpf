@@ -177,6 +177,7 @@ export class ProductsComponent implements OnInit {
     else{
       this.dataService.productsChange.subscribe(
         (products:Product[]) => {
+          console.log('this.dataService.productsChange.subscribe');
           this.products = this.productsFilter.transform(this.dataService.products, this.filter);
           this.dataSource = new MatTableDataSource(this.products);
         }

@@ -132,7 +132,12 @@ class cGroheapiController{
 
 	public function getProducts(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
-			$products = cProductsModel::getAll();
+			if(! isset($_GET['id']) || !  $_GET['id'] ){
+				$products = cProductsModel::getAll();
+			}
+			else{
+				$products = cProductsModel::getAllByProductTreeId($_GET['id']);
+			}
 			echo json_encode($products);
 		}
 	}
