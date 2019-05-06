@@ -1,4 +1,5 @@
-import { Component, Input, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, OnDestroy, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs'
 import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
@@ -19,7 +20,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements AfterViewChecked {
   @ViewChild(MatSort) sort: MatSort;
 
   currentDataSet:Product = null;
@@ -61,17 +62,23 @@ export class ProductsComponent implements OnInit {
 
   public catString:string= "Display Types*";
 
+
+  private refreshing:boolean = false;
   constructor(
     public user: UserService,
     public ui: UiService,
     public dataService: DataService,
     public config: ConfigService,
     private productsFilter: ProductsFilter,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private changeDetectionRef:ChangeDetectorRef
   ) {
     this.ui.view = 'admin';
-    this.dataSource = new MatTableDataSource(this.products);
-
+    console.log('constructor products');
+    this.dataSource = new MatTableDataSource(this.dataService.products);
+    this.ui.view = 'admin';
+    this.refreshing = false;
+    console.log(this.refreshing );
 
 
     if(this.dataService.images){
@@ -165,33 +172,62 @@ export class ProductsComponent implements OnInit {
       this.currentDataSet.product_tree = catId;
     });
 
-  }
-
-  ngOnInit(){
-    console.log('this.activeRoute.snapshot.params');
-    console.log(this.activeRoute.snapshot.params);
     if(this.dataService.products){
       this.products = this.productsFilter.transform(this.dataService.products, this.filter);
-      this.dataSource = new MatTableDataSource(this.products);
+      this.dataSource.data = this.products;
     }
     else{
       this.dataService.productsChange.subscribe(
         (products:Product[]) => {
           console.log('this.dataService.productsChange.subscribe');
+          console.log(products);
+          console.log(this.dataService.products);
+          let prev = 0;
+          if(this.dataSource.data){
+            prev = this.dataSource.data.length;
+          }
+
+
           this.products = this.productsFilter.transform(this.dataService.products, this.filter);
-          this.dataSource = new MatTableDataSource(this.products);
+          this.dataSource.data = this.products;
+          let after = this.dataSource.data.length;
+          console.log(prev);
+          console.log(after);
+          console.log(this.refreshing);
+          if(prev != after && this.refreshing){
+            if (!this.changeDetectionRef['destroyed']) {
+
+            }
+          }
+          this.refreshing = true;
         }
       );
-      //this.dataService.loadProducts(this.activeRoute.snapshot.params);
     }
 
     this.activeRoute.params.subscribe(
       routeParams => {
+        this.dataService.products = null;
+        this.products = null;
         this.dataService.loadProducts(routeParams);
       }
     )
   }
 
+  ngAfterViewChecked(){
+    console.log('ngAfterViewInit');
+    console.log(this.dataSource.data);
+    console.log(this.dataService.products);
+    console.log(this.products);
+    this.products = this.productsFilter.transform(this.dataService.products, this.filter);
+    this.dataSource.data = this.products;
+    this.changeDetectionRef.detectChanges();
+  }
+/*
+  ngOnInit(){
+
+
+  }
+*/
   public showNew(){
     this.ui.doShowEditNew();;
     this.currentDataSet = new Product();
@@ -358,4 +394,17 @@ export class ProductsComponent implements OnInit {
   public articlesSearchwordChanged(searchword){
     this.articleSearchword = searchword;
   }
+
+  ngOnDestroy(){
+    console.log('ngOnDestroy');
+
+/*
+    this.unsubscribeOnDestroy.forEach( item => {
+      item.unsubscribe();
+    });
+
+    this.unsubscribeOnDestroy = [];
+*/
+  }
+
 }
