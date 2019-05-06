@@ -27,8 +27,6 @@ export class PasswordResetComponent{
   }
 
   public onSubmit(){
-    console.log('onsubmit');
-    console.log(this.loginForm.status);
     if (this.loginForm.status == 'VALID') {
       this.user.passwordReset( {email:this.loginForm.get('email').value} ).subscribe(
         (response:ApiResponseInterface) => {

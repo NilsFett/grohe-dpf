@@ -60,8 +60,8 @@ export class AppComponent implements AfterViewInit{
 
   private checkRedirect(){
     if(this.user.isLoggedIn){
-      if(this.currentURL == '/' || this.currentURL == '/login' || this.currentURL == '/passwordReset' || this.currentURL == '/register'){
-        this.router.navigate(['/start']);
+      if(this.currentURL == '/' || this.currentURL == '/login' || this.currentURL == '/passwordReset' || this.currentURL == '/register' || this.currentURL == '/start'){
+        this.router.navigate(['/order2']);
       }
     }
     else{

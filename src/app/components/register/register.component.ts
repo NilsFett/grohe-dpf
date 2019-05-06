@@ -65,11 +65,6 @@ export class RegisterComponent implements AfterViewInit{
             this.showSuccessMessage = true;
             this.el.nativeElement.style.display =`none`;
             this.el.nativeElement.style.display =`block`;
-
-            /*
-            window.scrollTo(0,0);
-            this.ref.markForCheck();
-            */
           }
           else{
             this.errorMessage = response.error;

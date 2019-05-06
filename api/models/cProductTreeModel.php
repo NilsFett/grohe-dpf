@@ -66,8 +66,7 @@ class cProductTreeModel extends cModel{
 
 		$query = '	SELECT *
 					FROM `'.static::$sTable.'`
-					WHERE deleted = 0
-					AND old_system = 0
+					WHERE old_system = 0
 					ORDER BY parent, sorting';
 
 

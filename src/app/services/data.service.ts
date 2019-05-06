@@ -71,7 +71,8 @@ export class DataService {
     private config: ConfigService,
     private http: HttpClient,
     private error: ErrorService,
-    private ui: UiService
+    private ui: UiService,
+    private user: UserService
   ) {
     this.init();
   }
@@ -293,6 +294,7 @@ export class DataService {
         this.userChange.next(this.users);
         this.ui.setMessage('Delete success');
         this.deleteSuccess.next(true);
+        this.ui.doCloseDelete();
       },
       error => {
         this.error.setError(error);
@@ -426,6 +428,23 @@ export class DataService {
         this.ui.setMessage('An Error occoured');
       }
     );
+  }
+
+  public sendPassword(user:User){
+
+    this.user.passwordReset( {email:user.mail} ).subscribe(
+      (response:ApiResponseInterface) => {
+        console.log('RESPONSE');
+        console.log(response.success);
+        this.ui.setMessage('Password sent success');
+        this.saveSuccess.next(true);
+        this.ui.doCloseEditNew();
+      },
+      error => {
+        this.error.setError(error);
+      }
+    );
+
   }
 
 }

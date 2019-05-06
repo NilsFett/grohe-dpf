@@ -84,7 +84,7 @@
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Edit
             </th>
-            <td class="edit" (click)="setCurrentDataSet(part)" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
+            <td class="edit" (click)="ui.doShowEditNew();setCurrentDataSet(part);" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
           </ng-container>
 
           <ng-container matColumnDef="delete">
@@ -100,9 +100,9 @@
       </div>
   </div>
   <div class="overlaybg" *ngIf="ui.showOverlay"></div>
-  <div class="overlay" *ngIf="currentDataSet">
+  <div class="overlay" *ngIf="ui.showEditNew">
     <div class="overlay-content">
-      <span (click)="currentDataSet = null;ui.showOverlay = false" class="close">X</span>
+      <span (click)="currentDataSet = null;ui.doCloseEditNew()" class="close"><i class="fa icon-cancel"></i></span>
       <h3 class="fa icon-edit">User</h3>
       <p>{{currentDataSet.name}}</p>
       <hr />
@@ -142,7 +142,7 @@
             <mat-error [hidden]="fax.valid || fax.pristine">required</mat-error>
           </mat-form-field>
 
-          <mat-checkbox formControlName="deleted" matInput name="deleted" #deleted placeholder="Visible"></mat-checkbox>&nbsp;Visible
+          <button *ngIf="currentDataSet" mat-raised-button (click)="sendPassword();">Send new password</button>
           <hr />
           <div class="spacer20"></div>
           <button (click)="save()" mat-raised-button>Save</button>
@@ -156,9 +156,9 @@
     </div>
   </div>
 
-  <div class="overlay" *ngIf="dataSetToDelete">
+  <div class="overlay" *ngIf="ui.showDelete">
     <div class="overlay-content">
-      <span (click)="deleteClose()" class="close">X</span>
+      <span (click)="deleteClose()" class="close"><i class="fa icon-cancel">X</i></span>
       <h3 class="fa icon-trash-empty">User</h3>
       <p>{{dataSetToDelete.name}}</p>
       <hr />

@@ -51,7 +51,7 @@ export class UserComponent {
     private userFilter: UserFilter
   ) {
     this.dataSource = new MatTableDataSource(this.users);
-
+    this.ui.view = 'admin';
     if (this.dataService.users) {
       this.users = this.userFilter.transform(this.dataService.users, this.filter);
       this.dataSource.data = this.users;
@@ -85,7 +85,7 @@ export class UserComponent {
   }
 
   public showNew() {
-    this.ui.showOverlay = true;
+    this.ui.doShowEditNew();
     this.currentDataSet = new User();
     this.updateFormValues();
   }
@@ -129,7 +129,7 @@ export class UserComponent {
   }
 
   public showDelete(part) {
-    this.ui.showOverlay = true;
+    this.ui.doShowDelete();
     this.dataSetToDelete = part;
   }
 
@@ -141,5 +141,11 @@ export class UserComponent {
 
   public delete() {
     this.dataService.deleteUser(this.dataSetToDelete);
+  }
+
+  public sendPassword(){
+    this.dataService.sendPassword(this.currentDataSet);
+
+
   }
 }

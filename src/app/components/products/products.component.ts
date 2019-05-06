@@ -69,7 +69,7 @@ export class ProductsComponent implements OnInit {
     private productsFilter: ProductsFilter,
     private activeRoute: ActivatedRoute
   ) {
-    console.log('constructor products');
+    this.ui.view = 'admin';
     this.dataSource = new MatTableDataSource(this.products);
 
 
