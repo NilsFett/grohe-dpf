@@ -21,6 +21,8 @@ import { Order2Component } from './components/order2/order2.component';
 import { Order3Component } from './components/order3/order3.component';
 import { MediasComponent } from './components/medias/medias.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
+import { AccountComponent } from './components/account/account.component';
+import { PasswordComponent } from './components/password/password.component';
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
@@ -66,6 +68,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     PasswordResetComponent,
     UserRequestsComponent,
     RegisterComponent,
+    PasswordComponent,
     StartComponent,
     Order1Component,
     Order2Component,
@@ -75,6 +78,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     ArticlesComponent,
     TopSignsComponent,
     ProductsComponent,
+    AccountComponent,
     DpfContentDirective,
     DpfOverflowWrapperDirective,
     DpfFormValidateAfterIfDirective,

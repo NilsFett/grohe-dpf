@@ -9,6 +9,7 @@ import { Product } from '../../classes/Product';
 import { Article } from '../../classes/Article';
 import { TopSign } from '../../classes/TopSign';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { UserService} from '../../services/user.service';
 
 @Component({
   selector: 'grohe-dpf-order2',
@@ -32,7 +33,8 @@ export class Order2Component{
     private dataService: DataService,
     public config: ConfigService,
     public ui: UiService,
-    private router: Router
+    private router: Router,
+    public user: UserService
   ) {
     if(this.dataService.productsWithArticlesAndProductPath){
       this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
@@ -41,6 +43,7 @@ export class Order2Component{
       this.dataService.productsWithArticlesAndProductPathChange.subscribe(
         (products:Product[]) => {
           this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
+          console.log(this.productsWithArticlesAndProductPath);
 
         }
       );
@@ -161,12 +164,14 @@ export class Order2Component{
   }
 
   public getTopSignWeight(){
+    console.log('getTopSignWeight');
     let weight:number = 0;
-    if(! this.order.productChoosen || ! this.order.topSign){
+    if(! this.order.productChoosen ){
       return weight;
     }
 
-    weight = weight + ( this.topSigns[this.order.topSign].weight * this.order.displayQuantity );
+    weight = weight + ( this.topSigns[this.order.productChoosen.topsign_id].weight * this.order.displayQuantity );
+    console.log(Number((weight/1000).toFixed(2)));
     return Number((weight/1000).toFixed(2));
   }
 
@@ -180,14 +185,18 @@ export class Order2Component{
   }
 
   public getArticlesWeight(){
+
     let weight:number = 0;
     if(! this.order.productChoosen ){
       return weight;
     }
+    console.log(this.order.productChoosen);
 
     for(var i = 0; i < this.order.productChoosen.article.length; i++){
       weight = weight + ( parseInt(this.order.productChoosen.article[i].weight) * this.order.productChoosen.article[i].units * this.order.displayQuantity );
+      console.log(weight);
     }
+
     return Number((weight/1000).toFixed(2));
   }
 
@@ -217,4 +226,23 @@ export class Order2Component{
     return matching;
   }
 
+  public getDateStringToday() {
+    let date = new Date();
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    return day + ' ' + monthNames[monthIndex] + ', ' + year;
+  }
+
+  public showNewDialog(){
+    this.ui.doShowEditNew();
+  }
 }

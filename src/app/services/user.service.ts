@@ -35,6 +35,8 @@ export class UserService {
 
     this.http.get(`${this.config.baseURL}isLoggedIn`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
+        this.checked = true;
+        console.log('checked log in back!;')
         if(response.loggedIn){
           this.data = response.data;
           this.isLoggedIn = true;
@@ -45,7 +47,8 @@ export class UserService {
             this.isLoggedIn = false;
             this.loggedInState.next(false);
         }
-        this.checked = true;
+        console.log(this.data);
+
         this.checkingLogin = false;
       },
       error => {
@@ -119,6 +122,15 @@ export class UserService {
   public register(data){
     return this.http.post(`${this.config.baseURL}register`, data,{withCredentials: true});
   }
+
+  public save(data){
+    return this.http.post(`${this.config.baseURL}saveUserData`, data,{withCredentials: true});
+  }
+
+  public changePassword(data){
+    return this.http.post(`${this.config.baseURL}changePassword`, data,{withCredentials: true});
+  }
+
 
   public passwordReset(data){
     return this.http.post(`${this.config.baseURL}passwordReset`, data,{withCredentials: true});

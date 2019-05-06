@@ -39,4 +39,18 @@ class cCostNoModel extends cModel{
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
+    
+    public static function getByUserId($userId){
+        $query = 'SELECT * FROM t_costno WHERE userid = "'.$userId.'"';
+        $db = cDatabase::getInstance();
+        $hRessource = $db->hConnection->query($query);
+        $row = $hRessource->fetch();
+        if($row){
+            return new cCostNoModel($row);
+        }
+        else{
+            return false;
+        }
+    }
+    
 }

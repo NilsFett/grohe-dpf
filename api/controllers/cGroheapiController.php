@@ -73,6 +73,54 @@ class cGroheapiController{
 		}
 	}
 
+	public function saveUserData(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$user = new cUserModel($postData['id']);
+        
+        
+		if($user->get('id')){
+            $user->set('surname', $postData['surname']);
+            $user->set('name', $postData['name']);
+            $user->set('department', $postData['department']);
+            $user->set('street', $postData['street']);
+            $user->set('zipcode', $postData['zipcode']);
+            $user->set('city', $postData['city']);
+            $user->set('country', $postData['country']);
+            $user->set('phone', $postData['phone']);
+            $user->set('fax', $postData['fax']);
+            $user->set('mail', $postData['mail']);
+
+            $user->save();
+            $oCostNo = cCostNoModel::getByUserId($user->get('id'));
+
+			$oCostNo->set('costno', $postData['costcentre']);
+			$oCostNo->set('description', $postData['costcentrecountry']);
+			$oCostNo->save();
+
+			echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => true));
+		}
+		else{
+			echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => false, 'error' => 'Errors'));
+		}
+	}
+    
+    
+    public function changePassword(){
+        $postData = json_decode(file_get_contents('php://input'),true);
+        $user = new cUserModel($postData['id']);
+        
+        if($user->get('id')){
+            $user->set('password', md5($postData['password']));
+            $user->save();
+            
+            echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => true));
+        }
+        else{
+            echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => false, 'error' => 'Errors'));
+        }
+    }
+    
+
 	public function passwordReset(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$ocUserModel = cUserModel::loadByEmail($postData['email']);
@@ -429,43 +477,51 @@ class cGroheapiController{
 	}
 
 
-		public function changeTopSign(){
-			$postData = json_decode(file_get_contents('php://input'),true);
+	public function changeTopSign(){
+		$postData = json_decode(file_get_contents('php://input'),true);
 
 
-			if(isset($postData['id'])){
-				$oArticlesModel = new cTopSignModel($postData['id']);
-			}
-			else{
-				$oArticlesModel = new cTopSignModel();
-			}
-			if(isset($postData['articlenr'])){
-				$oArticlesModel->set('articlenr', $postData['articlenr']);
-			}
-			if(isset($postData['type'])){
-				$oArticlesModel->set('type', $postData['type']);
-			}
-			if(isset($postData['title'])){
-				$oArticlesModel->set('title', $postData['title']);
-			}
-			if(isset($postData['path'])){
-				$oArticlesModel->set('path', $postData['path']);
-			}
-			if(isset($postData['image'])){
-				$oArticlesModel->set('image', $postData['image']);
-			}
-			if(isset($postData['image_thumb'])){
-				$oArticlesModel->set('image_thumb', $postData['image_thumb']);
-			}
-			if(isset($postData['weight'])){
-				$oArticlesModel->set('weight', $postData['weight']);
-			}
-
-
-			$oArticlesModel->save();
-			$this->loadTopSigns();
+		if(isset($postData['id'])){
+			$oArticlesModel = new cTopSignModel($postData['id']);
+		}
+		else{
+			$oArticlesModel = new cTopSignModel();
+		}
+		if(isset($postData['articlenr'])){
+			$oArticlesModel->set('articlenr', $postData['articlenr']);
+		}
+		if(isset($postData['type'])){
+			$oArticlesModel->set('type', $postData['type']);
+		}
+		if(isset($postData['title'])){
+			$oArticlesModel->set('title', $postData['title']);
+		}
+		if(isset($postData['path'])){
+			$oArticlesModel->set('path', $postData['path']);
+		}
+		if(isset($postData['image'])){
+			$oArticlesModel->set('image', $postData['image']);
+		}
+		if(isset($postData['image_thumb'])){
+			$oArticlesModel->set('image_thumb', $postData['image_thumb']);
+		}
+		if(isset($postData['weight'])){
+			$oArticlesModel->set('weight', $postData['weight']);
 		}
 
+
+		$oArticlesModel->save();
+		$this->loadTopSigns();
+	}
+
+	public function deleteUser(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$postData = json_decode(file_get_contents('php://input'),true);
+			$oDisplaysPartsModel = new cUserModel($postData['id']);
+			$oDisplaysPartsModel->delete();
+			$this->getUsers();
+		}
+	}
 
 	public function deleteDisplayPart(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){

@@ -1,16 +1,13 @@
 <div class="order">
   <div class="products">
     <h3>ORDER PROCESS</h3>
-
     <ul class="order_prozess">
       <li class="active"><span>1</span>SELECT</li>
       <li><span>2</span>SUMMERY</li>
     </ul>
-
     <div class="productSelect">
       <div class="search" *ngIf="!order.productChoosen">
         <h4>Products <i class="fa icon-plus new" (click)="showNewDialog()">Add new</i></h4>
-
         <div class="inner">
           <input type="text" class="search" placeholder="Input.." (keyup)="productsSearchWordChanged($event.target.value)">
         </div>
@@ -19,20 +16,22 @@
         <ul class="products">
           <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
             <li (click)="productSelected(product)" *ngIf="filterArticleList(product)" class="row">
-              <span  class="add icon-plus"></span>
-              <p><b>Product Category</b>: {{product.path.path}}&nbsp;<b>Price:</b>&nbsp;{{product.price}} €</p>
-              <div class="span2">
-                <img src="{{config.baseURL}}uploads/no_pic_thumb.jpg" />
+
+
+              <div class="span2" style="padding-right:20px;">
+                <img style="height:200px;" src="{{config.baseURL}}uploads/dp{{product.base_display_template_id}}fwp.jpg" />
               </div>
-              <div class="span5">
-                <p><span><b>DF-ID:</b></span><span>{{product.DFID}}</span></p>
-                <p><span><b>Display SAP No.:</b></span><span>{{product.SAP}}</span></p>
-                <p><span><b>Display Title:</b></span><span>{{product.title}}</span></p>
-              </div>
-              <div class="span5">
+              <div class="span10"><span  class="add icon-plus"></span>
+                <p><b>Product Category</b>:&nbsp;{{product.path.path}}&nbsp;</p>
+                <p><b>Price:</b>&nbsp;{{product.price}} €</p>
+                <p><span><b>DF-ID:</b></span><span>&nbsp;{{product.DFID}}</span></p>
+                <p><span><b>Display SAP No.:</b></span><span>&nbsp;{{product.SAP}}</span></p>
+                <p><span><b>Display Title:</b></span><span>&nbsp;{{product.title}}</span></p>
+                <hr />
+                <p><span><b>Articles:</b></span></p>
                 <ul>
                   <li *ngFor="let article of product.article">
-                    <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}}</p>
+                    <p><b>{{article.title}}</b>&nbsp;{{article.units}} x {{article.articlenr}}</p>
                   </li>
                 </ul>
               </div>
@@ -40,106 +39,187 @@
             </li>
           </ng-container>
         </ul>
-
       </div>
 
       <div *ngIf="order.productChoosen" class="inner product-choosen">
         <span (click)="removeSelected(product)" class="cancel icon-cancel"></span>
-        <p><b>Product Category</b>: {{order.productChoosen.path.path}}&nbsp;<b>Price:</b>&nbsp;{{order.productChoosen.price}} €</p>
-        <div class="span2">
-          <img src="{{config.baseURL}}uploads/no_pic_thumb.jpg" />
+        <div class="span4" style="padding-right:20px;">
+          <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp.jpg" />
         </div>
-        <div class="span5">
-          <p><span><b>DF-ID:</b></span><span>{{order.productChoosen.DFID}}</span></p>
-          <p><span><b>Display SAP No.:</b></span><span>{{order.productChoosen.SAP}}</span></p>
-          <p><span><b>Display Title:</b></span><span>{{order.productChoosen.title}}</span></p>
-        </div>
-        <div class="span5">
+        <div class="span8">
+          <p><b>Product Category</b>: {{order.productChoosen.path.path}}&nbsp;<b>Price:</b>&nbsp;{{order.productChoosen.price}} €</p>
+          <p><span><b>DF-ID:</b></span><span> {{order.productChoosen.DFID}}</span></p>
+          <p><span><b>Display SAP No.:</b></span><span> {{order.productChoosen.SAP}}</span></p>
+          <p><span><b>Display Title:</b></span><span> {{order.productChoosen.title}}</span></p>
+          <hr />
+          <p><span><b>Articles:</b></span></p>
           <ul>
             <li *ngFor="let article of order.productChoosen.article">
               <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
             </li>
           </ul>
+          <mat-form-field>
+            <input type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSigns[order.productChoosen.topsign_id].title}}" disabled>
+          </mat-form-field>
+          <div class="clear"></div>
+          <table>
+            <tr>
+              <th>SAP-No.</th>
+              <th>Title</th>
+              <th>Type</th>
+              <th>quantity</th>
+              <th>Weight</th>
+            </tr>
+            <tr>
+              <td>{{order.productChoosen.SAP}}</td>
+              <td>{{order.productChoosen.title}}</td>
+              <td>Display</td>
+              <td>{{order.displayQuantity}}</td>
+              <td>{{getDisplayWeight()}}&nbsp;kg</td>
+            </tr>
+            <tr>
+              <td>{{topSignsById[order.productChoosen.topsign_id].articlenr}}</td>
+              <td>{{topSignsById[order.productChoosen.topsign_id].title}}</td>
+              <td>TopSign</td>
+              <td>{{order.displayQuantity}}</td>
+              <td>{{getTopSignWeight()}}&nbsp;kg</td>
+            </tr>
+            <tr *ngFor="let article of order.productChoosen.article">
+              <td>{{article.articlenr}}</td>
+              <td>{{article.title}}</td>
+              <td>Article</td>
+              <td>{{article.units}}</td>
+              <td>{{getArticleWeight(article)}}&nbsp;kg</td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <b>Total Weight</b>
+              </td>
+              <td>
+                <b>{{getTotalWeight() }}&nbsp;kg</b>
+              </td>
+            </tr>
+          </table>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="dp3" placeholder="lead Time 5 weeks" disabled>
+            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <div class="spacer20"></div>
+          <!--
+          <button mat-raised-button routerLink="/order3">Continue</button>
+          <div class="clear"></div>
+          -->
         </div>
         <div class="clear"></div>
-      </div>
-      <div class="spacer20"></div>
-      <div *ngIf="order.productChoosen" class="inner">
-        <mat-form-field>
-          <input type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
-        </mat-form-field>
+        <div class="row">
+          <div class="span6">
+            <div class="orderbox">
+              <h4>Buyer-Information</h4>
+              <div class="inner">
+                <div class="span6"><b>Name</b></div><div class="span6">{{user.data.name.value}} {{user.data.surname.value}}</div>
+                <div class="span6"><b>Department</b></div><div class="span6">{{user.data.department.value}} </div>
+                <div class="span6"><b>Cost Centre</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="order.costcentre">
+                      <mat-option *ngFor="let costcentre of user.data.costcentres" value="{{costcentre.id}}">{{costcentre.costno}} {{costcentre.description}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="span6"><b>E-Mail</b></div><div class="span6">{{user.data.mail.value}} </div>
+                <div class="span6"><b>Phone</b></div><div class="span6">{{user.data.phone.value}} </div>
+                <div class="span6"><b>Address</b></div><div class="span6">{{user.data.street.value}}, {{user.data.zipcode.value}} {{user.data.city.value}}, {{user.data.country.value}}</div>
+                <div class="span6"><b>Order Date</b></div><div class="span6">{{getDateStringToday()}} </div>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+          <div class="span6">
+            <div class="orderbox">
+              <h4>New Order Process</h4>
+              <div class="inner">
+                <ul>
+                  <li class="warning">Please book you order in SAP now!</li>
+                  <li>Transaction: ZDF01</li>
+                  <li>Fill in the requested information
+                    <ul>
+                      <li>Under "Items" simply add this information:</li>
+                      <li>ID: <span class="warning">{{order.productChoosen.DFID}}</span></li>
+                      <li>Quantity: <span class="warning">{{order.displayQuantity}}</span></li>
+                    </ul>
+                  </li>
+                  <li>Then press F8 (the clock symbol)</li>
+                  <li>Then add the SAP order number in the field below</li>
+                  <li>For further and detailed information please check the new display factory manual.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span6">
+            <div class="orderbox">
+              <h4 [ngClass]="{'warning': (order.pit.length == 0)}">Promotion Identification Title</h4>
+              <div class="inner">
+                <mat-form-field>
+                  <mat-hint *ngIf="order.pit.length == 0" class="warning">Please fill to continue!</mat-hint>
+                  <input type="text" matInput name="pit" #pit placeholder="Customer or Promotion ID" [(ngModel)]="order.pit">
+                  <mat-error>required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="span6">
+            <div class="orderbox">
+              <h4 [ngClass]="{'warning': (order.SAP.length != 8)}">SAP Product Order Number (8 digits)</h4>
+              <div class="inner">
+                <mat-form-field>
+                  <mat-hint *ngIf="order.SAP.length != 8" class="warning">Please fill to continue!</mat-hint>
+                  <input type="text" matInput name="SAP" #SAP placeholder="SAP Product Order Number" [(ngModel)]="order.SAP">
 
-
-        <mat-form-field>
-          <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSigns[order.productChoosen.topsign_id].title}}" disabled>
-        </mat-form-field>
-        <div class="clear"></div>
-      </div>
-      <div class="spacer20"></div>
-      <div *ngIf="order.productChoosen" class="inner">
-        <table>
-          <tr>
-            <th>SAP-No.</th>
-            <th>Title</th>
-            <th>Type</th>
-            <th>quantity</th>
-            <th>Weight</th>
-          </tr>
-          <tr>
-            <td>{{order.productChoosen.SAP}}</td>
-            <td>{{order.productChoosen.title}}</td>
-            <td>Display</td>
-            <td>{{order.displayQuantity}}</td>
-            <td>{{getDisplayWeight()}}&nbsp;kg</td>
-          </tr>
-          <tr  *ngIf="order.topSign">
-            <td>{{topSignsById[order.topSign].articlenr}}</td>
-            <td>{{topSignsById[order.topSign].title}}</td>
-            <td>TopSign</td>
-            <td>{{order.displayQuantity}}</td>
-            <td>{{getTopSignWeight()}}&nbsp;kg</td>
-          </tr>
-          <tr *ngFor="let article of order.productChoosen.article">
-            <td>{{article.articlenr}}</td>
-            <td>{{article.title}}</td>
-            <td>Article</td>
-            <td>{{article.units}}</td>
-            <td>{{getArticleWeight(article)}}&nbsp;kg</td>
-          </tr>
-          <tr>
-            <td colspan="4">
-              <b>Total Weight</b>
-            </td>
-            <td>
-              <b>{{getTotalWeight() }}&nbsp;kg</b>
-            </td>
-          </tr>
-        </table>
-
-      </div>
-
-      <div *ngIf="order.productChoosen" class="inner">
-        <div class="spacer20"></div>
-        <mat-form-field>
-          <input matInput [matDatepicker]="dp3" placeholder="lead Time 5 weeks" disabled>
-          <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-          <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-        </mat-form-field>
-      </div>
-
-      <div *ngIf="order.productChoosen" class="inner">
-        <div class="spacer20"></div>
-        <button mat-raised-button routerLink="/order3">Continue</button>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="order.SAP.length == 8 && order.pit.length > 1" class="row">
+          <button mat-raised-button>Finish order</button>
+        </div>
         <div class="clear"></div>
       </div>
     </div>
   </div>
+
 </div>
 
 
 
-
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
+<div class="overlay" *ngIf="ui.showEditNew">
+
+  <div class="overlay-content custom-display order request">
+    <span (click)="ui.doCloseEditNew()" class="close">X</span>
+    <div class="clear"></div>
+    <!--
+    <h2>Custom Display creation is coming soon.</h2>
+    <hr />
+    <p>This Ferature is in progress. Until we finished this feature you are wellcome to send an e-mail with your specific display settings</p>
+    -->
+    <div class="spacer20"></div>
+    <mat-form-field style="padding:20px;border:1px solid #3B85BE;">
+      <mat-label style="color:#3B85BE;"><b>Please describe your Display Settings</b></mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+    <div class="spacer20"></div>
+    <button mat-raised-button>Send request</button>
+  </div>
+</div>
 <!--
 <div class="overlay" *ngIf="ui.showEditNew && productChoosenCopy">
   <div class="overlay-content">

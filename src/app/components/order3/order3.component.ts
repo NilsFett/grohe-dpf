@@ -21,10 +21,6 @@ export class Order3Component{
     public config: ConfigService,
     private router: Router
   ) {
-    if(this.order.displayTypeChoosen === null){
-      this.router.navigate(['/order1']);
-      return;
-    }
 
     if (this.dataService.topSigns) {
       this.topSigns = this.dataService.topSigns;
