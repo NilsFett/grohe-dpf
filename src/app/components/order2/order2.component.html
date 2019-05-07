@@ -7,7 +7,7 @@
     </ul>
     <div class="productSelect">
       <div class="search" *ngIf="!order.productChoosen">
-        <h4>Products <i class="fa icon-plus new" (click)="showNewDialog()">Add new</i></h4>
+        <h4>Products <i (click)="showNewDialog()">Display Request</i></h4>
         <div class="inner">
           <input type="text" class="search" placeholder="Input.." (keyup)="productsSearchWordChanged($event.target.value)">
         </div>
@@ -22,16 +22,19 @@
                 <img style="height:200px;" src="{{config.baseURL}}uploads/dp{{product.base_display_template_id}}fwp.jpg" />
               </div>
               <div class="span10"><span  class="add icon-plus"></span>
-                <p><b>Product Category</b>:&nbsp;{{product.path.path}}&nbsp;</p>
-                <p><b>Price:</b>&nbsp;{{product.price}} €</p>
                 <p><span><b>DF-ID:</b></span><span>&nbsp;{{product.DFID}}</span></p>
-                <p><span><b>Display SAP No.:</b></span><span>&nbsp;{{product.SAP}}</span></p>
                 <p><span><b>Display Title:</b></span><span>&nbsp;{{product.title}}</span></p>
+
+                <p><b>Display Types</b>:&nbsp;{{product.path.path}}&nbsp;</p>
+                <p><b>Price:</b>&nbsp;{{product.price}} €</p>
+
+                <p><span><b>Display SAP No.:</b></span><span>&nbsp;{{product.SAP}}</span></p>
+
                 <hr />
                 <p><span><b>Articles:</b></span></p>
                 <ul>
                   <li *ngFor="let article of product.article">
-                    <p><b>{{article.title}}</b>&nbsp;{{article.units}} x {{article.articlenr}}</p>
+                    <p><b>{{article.title}}</b> (Type : {{article.type}})<br />&nbsp;{{article.units}} x {{article.articlenr}}</p>
                   </li>
                 </ul>
               </div>
@@ -47,15 +50,18 @@
           <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp.jpg" />
         </div>
         <div class="span8">
-          <p><b>Product Category</b>: {{order.productChoosen.path.path}}&nbsp;<b>Price:</b>&nbsp;{{order.productChoosen.price}} €</p>
           <p><span><b>DF-ID:</b></span><span> {{order.productChoosen.DFID}}</span></p>
-          <p><span><b>Display SAP No.:</b></span><span> {{order.productChoosen.SAP}}</span></p>
           <p><span><b>Display Title:</b></span><span> {{order.productChoosen.title}}</span></p>
+          <p><b>Display Types</b>:&nbsp;{{order.productChoosen.path.path}}&nbsp;</p>
+          <p><b>Price:</b>&nbsp;{{order.productChoosen.price}} €</p>
+
+          <p><span><b>Display SAP No.:</b></span><span> {{order.productChoosen.SAP}}</span></p>
+
           <hr />
           <p><span><b>Articles:</b></span></p>
           <ul>
             <li *ngFor="let article of order.productChoosen.article">
-              <p><b>{{article.title}}</b><br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
+              <p><b>{{article.title}}</b> (Type : {{article.type}})<br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
             </li>
           </ul>
           <mat-form-field>
@@ -105,7 +111,7 @@
           </table>
 
           <mat-form-field>
-            <input matInput [matDatepicker]="dp3" placeholder="lead Time 5 weeks" disabled>
+            <input matInput [matDatepicker]="dp3" placeholder="lead Time 5 weeks" disabled [(ngModel)]="order.desired_date_delivery">
             <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
             <mat-datepicker #dp3 disabled="false"></mat-datepicker>
           </mat-form-field>
@@ -188,8 +194,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="order.SAP.length == 8 && order.pit.length > 1" class="row">
-          <button mat-raised-button>Finish order</button>
+        <div *ngIf="order.SAP.length == 8 && order.pit.length > 0" class="row">
+          <button mat-raised-button (click)="finishOrder()">Finish order</button>
         </div>
         <div class="clear"></div>
       </div>

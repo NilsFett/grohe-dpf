@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DataService } from './data.service';
 import { UserService } from './user.service';
 import { Product } from '../classes/Product';
 
@@ -12,9 +11,10 @@ export class OrderService {
   public productChoosen:Product = null;
   public SAP:string = '';
   public pit:string = '';
+  public desired_date_delivery = '';
 
   constructor(
-    private data:DataService,
+
     public user: UserService
   ) {
     if(this.user.isLoggedIn){
