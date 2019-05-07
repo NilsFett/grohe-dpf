@@ -151,6 +151,9 @@ class cModel extends cDatabase{
 					continue;
 					$sValue['value'] = NULL;
 				}
+				elseif(  ( ! $sValue['value'] || $sValue['value'] == '0000-00-00 00:00:00' || $sValue['value'] == '0' || empty($sValue['value']) ) && $sValue['type'] == 'datetime' )   {
+					$sValue['value'] = NULL;
+				}
 				$aColNames[] = '`'.$sColumn.'`';
 				$aColValues[] = ':'.$sColumn;
 				$aColsValuePairs[':'.$sColumn] = $sValue['value'];

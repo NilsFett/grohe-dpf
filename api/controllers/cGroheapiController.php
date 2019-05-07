@@ -76,8 +76,8 @@ class cGroheapiController{
 	public function saveUserData(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$user = new cUserModel($postData['id']);
-        
-        
+
+
 		if($user->get('id')){
             $user->set('surname', $postData['surname']);
             $user->set('name', $postData['name']);
@@ -103,23 +103,23 @@ class cGroheapiController{
 			echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => false, 'error' => 'Errors'));
 		}
 	}
-    
-    
+
+
     public function changePassword(){
         $postData = json_decode(file_get_contents('php://input'),true);
         $user = new cUserModel($postData['id']);
-        
+
         if($user->get('id')){
             $user->set('password', md5($postData['password']));
             $user->save();
-            
+
             echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => true));
         }
         else{
             echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'success' => false, 'error' => 'Errors'));
         }
     }
-    
+
 
 	public function passwordReset(){
 		$postData = json_decode(file_get_contents('php://input'),true);
@@ -657,6 +657,35 @@ class cGroheapiController{
 
 		$this->getProducts();
 	}
+
+  public function finishOrder(){
+      $postData = json_decode(file_get_contents('php://input'),true);
+
+
+      $postData['product']['display_type'] = $postData['product']['path']['path'];
+      unset($postData['product']['path']);
+      $order = cOrderModel::getCurrent();
+
+			$order->set('date', date('Y-m-d H:i:s'));
+			$order->set('costcentre', $postData['costcentre']);
+			$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
+			$order->set('costcentrecode', $userCostno->get('description'));
+			$order->set('promotion_title', $postData['pit']);
+			$order->set('SAP', $postData['sap']);
+			$order->set('display_quantity', $postData['quantity']);
+			$order->set('pallet_quantity', $postData['quantity']);
+			$order->set('status', 'ordered');
+			$order->set('product', serialize($postData['product']));
+
+			$oTopSignModel = new cTopSignModel($postData['product']['topsign_id']);
+
+			$order->set('topsign', serialize($oTopSignModel->getValuesArray()));
+			$desired_date_delivery = date('Y-m-d H:i:s',strtotime($postData['desired_date_delivery']));
+
+			$order->set('desired_date_delivery', $desired_date_delivery);
+			$order->save();
+			echo json_encode(array('success'=>true));
+  }
 
 	public function uploadImage(){
 

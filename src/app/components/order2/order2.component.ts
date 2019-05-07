@@ -43,8 +43,6 @@ export class Order2Component{
       this.dataService.productsWithArticlesAndProductPathChange.subscribe(
         (products:Product[]) => {
           this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
-          console.log(this.productsWithArticlesAndProductPath);
-
         }
       );
       this.dataService.loadProductsWithArticlesAndProductPath();
@@ -90,7 +88,6 @@ export class Order2Component{
   }
 
   public productSelected(product){
-    console.log(product);
     this.order.productChoosen = product;
   }
 
@@ -164,14 +161,11 @@ export class Order2Component{
   }
 
   public getTopSignWeight(){
-    console.log('getTopSignWeight');
     let weight:number = 0;
     if(! this.order.productChoosen ){
       return weight;
     }
-
     weight = weight + ( this.topSigns[this.order.productChoosen.topsign_id].weight * this.order.displayQuantity );
-    console.log(Number((weight/1000).toFixed(2)));
     return Number((weight/1000).toFixed(2));
   }
 
@@ -190,13 +184,9 @@ export class Order2Component{
     if(! this.order.productChoosen ){
       return weight;
     }
-    console.log(this.order.productChoosen);
-
     for(var i = 0; i < this.order.productChoosen.article.length; i++){
       weight = weight + ( parseInt(this.order.productChoosen.article[i].weight) * this.order.productChoosen.article[i].units * this.order.displayQuantity );
-      console.log(weight);
     }
-
     return Number((weight/1000).toFixed(2));
   }
 
@@ -219,6 +209,7 @@ export class Order2Component{
       if(
           product.article[i].title.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
       ||  product.article[i].articlenr.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
+      ||  product.article[i].type.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
       ){
         matching = true;
       }
@@ -244,5 +235,14 @@ export class Order2Component{
 
   public showNewDialog(){
     this.ui.doShowEditNew();
+  }
+
+  public finishOrder(){
+    this.dataService.finishOrder().subscribe(
+      result => {
+        console.log('RESULT');
+        console.log(result);
+      }
+    );
   }
 }

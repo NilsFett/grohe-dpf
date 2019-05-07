@@ -17,6 +17,7 @@ import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { User } from '../classes/User';
 import { Image } from '../classes/Image';
 import { UserService } from './user.service';
+import { OrderService } from './order.service';
 
 @Injectable()
 export class DataService {
@@ -72,7 +73,8 @@ export class DataService {
     private http: HttpClient,
     private error: ErrorService,
     private ui: UiService,
-    private user: UserService
+    private user: UserService,
+    private order: OrderService
   ) {
     this.init();
   }
@@ -444,7 +446,20 @@ export class DataService {
         this.error.setError(error);
       }
     );
-
   }
+
+  public finishOrder(){
+
+    let data = {
+      product: this.order.productChoosen,
+      quantity: this.order.displayQuantity,
+      costcentre: this.order.costcentre,
+      sap: this.order.SAP,
+      pit: this.order.pit,
+      desired_date_delivery: this.order.desired_date_delivery
+    };
+    return this.http.post(`${this.config.baseURL}finishOrder`, data, {withCredentials: true});
+  }
+
 
 }

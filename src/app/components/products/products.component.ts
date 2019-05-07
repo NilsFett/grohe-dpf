@@ -20,7 +20,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements AfterViewChecked {
+export class ProductsComponent implements AfterViewChecked, OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   currentDataSet:Product = null;
@@ -76,6 +76,7 @@ export class ProductsComponent implements AfterViewChecked {
     this.ui.view = 'admin';
     console.log('constructor products');
     this.dataSource = new MatTableDataSource(this.dataService.products);
+    this.dataSource.sort = this.sort;
     this.ui.view = 'admin';
     this.refreshing = false;
     console.log(this.refreshing );
@@ -179,26 +180,8 @@ export class ProductsComponent implements AfterViewChecked {
     else{
       this.dataService.productsChange.subscribe(
         (products:Product[]) => {
-          console.log('this.dataService.productsChange.subscribe');
-          console.log(products);
-          console.log(this.dataService.products);
-          let prev = 0;
-          if(this.dataSource.data){
-            prev = this.dataSource.data.length;
-          }
-
-
           this.products = this.productsFilter.transform(this.dataService.products, this.filter);
           this.dataSource.data = this.products;
-          let after = this.dataSource.data.length;
-          console.log(prev);
-          console.log(after);
-          console.log(this.refreshing);
-          if(prev != after && this.refreshing){
-            if (!this.changeDetectionRef['destroyed']) {
-
-            }
-          }
           this.refreshing = true;
         }
       );
@@ -206,28 +189,26 @@ export class ProductsComponent implements AfterViewChecked {
 
     this.activeRoute.params.subscribe(
       routeParams => {
-        this.dataService.products = null;
-        this.products = null;
+        this.dataService.products = [];
+        this.products = [];
         this.dataService.loadProducts(routeParams);
       }
     )
   }
 
   ngAfterViewChecked(){
-    console.log('ngAfterViewInit');
-    console.log(this.dataSource.data);
-    console.log(this.dataService.products);
-    console.log(this.products);
+
     this.products = this.productsFilter.transform(this.dataService.products, this.filter);
     this.dataSource.data = this.products;
+  //  this.dataSource.sort = this.sort;
     this.changeDetectionRef.detectChanges();
+    this.dataSource.sort = this.sort;
   }
-/*
-  ngOnInit(){
 
+  ngOnInit() {
+      //this.changeDetectionRef.detectChanges();
 
   }
-*/
   public showNew(){
     this.ui.doShowEditNew();;
     this.currentDataSet = new Product();
