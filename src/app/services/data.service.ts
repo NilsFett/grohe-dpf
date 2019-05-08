@@ -15,6 +15,7 @@ import { Product } from '../classes/Product';
 import { ProductTree } from '../classes/ProductTree';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
 import { User } from '../classes/User';
+import { Order } from '../classes/Order';
 import { Image } from '../classes/Image';
 import { UserService } from './user.service';
 import { OrderService } from './order.service';
@@ -48,6 +49,10 @@ export class DataService {
   public users: User[] = null;
   public userChange: Subject<Array<User>>;
   private userChangeObserver: Observable<Array<User>>;
+
+  public orders: Order[] = null;
+  public ordersChange: Subject<Array<Order>>;
+  private ordersChangeObserver: Observable<Array<Order>>;
 
   public images: Image[] = null;
   public imagesChange: Subject<Array<Image>>;
@@ -101,6 +106,9 @@ export class DataService {
     this.userChange = new Subject<Array<User>>();
     this.userChangeObserver = this.userChange.asObservable();
 
+    this.ordersChange = new Subject<Array<Order>>();
+    this.ordersChangeObserver = this.ordersChange.asObservable();
+
     this.imagesChange = new Subject<Array<Image>>();
     this.imagesChangeObserver = this.imagesChange.asObservable();
 
@@ -118,6 +126,13 @@ export class DataService {
     this.http.get(`${this.config.baseURL}getUsers`, { withCredentials: true }).subscribe((users: User[]) => {
       this.users = users;
       this.userChange.next(this.users);
+    });
+  }
+
+  public loadOrders() {
+    this.http.get(`${this.config.baseURL}orders`, { withCredentials: true }).subscribe((orders: Order[]) => {
+      this.orders = orders;
+      this.ordersChange.next(this.orders);
     });
   }
 
@@ -278,6 +293,22 @@ export class DataService {
       (users: User[]) => {
         this.users = users;
         this.userChange.next(this.users);
+        this.ui.setMessage('Save success');
+        this.saveSuccess.next(true)
+        this.ui.doCloseEditNew();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
+  public changeOrder(dataSet) {
+    this.http.post(`${this.config.baseURL}changeOrder`, dataSet, { withCredentials: true }).subscribe(
+      (orders: Order[]) => {
+        this.orders = orders;
+        this.ordersChange.next(this.orders);
         this.ui.setMessage('Save success');
         this.saveSuccess.next(true)
         this.ui.doCloseEditNew();

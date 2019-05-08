@@ -25,6 +25,16 @@ export class OrderService {
         this.costcentre = this.user.data.costcentres[0].id;
       });
     }
+  }
 
+  public clear(){
+    this.displayTypeChoosen = null;
+    this.displayQuantity = 1;
+    this.topSign = null;
+    this.costcentre = null;
+    this.productChoosen = null;
+    this.SAP = '';
+    this.pit = '';
+    this.desired_date_delivery = '';
   }
 }

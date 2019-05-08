@@ -62,7 +62,21 @@ class cMail{
 				$mail_body = $oMailView->render();
 				$recipient = array($data['user']->get('mail'));
 			break;
-
+			case 'new_order':
+				$subject = 'Grohe - Display Factory - New Display Order';
+				$oMailView->setTemplate($sTemplate);
+				$oMailView->assign('order', $data['order']);
+				$mail_body = $oMailView->render();
+				$recipient = array($data['user']->get('mail'));
+			break;
+			case 'order_success':
+				$subject = 'Grohe - Display Factory - Your request has been submitted successfully';
+				$oMailView->setTemplate($sTemplate);
+				$oMailView->assign('order', $data['order']);
+				$oMailView->assign('user', $data['user']);
+				$mail_body = $oMailView->render();
+				$recipient = array($data['user']->get('mail'));
+			break;
 		}
 
 

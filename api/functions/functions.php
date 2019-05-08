@@ -14,3 +14,16 @@ function GeneratePassword($length = 8) {
 
     return $char_control;
 }
+
+function toHexFive($input){
+    return strtoupper(toFive(dechex($input)));
+}
+
+function toFive($input){
+    $border = 5-strlen($input);
+    for($i=0; $i<$border; $i++){
+      $input = "0$input";
+    }
+
+    return $input;
+}

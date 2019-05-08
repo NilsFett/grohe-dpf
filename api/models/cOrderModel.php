@@ -140,4 +140,45 @@ class cOrderModel extends cModel{
 		return $products;
 	}
 
+	public static function getAll(){
+		$query = '	SELECT *
+								FROM `'.self::$sTable.'`
+								WHERE `old_system` = 0';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute();
+		$orders = array();
+
+
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+			$row['hex'] = $row['costcentrecode'].(toHexFive($row['id']));
+			$row['product'] = unserialize($row['product']);
+			$row['topsign'] = unserialize($row['topsign']);
+			$orders[] = $row;
+		}
+
+		return $orders;
+	}
+
+	public static function getAllByUserId($userid){
+		$query = '	SELECT *
+								FROM `'.self::$sTable.'`
+								WHERE `old_system` = 0
+								AND `userid` = ?';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute(array($userid));
+		$orders = array();
+
+
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+			$row['hex'] = $row['costcentrecode'].(toHexFive($row['id']));
+			$row['product'] = unserialize($row['product']);
+			$row['topsign'] = unserialize($row['topsign']);
+			$orders[] = $row;
+		}
+
+		return $orders;
+	}
 }

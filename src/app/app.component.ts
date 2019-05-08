@@ -38,6 +38,9 @@ export class AppComponent implements AfterViewInit{
             this.checkRedirect();
           }
         }
+        console.log(this.main);
+        this.main.nativeElement.scrollTop = 0;
+        this.ui.reset();
       },
       (navStart:NavigationStart) => {
         this.currentURL = null;

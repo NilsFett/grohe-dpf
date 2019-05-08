@@ -162,10 +162,10 @@ export class Order2Component{
 
   public getTopSignWeight(){
     let weight:number = 0;
-    if(! this.order.productChoosen ){
+    if(! this.order.productChoosen || ! this.topSignsById[this.order.productChoosen.topsign_id] ){
       return weight;
     }
-    weight = weight + ( this.topSigns[this.order.productChoosen.topsign_id].weight * this.order.displayQuantity );
+    weight = weight + ( this.topSignsById[this.order.productChoosen.topsign_id].weight * this.order.displayQuantity );
     return Number((weight/1000).toFixed(2));
   }
 
@@ -240,8 +240,7 @@ export class Order2Component{
   public finishOrder(){
     this.dataService.finishOrder().subscribe(
       result => {
-        console.log('RESULT');
-        console.log(result);
+        this.router.navigate(['/order3']);
       }
     );
   }

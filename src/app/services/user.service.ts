@@ -36,7 +36,7 @@ export class UserService {
     this.http.get(`${this.config.baseURL}isLoggedIn`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
         this.checked = true;
-        console.log('checked log in back!;')
+
         if(response.loggedIn){
           this.data = response.data;
           this.isLoggedIn = true;
@@ -68,7 +68,7 @@ export class UserService {
             this.isLoggedIn = true;
             this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
             this.loggedInState.next(true);
-            this.router.navigate(['/start']);
+            this.router.navigate(['/order2']);
           }
 
           this.logginIncorrect = false;

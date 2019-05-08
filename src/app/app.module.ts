@@ -11,24 +11,27 @@ import { LoginComponent } from './components/login/login.component';
 import { PasswordResetComponent } from './components/passwordReset/passwordReset.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserRequestsComponent } from './components/userrequests/userrequests.component';
-import { StartComponent } from './components/start/start.component';
+/*import { StartComponent } from './components/start/start.component';*/
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ProductsComponent } from './components/products/products.component';
-import { Order1Component } from './components/order1/order1.component';
+/*import { Order1Component } from './components/order1/order1.component';*/
 import { Order2Component } from './components/order2/order2.component';
 import { Order3Component } from './components/order3/order3.component';
 import { MediasComponent } from './components/medias/medias.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
 import { AccountComponent } from './components/account/account.component';
 import { PasswordComponent } from './components/password/password.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
 import { DpfFormValidateAfterIfDirective } from './components/directives/dpf-form-validate-after-if.directive';
 import { DpfSyncWidth } from './components/directives/dpf-sync-width.directive';
 import { DpfSyncWidthSource } from './components/directives/dpf-sync-width-source.directive';
+import { UserComponent } from './components/user/user.component';
+import { TreeViewComponent } from './components/tree-view/tree-view.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTableModule } from '@angular/material/table';
@@ -56,10 +59,10 @@ import { DisplaysFilter } from './pipes/displays/displaysFilter';
 import { ArticlesFilter } from './pipes/articles/articlesFilter';
 import { ProductsFilter } from './pipes/product/productFilter';
 import { TopSignsFilter } from './pipes/topSigns/topSignsFilter';
-
-import { UserComponent } from './components/user/user.component';
 import { UserFilter } from './pipes/user/userFilter';
-import { TreeViewComponent } from './components/tree-view/tree-view.component';
+import { OrderFilter } from './pipes/order/orderFilter';
+
+
 
 @NgModule({
   declarations: [
@@ -69,10 +72,9 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     UserRequestsComponent,
     RegisterComponent,
     PasswordComponent,
-    StartComponent,
-    Order1Component,
     Order2Component,
     Order3Component,
+    OrdersComponent,
     DisplayComposeComponent,
     DisplayPartsComponent,
     ArticlesComponent,
@@ -90,6 +92,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     ProductsFilter,
     TopSignsFilter,
     UserFilter,
+    OrderFilter,
     UserComponent,
     TreeViewComponent,
     MediasComponent/*,
@@ -119,7 +122,9 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
     DisplaysFilter,
     ArticlesFilter,
     ProductsFilter,
+    ProductsFilter,
     UserFilter,
+    OrderFilter,
     TopSignsFilter,
     OrderService
   ],

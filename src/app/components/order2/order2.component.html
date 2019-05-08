@@ -7,9 +7,9 @@
     </ul>
     <div class="productSelect">
       <div class="search" *ngIf="!order.productChoosen">
-        <h4>Products <i (click)="showNewDialog()">Display Request</i></h4>
+        <h4>Products <i class="new" (click)="showNewDialog()">Display Request</i></h4>
         <div class="inner">
-          <input type="text" class="search" placeholder="Input.." (keyup)="productsSearchWordChanged($event.target.value)">
+          <input type="text" class="search" placeholder="Quick Search (SKU no., DF-ID, Product Category, Display SAP no.) " (keyup)="productsSearchWordChanged($event.target.value)">
         </div>
         <br />
         <p *ngIf="! productsWithArticlesAndProductPath.length"><b>Loading Products, please wait...</b></p>
@@ -34,7 +34,8 @@
                 <p><span><b>Articles:</b></span></p>
                 <ul>
                   <li *ngFor="let article of product.article">
-                    <p><b>{{article.title}}</b> (Type : {{article.type}})<br />&nbsp;{{article.units}} x {{article.articlenr}}</p>
+                    <p><b>{{article.units}} x {{article.articlenr}}</b> ({{article.packaging}})<br />
+                    {{article.title}} (Type : {{article.type}})</p>
                   </li>
                 </ul>
               </div>
@@ -61,14 +62,15 @@
           <p><span><b>Articles:</b></span></p>
           <ul>
             <li *ngFor="let article of order.productChoosen.article">
-              <p><b>{{article.title}}</b> (Type : {{article.type}})<br />{{article.units}} x {{article.articlenr}} ({{article.packaging}})</p>
+              <p><b>{{article.units}} x {{article.articlenr}}</b> ({{article.packaging}})<br />{{article.title}} (Type : {{article.type}})</p>
             </li>
           </ul>
           <mat-form-field>
             <input type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
           </mat-form-field>
-          <mat-form-field>
-            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSigns[order.productChoosen.topsign_id].title}}" disabled>
+
+          <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id]">
+            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
           </mat-form-field>
           <div class="clear"></div>
           <table>
@@ -86,7 +88,7 @@
               <td>{{order.displayQuantity}}</td>
               <td>{{getDisplayWeight()}}&nbsp;kg</td>
             </tr>
-            <tr>
+            <tr *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id]">
               <td>{{topSignsById[order.productChoosen.topsign_id].articlenr}}</td>
               <td>{{topSignsById[order.productChoosen.topsign_id].title}}</td>
               <td>TopSign</td>
@@ -201,10 +203,7 @@
       </div>
     </div>
   </div>
-
 </div>
-
-
 
 <div class="overlaybg" *ngIf="ui.showOverlay"></div>
 <div class="overlay" *ngIf="ui.showEditNew">
@@ -226,45 +225,3 @@
     <button mat-raised-button>Send request</button>
   </div>
 </div>
-<!--
-<div class="overlay" *ngIf="ui.showEditNew && productChoosenCopy">
-  <div class="overlay-content">
-    <span (click)="ui.showOverlay = false; productChoosenCopy = null" class="close">X</span>
-    <h3 class="fa icon-edit">Change Artcile List</h3>
-    <p class="warning">WARNING! Changing the Article List can result in an invalid display setting. If you set up an article List that is not possible, your order will be canceled.</p>
-    <hr />
-    <div class="container-flex display-parts-assembly" >
-      <ul class="choosen">
-        <li *ngFor="let article of productChoosenCopy.article">
-          <span class="artnr">{{article.articlenr}}</span>
-          <span class="title">{{article.title}}</span>
-          <span class="units"><b>{{article.units}}</b></span>
-          <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
-          <span (click)="removeArticleFromArticleList(article)" class="icon-minus"></span>
-        </li>
-      </ul>
-      <button mat-raised-button (click)="changeArticleList()">Change</button>
-      <div class="spacer20"></div>
-      <hr />
-      <div class="spacer20"></div>
-      <p>Add Article</p>
-      <mat-form-field>
-        <input type="text" matInput name="partsearch" placeholder="Search by Articlenr. or Title" (keyup)="articleSearchwordChanged($event.target.value)">
-      </mat-form-field>
-      <div class="chooseDisplayPart">
-        <ul>
-          <li *ngFor="let article of articles">
-            <ng-container *ngIf="article.deleted == 0 && ( article.title.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 || article.articlenr.toLowerCase().indexOf(articleSearchword.toLowerCase()) !== -1 )">
-              <span class="artnr">{{article.articlenr}}</span>
-              <span class="title">{{article.title}}</span>
-              <input type="text" id="countArticle{{article.articlenr}}" />
-              <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
-            </ng-container>
-          </li>
-        </ul>
-
-      </div>
-    </div>
-  </div>
-</div>
--->

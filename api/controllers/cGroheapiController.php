@@ -42,6 +42,8 @@ class cGroheapiController{
 
 	public function login(){
 		$postData = json_decode(file_get_contents('php://input'),true);
+
+
 		$oSessionUser = cSessionUser::getInstance();
 		$oSessionUser->login($postData['email'], $postData['passwd']);
 		echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'data'=>cSessionUser::getInstance()->data()));
@@ -50,7 +52,11 @@ class cGroheapiController{
 	public function logout(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$oSessionUser = cSessionUser::getInstance();
-		$oSessionUser->logout();
+
+		if($oSessionUser->get('id')){
+			$oSessionUser->logout();
+		}
+
 		echo json_encode(array('loggedIn'=>cSessionUser::getInstance()->bIsLoggedIn,'data'=>cSessionUser::getInstance()->data()));
 	}
 
@@ -657,10 +663,14 @@ class cGroheapiController{
 
 		$this->getProducts();
 	}
-
   public function finishOrder(){
       $postData = json_decode(file_get_contents('php://input'),true);
-
+			/*
+			$postData = json_decode('{"product":{"id":"901","title":"Universal Display low base","DFID":"DF1015","empty_display":"0","display_id":"190","SAP":"9800111F","product_tree":"102","topsign_id":"1","promotion_material_id":"0","price":"25.00","pallet_select":"1","pallet_disabled":"0","bypack_disabled":"0","topsign_upload_disabled":"0","notopsign_order_disabled":"0","deliverytime":"5","image":"","image_thumb":"","hide":"0","old_system":"0","base_display_template_id":"1","displayID":"190","path":{"id":"102","path":"¼ Pallet","pathbyid":"102"},"article":[{"position":"901","article_id":"615","units":"14","id":"615","articlenr":"34565001","title":"GRT 800 THM Brause AP + Brs.garn.","extra":"","type":"Shower","packaging":"carton","weight":"3025","height":"80","width":"150","depth":"980","topsign":"0","deleted":"0","old_system":"0"}],"display_parts":[{"id":"98001352","title":"Sockelblende niedrig (0340922-BL2-02 inkl. SK-Band","articlenr":"98001503","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001352","units":"1","length":"n/a","width":"565","height":"185","stock":"0","weight":"199","deleted":"0"},{"id":"98001358","title":"Stülper (0340922-HF1-01) - ohne Druck","articlenr":"98001540","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001358","units":"1","length":"386","width":"588","height":"1173","stock":"0","weight":"1722","deleted":"0"},{"id":"98001361","title":"Mantel (0340922-MN-02) - 1/1 - fbg. Flexo + Glanzl","articlenr":"98001508","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001361","units":"1","length":"365","width":"575","height":"1170","stock":"0","weight":"1524","deleted":"0"},{"id":"98001363","title":"1/4 wooden pallet","articlenr":"98001242","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001363","units":"1","length":"200","width":"300","height":"n/a","stock":"0","weight":"2400","deleted":"0"}]},"quantity":1,"costcentre":"6","sap":"12345678","pit":"234","desired_date_delivery":""}');
+			echo '<pre>';
+			var_dump($postData->product);
+			exit();
+			*/		
 
       $postData['product']['display_type'] = $postData['product']['path']['path'];
       unset($postData['product']['path']);
@@ -684,6 +694,11 @@ class cGroheapiController{
 
 			$order->set('desired_date_delivery', $desired_date_delivery);
 			$order->save();
+
+			cMail::sentMail('new_order', array('order' => $order));
+			cMail::sentMail('order_success', array('user' => cSessionUser::getInstance(), 'order' => $order));
+
+
 			echo json_encode(array('success'=>true));
   }
 
@@ -772,6 +787,19 @@ class cGroheapiController{
 					}
 				}
 			}
+		}
+	}
+
+	public function orders(){
+
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			if(cSessionUser::getInstance()->get('usertype') == 'admin'){
+				echo json_encode(cOrderModel::getAll());
+			}
+			else{
+				echo json_encode(cOrderModel::getAllByUserId(cSessionUser::getInstance()->get('id')));
+			}
+
 		}
 	}
 
