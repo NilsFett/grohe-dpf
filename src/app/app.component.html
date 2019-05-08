@@ -44,7 +44,7 @@
       <li (click)="navClicked($event)" routerLink="/topSigns" [ngClass]="{'active': (router.url == '/topSigns')}">
         <a>Topsign / Promotion Material</a>
       </li>
-      <li>
+      <li  (click)="navClicked($event)" routerLink="/orders" [ngClass]="{'active': (router.url == '/orders')}">
         <a>Orders</a>
       </li>
       <li (click)="navClicked($event)" routerLink="/user" [ngClass]="{'active': (router.url == '/user')}">
@@ -62,8 +62,8 @@
       <div *ngIf="user.isLoggedIn && user.data.usertype.value == 'admin'" class="hleft tright">
         <p>
           <span *ngIf="!navopen && user.isLoggedIn && ui.view == 'admin'" (click)="openclosenav()" class="openclose fa icon-menu"></span>
-          <span routerLink="/start" (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button"><span class="highwidth">Customer View</span><span class="lowwidth fa icon-eye">C</span></span>
-          <span (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button"><span class="highwidth">Admin View</span><span class="lowwidth fa icon-eye">A</span></span>
+          <span routerLink="/order2" (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button"><span class="highwidth">Customer View</span><span class="lowwidth fa icon-eye">C</span></span>
+          <span routerLink="/orders" (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button"><span class="highwidth">Admin View</span><span class="lowwidth fa icon-eye">A</span></span>
         </p>
       </div>
       <div *ngIf="user.isLoggedIn && user.data.usertype.value == 'user'" class="hleft tright">

@@ -1,0 +1,244 @@
+--<?php echo $this->aData['boundary'].'
+'; ?>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+User-Request Information:
+Name: <?php echo $this->aData['user']->get('name'); ?>
+Surame: <?php echo $this->aData['user']->get('surname'); ?></td>
+Department: <?php echo $this->aData['user']->get('department'); ?>
+Street: <?php echo $this->aData['user']->get('street'); ?></td>
+Zipcode: <?php echo $this->aData['user']->get('zipcode'); ?>
+City: <?php echo $this->aData['user']->get('city'); ?>
+Country: <?php echo $this->aData['user']->get('country'); ?>
+Phone: <?php echo $this->aData['user']->get('phone'); ?>
+Fax: <?php echo $this->aData['user']->get('fax'); ?>
+E-Mail-Address: <?php echo $this->aData['user']->get('mail'); ?>
+Cost Centre: <?php echo $this->aData['costno']->get('costno'); ?> - <?php echo $this->aData['costno']->get('description'); ?>
+
+Your way to the display factory: http://grohe2.hoehne-media.de
+
+--<?php echo $this->aData['boundary'].'
+'; ?>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+<html>
+	<head>
+		<style>
+			body{
+				font-family: Verdana;
+				color:#000000;
+			}
+
+		</style>
+	</head>
+	<body>
+		<body>
+				<h3>Order Information:</h3>
+				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
+						<tr>
+							<td width="30%"><b>Display-Factory-ID:</b></td>
+							<td><?php echo $this->aData['order']['hex']; ?></td>
+						</tr>
+						<tr>
+							<td width="30%"><b>DF-ID:</b></td>
+							<td><?php echo $this->aData['order']['product']['DFID']; ?></td>
+
+						</tr>
+						<tr>
+							<td width="30%"><b>SAP-No.:</b></td>
+							<td><?php echo $this->aData['order']['product']['SAP']; ?></td>
+						</tr>
+						<tr>
+							<td width="30%"><b>Order date:</b></td>
+							<td><?php echo $this->aData['order']['date']; ?></td>
+						</tr>
+						<tr>
+							<td width="30%"><b>Promotion Title:</b></td>
+							<td><?php echo $this->aData['order']['promotion_title']; ?></td>
+						</tr>
+						<tr>
+							<td><b>Cost Centre:</b></td>
+							<td><?php echo $this->aData['order']['costcentre']; ?></td>
+						</tr>
+						<tr>
+							<td><b>Desired Date of Delivery:</b></td>
+							<?php if( ! $this->aData['order']['desired_date_delivery'] || $this->aData['order']['desired_date_delivery'] == '0000-00-00 00:00:00'):
+								<td><i>no information</i>/td>
+							<?php else: ?>
+							<td><?php echo $this->aData['order']['desired_date_delivery']; ?></td>
+						<?php endif; ?>
+						</tr>
+				</table>
+				<h3>Buyer Information:</h3>
+
+				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
+					<tr>
+						<td width="30%"><b>Name:</b></td>
+						<td><?php echo $this->aData['user']['name']; ?></td>
+					</tr>
+					<tr>
+						<td><b>Surame:</b></td>
+						<td><?php echo $this->aData['user']['surname']; ?></td>
+					</tr>
+					<tr>
+						<td><b>Department:</b></td>
+						<td><?php echo $this->aData['user']['department']; ?></td>
+					</tr>
+					<tr>
+						<td><b>Street:</b></td>
+						<td><?php echo $this->aData['user']['street']; ?></td>
+					</tr>
+					<tr>
+						<td><b>Zipcode:</b></td>
+						<td><?php echo $this->aData['user']['zipcode']; ?></td>
+					</tr>
+					<tr>
+						<td><b>City:</b></td>
+						<td><?php echo $this->aData['user']['city']; ?></td>
+					</tr>
+					<tr>
+						<td><b>Country:</b></td>
+						<td><?php echo $this->aData['user']['country']; ?></td>
+					</tr>
+					<tr>
+						<td><b>Phone:</b></td>
+						<td><?php echo $this->aData['user']['phone']; ?></td>
+					</tr>
+					<tr>
+						<td><b>Fax:</b></td>
+						<td>{$user.fax}</td>
+						<td><?php echo $this->aData['user']['fax']; ?></td>
+					</tr>
+					<tr>
+						<td><b>E-Mail-Address:</b> </td>
+						<td><?php echo $this->aData['user']['mail']; ?></td>
+					</tr>
+				</table>
+
+				<h3>Packing List:</h3>
+				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
+					<tr class="table_headline">
+							<th align="center">SAP-No.</th>
+							<th align="center">Title</th>
+							<th align="center">Type</th>
+							<th align="center">Quantity</th>
+							<th align="center">Weight</th>
+					</tr>
+					<tr>
+							<td>{$order.product.display}</td>
+							<td><?php echo $this->aData['order']['product']['title']; ?></td>
+
+							<td>Display</td>
+							<td><?php echo $this->aData['order']['display_quantity']; ?></td>
+
+							<td align="right">{$order.product.display_weight*$order.display_quantity/1000|string_format:"%.2f"|replace:".":","} kg</td>
+					</tr>
+
+					{if $order.topsign}
+							{if $order.topsign == -1}
+							<tr>
+									<td>98001180</td>
+									<td>Own TopSign</td>
+									<td>TopSign</td>
+									<td align="right">{$order.display_quantity}</td>
+									<td align="right">{$order.display_quantity*180/1000|string_format:"%.2f"|replace:".":","} kg</td>
+							</tr>
+							{else}
+							<tr>
+									<td>{$order.topsign.articlenr}</td>
+									<td>{$order.topsign.title}</td>
+									<td>TopSign</td>
+									<td align="right">{$order.display_quantity}</td>
+									<td align="right">{$order.display_quantity*$order.topsign.weight/1000|string_format:"%.2f"|replace:".":","} kg</td>
+							</tr>
+							{/if}
+					{/if}
+
+					{*List Article*}
+					{foreach from=$order.product.article item=item}
+					<tr>
+							<td>{$item.articlenr}</td>
+							<td>{$item.title} {$item.extra}</td>
+							<td >Article</td>
+							<td align="right">{$item.units*$order.display_quantity}</td>
+							<td align="right">{$order.display_quantity*$item.units*$item.weight/1000|string_format:"%.2f"|replace:".":","} kg</td>
+					</tr>
+					{/foreach}
+
+
+					<tr class="totalweight">
+							<td colspan="4" align="right"><b>Total Weight:</b></td>
+							<td align="right">{math equation="round(x / 10)/100" x=$totalweight format="%.2f"}&nbsp;kg</td>
+					</tr>
+				</table>
+
+
+				<div style="background:#F00; color: #FFF; padding: 5px;">
+							<strong>IMPORTANT</strong><br />
+
+							This order must now be placed in the SAP system!<br />
+							-	stating all relevant reference numbers.<br />
+							For details check the manual!<br />
+				</div>
+
+				<h3>Display-Parts:</h3>
+				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
+					<tr>
+						<th>Art-No.</th>
+						<th>Title</th>
+						<th>Quantity <br /> per display</th>
+						<th>Quantity <br /> total</th>
+						<th>Format</th>
+					</tr>
+					{foreach from=$order.product.display_parts item=item}
+							<tr>
+									<td>
+											{$item.articlenr}
+									</td>
+									<td>
+											{$item.title|default:"&nbsp;"}
+									</td>
+									<td align="right">
+											{$item.units}
+									</td>
+									<td align="right">
+											{$item.units*$order.display_quantity}
+									</td>
+									<td align="right">
+											{$item.open_format}
+									</td>
+							</tr>
+					{/foreach}
+					{if $order.pallet_quantity > 0}
+							<tr>
+									<td>
+											98001242
+									</td>
+									<td>
+											&frac14; Wooden Chep Pallets
+									</td>
+									<td align="right">
+											{$order.pallet_quantity/$order.display_quantity}
+									</td>
+									<td align="right">
+											{$order.pallet_quantity}
+									</td>
+									<td align="right">
+											600x400
+									</td>
+							</tr>
+					{/if}
+				</table>
+
+
+
+
+
+
+	</body>
+</html>
+
+--<?php echo $this->aData['boundary']; ?>--

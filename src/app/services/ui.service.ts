@@ -82,6 +82,17 @@ export class UiService {
     this.categorySelected.next(catId);
   }
 
+  public reset(){
+    this.showOverlay =false;
+    this.showEditNew =false;
+    this.showDelete =false;
+    this.showMedias =false;
+    this.saveSuccess = false;
+    this.deleteSuccess = false;
+    this.messageWindowShow = false;
+    this.messages = [];
+  }
+
   adjustHeight(){
     this.mainheight = window.innerHeight - 20;
     this.res = {width:window.innerWidth,height:window.innerHeight};

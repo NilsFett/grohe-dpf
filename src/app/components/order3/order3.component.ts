@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { OrderService} from '../../services/order.service';
 import { UserService} from '../../services/user.service';
 import { ConfigService} from '../../services/config.service';
@@ -11,7 +11,7 @@ import { Router} from '@angular/router';
   templateUrl: './order3.component.html',
   styleUrls: ['./order3.component.css']
 })
-export class Order3Component{
+export class Order3Component {
   public topSigns:TopSign[] = [];
   public topSignsById = {};
   constructor(
@@ -21,6 +21,11 @@ export class Order3Component{
     public config: ConfigService,
     private router: Router
   ) {
+
+    if(! this.order.productChoosen ){
+      this.router.navigate(['/order2']);
+    }
+
 
     if (this.dataService.topSigns) {
       this.topSigns = this.dataService.topSigns;
@@ -40,6 +45,8 @@ export class Order3Component{
       this.dataService.loadTopSigns();
     }
   }
+
+
 
   public getDateStringToday() {
     let date = new Date();
@@ -102,5 +109,10 @@ export class Order3Component{
   public getTotalWeight(){
     var total = this.getDisplayWeight() + this.getTopSignWeight() + this.getArticlesWeight();
     return Number((total).toFixed(2));
+  }
+
+  public newOrder(){
+    this.order.clear();
+    this.router.navigate(['/order2']);
   }
 }

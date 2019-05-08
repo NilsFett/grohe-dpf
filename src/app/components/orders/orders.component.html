@@ -1,0 +1,117 @@
+<div class="content boxshadow" dpfContent>
+    <h2>Users</h2>
+    <div class="dpfoverflowwrapper" dpfOverflowWrapper>
+      <div class="spacer20"></div>
+      <table>
+        <tr>
+
+          <td>
+            <i class="fa icon-search"></i><input placeholder="Order-ID" (ngModelChange)="filter.orderId=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.orderId" class="filter" type="text"  name="orderIdFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="SAP-No" (ngModelChange)="filter.sap=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.sap" class="filter" type="text"  name="sapFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="Promotion-Title" (ngModelChange)="filter.pit=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.pit" class="filter" type="text"  name="pitFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="status" (ngModelChange)="filter.status=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.status" class="filter" type="text"  name="statusFilter" >
+          </td>
+
+        </tr>
+      </table>
+
+        <table mat-table matSort [dataSource]="dataSource" >
+          <ng-container matColumnDef="date">
+              <th mat-sort-header mat-header-cell *matHeaderCellDef>
+                Order-Date
+              </th>
+            <td mat-cell *matCellDef="let order"> {{order.date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="orderId">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Order-ID
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.hex}} </td>
+          </ng-container>
+          <ng-container matColumnDef="sap">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              SAP-No
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.SAP}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="pit">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Promotion-Title
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.promotion_title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Status
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.status}} </td>
+          </ng-container>
+          <ng-container matColumnDef="topsign">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Topsign
+            </th>
+            <td mat-cell *matCellDef="let order">
+               {{order.topsign.articlenr}} - {{order.topsign.title}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="display">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Display
+            </th>
+            <td mat-cell *matCellDef="let order">
+              <p *ngFor="let article of order.product.article"> {{article.units}} x {{article.title}}</p>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="displayParts">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Display-Parts
+            </th>
+            <td mat-cell *matCellDef="let order">
+              <p *ngFor="let parts of order.product.display_parts"> {{parts.units}} x {{parts.title}}</p>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="edit">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Edit
+            </th>
+            <td class="edit" (click)="ui.doShowEditNew();setCurrentDataSet(part);" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+          <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
+        </table>
+      </div>
+  </div>
+  <div class="overlaybg" *ngIf="ui.showOverlay"></div>
+  <div class="overlay" *ngIf="ui.showEditNew">
+    <div class="overlay-content">
+      <span (click)="currentDataSet = null;ui.doCloseEditNew()" class="close"><i class="fa icon-cancel"></i></span>
+      <h3 class="fa icon-edit">Order</h3>
+      <p>{{currentDataSet.hex}}</p>
+      <hr />
+      <div class="container-flex">
+        <form name="orderForm" [formGroup]="orderForm">
+          <div class="spacer20"></div>
+          <mat-form-field>
+            <input type="text" formControlName="status" matInput name="status" #name placeholder="Status*">
+          </mat-form-field>
+
+
+          <button (click)="save()" mat-raised-button>Save</button>
+          <div class="spacer20"></div>
+
+        </form>
+      </div>
+    </div>
+  </div>
