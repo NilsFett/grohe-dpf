@@ -3,20 +3,71 @@
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-User-Request Information:
+
+Order Information:
+
+Display-Factory-ID: <?php echo ($this->aData['costno']->get('description').toHexFive($this->aData['order']->get('id'))); ?>
+DF-ID: <?php echo $this->aData['product']['product']['DFID']; ?>
+SAP-No.: <?php echo $this->aData['product']['product']['SAP']; ?>
+Order date:<?php echo $this->aData['order']->get('date'); ?>
+Promotion Title: <?php echo $this->aData['order']->get('promotion_title'); ?>
+Cost Centre: <?php echo $this->aData['costno']->get('costno'); ?>
+Desired Date of Delivery:	<?php if( ! $this->aData['order']->get('desired_date_delivery') || $this->aData['order']->get('desired_date_delivery') == '0000-00-00 00:00:00' || $this->aData['order']->get('desired_date_delivery') == '1970-01-01 00:00:00' ): ?>no information<?php else: ?><?php echo $this->aData['order']->get('desired_date_delivery'); ?><?php endif; ?>
+
+Buyer Information:</h3>
+
 Name: <?php echo $this->aData['user']->get('name'); ?>
-Surame: <?php echo $this->aData['user']->get('surname'); ?></td>
+Surame: <?php echo $this->aData['user']->get('surname'); ?>
 Department: <?php echo $this->aData['user']->get('department'); ?>
-Street: <?php echo $this->aData['user']->get('street'); ?></td>
+Street: <?php echo $this->aData['user']->get('street'); ?>
 Zipcode: <?php echo $this->aData['user']->get('zipcode'); ?>
 City: <?php echo $this->aData['user']->get('city'); ?>
 Country: <?php echo $this->aData['user']->get('country'); ?>
 Phone: <?php echo $this->aData['user']->get('phone'); ?>
 Fax: <?php echo $this->aData['user']->get('fax'); ?>
 E-Mail-Address: <?php echo $this->aData['user']->get('mail'); ?>
-Cost Centre: <?php echo $this->aData['costno']->get('costno'); ?> - <?php echo $this->aData['costno']->get('description'); ?>
 
-Your way to the display factory: http://grohe2.hoehne-media.de
+Packing List:</h3>
+
+SAP-No.: <?php echo $this->aData['product']['product']['SAP']; ?>
+Title: <?php echo $this->aData['product']['product']['title']; ?>
+Type: Display
+Quantity: <?php echo $this->aData['product']['quantity']; ?>
+Weight: <?php echo ( $this->aData['displayPartsWeight'] * $this->aData['product']['quantity'] / 1000 ); ?> kg
+<?php if( $this->aData['product']['product']['topsign_id'] ): ?>
+	<?php if( $this->aData['product']['product']['topsign_id'] == -1 ): ?>
+SAP-No.: 98001180
+Title: Own TopSign
+Type: TopSign
+Quantity: <?php echo $this->aData['product']['quantity']; ?>
+Weight: <?php echo ( $this->aData['product']['quantity'] * 180 / 1000 ); ?> kg
+	<?php else: ?>
+SAP-No.: <?php echo $this->aData['topsign']->get('articlenr'); ?>
+Title: <?php echo $this->aData['topsign']->get('title'); ?>
+Type: TopSign
+Quantity: <?php echo $this->aData['product']['quantity']; ?>
+Weight: <?php echo ( $this->aData['product']['quantity'] * 180 / 1000 ); ?> kg
+	<?php endif; ?>
+<?php endif; ?>
+
+<?php foreach( $this->aData['product']['product']['article'] as $article ): ?>
+SAP-No.: <?php echo $article['articlenr']; ?>
+Title: <?php echo $article['title']; ?> <?php echo $article['extra']; ?>
+Type: Article
+Quantity: <?php echo ($article['units'] * $this->aData['product']['quantity']); ?>
+Weight: <?php echo ($article['units'] * $this->aData['product']['quantity'] * $article['weight'] / 1000); ?> kg
+<?php endforeach; ?>
+
+Total Weight: <?php echo (($this->aData['displayPartsWeight'] + $this->aData['articlesWeight']) / 1000); ?>&nbsp;kg
+
+Display-Parts:
+					<?php foreach( $this->aData['product']['product']['display_parts'] as $part ): ?>
+Art-No.: <?php echo $part['articlenr']; ?>
+Title: <?php echo $part['title']; ?>
+Quantity per display: <?php echo $part['units']; ?>
+Quantity  total: <?php echo $part['units'] * $this->aData['product']['quantity']; ?>
+Format
+<?php endforeach; ?>
 
 --<?php echo $this->aData['boundary'].'
 '; ?>
@@ -40,35 +91,36 @@ Content-Transfer-Encoding: 8bit
 				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
 						<tr>
 							<td width="30%"><b>Display-Factory-ID:</b></td>
-							<td><?php echo $this->aData['order']['hex']; ?></td>
+
+							<td><?php echo ($this->aData['costno']->get('description').toHexFive($this->aData['order']->get('id'))); ?></td>
 						</tr>
 						<tr>
 							<td width="30%"><b>DF-ID:</b></td>
-							<td><?php echo $this->aData['order']['product']['DFID']; ?></td>
+							<td><?php echo $this->aData['product']['product']['DFID']; ?></td>
 
 						</tr>
 						<tr>
 							<td width="30%"><b>SAP-No.:</b></td>
-							<td><?php echo $this->aData['order']['product']['SAP']; ?></td>
+							<td><?php echo $this->aData['product']['product']['SAP']; ?></td>
 						</tr>
 						<tr>
 							<td width="30%"><b>Order date:</b></td>
-							<td><?php echo $this->aData['order']['date']; ?></td>
+							<td><?php echo $this->aData['order']->get('date'); ?></td>
 						</tr>
 						<tr>
 							<td width="30%"><b>Promotion Title:</b></td>
-							<td><?php echo $this->aData['order']['promotion_title']; ?></td>
+							<td><?php echo $this->aData['order']->get('promotion_title'); ?></td>
 						</tr>
 						<tr>
 							<td><b>Cost Centre:</b></td>
-							<td><?php echo $this->aData['order']['costcentre']; ?></td>
+							<td><?php echo $this->aData['costno']->get('costno'); ?></td>
 						</tr>
 						<tr>
 							<td><b>Desired Date of Delivery:</b></td>
-							<?php if( ! $this->aData['order']['desired_date_delivery'] || $this->aData['order']['desired_date_delivery'] == '0000-00-00 00:00:00'):
+							<?php if( ! $this->aData['order']->get('desired_date_delivery') || $this->aData['order']->get('desired_date_delivery') == '0000-00-00 00:00:00' || $this->aData['order']->get('desired_date_delivery') == '1970-01-01 00:00:00' ): ?>
 								<td><i>no information</i>/td>
 							<?php else: ?>
-							<td><?php echo $this->aData['order']['desired_date_delivery']; ?></td>
+							<td><?php echo $this->aData['order']->get('desired_date_delivery'); ?></td>
 						<?php endif; ?>
 						</tr>
 				</table>
@@ -77,44 +129,43 @@ Content-Transfer-Encoding: 8bit
 				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
 					<tr>
 						<td width="30%"><b>Name:</b></td>
-						<td><?php echo $this->aData['user']['name']; ?></td>
+						<td><?php echo $this->aData['user']->get('name'); ?></td>
 					</tr>
 					<tr>
 						<td><b>Surame:</b></td>
-						<td><?php echo $this->aData['user']['surname']; ?></td>
+						<td><?php echo $this->aData['user']->get('surname'); ?></td>
 					</tr>
 					<tr>
 						<td><b>Department:</b></td>
-						<td><?php echo $this->aData['user']['department']; ?></td>
+						<td><?php echo $this->aData['user']->get('department'); ?></td>
 					</tr>
 					<tr>
 						<td><b>Street:</b></td>
-						<td><?php echo $this->aData['user']['street']; ?></td>
+						<td><?php echo $this->aData['user']->get('street'); ?></td>
 					</tr>
 					<tr>
 						<td><b>Zipcode:</b></td>
-						<td><?php echo $this->aData['user']['zipcode']; ?></td>
+						<td><?php echo $this->aData['user']->get('zipcode'); ?></td>
 					</tr>
 					<tr>
 						<td><b>City:</b></td>
-						<td><?php echo $this->aData['user']['city']; ?></td>
+						<td><?php echo $this->aData['user']->get('city'); ?></td>
 					</tr>
 					<tr>
 						<td><b>Country:</b></td>
-						<td><?php echo $this->aData['user']['country']; ?></td>
+						<td><?php echo $this->aData['user']->get('country'); ?></td>
 					</tr>
 					<tr>
 						<td><b>Phone:</b></td>
-						<td><?php echo $this->aData['user']['phone']; ?></td>
+						<td><?php echo $this->aData['user']->get('phone'); ?></td>
 					</tr>
 					<tr>
 						<td><b>Fax:</b></td>
-						<td>{$user.fax}</td>
-						<td><?php echo $this->aData['user']['fax']; ?></td>
+						<td><?php echo $this->aData['user']->get('fax'); ?></td>
 					</tr>
 					<tr>
 						<td><b>E-Mail-Address:</b> </td>
-						<td><?php echo $this->aData['user']['mail']; ?></td>
+						<td><?php echo $this->aData['user']->get('mail'); ?></td>
 					</tr>
 				</table>
 
@@ -128,61 +179,52 @@ Content-Transfer-Encoding: 8bit
 							<th align="center">Weight</th>
 					</tr>
 					<tr>
-							<td>{$order.product.display}</td>
-							<td><?php echo $this->aData['order']['product']['title']; ?></td>
+							<td><?php echo $this->aData['product']['product']['SAP']; ?></td>
+							<td><?php echo $this->aData['product']['product']['title']; ?></td>
 
 							<td>Display</td>
-							<td><?php echo $this->aData['order']['display_quantity']; ?></td>
+							<td><?php echo $this->aData['product']['quantity']; ?></td>
 
-							<td align="right">{$order.product.display_weight*$order.display_quantity/1000|string_format:"%.2f"|replace:".":","} kg</td>
+							<td align="right"><?php echo ( $this->aData['displayPartsWeight'] * $this->aData['product']['quantity'] / 1000 ); ?> kg</td>
 					</tr>
 
-					{if $order.topsign}
-							{if $order.topsign == -1}
+					<?php if( $this->aData['product']['product']['topsign_id'] ): ?>
+							<?php if( $this->aData['product']['product']['topsign_id'] == -1 ): ?>
 							<tr>
 									<td>98001180</td>
 									<td>Own TopSign</td>
 									<td>TopSign</td>
-									<td align="right">{$order.display_quantity}</td>
-									<td align="right">{$order.display_quantity*180/1000|string_format:"%.2f"|replace:".":","} kg</td>
+									<td align="right"><?php echo $this->aData['product']['quantity']; ?></td>
+									<td align="right"><?php echo ( $this->aData['product']['quantity'] * 180 / 1000 ); ?> kg</td>
 							</tr>
-							{else}
+						<?php else: ?>
 							<tr>
-									<td>{$order.topsign.articlenr}</td>
-									<td>{$order.topsign.title}</td>
+									<td><?php echo $this->aData['topsign']->get('articlenr'); ?></td>
+									<td><?php echo $this->aData['topsign']->get('title'); ?></td>
 									<td>TopSign</td>
-									<td align="right">{$order.display_quantity}</td>
-									<td align="right">{$order.display_quantity*$order.topsign.weight/1000|string_format:"%.2f"|replace:".":","} kg</td>
+									<td align="right"><?php echo $this->aData['product']['quantity']; ?></td>
+									<td align="right"><?php echo ($this->aData['product']['quantity'] * $this->aData['topsign']->get('weight') / 1000); ?> kg</td>
 							</tr>
-							{/if}
-					{/if}
+						<?php endif; ?>
+					<?php endif; ?>
 
-					{*List Article*}
-					{foreach from=$order.product.article item=item}
+					<?php foreach( $this->aData['product']['product']['article'] as $article ): ?>
+
 					<tr>
-							<td>{$item.articlenr}</td>
-							<td>{$item.title} {$item.extra}</td>
+							<td><?php echo $article['articlenr']; ?></td>
+							<td><?php echo $article['title']; ?> <?php echo $article['extra']; ?></td>
 							<td >Article</td>
-							<td align="right">{$item.units*$order.display_quantity}</td>
-							<td align="right">{$order.display_quantity*$item.units*$item.weight/1000|string_format:"%.2f"|replace:".":","} kg</td>
+							<td align="right"><?php echo ($article['units'] * $this->aData['product']['quantity']); ?> </td>
+							<td align="right"><?php echo ($article['units'] * $this->aData['product']['quantity'] * $article['weight'] / 1000); ?> kg</td>
 					</tr>
-					{/foreach}
+				<?php endforeach; ?>
 
 
 					<tr class="totalweight">
-							<td colspan="4" align="right"><b>Total Weight:</b></td>
-							<td align="right">{math equation="round(x / 10)/100" x=$totalweight format="%.2f"}&nbsp;kg</td>
+							<td colspan="4" align="right"><b>Total Weight:<?php echo $this->aData['articlesWeight']; ?></b></td>
+							<td align="right"><?php echo (($this->aData['displayPartsWeight'] + $this->aData['articlesWeight']) / 1000); ?>&nbsp;kg</td>
 					</tr>
 				</table>
-
-
-				<div style="background:#F00; color: #FFF; padding: 5px;">
-							<strong>IMPORTANT</strong><br />
-
-							This order must now be placed in the SAP system!<br />
-							-	stating all relevant reference numbers.<br />
-							For details check the manual!<br />
-				</div>
 
 				<h3>Display-Parts:</h3>
 				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
@@ -193,51 +235,25 @@ Content-Transfer-Encoding: 8bit
 						<th>Quantity <br /> total</th>
 						<th>Format</th>
 					</tr>
-					{foreach from=$order.product.display_parts item=item}
+					<?php foreach( $this->aData['product']['product']['display_parts'] as $part ): ?>
 							<tr>
+									<td><?php echo $part['articlenr']; ?></td>
 									<td>
-											{$item.articlenr}
-									</td>
-									<td>
-											{$item.title|default:"&nbsp;"}
+											<?php echo $part['title']; ?>
 									</td>
 									<td align="right">
-											{$item.units}
+											<?php echo $part['units']; ?>
 									</td>
 									<td align="right">
-											{$item.units*$order.display_quantity}
+										<?php echo $part['units'] * $this->aData['product']['quantity']; ?>
+
 									</td>
 									<td align="right">
-											{$item.open_format}
+
 									</td>
 							</tr>
-					{/foreach}
-					{if $order.pallet_quantity > 0}
-							<tr>
-									<td>
-											98001242
-									</td>
-									<td>
-											&frac14; Wooden Chep Pallets
-									</td>
-									<td align="right">
-											{$order.pallet_quantity/$order.display_quantity}
-									</td>
-									<td align="right">
-											{$order.pallet_quantity}
-									</td>
-									<td align="right">
-											600x400
-									</td>
-							</tr>
-					{/if}
+					<?php endforeach; ?>
 				</table>
-
-
-
-
-
-
 	</body>
 </html>
 

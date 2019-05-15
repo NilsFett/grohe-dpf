@@ -60,6 +60,7 @@ export class DisplayComposeComponent implements OnDestroy{
     private displayFilter: DisplaysFilter,
     public config: ConfigService
   ) {
+    this.ui.view = 'admin';
     this.dataSource = new MatTableDataSource(this.displays);
 
     if (this.dataService.displays) {
@@ -125,13 +126,11 @@ export class DisplayComposeComponent implements OnDestroy{
     this.dataSource.data = this.displays;
   }
 
-  public getImage(imageid){
-    if(this.imagesById[imageid]){
-      return `${this.config.baseURL}uploads/${this.imagesById[imageid].path}`;
-    }
-    else{
-      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
-    }
+  public getImage(display){
+
+      let imageNumber = (parseInt(display.base_display_template_id));
+      return `${this.config.baseURL}uploads/dp${imageNumber}fwp_v1.jpg`;
+
   }
 
   public showNew() {

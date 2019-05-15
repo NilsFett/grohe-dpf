@@ -9,9 +9,6 @@ export class ProductsFilter implements PipeTransform{
     if( !items  || ! filter ){
       return items;
     }
-
-    console.log(items);
-    console.log(filter);
     return items.filter(
       item => {
         if( item.DFID.toLowerCase().indexOf(filter.DFID.toLowerCase()) !== -1

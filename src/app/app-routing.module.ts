@@ -9,7 +9,7 @@ import { UserRequestsComponent } from './components/userrequests/userrequests.co
 import { Order2Component } from './components/order2/order2.component';
 import { Order3Component } from './components/order3/order3.component';
 import { OrdersComponent } from './components/orders/orders.component';
-//import { StartComponent } from './components/start/start.component';
+import { StartComponent } from './components/start/start.component';
 import { DisplayComposeComponent } from './components/displayCompose/displayCompose.component';
 import { DisplayPartsComponent } from './components/displayParts/displayParts.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
@@ -33,7 +33,7 @@ const routes: Routes = [
   { path: 'order2', component: Order2Component, canActivate: [AuthGuard] },
   { path: 'order3', component: Order3Component, canActivate: [AuthGuard] },
   { path: 'orders', component: OrdersComponent },
-  //{ path: 'start', component: StartComponent, canActivate: [AuthGuard] },
+  { path: 'start', component: StartComponent, canActivate: [AuthGuard] },
   { path: 'displayCompose', component: DisplayComposeComponent, canActivate: [AuthGuard] },
   { path: 'displayParts', component: DisplayPartsComponent, canActivate: [AuthGuard] },
   { path: 'topSigns', component: TopSignsComponent, canActivate: [AuthGuard] },

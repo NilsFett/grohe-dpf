@@ -48,7 +48,7 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
 
     deliverytime : new FormControl('')
   });
-  public showArticles = false;
+  public currentTab = 1;
   public images:Image[] = [];
   public imagesById = {};
   public displays:Display[] = [];
@@ -59,6 +59,8 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
   public topSignsById = {};
   public articleList:Article[] = [];
   public articleSearchword:string = '';
+  public promotionMaterialSearchWord: string = '';
+  public promotionMaterials:TopSign[] = [];
 
   public catString:string= "Display Types*";
 
@@ -258,6 +260,18 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     }
   }
 
+  public removePMFromPMList(pm:TopSign){
+    if( pm.units == 1){
+      let index = this.promotionMaterials.indexOf(pm);
+      if( index > -1 ){
+        this.promotionMaterials.splice(index,1);
+      }
+    }
+    else{
+      pm.units--;
+    }
+  }
+
   public addArticleToArticleList(article:Article){
     var count = (document.getElementById('countArticle'+article.articlenr) as HTMLTextAreaElement).value
     var i;
@@ -284,23 +298,37 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     }
   }
 
+  public addPMToPMList(pm:TopSign){
+    var count = (document.getElementById('countPM'+pm.id) as HTMLTextAreaElement).value
+    var i;
+    var found = false;
+    for(i = 0; i < this.promotionMaterials.length; i++){
+      if( this.promotionMaterials[i].id  == pm.id ){
+        if(count == ''){
+          this.promotionMaterials[i].units++;
+        }
+        else{
+          this.promotionMaterials[i].units = parseInt(count);
+        }
+        found = true;
+      }
+    }
+    if(!found){
+      if(count == ''){
+        pm.units = 1;
+      }
+      else{
+        pm.units = parseInt(count);
+      }
+      this.promotionMaterials.push(pm);
+    }
+  }
+
+
   public articleSearchwordChanged(searchword){
     this.articleSearchword = searchword;
   }
-/*
-  public save(){
-    if (this.productForm.status == 'VALID') {
-      this.currentDataSet.title = this.productForm.controls['title'].value;
-      this.currentDataSet.DFID = this.productForm.controls['DFID'].value;
-      this.currentDataSet.SAP = this.productForm.controls['SAP'].value;
-      this.currentDataSet.price = this.productForm.controls['price'].value;
-      this.currentDataSet.pallet_select = this.productForm.controls['pallet_select'].value;
-      this.currentDataSet.bypack_disabled = this.productForm.controls['bypack_disabled'].value;
-      this.currentDataSet.topsign_upload_disabled = this.productForm.controls['topsign_upload_disabled'].value;
-      this.dataService.changeProduct(this.currentDataSet);
-    }
-  }
-*/
+
   public setCurrentDataSet(currentDataSet){
 
     this.currentDataSet = currentDataSet;
@@ -308,11 +336,13 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     this.updateFormValues();
 
     if(this.dataService.articlesByProductId[currentDataSet.id]){
-      this.articleList = this.dataService.articlesByProductId[currentDataSet.id];
+      this.articleList = this.dataService.articlesByProductId[currentDataSet.id].articles;
+      this.promotionMaterials  = this.dataService.articlesByProductId[currentDataSet.id].topsigns;
     }
     else{
-      this.dataService.articlesByProductIdChange.subscribe((articleList: Article[]) => {
-        this.articleList = articleList;
+      this.dataService.articlesByProductIdChange.subscribe((articleList: any) => {
+        this.articleList = articleList.articles;
+        this.promotionMaterials  = articleList.topsigns;
       });
       this.dataService.loadArticlesByProductId(currentDataSet.id);
     }
@@ -347,10 +377,10 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       this.currentDataSet.price = this.productForm.controls['price'].value;
       this.currentDataSet.deliverytime = this.productForm.controls['deliverytime'].value;
       console.log(this.currentDataSet);
-      this.dataService.saveProductAndArticleList(this.currentDataSet, this.articleList);
+      this.dataService.saveProductAndArticleList(this.currentDataSet, this.articleList, this.promotionMaterials);
     }
     else{
-      this.showArticles = false;
+      this.currentTab = 1;
       this.productForm.updateValueAndValidity();
     }
   }
@@ -374,6 +404,10 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
   }
   public articlesSearchwordChanged(searchword){
     this.articleSearchword = searchword;
+  }
+
+  public promotionMaterialSearchWordChanged(searchword){
+    this.promotionMaterialSearchWord = searchword;
   }
 
   ngOnDestroy(){

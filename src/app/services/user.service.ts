@@ -47,8 +47,6 @@ export class UserService {
             this.isLoggedIn = false;
             this.loggedInState.next(false);
         }
-        console.log(this.data);
-
         this.checkingLogin = false;
       },
       error => {
@@ -68,7 +66,7 @@ export class UserService {
             this.isLoggedIn = true;
             this.initials = this.data.name.value.charAt(0)+this.data.surname.value.charAt(0);
             this.loggedInState.next(true);
-            this.router.navigate(['/order2']);
+            this.router.navigate(['/start']);
           }
 
           this.logginIncorrect = false;

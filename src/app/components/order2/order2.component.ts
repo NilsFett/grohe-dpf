@@ -26,6 +26,11 @@ export class Order2Component{
   public articleSearchword:string = '';
   public topSigns:TopSign[] = [];
   public topSignsById = {};
+  public topSignsImageStringById = {
+    1:'shower',
+    2:'kitchen',
+    3:'bath'
+  };
 
 
   constructor(
@@ -38,11 +43,15 @@ export class Order2Component{
   ) {
     if(this.dataService.productsWithArticlesAndProductPath){
       this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
+      console.log('this.productsWithArticlesAndProductPath');
+      console.log(this.productsWithArticlesAndProductPath);
     }
     else{
       this.dataService.productsWithArticlesAndProductPathChange.subscribe(
         (products:Product[]) => {
           this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
+          console.log('this.productsWithArticlesAndProductPath');
+          console.log(this.productsWithArticlesAndProductPath);
         }
       );
       this.dataService.loadProductsWithArticlesAndProductPath();
@@ -244,4 +253,12 @@ export class Order2Component{
       }
     );
   }
+  public quantityChanged(event){
+    console.log(this.order.displayQuantity);
+    this.order.displayQuantity = this.order.displayQuantity.replace(/\D/g, '');
+    if(this.order.displayQuantity < 1){
+      this.order.displayQuantity = '1';
+    }
+  }
+  //.replace(/\D/g, '');
 }

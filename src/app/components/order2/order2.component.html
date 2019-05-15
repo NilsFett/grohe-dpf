@@ -19,25 +19,36 @@
 
 
               <div class="span2" style="padding-right:20px;">
-                <img style="height:200px;" src="{{config.baseURL}}uploads/dp{{product.base_display_template_id}}fwp.jpg" />
+                <img style="width:100px;" src="{{config.baseURL}}uploads/dp{{product.base_display_template_id}}fwp_{{topSignsImageStringById[product.topsign_id]}}.jpg" />
               </div>
               <div class="span10"><span  class="add icon-plus"></span>
-                <p><span><b>DF-ID:</b></span><span>&nbsp;{{product.DFID}}</span></p>
-                <p><span><b>Display Title:</b></span><span>&nbsp;{{product.title}}</span></p>
-
-                <p><b>Display Types</b>:&nbsp;{{product.path.path}}&nbsp;</p>
-                <p><b>Price:</b>&nbsp;{{product.price}} €</p>
-
-                <p><span><b>Display SAP No.:</b></span><span>&nbsp;{{product.SAP}}</span></p>
-
+                <p><span>DF-ID:</span><span>&nbsp;<b>{{product.DFID}}</b></span></p>
+                <p><span>Display Title:</span><span>&nbsp;<b>{{product.title}}</b></span></p>
+                <p>Display Types:&nbsp;<b>{{product.path.path}}&nbsp;</b></p>
+                <p>Price:&nbsp;<b>{{product.price}} €</b></p>
+                <p><span>Display SAP No.:</span><span>&nbsp;<b>{{product.SAP}}</b></span></p>
                 <hr />
-                <p><span><b>Articles:</b></span></p>
+
+
+                <p><span><b>Articles included:</b></span></p>
                 <ul>
                   <li *ngFor="let article of product.article">
                     <p><b>{{article.units}} x {{article.articlenr}}</b> ({{article.packaging}})<br />
                     {{article.title}} (Type : {{article.type}})</p>
                   </li>
                 </ul>
+
+
+                <ng-container *ngIf="product.promotion_material.length">
+                  <hr />
+                  <p><span><b>Promotion Material included:</b></span></p>
+                  <ul>
+                    <li *ngFor="let pm of product.promotion_material">
+                      <p><b>{{pm.units}} x {{pm.articlenr}}</b><br />
+                      {{pm.title}}</p>
+                    </li>
+                  </ul>
+                </ng-container>
               </div>
               <div class="clear"></div>
             </li>
@@ -48,26 +59,36 @@
       <div *ngIf="order.productChoosen" class="inner product-choosen">
         <span (click)="removeSelected(product)" class="cancel icon-cancel"></span>
         <div class="span4" style="padding-right:20px;">
-          <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp.jpg" />
+          <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp_v1.jpg" />
         </div>
         <div class="span8">
-          <p><span><b>DF-ID:</b></span><span> {{order.productChoosen.DFID}}</span></p>
-          <p><span><b>Display Title:</b></span><span> {{order.productChoosen.title}}</span></p>
-          <p><b>Display Types</b>:&nbsp;{{order.productChoosen.path.path}}&nbsp;</p>
-          <p><b>Price:</b>&nbsp;{{order.productChoosen.price}} €</p>
-
-          <p><span><b>Display SAP No.:</b></span><span> {{order.productChoosen.SAP}}</span></p>
-
+          <p>DF-ID:<b>{{order.productChoosen.DFID}}</b></p>
+          <p>Display Title:<b>&nbsp;{{order.productChoosen.title}}</b></p>
+          <p>Display Types:&nbsp;<b>{{order.productChoosen.path.path}}</b></p>
+          <p>Price:&nbsp;<b>{{order.productChoosen.price}} €</b></p>
+          <p>Display SAP No.:<b>{{order.productChoosen.SAP}}</b></p>
           <hr />
-          <p><span><b>Articles:</b></span></p>
+          <p><span><b>Articles included:</b></span></p>
           <ul>
             <li *ngFor="let article of order.productChoosen.article">
               <p><b>{{article.units}} x {{article.articlenr}}</b> ({{article.packaging}})<br />{{article.title}} (Type : {{article.type}})</p>
             </li>
           </ul>
-          <mat-form-field>
-            <input type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
+          <ng-container *ngIf="order.productChoosen.promotion_material.length">
+            <hr />
+            <p><span><b>Promotion Material included:</b></span></p>
+            <ul>
+              <li *ngFor="let pm of order.productChoosen.promotion_material">
+                <p><b>{{pm.units}} x {{pm.articlenr}}</b><br />
+                {{pm.title}}</p>
+              </li>
+            </ul>
+          </ng-container>
+          <div class="spacer20"></div>
+          <mat-form-field class="blue border-blue" >
+            <mat-hint class="warning"><b>Required volum!</b></mat-hint><input (keyup)="quantityChanged($event)" pattern="[1-9][0-9]*" style="color:#3B85D2;" type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
           </mat-form-field>
+          <div class="spacer20"></div>
 
           <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id]">
             <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
@@ -78,7 +99,7 @@
               <th>SAP-No.</th>
               <th>Title</th>
               <th>Type</th>
-              <th>quantity</th>
+              <th>Quantity</th>
               <th>Weight</th>
             </tr>
             <tr>
@@ -150,10 +171,10 @@
           </div>
           <div class="span6">
             <div class="orderbox">
-              <h4>New Order Process</h4>
+              <h4>Your Order Process</h4>
               <div class="inner">
                 <ul>
-                  <li class="warning">Please book you order in SAP now!</li>
+                  <li class="warning">Please book your order in SAP now!</li>
                   <li>Transaction: ZDF01</li>
                   <li>Fill in the requested information
                     <ul>
@@ -162,9 +183,9 @@
                       <li>Quantity: <span class="warning">{{order.displayQuantity}}</span></li>
                     </ul>
                   </li>
-                  <li>Then press F8 (the clock symbol)</li>
-                  <li>Then add the SAP order number in the field below</li>
-                  <li>For further and detailed information please check the new display factory manual.</li>
+                  <li>Press F8 (clock symbol)</li>
+                  <li>Add Promotion Idenfitication title and SAP order number in the field below/li>
+                  <li>For further and detailed information please check the display factory manual.</li>
                 </ul>
               </div>
             </div>
@@ -185,7 +206,7 @@
           </div>
           <div class="span6">
             <div class="orderbox">
-              <h4 [ngClass]="{'warning': (order.SAP.length != 8)}">SAP Product Order Number (8 digits)</h4>
+              <h4 [ngClass]="{'warning': (order.SAP.length != 8)}">SAP Order Number (8 digits)</h4>
               <div class="inner">
                 <mat-form-field>
                   <mat-hint *ngIf="order.SAP.length != 8" class="warning">Please fill to continue!</mat-hint>
