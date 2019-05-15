@@ -66,9 +66,16 @@ class cMail{
 				$subject = 'Grohe - Display Factory - New Display Order';
 				$oMailView->setTemplate($sTemplate);
 				$oMailView->assign('order', $data['order']);
+				$oMailView->assign('product', $data['product']);
+				$oMailView->assign('user', $data['user']);
+				$oMailView->assign('topsign', $data['topsign']);
+				$oMailView->assign('costno', $data['costno']);
+				$oMailView->assign('displayPartsWeight', $data['displayPartsWeight']);
+				$oMailView->assign('articlesWeight', $data['articlesWeight']);
 				$mail_body = $oMailView->render();
-				$recipient = array($data['user']->get('mail'));
+				$recipient = array($data['user']->get('mail'), 'mail@nils-fett.de', 'Vanessa.Wittmer@grohe.com');
 			break;
+			/*
 			case 'order_success':
 				$subject = 'Grohe - Display Factory - Your request has been submitted successfully';
 				$oMailView->setTemplate($sTemplate);
@@ -77,6 +84,7 @@ class cMail{
 				$mail_body = $oMailView->render();
 				$recipient = array($data['user']->get('mail'));
 			break;
+			*/
 		}
 
 

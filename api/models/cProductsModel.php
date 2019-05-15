@@ -136,6 +136,7 @@ class cProductsModel extends cModel{
 			$products[$index]['path'] = self::getProductPath($product['product_tree']);
 			$products[$index]['article'] = self::getArticles($product['id']);
 			$products[$index]['display_parts'] = cDisplaysPartsModel::getPartsToDisplayByDisplayId($product['display_id']);
+			$products[$index]['promotion_material'] = cTopSignModel::getByProductId($product['id']);
 		}
 		return $products;
 	}

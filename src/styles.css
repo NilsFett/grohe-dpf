@@ -586,10 +586,15 @@ header.login .span6{
   color:#000000;
 }
 
-.blue{
+.bluebg{
     background-color: #112038;
 }
 
+
+.border-blue{
+  padding:20px;
+  border: 1px solid #3784c0;
+}
 .messages{
   position:fixed;
   top:10px;
@@ -601,6 +606,10 @@ header.login .span6{
 }
 .mat-form-field.mat-focused .mat-form-field-ripple{
   background-color:#3784c0;
+}
+
+mat-form-field.blue .mat-form-field-label{
+  color:#3784c0;
 }
 
 .mat-form-field {
@@ -808,9 +817,13 @@ grohe-dpf-medias{
   color:#6D747F;
 }
 .order img{
-  max-width:100%;
-  max-height:100%;
-  float:left;
+
+  max-width: 100%;
+  /* max-height: 100%; */
+  /* float: left; */
+  width: 200px;
+  margin: 0 auto;
+  display: block;
 }
 
 .order .displays{
@@ -920,7 +933,7 @@ grohe-dpf-medias{
 .order .productSelect ul li, .order .productSelect ul.choosen li{
   width:100%;
   background-color:#fff;
-  margin: 0 0 2px 0;
+  margin: 0 0 20px 0;
   padding:10px;
 }
 

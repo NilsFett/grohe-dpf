@@ -66,4 +66,22 @@ class cTopSignModel extends cModel{
 		}
 		return $aResult;
 	}
+
+	public static function getByProductId($productId){
+		$query = '	SELECT `'.static::$sTable.'`.*, `r_display-topsign`.`units`
+								FROM `'.static::$sTable.'`
+								JOIN `r_display-topsign` ON `r_display-topsign`.`topsign_id` = `t_topsign`.`id`
+								JOIN `t_display_position` ON `r_display-topsign`.`position` = `t_display_position`.`id`
+								WHERE `t_display_position`.`id` = '.$productId.'
+								ORDER BY `t_topsign`.articlenr ';
+		$db = cDatabase::getInstance();
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute();
+		$products = array();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		while( $product = $stmt->fetch(PDO::FETCH_ASSOC) ){
+			$products[] = $product;
+		}
+		return $products;
+	}
 }

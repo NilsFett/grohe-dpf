@@ -5,7 +5,7 @@ import { Product } from '../classes/Product';
 @Injectable()
 export class OrderService {
   public displayTypeChoosen:number = null;
-  public displayQuantity:number = 1;
+  public displayQuantity:any = '1';
   public topSign:number = null;
   public costcentre:number;
   public productChoosen:Product = null;

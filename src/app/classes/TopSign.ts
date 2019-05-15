@@ -7,4 +7,5 @@ export class TopSign {
   public image:string;
   public image_thumb:string;
   public weight:number;
+  public units:number;
 }

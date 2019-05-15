@@ -66,9 +66,9 @@ export class DataService {
   public displayPartsByDisplayIdChange: Subject<Array<DisplaysPart>>;
   private displayPartsByDisplayIdChangeObserver: Observable<Array<DisplaysPart>>;
 
-  public articlesByProductId: Array<Array<Article>> = [];
-  public articlesByProductIdChange: Subject<Array<Article>>;
-  private articlesByProductIdChangeObserver: Observable<Array<Article>>;
+  public articlesByProductId: any = [];
+  public articlesByProductIdChange: Subject<any>;
+  private articlesByProductIdChangeObserver: Observable<any>;
 
   public saveSuccess: EventEmitter<boolean> = new EventEmitter();
   public deleteSuccess: EventEmitter<boolean> = new EventEmitter();
@@ -118,7 +118,7 @@ export class DataService {
     this.displayPartsByDisplayIdChange = new Subject<Array<DisplaysPart>>();
     this.displayPartsByDisplayIdChangeObserver = this.displayPartsByDisplayIdChange.asObservable();
 
-    this.articlesByProductIdChange = new Subject<Array<Article>>();
+    this.articlesByProductIdChange = new Subject<any>();
     this.articlesByProductIdChangeObserver = this.articlesByProductIdChange.asObservable();
   }
 
@@ -217,7 +217,7 @@ export class DataService {
   }
 
   public loadArticlesByProductId(product_id) {
-    this.http.get(`${this.config.baseURL}loadArticlesByProductId?article_id=${product_id}`, { withCredentials: true }).subscribe((articles: Article[]) => {
+    this.http.get(`${this.config.baseURL}loadArticlesByProductId?article_id=${product_id}`, { withCredentials: true }).subscribe((articles: any) => {
       this.articlesByProductId[product_id] = articles;
       this.articlesByProductIdChange.next(this.articlesByProductId[product_id]);
     });
@@ -447,8 +447,8 @@ export class DataService {
     );
   }
 
-  public saveProductAndArticleList(product:Product, articleList:Article[]){
-    this.http.post(`${this.config.baseURL}saveProductAndArticleList`, {product:product,articleList:articleList}, { withCredentials: true }).subscribe(
+  public saveProductAndArticleList(product:Product, articleList:Article[], promotionMaterial:TopSign[]){
+    this.http.post(`${this.config.baseURL}saveProductAndArticleList`, {product:product,articleList:articleList,promotionMaterial:promotionMaterial}, { withCredentials: true }).subscribe(
       ( products:Product[] ) => {
         this.ui.setMessage('Save success');
         this.products = products;

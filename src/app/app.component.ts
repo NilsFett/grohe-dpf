@@ -38,7 +38,6 @@ export class AppComponent implements AfterViewInit{
             this.checkRedirect();
           }
         }
-        console.log(this.main);
         this.main.nativeElement.scrollTop = 0;
         this.ui.reset();
       },
@@ -63,8 +62,8 @@ export class AppComponent implements AfterViewInit{
 
   private checkRedirect(){
     if(this.user.isLoggedIn){
-      if(this.currentURL == '/' || this.currentURL == '/login' || this.currentURL == '/passwordReset' || this.currentURL == '/register' || this.currentURL == '/start'){
-        this.router.navigate(['/order2']);
+      if(this.currentURL == '/' || this.currentURL == '/login' || this.currentURL == '/passwordReset' || this.currentURL == '/register' ){
+        this.router.navigate(['/start']);
       }
     }
     else{

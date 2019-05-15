@@ -70,11 +70,12 @@
     <h3 class="fa icon-edit">DF ID</h3>
     <p>{{currentDataSet.title}}</p>
     <ul class="tab">
-      <li (click)="showArticles=false" [ngClass]="{'active': showArticles == false}">Product Data</li><li>&nbsp;|&nbsp;</li>
-      <li (click)="showArticles=true" [ngClass]="{'active': showArticles == true}">Articles</li>
+      <li (click)="currentTab=1" [ngClass]="{'active': currentTab == 1}">Product Data</li><li>&nbsp;|&nbsp;</li>
+      <li (click)="currentTab=2" [ngClass]="{'active': currentTab == 2}">Articles</li><li>&nbsp;|&nbsp;</li>
+      <li (click)="currentTab=3" [ngClass]="{'active': currentTab == 3}">Promotion Material</li>
     </ul>
     <hr />
-    <div class="container-flex" *ngIf="!showArticles">
+    <div class="container-flex" *ngIf="currentTab == 1">
       <form name="productForm" [formGroup]="productForm">
         <div class="spacer20"></div>
         <img (click)="selectImage();" src="{{getImage(this.currentDataSet.image)}}" class="display" />
@@ -105,13 +106,7 @@
             </ng-container>
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
-          <mat-select formControlName="promotion_material_id"  #promotion_material_id placeholder="Promotion Material">
-            <ng-container *ngFor="let topsign of topSigns">
-              <mat-option value="{{topsign.id}}" *ngIf="topsign.type == 2" >{{topsign.title}}</mat-option>
-            </ng-container>
-          </mat-select>
-        </mat-form-field>
+
         <grohe-dpf-tree-view [label]="catString" [selectedCategory]="currentDataSet.product_tree"></grohe-dpf-tree-view>
 
         <mat-form-field>
@@ -129,7 +124,7 @@
       </form>
     </div>
 
-    <div class="container-flex display-parts-assembly" *ngIf="showArticles">
+    <div class="container-flex display-parts-assembly" *ngIf="currentTab == 2">
       <ul>
         <li *ngFor="let article of articleList">
           <span class="artnr">{{article.articlenr}}</span>
@@ -161,6 +156,38 @@
       </div>
     </div>
 
+    <div class="container-flex display-parts-assembly" *ngIf="currentTab == 3">
+      <ul>
+        <li *ngFor="let pm of promotionMaterials">
+          <span class="artnr">{{pm.articlenr}}</span>
+          <span class="title">{{pm.title}}</span>
+          <span class="units"><b>{{pm.units}}</b></span>
+          <span (click)="addPMToPMList(pm)" class="icon-plus"></span>
+          <span (click)="removePMFromPMList(pm)" class="icon-minus"></span>
+
+        </li>
+      </ul>
+      <button mat-raised-button (click)="saveProductAndArticleList()">Save</button>
+      <div class="spacer20"></div>
+      <hr />
+      <div class="spacer20"></div>
+      <p>Add Promotion Material</p>
+      <mat-form-field>
+        <input type="text" matInput name="partsearch" placeholder="Search by Articlenr. or Title" (keyup)="promotionMaterialSearchWordChanged($event.target.value)">
+      </mat-form-field>
+      <div class="chooseDisplayPart">
+        <ul>
+          <li *ngFor="let pm of topSigns">
+            <ng-container *ngIf="pm.type == 2 && ( pm.title.toLowerCase().indexOf(promotionMaterialSearchWord.toLowerCase()) !== -1 || pm.articlenr.toLowerCase().indexOf(promotionMaterialSearchWord.toLowerCase()) !== -1 )">
+              <span class="artnr">{{pm.articlenr}}</span>
+              <span class="title">{{pm.title}}</span>
+              <input type="text" id="countPM{{pm.id}}" />
+              <span (click)="addPMToPMList(pm)" class="icon-plus"></span>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </div>
 
   </div>
 </div>
