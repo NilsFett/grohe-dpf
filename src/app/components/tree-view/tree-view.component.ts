@@ -25,7 +25,7 @@ interface FlatNode {
   styleUrls: ['./tree-view.component.css']
 })
 export class TreeViewComponent  {
-  @Input() selectedCategory:number=1;
+  @Input() selectedCategory:number=102;
   @Input() label:string;
   public selecting:boolean=false;
   public categories: ProductTree[] = [];
@@ -51,6 +51,7 @@ export class TreeViewComponent  {
     public ui: UiService,
     public dataService: DataService,
   ) {
+    console.log('constructor');
     if(this.dataService.categories){
       this.categories = this.dataService.categories;
       this.dataSource.data = this.categories;
@@ -59,7 +60,9 @@ export class TreeViewComponent  {
     else{
       this.dataService.categoriesChange.subscribe(
         (categories:ProductTree[]) => {
+          console.log('loaded');
           this.categories = categories;
+          console.log(this.categories);
           this.dataSource.data = this.categories;
           this.flatenCategories(this.categories);
         }
@@ -71,13 +74,23 @@ export class TreeViewComponent  {
   }
 
   private flatenCategories(categories:ProductTree[]){
+    console.log('flatenCategories')
+    let firstId = null;
     for(let i = 0; i < categories.length; i++){
+      if( ! firstId )firstId = categories[i].id;
       this.categoriesById[categories[i].id] = categories[i];
+
       if(categories[i].children.length){
         this.flatenCategories(categories[i].children);
       }
     }
+    if( ! this.categoriesById[this.selectedCategory] ){
+      this.selectedCategory = firstId;
+    }
     this.ready = true;
+    console.log(this.selectedCategory);
+    console.log(this.categoriesById);
+    console.log('ready')
   }
 
   public nodeClicked(node){
