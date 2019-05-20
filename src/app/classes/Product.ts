@@ -6,7 +6,7 @@ export class Product {
   public empty_display:number;
   public display_id:number;
   public SAP:string;
-  public product_tree:number=1;
+  public product_tree:number=102;
   public price:number;
   public topsign_id:number;
   public promotion_material_id:number;
