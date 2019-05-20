@@ -8,8 +8,9 @@ import { Router} from '@angular/router';
 import { Product } from '../../classes/Product';
 import { Article } from '../../classes/Article';
 import { TopSign } from '../../classes/TopSign';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { UserService} from '../../services/user.service';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'grohe-dpf-order2',
@@ -32,6 +33,8 @@ export class Order2Component{
     3:'bath'
   };
 
+  public uploader: FileUploader = new FileUploader({url: `${this.config.baseURL}uploadTopSign`, itemAlias: 'media'});
+  public custom_topsign:string = null;
 
   constructor(
     public order: OrderService,
@@ -90,6 +93,27 @@ export class Order2Component{
       );
       this.dataService.loadTopSigns();
     }
+
+    //this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+         let obj = JSON.parse(response);
+         console.log(response);
+         item.remove();
+         this.custom_topsign = obj.imagename;
+         console.log('COMPLETE!!');
+         console.log(this.custom_topsign);
+     };
+  }
+
+
+  public openFileBrowser(){
+    document.getElementById('fileinput').click();
+  }
+
+  public uploadAll(){
+    //this.uploader.setOptions({url:`${this.config.baseURL}uploadImage?type=${this.tab}`});
+    this.uploader.uploadAll();
+    //this.uploader.clearQueue();
   }
 
   public productsSearchWordChanged(searchword){

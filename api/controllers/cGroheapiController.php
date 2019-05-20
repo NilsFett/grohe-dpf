@@ -789,11 +789,62 @@ class cGroheapiController{
 							$image = new Imagick(cConfig::getInstance()->get('basepath')."uploads/".$sHash.".".$sExtension);
 
 							$image->resizeImage($newWidth, $newHeight, imagick::FILTER_CUBIC, 1, true);
-							//$image->cropThumbnailImage($newWidth,$newHeight);
 							$image->writeImage( cConfig::getInstance()->get('basepath')."uploads/thumbs/".$sHash.".".$sExtension );
 						}
 						$oImage->save();
 						echo json_encode(array('success'=>true));
+					}
+					else{
+						$aErrors[] = 'File '.$aImage['name'].' konnte nicht hochgeladen werden.';
+						echo json_encode(array('success'=>false,'errors'=>$aErrors));
+					}
+				}
+			}
+		}
+	}
+
+	public function uploadTopSign(){
+
+		if( count($_FILES) ){
+			foreach( $_FILES as $aImage ){
+				$aSize = getimagesize($aImage['tmp_name']);
+
+				if($aImage['type'] == 'application/octet-stream'){
+					if($aSize !== false){
+						$aFile['type'] = $aSize['mime'];
+					}
+				}
+				if($aImage['error'][0] == 0 && ( $aImage['type'] == 'image/jpeg' || $aImage['type'] == 'image/gif' || $aImage['type'] == 'image/png' || $aImage['type'] == 'application/pdf' )){
+
+				}
+				else if( $aImage['error'] == 0 ){
+					$aErrors [] = 'File '.$aImage['tmp_name'].' konnte hochgeladen werden.';
+					continue;
+				}
+
+				$sExtension = explode('/', $aSize['mime']);
+				$sExtension = $sExtension[1];
+				$sHash = sha1(file_get_contents($aImage['tmp_name']));
+
+				if(cImageModel::imageExists($sHash, 1)){
+					$aErrors[] = 'File '.$aImage['name'].' existiert bereits in diesem Ordner.';
+				}
+				else{
+					if(move_uploaded_file($aImage['tmp_name'], cConfig::getInstance()->get('basepath').'topsign/usertopsigns/'.$sHash.'.'.$sExtension)) {
+						$oImage = new cImageModel();
+						$oImage->set('title', $aImage['name']);
+						$oImage->set('path', $sHash.'.'.$sExtension);
+
+
+						$oImage->set('type', 4);
+
+
+						$oImage->save();
+
+						$order = cOrderModel::getCurrent();
+						$order->set('topsign_own',$oImage->get('id'));
+						$order->save();
+						echo json_encode(array('success'=>true,'imagename'=>$aImage['name']));
 					}
 					else{
 						$aErrors[] = 'File '.$aImage['name'].' konnte nicht hochgeladen werden.';
