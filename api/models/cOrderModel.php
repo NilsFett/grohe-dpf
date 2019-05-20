@@ -154,8 +154,18 @@ class cOrderModel extends cModel{
 		while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
 			$row['hex'] = $row['costcentrecode'].(toHexFive($row['id']));
-			$row['product'] = unserialize($row['product']);
-			$row['topsign'] = unserialize($row['topsign']);
+			if( ! empty($row['product'])){
+				$row['product'] = unserialize($row['product']);
+			}
+			else{
+				$row['product'] = '';
+			}
+			if( ! empty($row['topsign'])){
+				$row['topsign'] = unserialize($row['topsign']);
+			}
+			else{
+				$row['topsign'] = '';
+			}
 			$orders[] = $row;
 		}
 
@@ -175,8 +185,18 @@ class cOrderModel extends cModel{
 
 		while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 			$row['hex'] = $row['costcentrecode'].(toHexFive($row['id']));
-			$row['product'] = unserialize($row['product']);
-			$row['topsign'] = unserialize($row['topsign']);
+			if( ! empty($row['product'])){
+				$row['product'] = unserialize($row['product']);
+			}
+			else{
+				$row['product'] = '';
+			}
+			if( ! empty($row['topsign'])){
+				$row['topsign'] = unserialize($row['topsign']);
+			}
+			else{
+				$row['topsign'] = '';
+			}
 			$orders[] = $row;
 		}
 
