@@ -103,7 +103,7 @@
           <ul>
             <li *ngFor="let item of uploader.queue">UPLOADING : {{ item?.file?.name }}</li>
           </ul>
-
+          <div class="spacer20"></div>
             <!--
             <button style="float:none;" mat-raised-button type="button" class="btn btn-success btn-s"
                 (click)="uploadAll()" *ngIf="uploader.getNotUploadedItems().length">Upload
