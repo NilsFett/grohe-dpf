@@ -90,10 +90,25 @@
           </mat-form-field>
           <div class="spacer20"></div>
 
-          <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id]">
+          <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] && !custom_topsign">
             <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
           </mat-form-field>
+          <p *ngIf="custom_topsign"><b>You have uploaded a custon Top Sign: {{custom_topsign}}</b><span (click)="custom_topsign = null" class="cancel icon-cancel"></span></p>
           <div class="clear"></div>
+          <div class="spacer20"></div>
+          <div (click)="openFileBrowser();" class="fileinputframe">
+            <button style="float:none;" mat-raised-button type="button" class="btn btn-success btn-s">Upload custom Top Sign</button>
+            <input #fileInput  (click)="fileInput.value = null" (change)="uploadAll()" type="file" ng2FileSelect [uploader]="uploader" id="fileinput" />
+          </div>
+          <ul>
+            <li *ngFor="let item of uploader.queue">UPLOADING : {{ item?.file?.name }}</li>
+          </ul>
+
+            <!--
+            <button style="float:none;" mat-raised-button type="button" class="btn btn-success btn-s"
+                (click)="uploadAll()" *ngIf="uploader.getNotUploadedItems().length">Upload
+            </button>
+-->
           <table>
             <tr>
               <th>SAP-No.</th>
