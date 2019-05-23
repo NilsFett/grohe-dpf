@@ -75,6 +75,16 @@ class cMail{
 				$mail_body = $oMailView->render();
 				$recipient = array($data['user']->get('mail'), 'mail@nils-fett.de', 'Vanessa.Wittmer@grohe.com');
 			break;
+			case 'display_request':
+				$subject = 'Grohe - Display Factory Admin - New Display Request';
+				$oMailView->setTemplate($sTemplate);
+				$oMailView->assign('user', cSessionUser::getInstance());
+				$oMailView->assign('image', $data['image']);
+				$oMailView->assign('requestText', $data['requestText']);
+				$mail_body = $oMailView->render();
+				$recipient = array('mail@nils-fett.de', 'Vanessa.Wittmer@grohe.com');
+			break;
+
 			/*
 			case 'order_success':
 				$subject = 'Grohe - Display Factory - Your request has been submitted successfully';

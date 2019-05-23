@@ -7,13 +7,14 @@
     </ul>
     <div class="productSelect">
       <div class="inner product-choosen">
-        <div class="row warning message">
-            <h2>Your request has been submitted successfully. <br />Thank you very much!</h2>
+        <div *ngIf="!success" class="row warning message">
+            <h2>Please check your order and confirm.</h2>
         </div>
         <div class="spacer20"></div>
         <div class="spacer20"></div>
         <div class="span4" style="padding-right:20px;">
-          <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp.jpg" />
+
+          <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp_v1.jpg" />
         </div>
         <div class="span8">
           <p><span><b>DF-ID:</b></span><span> {{order.productChoosen.DFID}}</span></p>
@@ -127,7 +128,10 @@
                 </mat-form-field>
               </div>
             </div>
-            <button (click)="newOrder()" mat-raised-button>New Order</button>
+          </div>
+          <button *ngIf="!success" (click)="finishOrder()" mat-raised-button>CONFIRM</button>
+          <div *ngIf="success" class="row warning message">
+              <h2>Thank you! You will be redirect in 2 seconds.</h2>
           </div>
         </div>
 

@@ -479,8 +479,19 @@ export class DataService {
     );
   }
 
-  public finishOrder(){
+  public storeOrder(){
+    let data = {
+      product: this.order.productChoosen,
+      quantity: this.order.displayQuantity,
+      costcentre: this.order.costcentre,
+      sap: this.order.SAP,
+      pit: this.order.pit,
+      desired_date_delivery: this.order.desired_date_delivery
+    };
+    return this.http.post(`${this.config.baseURL}storeOrder`, data, {withCredentials: true});
+  }
 
+  public finishOrder(){
     let data = {
       product: this.order.productChoosen,
       quantity: this.order.displayQuantity,
@@ -492,5 +503,7 @@ export class DataService {
     return this.http.post(`${this.config.baseURL}finishOrder`, data, {withCredentials: true});
   }
 
-
+  public displayRequest(topsignImageId, requestText){
+    return this.http.post(`${this.config.baseURL}displayRequest`, {topsignImageId:topsignImageId,requestText:requestText}, {withCredentials: true});
+  }
 }
