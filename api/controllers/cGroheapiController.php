@@ -667,53 +667,68 @@ class cGroheapiController{
 		}
 		$this->getProducts();
 	}
-  public function finishOrder(){
-      $postData = json_decode(file_get_contents('php://input'),true);
-/*
-			$postData = json_decode('{"product":{"id":"901","title":"Universal Display low base","DFID":"DF1015","empty_display":"0","display_id":"190","SAP":"9800111F","product_tree":"102","topsign_id":"1","promotion_material_id":"0","price":"25.00","pallet_select":"1","pallet_disabled":"0","bypack_disabled":"0","topsign_upload_disabled":"0","notopsign_order_disabled":"0","deliverytime":"5","image":"","image_thumb":"","hide":"0","old_system":"0","base_display_template_id":"1","displayID":"190","path":{"id":"102","path":"¼ Pallet","pathbyid":"102"},"article":[{"position":"901","article_id":"615","units":"14","id":"615","articlenr":"34565001","title":"GRT 800 THM Brause AP + Brs.garn.","extra":"","type":"Shower","packaging":"carton","weight":"3025","height":"80","width":"150","depth":"980","topsign":"0","deleted":"0","old_system":"0"}],"display_parts":[{"id":"98001352","title":"Sockelblende niedrig (0340922-BL2-02 inkl. SK-Band","articlenr":"98001503","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001352","units":"1","length":"n/a","width":"565","height":"185","stock":"0","weight":"199","deleted":"0"},{"id":"98001358","title":"Stülper (0340922-HF1-01) - ohne Druck","articlenr":"98001540","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001358","units":"1","length":"386","width":"588","height":"1173","stock":"0","weight":"1722","deleted":"0"},{"id":"98001361","title":"Mantel (0340922-MN-02) - 1/1 - fbg. Flexo + Glanzl","articlenr":"98001508","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001361","units":"1","length":"365","width":"575","height":"1170","stock":"0","weight":"1524","deleted":"0"},{"id":"98001363","title":"1/4 wooden pallet","articlenr":"98001242","image":"19","hide":"","displaytype":"1_4_chep_pallet","base_display_template_id":"1","topsign_punch":"","instruction":"3","old_system":"0","display_id":"190","part_id":"98001363","units":"1","length":"200","width":"300","height":"n/a","stock":"0","weight":"2400","deleted":"0"}]},"quantity":1,"costcentre":"6","sap":"12345678","pit":"234","desired_date_delivery":""}',true);
-*/
+	
+	public function finishOrder(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$order = cOrderModel::getCurrent();
+		$order->set('status', 'ordered');
+		$order->save();
+		$oTopSignModel = new cTopSignModel($postData['product']['topsign_id']);
+		$displayPartsWeight = 0;
+		foreach ($postData['product']['display_parts']	as $part) {
+			$displayPartsWeight += $part['weight'] * $part['units'];
+		}
+		$articlesWeight = 0;
+		foreach ($postData['product']['article']	as $article) {
+			$articlesWeight += $article['weight'] * $article['units'];
+		}
+		$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
+		cMail::sentMail('new_order', array('user' => cSessionUser::getInstance(), 'order' => $order, 'product' => $postData,'costno' => $userCostno, 'displayPartsWeight' => 			$displayPartsWeight,'articlesWeight' => $articlesWeight, 'topsign' => $oTopSignModel));	
+		//cMail::sentMail('order_success', array('user' => cSessionUser::getInstance(), 'order' => $order));
 
 
-      $postData['product']['display_type'] = $postData['product']['path']['path'];
-      unset($postData['product']['path']);
-			$displayPartsWeight = 0;
-			foreach ($postData['product']['display_parts']	as $part) {
-				$displayPartsWeight += $part['weight'] * $part['units'];
-			}
-			$articlesWeight = 0;
-			foreach ($postData['product']['article']	as $article) {
-				$articlesWeight += $article['weight'] * $article['units'];
-			}
+		echo json_encode(array('success'=>true));
+	}
+	
+	public function storeOrder(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+
+		$postData['product']['display_type'] = $postData['product']['path']['path'];
+		unset($postData['product']['path']);
+		$displayPartsWeight = 0;
+		foreach ($postData['product']['display_parts']	as $part) {
+			$displayPartsWeight += $part['weight'] * $part['units'];
+		}
+		$articlesWeight = 0;
+		foreach ($postData['product']['article']	as $article) {
+			$articlesWeight += $article['weight'] * $article['units'];
+		}
 
 
-      $order = cOrderModel::getCurrent();
+		$order = cOrderModel::getCurrent();
 
-			$order->set('date', date('Y-m-d H:i:s'));
-			$order->set('costcentre', $postData['costcentre']);
-			$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
-
-
-			$order->set('costcentrecode', $userCostno->get('description'));
-			$order->set('promotion_title', $postData['pit']);
-			$order->set('SAP', $postData['sap']);
-			$order->set('display_quantity', $postData['quantity']);
-			$order->set('pallet_quantity', $postData['quantity']);
-			$order->set('status', 'ordered');
-			$order->set('product', serialize($postData['product']));
-
-			$oTopSignModel = new cTopSignModel($postData['product']['topsign_id']);
-
-			$order->set('topsign', serialize($oTopSignModel->getValuesArray()));
-			$desired_date_delivery = date('Y-m-d H:i:s',strtotime($postData['desired_date_delivery']));
-
-			$order->set('desired_date_delivery', $desired_date_delivery);
-			$order->save();
-
-			cMail::sentMail('new_order', array('user' => cSessionUser::getInstance(), 'order' => $order, 'product' => $postData,'costno' => $userCostno, 'displayPartsWeight' => $displayPartsWeight,'articlesWeight' => $articlesWeight, 'topsign' => $oTopSignModel));
-			//cMail::sentMail('order_success', array('user' => cSessionUser::getInstance(), 'order' => $order));
+		$order->set('date', date('Y-m-d H:i:s'));
+		$order->set('costcentre', $postData['costcentre']);
+		$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
 
 
-			echo json_encode(array('success'=>true));
+		$order->set('costcentrecode', $userCostno->get('description'));
+		$order->set('promotion_title', $postData['pit']);
+		$order->set('SAP', $postData['sap']);
+		$order->set('display_quantity', $postData['quantity']);
+		$order->set('pallet_quantity', $postData['quantity']);
+		$order->set('status', 'progress');
+		$order->set('product', serialize($postData['product']));
+
+		$oTopSignModel = new cTopSignModel($postData['product']['topsign_id']);
+
+		$order->set('topsign', serialize($oTopSignModel->getValuesArray()));
+		$desired_date_delivery = date('Y-m-d H:i:s',strtotime($postData['desired_date_delivery']));
+
+		$order->set('desired_date_delivery', $desired_date_delivery);
+		$order->save();
+
+		echo json_encode(array('success'=>true));
   }
 
 	public function uploadImage(){
@@ -844,7 +859,7 @@ class cGroheapiController{
 						$order = cOrderModel::getCurrent();
 						$order->set('topsign_own',$oImage->get('id'));
 						$order->save();
-						echo json_encode(array('success'=>true,'imagename'=>$aImage['name']));
+						echo json_encode(array('success'=>true,'imagename'=>$aImage['name'],'imageid'=>$oImage->get('id')));
 					}
 					else{
 						$aErrors[] = 'File '.$aImage['name'].' konnte nicht hochgeladen werden.';
@@ -983,5 +998,20 @@ class cGroheapiController{
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename="export.xls"');
 		$writer->save("php://output");
+	}
+	
+	public function displayRequest(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		if($postData['topsignImageId']){
+			$oImage = new cImageModel($postData['topsignImageId']);
+		}
+		else{
+			$oImage = false;
+		}
+		
+
+		
+		cMail::sentMail('display_request', array('image' => $oImage, 'requestText' => $postData['requestText']));
+
 	}
 }

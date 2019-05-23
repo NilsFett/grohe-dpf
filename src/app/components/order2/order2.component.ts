@@ -32,9 +32,13 @@ export class Order2Component{
     2:'kitchen',
     3:'bath'
   };
+  public topsignImageId:number = null;
 
   public uploader: FileUploader = new FileUploader({url: `${this.config.baseURL}uploadTopSign`, itemAlias: 'media'});
   public custom_topsign:string = null;
+  public requestText:string = '';
+
+  public displayRequestSuccess = false;
 
   constructor(
     public order: OrderService,
@@ -46,15 +50,11 @@ export class Order2Component{
   ) {
     if(this.dataService.productsWithArticlesAndProductPath){
       this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
-      console.log('this.productsWithArticlesAndProductPath');
-      console.log(this.productsWithArticlesAndProductPath);
     }
     else{
       this.dataService.productsWithArticlesAndProductPathChange.subscribe(
         (products:Product[]) => {
           this.productsWithArticlesAndProductPath = this.dataService.productsWithArticlesAndProductPath;
-          console.log('this.productsWithArticlesAndProductPath');
-          console.log(this.productsWithArticlesAndProductPath);
         }
       );
       this.dataService.loadProductsWithArticlesAndProductPath();
@@ -97,11 +97,9 @@ export class Order2Component{
     //this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
          let obj = JSON.parse(response);
-         console.log(response);
          item.remove();
          this.custom_topsign = obj.imagename;
-         console.log('COMPLETE!!');
-         console.log(this.custom_topsign);
+         this.topsignImageId = obj.imageid;
      };
   }
 
@@ -270,8 +268,8 @@ export class Order2Component{
     this.ui.doShowEditNew();
   }
 
-  public finishOrder(){
-    this.dataService.finishOrder().subscribe(
+  public storeOrder(){
+    this.dataService.storeOrder().subscribe(
       result => {
         this.router.navigate(['/order3']);
       }
@@ -284,5 +282,18 @@ export class Order2Component{
       this.order.displayQuantity = '1';
     }
   }
-  //.replace(/\D/g, '');
+
+  public displayRequest(){
+    this.dataService.displayRequest(this.topsignImageId, this.requestText).subscribe(
+      result => {
+
+        this.displayRequestSuccess = true;
+        setTimeout(()=>{
+          this.ui.doCloseEditNew();
+          this.displayRequestSuccess = false;
+        },2000);
+      }
+    );
+  }
+
 }

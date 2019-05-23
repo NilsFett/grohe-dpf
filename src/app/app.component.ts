@@ -38,6 +38,7 @@ export class AppComponent implements AfterViewInit{
             this.checkRedirect();
           }
         }
+        console.log('SCROLL TOP!!');
         this.main.nativeElement.scrollTop = 0;
         this.ui.reset();
       },

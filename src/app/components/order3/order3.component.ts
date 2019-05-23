@@ -14,6 +14,7 @@ import { Router} from '@angular/router';
 export class Order3Component {
   public topSigns:TopSign[] = [];
   public topSignsById = {};
+  public success:boolean = false;
   constructor(
     public order: OrderService,
     public user: UserService,
@@ -110,9 +111,21 @@ export class Order3Component {
     var total = this.getDisplayWeight() + this.getTopSignWeight() + this.getArticlesWeight();
     return Number((total).toFixed(2));
   }
-
+/*
   public newOrder(){
     this.order.clear();
     this.router.navigate(['/order2']);
+  }
+*/
+  public finishOrder(){
+    this.dataService.finishOrder().subscribe(
+      result => {
+        this.success = true;
+        setTimeout(()=>{
+          this.order.clear();
+          this.router.navigate(['/order2']);
+        },2000);
+      }
+    );
   }
 }

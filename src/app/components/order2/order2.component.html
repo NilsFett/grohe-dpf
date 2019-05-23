@@ -16,8 +16,6 @@
         <ul class="products">
           <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
             <li (click)="productSelected(product)" *ngIf="filterArticleList(product)" class="row">
-
-
               <div class="span2" style="padding-right:20px;">
                 <img style="width:100px;" src="{{config.baseURL}}uploads/dp{{product.base_display_template_id}}fwp_{{topSignsImageStringById[product.topsign_id]}}.jpg" />
               </div>
@@ -28,8 +26,6 @@
                 <p>Price:&nbsp;<b>{{product.price}} €</b></p>
                 <p><span>Display SAP No.:</span><span>&nbsp;<b>{{product.SAP}}</b></span></p>
                 <hr />
-
-
                 <p><span><b>Articles included:</b></span></p>
                 <ul>
                   <li *ngFor="let article of product.article">
@@ -37,8 +33,6 @@
                     {{article.title}} (Type : {{article.type}})</p>
                   </li>
                 </ul>
-
-
                 <ng-container *ngIf="product.promotion_material.length">
                   <hr />
                   <p><span><b>Promotion Material included:</b></span></p>
@@ -93,22 +87,8 @@
           <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] && !custom_topsign">
             <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
           </mat-form-field>
-          <p *ngIf="custom_topsign"><b>You have uploaded a custon Top Sign: {{custom_topsign}}</b><span (click)="custom_topsign = null" class="cancel icon-cancel"></span></p>
           <div class="clear"></div>
           <div class="spacer20"></div>
-          <div (click)="openFileBrowser();" class="fileinputframe">
-            <button style="float:none;" mat-raised-button type="button" class="btn btn-success btn-s">Upload custom Top Sign</button>
-            <input #fileInput  (click)="fileInput.value = null" (change)="uploadAll()" type="file" ng2FileSelect [uploader]="uploader" id="fileinput" />
-          </div>
-          <ul>
-            <li *ngFor="let item of uploader.queue">UPLOADING : {{ item?.file?.name }}</li>
-          </ul>
-          <div class="spacer20"></div>
-            <!--
-            <button style="float:none;" mat-raised-button type="button" class="btn btn-success btn-s"
-                (click)="uploadAll()" *ngIf="uploader.getNotUploadedItems().length">Upload
-            </button>
--->
           <table>
             <tr>
               <th>SAP-No.</th>
@@ -233,7 +213,7 @@
           </div>
         </div>
         <div *ngIf="order.SAP.length == 8 && order.pit.length > 0" class="row">
-          <button mat-raised-button (click)="finishOrder()">Finish order</button>
+          <button mat-raised-button (click)="storeOrder()">Finish order</button>
         </div>
         <div class="clear"></div>
       </div>
@@ -255,9 +235,21 @@
     <div class="spacer20"></div>
     <mat-form-field style="padding:20px;border:1px solid #3B85BE;">
       <mat-label style="color:#3B85BE;"><b>Please describe your Display Settings</b></mat-label>
-      <textarea matInput></textarea>
+      <textarea matInput [(ngModel)]="requestText"></textarea>
     </mat-form-field>
+    {{requestText}}
     <div class="spacer20"></div>
-    <button mat-raised-button>Send request</button>
+    <div (click)="openFileBrowser();" class="fileinputframe">
+      <button style="float:none;" mat-raised-button type="button" class="btn btn-success btn-s">Upload custom Top Sign</button>
+      <input #fileInput  (click)="fileInput.value = null" (change)="uploadAll()" type="file" ng2FileSelect [uploader]="uploader" id="fileinput" />
+    </div>
+    <ul>
+      <li *ngFor="let item of uploader.queue">UPLOADING : {{ item?.file?.name }}</li>
+    </ul>
+    <p *ngIf="custom_topsign"><b>You have uploaded a custon Top Sign: {{custom_topsign}}</b><span (click)="custom_topsign = null" class="cancel icon-cancel"></span></p>
+
+    <div class="spacer20"></div>
+    <button *ngIf="!displayRequestSuccess" mat-raised-button (click)="displayRequest()">Send request</button>
+    <h2 *ngIf="displayRequestSuccess">Request sended succesfully. Thank you!</h2>
   </div>
 </div>
