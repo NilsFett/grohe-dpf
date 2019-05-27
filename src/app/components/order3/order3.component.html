@@ -53,7 +53,7 @@
               <td>{{order.displayQuantity}}</td>
               <td>{{getDisplayWeight()}}&nbsp;kg</td>
             </tr>
-            <tr>
+            <tr *ngIf="topSignsById[order.productChoosen.topsign_id]">
               <td>{{topSignsById[order.productChoosen.topsign_id].articlenr}}</td>
               <td>{{topSignsById[order.productChoosen.topsign_id].title}}</td>
               <td>TopSign</td>

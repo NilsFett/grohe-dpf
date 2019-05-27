@@ -103,10 +103,31 @@
       <div class="container-flex">
         <form name="orderForm" [formGroup]="orderForm">
           <div class="spacer20"></div>
+
+          <p>Tracking:{{currentDataSet.tracking}} <span style="float:right;" [ngClass]="{'active':(currentDataSet.tracking == 1)}" class="icon-ok" (click)="trackingChange()">&nbsp;</span><p>
+          <div class="clear"></div>
+          <p>Cross Charge:{{currentDataSet.crosscharge}} <span style="float:right;" [ngClass]="{'active':(currentDataSet.crosscharge == 1)}" class="icon-ok" (click)="crosschargeChange()">&nbsp;</span><p>
+          <div class="clear"></div>
+          <p>Out: <span style="float:right;" [ngClass]="{'active':(currentDataSet.status == 'archive' || currentDataSet.status == 'storno')}" class="icon-ok" (click)="currentDataSet.status = 'archive';updateFormValues()">&nbsp;</span><p>
+          <div class="clear"></div>
+
+
           <mat-form-field>
-            <input type="text" formControlName="status" matInput name="status" #name placeholder="Status*">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status"  #status>
+              <mat-option value="ordered">ordered</mat-option>
+              <mat-option value="finished">finished</mat-option>
+              <mat-option value="topsign">topsign</mat-option>
+              <mat-option value="storno">storno</mat-option>
+              <mat-option value="archive">archive</mat-option>
+            </mat-select>
           </mat-form-field>
 
+          <mat-form-field>
+            <input matInput [matDatepicker]="mad" placeholder="MAD" disabled formControlName="mad" >
+            <mat-datepicker-toggle matSuffix [for]="mad"></mat-datepicker-toggle>
+            <mat-datepicker #mad disabled="false"></mat-datepicker>
+          </mat-form-field>
 
           <button (click)="save()" mat-raised-button>Save</button>
           <div class="spacer20"></div>
