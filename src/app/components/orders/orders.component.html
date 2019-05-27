@@ -77,7 +77,9 @@
               Display-Parts
             </th>
             <td mat-cell *matCellDef="let order">
+              <!--
               <p *ngFor="let parts of order.product.display_parts"> {{parts.units}} x {{parts.title}}</p>
+              -->
             </td>
           </ng-container>
           <ng-container matColumnDef="edit">
@@ -129,6 +131,25 @@
             <mat-datepicker #mad disabled="false"></mat-datepicker>
           </mat-form-field>
 
+          <mat-form-field>
+            <input matInput type="text" placeholder="Net Sales" formControlName="net_sales" >
+          </mat-form-field>
+
+          <p>OT-ID: {{currentDataSet.hex}}</p>
+          <p>Order Date: {{currentDataSet.date}}</p>
+          <p>Market: {{currentDataSet.costcentrecode}}</p>
+          <p>Cost center: {{currentDataSet.costcentre}}</p>
+          <p>Promotion Title: {{currentDataSet.promotion_title}}</p>
+          <mat-form-field>
+            <input matInput type="text" placeholder="Filled / Empty Displays" formControlName="filled_empty" >
+          </mat-form-field>
+          <p>Display: {{currentDataSet.product.SAP}}</p>
+          <p>SAP: {{currentDataSet.SAP}}</p>
+          <mat-form-field>
+            <input matInput type="text" placeholder="D / T" formControlName="dt" >
+          </mat-form-field>
+          <p>Quantity: {{currentDataSet.display_quantity}}</p>
+          <p>Topsign Article Nr.: {{currentDataSet.topsign.aticlnr}}</p>
           <button (click)="save()" mat-raised-button>Save</button>
           <div class="spacer20"></div>
 

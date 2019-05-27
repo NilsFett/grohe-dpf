@@ -29,7 +29,11 @@ export class OrdersComponent {
   dataSource: MatTableDataSource<Order>;
   orderForm = new FormGroup({
     status: new FormControl(''),
-    mad: new FormControl('')
+    mad: new FormControl(''),
+    net_sales: new FormControl(''),
+    filled_empty: new FormControl(''),
+    dt: new FormControl('')
+
   });
 
   constructor(

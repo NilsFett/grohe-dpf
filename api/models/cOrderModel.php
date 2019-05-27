@@ -166,6 +166,10 @@ class cOrderModel extends cModel{
 			else{
 				$row['topsign'] = '';
 			}
+			$date = date('d.m.Y', strtotime($row['date']));
+			$row['date'] = $date;
+
+			$row['market'] = $row['costcentrecode'].$row['costcentre'];
 			$orders[] = $row;
 		}
 
