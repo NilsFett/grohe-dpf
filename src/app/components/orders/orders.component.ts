@@ -28,7 +28,8 @@ export class OrdersComponent {
   columnsToDisplay = [ 'date', 'orderId',  'sap', 'pit', 'status', 'topsign', 'display',  'displayParts', 'edit'];
   dataSource: MatTableDataSource<Order>;
   orderForm = new FormGroup({
-    status: new FormControl('')
+    status: new FormControl(''),
+    mad: new FormControl('')
   });
 
   constructor(
@@ -59,6 +60,11 @@ export class OrdersComponent {
 
   ngOnInit() {
       this.dataSource.sort = this.sort;
+      this.orderForm.valueChanges.subscribe(val => {
+        console.log(val);
+
+        this.currentDataSet.status = val.status;
+    });
   }
 
   filterChanges() {
@@ -66,6 +72,28 @@ export class OrdersComponent {
     this.dataSource.data = this.orderFilter.transform(this.dataService.orders, this.filter);
   }
 
+  crosschargeChange($event){
+    console.log(this.currentDataSet.crosscharge);
+    if(this.currentDataSet.crosscharge == 1){
+      this.currentDataSet.crosscharge = 0;
+    }
+    else{
+        this.currentDataSet.crosscharge = 1;
+    }
+  }
+
+  trackingChange($event){
+    if(this.currentDataSet.tracking == 1){
+      this.currentDataSet.tracking = 0;
+    }
+    else{
+      this.currentDataSet.tracking = 1;
+    }
+  }
+
+  madChange($event){
+    console.log($event);
+  }
 
   public save() {
     if (this.orderForm.status == 'VALID') {
@@ -84,5 +112,9 @@ export class OrdersComponent {
     this.orderForm.patchValue({
       status: this.currentDataSet.status,
     });
+  }
+
+  public tracking():boolean{
+    return (this.currentDataSet.status == 'archive' || this.currentDataSet.status == 'storno')
   }
 }

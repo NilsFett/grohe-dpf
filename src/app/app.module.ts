@@ -35,7 +35,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTableModule } from '@angular/material/table';
-import { MatNativeDateModule, NativeDateAdapter, DateAdapter,  MatSortModule, MatPaginatorModule, MatIconModule } from '@angular/material';
+import { MatNativeDateModule, NativeDateAdapter, DateAdapter,  MatSortModule, MatPaginatorModule, MatIconModule, MAT_DATE_FORMATS } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule,MatCheckboxModule } from '@angular/material';
@@ -62,7 +62,32 @@ import { TopSignsFilter } from './pipes/topSigns/topSignsFilter';
 import { UserFilter } from './pipes/user/userFilter';
 import { OrderFilter } from './pipes/order/orderFilter';
 
+const MY_DATE_FORMATS = {
+   parse: {
+       dateInput: {month: 'numeric', year: 'numeric', day: 'numeric'}
+   },
+   display: {
+       // dateInput: { month: 'short', year: 'numeric', day: 'numeric' },
+       dateInput: 'input',
+       monthYearLabel: {year: 'numeric', month: 'short'},
+       dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
+       monthYearA11yLabel: {year: 'numeric', month: 'long'},
+   }
+};
 
+export class MyDateAdapter extends NativeDateAdapter {
+   format(date: Date, displayFormat: Object): string {
+       if (displayFormat == "input") {
+           let day = date.getDate();
+           let month = date.getMonth() + 1;
+           let year = date.getFullYear();
+           return day + '.' + month + '.' + year;
+       } else {
+           return date.toDateString();
+       }
+   }
+
+}
 
 @NgModule({
   declarations: [
@@ -127,7 +152,9 @@ import { OrderFilter } from './pipes/order/orderFilter';
     UserFilter,
     OrderFilter,
     TopSignsFilter,
-    OrderService
+    OrderService,
+    {provide: DateAdapter, useClass: MyDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS}
   ],
   bootstrap: [AppComponent]
 })

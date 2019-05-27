@@ -1,5 +1,9 @@
 export class Order {
   public id:number;
+  public crosscharge:number=0;
+  public tracking:number=0;
+  public mad:string;
+
   public hex:string;
   public date:string;
   public userid:number;
