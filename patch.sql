@@ -88,3 +88,12 @@ ALTER TABLE `t_display_parts` ADD `width` VARCHAR(20) NOT NULL AFTER `length`;
 ALTER TABLE `t_display_parts` ADD `height` VARCHAR(20) NOT NULL AFTER `width`;
 ALTER TABLE `t_topsign` ADD `type` INT NOT NULL AFTER `articlenr`;
 INSERT INTO `actions` (`id`, `enviroment_id`, `name`, `url`) VALUES (NULL, '1', 'changeTopSign', '/changeTopSign');
+ALTER TABLE `t_display_position` ADD `promotion_material_id` INT NOT NULL AFTER `topsign_id`;
+
+
+ALTER TABLE `t_order` ADD `tracking` TINYINT NOT NULL DEFAULT '0' AFTER `crosscharge`;
+
+UPDATE `t_order` SET `desired_date_delivery` = NULL WHERE `desired_date_delivery` = "0000-00-00 00:00:00"
+ALTER TABLE `t_order` ADD `net_sales` VARCHAR(255) NOT NULL AFTER `tracking`;
+ALTER TABLE `t_order` ADD `mad` VARCHAR(255) NOT NULL AFTER `net_sales`;
+ALTER TABLE `t_order` ADD `filled_empty` VARCHAR(255) NOT NULL AFTER `mad`;

@@ -129,8 +129,12 @@ export class DataService {
     });
   }
 
-  public loadOrders() {
-    this.http.get(`${this.config.baseURL}orders`, { withCredentials: true }).subscribe((orders: Order[]) => {
+  public loadOrders(from,until) {
+    let fromTimestamp = from.getTime();
+    let untilTimestamp = until.getTime();
+    this.http.get(`${this.config.baseURL}orders?from=${fromTimestamp}&until=${untilTimestamp}`, { withCredentials: true }).subscribe((orders: Order[]) => {
+      console.log('return');
+      console.log(orders);
       this.orders = orders;
       this.ordersChange.next(this.orders);
     });

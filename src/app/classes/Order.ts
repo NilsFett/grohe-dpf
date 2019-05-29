@@ -3,6 +3,9 @@ export class Order {
   public crosscharge:number=0;
   public tracking:number=0;
   public mad:string;
+  public net_sales:string;
+  public filled_empty:string;
+  public dt:string;
 
   public hex:string;
   public date:string;

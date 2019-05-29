@@ -22,7 +22,9 @@ export class OrdersComponent {
     orderId: '',
     sap: '',
     pit: '',
-    status: ''
+    status: '',
+    from:null,
+    until:null
   };
 
   columnsToDisplay = [ 'date', 'orderId',  'sap', 'pit', 'status', 'topsign', 'display',  'displayParts', 'edit'];
@@ -42,6 +44,9 @@ export class OrdersComponent {
     public dataService: DataService,
     private orderFilter: OrderFilter
   ) {
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    this.filter.from = new Date(y, m, 1);
+    this.filter.until = new Date(y, m + 1, 0);
     this.dataSource = new MatTableDataSource(this.orders);
     this.ui.view = 'admin';
     if (this.dataService.orders) {
@@ -52,14 +57,21 @@ export class OrdersComponent {
     else {
       this.dataService.ordersChange.subscribe(
         (orders: Order[]) => {
+          console.log('ORDERS CHANGE');
           this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
           this.dataSource.data = this.orders;
           this.dataSource.sort = this.sort;
         }
       );
-      this.dataService.loadOrders();
+      this.dataService.loadOrders(this.filter.from, this.filter.until);
     }
 
+
+  }
+
+  public loadOrders(){
+
+    this.dataService.loadOrders(this.filter.from, this.filter.until);
   }
 
   ngOnInit() {
@@ -68,6 +80,10 @@ export class OrdersComponent {
         console.log(val);
 
         this.currentDataSet.status = val.status;
+        this.currentDataSet.mad = val.mad;
+        this.currentDataSet.net_sales = val.net_sales;
+        this.currentDataSet.filled_empty = val.filled_empty;
+        this.currentDataSet.dt = val.dt;
     });
   }
 
@@ -102,7 +118,18 @@ export class OrdersComponent {
   public save() {
     if (this.orderForm.status == 'VALID') {
       this.currentDataSet.status = this.orderForm.controls['status'].value;
-      this.dataService.changeOrder(this.currentDataSet);
+      let saveObject = {
+        id:this.currentDataSet.id,
+        tracking:this.currentDataSet.tracking,
+        crosscharge:this.currentDataSet.crosscharge,
+        status:this.currentDataSet.status,
+        mad:this.currentDataSet.mad,
+        net_sales:this.currentDataSet.net_sales,
+        filled_empty:this.currentDataSet.filled_empty,
+        dt:this.currentDataSet.dt
+      }
+      console.log(saveObject);
+      this.dataService.changeOrder(saveObject);
     }
   }
 
