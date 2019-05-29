@@ -133,8 +133,7 @@ export class DataService {
     let fromTimestamp = from.getTime();
     let untilTimestamp = until.getTime();
     this.http.get(`${this.config.baseURL}orders?from=${fromTimestamp}&until=${untilTimestamp}`, { withCredentials: true }).subscribe((orders: Order[]) => {
-      console.log('return');
-      console.log(orders);
+
       this.orders = orders;
       this.ordersChange.next(this.orders);
     });
@@ -308,8 +307,10 @@ export class DataService {
     );
   }
 
-  public changeOrder(dataSet) {
-    this.http.post(`${this.config.baseURL}changeOrder`, dataSet, { withCredentials: true }).subscribe(
+  public changeOrder(dataSet,from,until) {
+    let fromTimestamp = from.getTime();
+    let untilTimestamp = until.getTime();
+    this.http.post(`${this.config.baseURL}changeOrder?from=${fromTimestamp}&until=${untilTimestamp}`, dataSet, { withCredentials: true }).subscribe(
       (orders: Order[]) => {
         this.orders = orders;
         this.ordersChange.next(this.orders);

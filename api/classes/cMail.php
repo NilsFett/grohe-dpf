@@ -42,7 +42,8 @@ class cMail{
 				$oMailView->assign('user', $data['user']);
 				$oMailView->assign('costno', $data['costno']);
 				$mail_body = $oMailView->render();
-				$recipient = array('mail@nils-fett.de', 'vanessa.wittmer@grohe.com');
+//				$recipient = array('Vanessa.Wittmer@grohe.com');
+				$recipient = array('mail@nils-fett.de');
 
 			break;
 			case 'account_released':
@@ -72,8 +73,7 @@ class cMail{
 				$oMailView->assign('displayPartsWeight', $data['displayPartsWeight']);
 				$oMailView->assign('articlesWeight', $data['articlesWeight']);
 				$mail_body = $oMailView->render();
-				$recipient = array($data['user']->get('mail'), 'mail@nils-fett.de', 'Vanessa.Wittmer@grohe.com', 'lukas.knuewe@grohe.com', 'displayfactory.TSL5@grohe.com', 'Joerg.Gliesmeier@grohe.com', 'Holger.seifert@grohe.com');
-
+				$recipient = array($data['user']->get('mail'), 'mail@nils-fett.de', 'Vanessa.Wittmer@grohe.com');
 			break;
 			case 'display_request':
 				$subject = 'Grohe - Display Factory Admin - New Display Request';
