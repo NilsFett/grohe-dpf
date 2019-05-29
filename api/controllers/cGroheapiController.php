@@ -667,7 +667,7 @@ class cGroheapiController{
 		}
 		$this->getProducts();
 	}
-	
+
 	public function finishOrder(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$order = cOrderModel::getCurrent();
@@ -683,13 +683,13 @@ class cGroheapiController{
 			$articlesWeight += $article['weight'] * $article['units'];
 		}
 		$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
-		cMail::sentMail('new_order', array('user' => cSessionUser::getInstance(), 'order' => $order, 'product' => $postData,'costno' => $userCostno, 'displayPartsWeight' => 			$displayPartsWeight,'articlesWeight' => $articlesWeight, 'topsign' => $oTopSignModel));	
+		cMail::sentMail('new_order', array('user' => cSessionUser::getInstance(), 'order' => $order, 'product' => $postData,'costno' => $userCostno, 'displayPartsWeight' => 			$displayPartsWeight,'articlesWeight' => $articlesWeight, 'topsign' => $oTopSignModel));
 		//cMail::sentMail('order_success', array('user' => cSessionUser::getInstance(), 'order' => $order));
 
 
 		echo json_encode(array('success'=>true));
 	}
-	
+
 	public function storeOrder(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 
@@ -873,7 +873,9 @@ class cGroheapiController{
 	public function orders(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			if(cSessionUser::getInstance()->get('usertype') == 'admin'){
-				echo json_encode(cOrderModel::getAll());
+				$from = $_GET['from'] / 1000;
+				$until = $_GET['until'] / 1000;
+				echo json_encode(cOrderModel::getAllOrders($from, $until));
 			}
 			else{
 				echo json_encode(cOrderModel::getAllByUserId(cSessionUser::getInstance()->get('id')));
@@ -881,9 +883,8 @@ class cGroheapiController{
 
 		}
 	}
-	
-	public function orderExport(){
 
+	public function orderExport(){
 		$spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
 		$sheet->setCellValue('A1', 'Tracking');
@@ -891,9 +892,9 @@ class cGroheapiController{
 		$sheet->setCellValue('C1', 'status');
 		$sheet->setCellValue('D1', 'MAD');
 		$sheet->setCellValue('E1', 'Net sales');
-		$sheet->setCellValue('F1', 'DF ID');
+		$sheet->setCellValue('F1', 'OT ID');
 		$sheet->setCellValue('G1', 'Order Date');
-		$sheet->setCellValue('H1', 'OT ID');
+		$sheet->setCellValue('H1', 'DF ID');
 		$sheet->setCellValue('I1', 'Market');
 		$sheet->setCellValue('J1', 'SAP');
 		$sheet->setCellValue('K1', 'Cost Center');
@@ -903,92 +904,80 @@ class cGroheapiController{
 		$sheet->setCellValue('O1', 'D/T');
 		$sheet->setCellValue('P1', 'Quantity');
 		$sheet->setCellValue('Q1', 'Topsign');
-		$sheet->setCellValue('R1', 'Pallets');
-		$sheet->setCellValue('S1', 'Articles:');
-		/*
-		$sheet->setCellValue('T1', 'Article Description');
-		$sheet->setCellValue('U1', 'Article Amount');
-		*/
+		$sheet->setCellValue('R1', 'Article:');
 
 		$articlesById = array();
 		$displayPartsById = array();
-		$cellCounter = 20;
-		foreach( cOrderModel::getAll() as $order){			
-			
-			
-			if( ! isset($order['product']['article']))continue;
-			
-			foreach( $order['product']['article'] as $article){
-				if( ! isset ( $articlesById[$article['article_id']] ) ){
-					$articlesById[$article['article_id']] = $cellCounter;
+		$cellCounter = 19;
 
-					$cellCounter++;
-					$cellCounter++;
-				}
-			}
-		}
 
 		$cellCounter++;
-		foreach( cOrderModel::getAll() as $order){			
+        if(isset($_GET['from'])){
+            $from = $_GET['from'] / 1000;
+            $until = $_GET['until'] / 1000;
+        }
+        else{
+            $from = false;
+            $until = false;
+        }
 
-			
+        $orders = cOrderModel::getAllOrders($from,$until);
+
+		foreach( $orders as $order){
 			if( ! isset($order['product']['article']))continue;
-			
-
 			foreach( $order['product']['display_parts'] as $displayPart){
 				if( ! isset ( $displayPartsById[$displayPart['id']] ) ){
 					$displayPartsById[$displayPart['id']] = $cellCounter;
 					$cellCounter++;
-					$cellCounter++;
 				}
 			}
 		}
-		
+
 		$rowCounter = 2;
 		$first = true;
-		foreach( cOrderModel::getAll() as $order){
-			
+		foreach( $orders as $order){
+
 			if( ! isset($order['product']['article']))continue;
-			
-			$sheet->setCellValueByColumnAndRow(1, $rowCounter, $order['hex']);
-			$sheet->setCellValueByColumnAndRow(2, $rowCounter, '???');
+
+			$sheet->setCellValueByColumnAndRow(1, $rowCounter, $order['tracking']);
+			$sheet->setCellValueByColumnAndRow(2, $rowCounter, $order['crosscharge']);
 			$sheet->setCellValueByColumnAndRow(3, $rowCounter, $order['status']);
-			$sheet->setCellValueByColumnAndRow(4, $rowCounter, '???');
-			$sheet->setCellValueByColumnAndRow(5, $rowCounter, '???');
-			$sheet->setCellValueByColumnAndRow(6, $rowCounter, $order['product']['DFID']);
+			$sheet->setCellValueByColumnAndRow(4, $rowCounter, $order['mad']);
+			$sheet->setCellValueByColumnAndRow(5, $rowCounter, $order['net_sales']);
+			$sheet->setCellValueByColumnAndRow(6, $rowCounter, $order['hex']);
 			$sheet->setCellValueByColumnAndRow(7, $rowCounter, $order['date']);
-			$sheet->setCellValueByColumnAndRow(8, $rowCounter, '???');
-			$sheet->setCellValueByColumnAndRow(9, $rowCounter, '???');
-			$sheet->setCellValueByColumnAndRow(10, $rowCounter, $order['product']['SAP']);
-			$sheet->setCellValueByColumnAndRow(11, $rowCounter, $order['costcentrecode']);
+			$sheet->setCellValueByColumnAndRow(8, $rowCounter, $order['product']['DFID']);
+			$sheet->setCellValueByColumnAndRow(9, $rowCounter, $order['costcentrecode']);
+			$sheet->setCellValueByColumnAndRow(10, $rowCounter, $order['SAP']);
+			$sheet->setCellValueByColumnAndRow(11, $rowCounter, $order['costcentre']);
 			$sheet->setCellValueByColumnAndRow(12, $rowCounter, $order['promotion_title']);
-			$sheet->setCellValueByColumnAndRow(13, $rowCounter, '???');
-			$sheet->setCellValueByColumnAndRow(14, $rowCounter, $order['product']['title']);
-			$sheet->setCellValueByColumnAndRow(15, $rowCounter, '???');
+			$sheet->setCellValueByColumnAndRow(13, $rowCounter, $order['filled_empty']);
+			$sheet->setCellValueByColumnAndRow(14, $rowCounter, $order['product']['SAP']);
+			$sheet->setCellValueByColumnAndRow(15, $rowCounter, $order['delivery']);
 			$sheet->setCellValueByColumnAndRow(16, $rowCounter, $order['display_quantity']);
 			if( isset( $order['topsign']['title'] ) ){
-				$sheet->setCellValueByColumnAndRow(17, $rowCounter, $order['topsign']['title']);
+				$sheet->setCellValueByColumnAndRow(17, $rowCounter, $order['topsign']['articlenr']);
 			}
-			$sheet->setCellValueByColumnAndRow(18, $rowCounter, '???');
 
-			
+
+			$text = '';
 			foreach( $order['product']['article'] as $article){
-				$sheet->setCellValueByColumnAndRow($articlesById[$article['article_id']], 1, $article['articlenr']);
-				$sheet->setCellValueByColumnAndRow($articlesById[$article['article_id']], $rowCounter, $article['title']);
-				$sheet->setCellValueByColumnAndRow($articlesById[$article['article_id']]+1, $rowCounter, $article['units']);
+				$text .= $article['articlenr'].' x '.$article['units'].'
+';
 			}
-			
+
+			$sheet->setCellValueByColumnAndRow(18, $rowCounter, $text);
+
 			foreach( $order['product']['display_parts'] as $displayPart){
 				if($first){
 					$sheet->setCellValueByColumnAndRow($displayPartsById[$displayPart['id']]-1,1, 'Display Parts');
 					$first = false;
 				}
-				
+
 				$sheet->setCellValueByColumnAndRow($displayPartsById[$displayPart['id']], 1, $displayPart['articlenr']);
-				$sheet->setCellValueByColumnAndRow($displayPartsById[$displayPart['id']], $rowCounter, $displayPart['title']);
 				$sheet->setCellValueByColumnAndRow($displayPartsById[$displayPart['id']]+1, $rowCounter, $displayPart['units']);
 			}
-		
+
 			$rowCounter++;
 		}
 
@@ -999,7 +988,7 @@ class cGroheapiController{
 		header('Content-Disposition: attachment; filename="export.xls"');
 		$writer->save("php://output");
 	}
-	
+
 	public function displayRequest(){
 		$postData = json_decode(file_get_contents('php://input'),true);
 		if($postData['topsignImageId']){
@@ -1008,10 +997,24 @@ class cGroheapiController{
 		else{
 			$oImage = false;
 		}
-		
-
-		
 		cMail::sentMail('display_request', array('image' => $oImage, 'requestText' => $postData['requestText']));
+	}
 
+	public function changeOrder(){
+		$postData = json_decode(file_get_contents('php://input'),true);
+		$postData['mad'] = date('Y-m-d H:m:s', strtotime($postData['mad']));
+
+		$cOrderModel = new cOrderModel($postData['id']);
+
+		$cOrderModel->set('crosscharge', $postData['crosscharge']);
+		$cOrderModel->set('delivery', $postData['dt']);
+		$cOrderModel->set('filled_empty', $postData['filled_empty']);
+		$cOrderModel->set('mad', $postData['mad']);
+		$cOrderModel->set('net_sales', $postData['net_sales']);
+		$cOrderModel->set('status', $postData['status']);
+		$cOrderModel->set('tracking', $postData['tracking']);
+		$cOrderModel->save();
+
+		$this->orders();
 	}
 }

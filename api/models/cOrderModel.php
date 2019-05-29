@@ -20,6 +20,14 @@ class cOrderModel extends cModel{
 			'value' => false,
 			'type' => 'int'
 		),
+		'tracking' => array(
+			'value' => false,
+			'type' => 'int'
+		),
+		'crosscharge' => array(
+			'value' => false,
+			'type' => 'int'
+		),
 		'date' => array(
 			'value' => false,
 			'type' => 'datetime'
@@ -84,6 +92,19 @@ class cOrderModel extends cModel{
 			'value' => false,
 			'type' => 'datetime'
 		),
+		'mad' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+		'net_sales' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+		'filled_empty' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+
 		'old_system' => array(
 			'value' => false,
 			'type' => 'int'
@@ -141,10 +162,13 @@ class cOrderModel extends cModel{
 		return $products;
 	}
 
-	public static function getAll(){
+	public static function getAllOrders($from, $until){
+		$from = date('Y-m-d H:m:s', $from);
+		$until = date('Y-m-d H:m:s', $until);
 		$query = '	SELECT *
 								FROM `'.self::$sTable.'`
-								WHERE `old_system` = 0';
+								WHERE `date` > "'.$from.'"
+								AND `date` < "'.$until.'"';
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
@@ -168,8 +192,9 @@ class cOrderModel extends cModel{
 			}
 			$date = date('d.m.Y', strtotime($row['date']));
 			$row['date'] = $date;
-
-			$row['market'] = $row['costcentrecode'].$row['costcentre'];
+			$oCostNo = new cCostNoModel($row['costcentre']);
+			$row['market'] = $row['costcentrecode'].$oCostNo->get('costno');
+			$row['cosno'] = $oCostNo->get('costno');
 			$orders[] = $row;
 		}
 
