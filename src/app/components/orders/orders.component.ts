@@ -18,11 +18,10 @@ export class OrdersComponent {
   currentDataSet: Order = null;
   orders: Order[] = [];
   filter = {
-
     orderId: '',
     sap: '',
     pit: '',
-    status: '',
+    status: [],
     from:null,
     until:null
   };
@@ -47,6 +46,7 @@ export class OrdersComponent {
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
     this.filter.from = new Date(y, m, 1);
     this.filter.until = new Date(y, m + 1, 0);
+    this.filter.status = ['ordered'];
     this.dataSource = new MatTableDataSource(this.orders);
     this.ui.view = 'admin';
     if (this.dataService.orders) {
@@ -57,7 +57,6 @@ export class OrdersComponent {
     else {
       this.dataService.ordersChange.subscribe(
         (orders: Order[]) => {
-          console.log('ORDERS CHANGE');
           this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
           this.dataSource.data = this.orders;
           this.dataSource.sort = this.sort;
@@ -77,8 +76,6 @@ export class OrdersComponent {
   ngOnInit() {
       this.dataSource.sort = this.sort;
       this.orderForm.valueChanges.subscribe(val => {
-        console.log(val);
-
         this.currentDataSet.status = val.status;
         this.currentDataSet.mad = val.mad;
         this.currentDataSet.net_sales = val.net_sales;
@@ -88,7 +85,8 @@ export class OrdersComponent {
   }
 
   filterChanges() {
-    this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
+    console.log(this.filter);
+    //this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
     this.dataSource.data = this.orderFilter.transform(this.dataService.orders, this.filter);
   }
 
@@ -129,7 +127,7 @@ export class OrdersComponent {
         dt:this.currentDataSet.dt
       }
       console.log(saveObject);
-      this.dataService.changeOrder(saveObject);
+      this.dataService.changeOrder(saveObject, this.filter.from, this.filter.until);
     }
   }
 

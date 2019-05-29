@@ -163,12 +163,19 @@ class cOrderModel extends cModel{
 	}
 
 	public static function getAllOrders($from, $until){
+        if($from && $until){
 		$from = date('Y-m-d H:m:s', $from);
 		$until = date('Y-m-d H:m:s', $until);
 		$query = '	SELECT *
 								FROM `'.self::$sTable.'`
 								WHERE `date` > "'.$from.'"
 								AND `date` < "'.$until.'"';
+        }
+        else{
+            $query = '    SELECT *
+            FROM `'.self::$sTable.'`
+            WHERE `old_system` = 0';
+        }
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
