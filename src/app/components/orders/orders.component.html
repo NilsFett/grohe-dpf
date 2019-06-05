@@ -4,7 +4,7 @@
       <div class="spacer20"></div>
       <table>
         <tr>
-          <td><a target="_blank" href="https://grohe.hoehne-media.de/api/orderExport?from={{filter.from.getTime()}}">EXPORT</a><td>
+          <td><a target="_blank" href="https://grohe.hoehne-media.de/api/orderExport?from={{filter.from.getTime()}}&until={{filter.until.getTime()}}">EXPORT</a><td>
           <td>
             <i class="fa icon-search"></i><input placeholder="Order-ID" (ngModelChange)="filter.orderId=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.orderId" class="filter" type="text"  name="orderIdFilter" >
           </td>
