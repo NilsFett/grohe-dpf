@@ -142,6 +142,7 @@ export class OrdersComponent {
   private updateFormValues(){
     this.orderForm.patchValue({
       status: this.currentDataSet.status,
+      net_sales:this.currentDataSet.net_sales
     });
   }
 

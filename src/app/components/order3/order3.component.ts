@@ -15,6 +15,11 @@ export class Order3Component {
   public topSigns:TopSign[] = [];
   public topSignsById = {};
   public success:boolean = false;
+  public topSignsImageStringById = {
+    1:'shower',
+    2:'kitchen',
+    3:'bath'
+  };
   constructor(
     public order: OrderService,
     public user: UserService,
