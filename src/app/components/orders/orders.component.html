@@ -4,7 +4,7 @@
       <div class="spacer20"></div>
       <table>
         <tr>
-          <td><a target="_blank" href="https://grohe.hoehne-media.de/api/orderExport?from={{filter.from.getTime()}}">EXPORT</a><td>
+          <td><a target="_blank" href="https://grohe.hoehne-media.de/api/orderExport?from={{filter.from.getTime()}}&until={{filter.until.getTime()}}&status={{statusGetParams}}">EXPORT</a><td>
           <td>
             <i class="fa icon-search"></i><input placeholder="Order-ID" (ngModelChange)="filter.orderId=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.orderId" class="filter" type="text"  name="orderIdFilter" >
           </td>
@@ -16,7 +16,7 @@
           </td>
           <td>
 
-            <mat-select multiple placeholder="status" style="width:100px;" (ngModelChange)="filter.status=$event;filterChanges();" value="ordered" [(ngModel)]="filter.status">
+            <mat-select multiple placeholder="status" style="width:100px;" (ngModelChange)="filter.status=$event;filterChanges();" [(ngModel)]="filter.status">
               <mat-option selected value="ordered">ordered</mat-option>
               <mat-option value="progress">progress</mat-option>
               <mat-option value="finished">finished</mat-option>
@@ -43,7 +43,7 @@
       </table>
 
         <table mat-table matSort [dataSource]="dataSource" >
-          <ng-container matColumnDef="date">
+          <ng-container matColumnDef="timestamp">
               <th mat-sort-header mat-header-cell *matHeaderCellDef>
                 Order-Date
               </th>
