@@ -9,6 +9,7 @@ export class Order {
 
   public hex:string;
   public date:string;
+  public timestamp:number;
   public userid:number;
   public costcentre:string;
   public costcentrecode:string;

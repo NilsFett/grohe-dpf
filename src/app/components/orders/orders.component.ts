@@ -25,8 +25,9 @@ export class OrdersComponent {
     from:null,
     until:null
   };
+  public statusGetParams:string = '';
 
-  columnsToDisplay = [ 'date', 'orderId',  'sap', 'pit', 'status', 'topsign', 'display',  'displayParts', 'edit'];
+  columnsToDisplay = [ 'timestamp', 'orderId',  'sap', 'pit', 'status', 'topsign', 'display',  'displayParts', 'edit'];
   dataSource: MatTableDataSource<Order>;
   orderForm = new FormGroup({
     status: new FormControl(''),
@@ -64,8 +65,6 @@ export class OrdersComponent {
       );
       this.dataService.loadOrders(this.filter.from, this.filter.until);
     }
-
-
   }
 
   public loadOrders(){
@@ -88,6 +87,9 @@ export class OrdersComponent {
     console.log(this.filter);
     //this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
     this.dataSource.data = this.orderFilter.transform(this.dataService.orders, this.filter);
+    let arrStr = encodeURIComponent(JSON.stringify(this.filter.status));
+    this.statusGetParams =  arrStr;
+
   }
 
   crosschargeChange($event){
