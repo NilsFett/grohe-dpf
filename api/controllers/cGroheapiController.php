@@ -676,11 +676,11 @@ class cGroheapiController{
 		$oTopSignModel = new cTopSignModel($postData['product']['topsign_id']);
 		$displayPartsWeight = 0;
 		foreach ($postData['product']['display_parts']	as $part) {
-			$displayPartsWeight += $part['weight'] * $part['units'];
+			$displayPartsWeight += $postData['product']['quantity'] * $part['weight'] * $part['units'];
 		}
 		$articlesWeight = 0;
 		foreach ($postData['product']['article']	as $article) {
-			$articlesWeight += $article['weight'] * $article['units'];
+			$articlesWeight += $postData['product']['quantity'] * $article['weight'] * $article['units'];
 		}
 		$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
 		cMail::sentMail('new_order', array('user' => cSessionUser::getInstance(), 'order' => $order, 'product' => $postData,'costno' => $userCostno, 'displayPartsWeight' => 			$displayPartsWeight,'articlesWeight' => $articlesWeight, 'topsign' => $oTopSignModel));
