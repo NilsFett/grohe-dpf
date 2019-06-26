@@ -162,7 +162,7 @@ class cOrderModel extends cModel{
 		return $products;
 	}
 
-	public static function getAllOrders($from, $until){
+	public static function getAllOrders($from, $until, $status=''){
         if($from && $until){
 		$from = date('Y-m-d H:m:s', $from);
 		$until = date('Y-m-d H:m:s', $until);
@@ -170,6 +170,7 @@ class cOrderModel extends cModel{
 								FROM `'.self::$sTable.'`
 								WHERE `date` > "'.$from.'"
 								AND `date` < "'.$until.'"';
+
         }
         else{
             $query = '    SELECT *
@@ -199,6 +200,7 @@ class cOrderModel extends cModel{
 			}
 			$date = date('d.m.Y', strtotime($row['date']));
 			$row['date'] = $date;
+            $row['timestamp'] = strtotime($row['date']);
 			$oCostNo = new cCostNoModel($row['costcentre']);
 			$row['market'] = $row['costcentrecode'].$oCostNo->get('costno');
 			$row['cosno'] = $oCostNo->get('costno');

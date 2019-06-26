@@ -116,7 +116,7 @@
               <td>{{article.articlenr}}</td>
               <td>{{article.title}}</td>
               <td>Article</td>
-              <td>{{article.units}}</td>
+              <td>{{article.units * order.displayQuantity}}</td>
               <td>{{getArticleWeight(article)}}&nbsp;kg</td>
             </tr>
             <tr>
@@ -206,7 +206,7 @@
               <div class="inner">
                 <mat-form-field>
                   <mat-hint *ngIf="order.SAP.length != 8" class="warning">Please fill to continue!</mat-hint>
-                  <input type="text" matInput name="SAP" #SAP placeholder="SAP Product Order Number" [(ngModel)]="order.SAP">
+                  <input (keyup)="sapNumberChange($event)" type="text" matInput name="SAP" #SAP placeholder="SAP Product Order Number" [(ngModel)]="order.SAP">
 
                 </mat-form-field>
               </div>
