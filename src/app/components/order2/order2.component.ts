@@ -296,4 +296,10 @@ export class Order2Component{
     );
   }
 
+  public sapNumberChange(event){
+    console.log(event);
+    console.log(this.order.SAP);
+    this.order.SAP = this.order.SAP.replace(/\D/g,'');
+  }
+
 }

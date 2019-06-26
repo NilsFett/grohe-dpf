@@ -5,6 +5,7 @@
       <table>
         <tr>
           <td><a target="_blank" href="https://grohe.hoehne-media.de/api/orderExport?from={{filter.from.getTime()}}&until={{filter.until.getTime()}}&status={{statusGetParams}}">EXPORT</a><td>
+
           <td>
             <i class="fa icon-search"></i><input placeholder="Order-ID" (ngModelChange)="filter.orderId=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.orderId" class="filter" type="text"  name="orderIdFilter" >
           </td>
@@ -34,7 +35,7 @@
           </td>
           <td>
 
-              <input matInput [matDatepicker]="until" placeholder="Date until" disabled (ngModelChange)="filter.from = $event;loadOrders()"  [(ngModel)]="this.filter.until">
+              <input matInput [matDatepicker]="until" placeholder="Date until" disabled (ngModelChange)="filter.until = $event;loadOrders()"  [(ngModel)]="this.filter.until">
               <mat-datepicker-toggle matSuffix [for]="until"></mat-datepicker-toggle>
               <mat-datepicker #until disabled="false"></mat-datepicker>
 
