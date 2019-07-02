@@ -129,6 +129,21 @@ export abstract class displayTemplates {
       articlenr:98001540,
       units:1
     }]
+  },{
+
+    display:(new Display ({
+        id:null,
+        title:'leeres Display',
+        articlenr:'',
+        image:0,
+        hide:false,
+        displaytype:"1_4_chep_pallet",
+        base_display_template_id:0,
+        topsign_punch:'',
+        instruction:3
+      })
+    ),
+    parts:[]
   }
   ];
 }

@@ -6,12 +6,12 @@ Content-Transfer-Encoding: 8bit
 
 Order Information:
 
-Display-Factory-ID: <?php echo ($this->aData['costno']->get('description').toHexFive($this->aData['order']->get('id'))); ?>
 DF-ID: <?php echo $this->aData['product']['product']['DFID']; ?>
-SAP-No.: <?php echo $this->aData['product']['product']['SAP']; ?>
+Display-Factory-ID: <?php echo ($this->aData['costno']->get('description').toHexFive($this->aData['order']->get('id'))); ?>
+SAP-No.: <?php echo $this->aData['SAP']; ?>
 Order date:<?php echo $this->aData['order']->get('date'); ?>
 Promotion Title: <?php echo $this->aData['order']->get('promotion_title'); ?>
-Cost Centre: <?php echo $this->aData['costno']->get('costno'); ?>
+Cost Centre: <?php echo $this->aData['costno']->get('costno'); ?> <?php echo $this->aData['costno']->get('description'); ?>
 Desired Date of Delivery:	<?php if( ! $this->aData['order']->get('desired_date_delivery') || $this->aData['order']->get('desired_date_delivery') == '0000-00-00 00:00:00' || $this->aData['order']->get('desired_date_delivery') == '1970-01-01 00:00:00' ): ?>no information<?php else: ?><?php echo $this->aData['order']->get('desired_date_delivery'); ?><?php endif; ?>
 
 Buyer Information:</h3>
@@ -36,9 +36,6 @@ Quantity: <?php echo $this->aData['product']['quantity']; ?>
 Weight: <?php echo ( $this->aData['displayPartsWeight'] * $this->aData['product']['quantity'] / 1000 ); ?> kg
 <?php if( $this->aData['product']['product']['topsign_id'] ): ?>
 	<?php if( $this->aData['product']['product']['topsign_id'] == -1 ): ?>
-SAP-No.: 98001180
-Title: Own TopSign
-Type: TopSign
 Quantity: <?php echo $this->aData['product']['quantity']; ?>
 Weight: <?php echo ( $this->aData['product']['quantity'] * 180 / 1000 ); ?> kg
 	<?php else: ?>
@@ -90,18 +87,16 @@ Content-Transfer-Encoding: 8bit
 				<h3>Order Information:</h3>
 				<table width="100%"  border="1" cellspacing="0" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000">
 						<tr>
+							<td width="30%"><b>DF-ID:</b></td>
+							<td><?php echo $this->aData['product']['product']['DFID']; ?></td>
+						</tr>
+						<tr>
 							<td width="30%"><b>Display-Factory-ID:</b></td>
-
 							<td><?php echo ($this->aData['costno']->get('description').toHexFive($this->aData['order']->get('id'))); ?></td>
 						</tr>
 						<tr>
-							<td width="30%"><b>DF-ID:</b></td>
-							<td><?php echo $this->aData['product']['product']['DFID']; ?></td>
-
-						</tr>
-						<tr>
 							<td width="30%"><b>SAP-No.:</b></td>
-							<td><?php echo $this->aData['product']['product']['SAP']; ?></td>
+							<td><?php echo $this->aData['SAP']; ?></td>
 						</tr>
 						<tr>
 							<td width="30%"><b>Order date:</b></td>
@@ -113,12 +108,12 @@ Content-Transfer-Encoding: 8bit
 						</tr>
 						<tr>
 							<td><b>Cost Centre:</b></td>
-							<td><?php echo $this->aData['costno']->get('costno'); ?></td>
+							<td><?php echo $this->aData['costno']->get('costno'); ?> <?php echo $this->aData['costno']->get('description'); ?></td>
 						</tr>
 						<tr>
 							<td><b>Desired Date of Delivery:</b></td>
 							<?php if( ! $this->aData['order']->get('desired_date_delivery') || $this->aData['order']->get('desired_date_delivery') == '0000-00-00 00:00:00' || $this->aData['order']->get('desired_date_delivery') == '1970-01-01 00:00:00' ): ?>
-								<td><i>no information</i>/td>
+								<td><i>no information</i></td>
 							<?php else: ?>
 							<td><?php echo $this->aData['order']->get('desired_date_delivery'); ?></td>
 						<?php endif; ?>
