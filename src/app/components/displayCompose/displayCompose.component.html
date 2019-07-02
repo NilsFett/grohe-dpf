@@ -100,7 +100,7 @@
     <div class="container-flex" *ngIf="!showAssembly">
       <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="formValidateAfterIf()">
         <div class="spacer20"></div>
-        <img (click)="selectImage();" src="{{getImage(currentDataSet.image)}}" class="display" />
+        <img *ngIf="currentDataSet" (click)="selectImage();" src="{{getImage(currentDataSet.image)}}" class="display" />
         <input type="hidden" formControlName="image" name="image" #title>
         <mat-form-field>
           <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
@@ -219,7 +219,7 @@
         <p>3 Schüttendisplay</p>
       </div>
       <hr class="clear" />
-      <button class="delete-button" (click)="partsList = []; showNew()" mat-raised-button>Or create a new one without template</button>
+      <button class="delete-button" (click)="templateChoosen(4)" mat-raised-button>Or create a new one without template</button>
     </div>
   </div>
 </div>

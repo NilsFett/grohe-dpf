@@ -683,7 +683,15 @@ class cGroheapiController{
 			$articlesWeight += $postData['quantity'] * $article['weight'] * $article['units'];
 		}
 		$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
-		cMail::sentMail('new_order', array('user' => cSessionUser::getInstance(), 'order' => $order, 'product' => $postData,'costno' => $userCostno, 'displayPartsWeight' => 			$displayPartsWeight,'articlesWeight' => $articlesWeight, 'topsign' => $oTopSignModel));
+		cMail::sentMail('new_order', array(
+			'user' => cSessionUser::getInstance(), 
+			'order' => $order, 
+			'product' => $postData,
+			'costno' => $userCostno, 
+			'displayPartsWeight' => $displayPartsWeight,
+			'articlesWeight' => $articlesWeight, 
+			'topsign' => $oTopSignModel, 
+			'SAP'=> $postData['sap']));
 		//cMail::sentMail('order_success', array('user' => cSessionUser::getInstance(), 'order' => $order));
 
 
@@ -887,28 +895,33 @@ class cGroheapiController{
 	public function orderExport(){
 		$spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
-		$sheet->setCellValue('A1', 'Tracking');
-		$sheet->setCellValue('B1', 'Cross charge');
-		$sheet->setCellValue('C1', 'status');
-		$sheet->setCellValue('D1', 'MAD');
-		$sheet->setCellValue('E1', 'Net sales');
-		$sheet->setCellValue('F1', 'OT ID');
-		$sheet->setCellValue('G1', 'Order Date');
-		$sheet->setCellValue('H1', 'DF ID');
-		$sheet->setCellValue('I1', 'Market');
-		$sheet->setCellValue('J1', 'SAP');
-		$sheet->setCellValue('K1', 'Cost Center');
-		$sheet->setCellValue('L1', 'Promotion Title');
-		$sheet->setCellValue('M1', 'filled/empty');
-		$sheet->setCellValue('N1', 'Display');
-		$sheet->setCellValue('O1', 'D/T');
-		$sheet->setCellValue('P1', 'Quantity');
-		$sheet->setCellValue('Q1', 'Topsign');
-		$sheet->setCellValue('R1', 'Article:');
+
+		$sheet->setCellValue('A1', 'Tracking'); // Tracking
+		$sheet->setCellValue('B1', 'Cross charge'); // crosscharge
+		$sheet->setCellValue('C1', 'MAD'); // MAD
+		$sheet->setCellValue('D1', 'Net sales'); // net sales
+		$sheet->setCellValue('E1', 'OT ID');// DFno
+		$sheet->setCellValue('F1', 'Order Date');// order date
+		$sheet->setCellValue('G1', 'DF ID'); // DF ID
+		$sheet->setCellValue('H1', 'Market'); // Market
+		$sheet->setCellValue('I1', 'SAP'); // SAP
+		$sheet->setCellValue('J1', 'Cost Center'); // Cost Center
+		$sheet->setCellValue('K1', 'Promotion Title'); // Promotion title
+		$sheet->setCellValue('L1', 'filled/empty'); // filled / empty
+		$sheet->setCellValue('M1', 'Display'); // Display
+		$sheet->setCellValue('N1', 'D/T'); // D/T
+		$sheet->setCellValue('O1', 'Quantity'); // Quantity
+		$sheet->setCellValue('P1', 'Topsign'); // Topsign
+		$sheet->setCellValue('Q1', 'Article:'); // Article
+		$sheet->setCellValue('R1', 'Article Description'); // Article Description
+		$sheet->setCellValue('S1', 'Article Amount'); // Article Amount
+		$sheet->setCellValue('T1', 'Pallets'); // Article Amount
+
+		//$sheet->setCellValue('H1', 'status');
 
 		$articlesById = array();
 		$displayPartsById = array();
-		$cellCounter = 19;
+		$cellCounter = 21;
 
 
 		$cellCounter++;
@@ -935,38 +948,59 @@ class cGroheapiController{
 
 		$rowCounter = 2;
 		$first = true;
+
 		foreach( $orders as $order){
 
 			if( ! isset($order['product']['article']))continue;
+			$tracking = (empty($order['tracking']))?'':$order['tracking'];
+			$sheet->setCellValueByColumnAndRow(1, $rowCounter, $tracking);
+			$crosscharge = (empty($order['crosscharge']))?'':$order['crosscharge'];
+			$sheet->setCellValueByColumnAndRow(2, $rowCounter, $crosscharge);
 
-			$sheet->setCellValueByColumnAndRow(1, $rowCounter, $order['tracking']);
-			$sheet->setCellValueByColumnAndRow(2, $rowCounter, $order['crosscharge']);
-			$sheet->setCellValueByColumnAndRow(3, $rowCounter, $order['status']);
-			$sheet->setCellValueByColumnAndRow(4, $rowCounter, $order['mad']);
-			$sheet->setCellValueByColumnAndRow(5, $rowCounter, $order['net_sales']);
-			$sheet->setCellValueByColumnAndRow(6, $rowCounter, $order['hex']);
-			$sheet->setCellValueByColumnAndRow(7, $rowCounter, $order['date']);
-			$sheet->setCellValueByColumnAndRow(8, $rowCounter, $order['product']['DFID']);
-			$sheet->setCellValueByColumnAndRow(9, $rowCounter, $order['costcentrecode']);
-			$sheet->setCellValueByColumnAndRow(10, $rowCounter, $order['SAP']);
-			$sheet->setCellValueByColumnAndRow(11, $rowCounter, $order['costcentre']);
-			$sheet->setCellValueByColumnAndRow(12, $rowCounter, $order['promotion_title']);
-			$sheet->setCellValueByColumnAndRow(13, $rowCounter, $order['filled_empty']);
-			$sheet->setCellValueByColumnAndRow(14, $rowCounter, $order['product']['SAP']);
-			$sheet->setCellValueByColumnAndRow(15, $rowCounter, $order['delivery']);
-			$sheet->setCellValueByColumnAndRow(16, $rowCounter, $order['display_quantity']);
+			$sheet->setCellValueByColumnAndRow(3, $rowCounter, $order['mad']);
+			$sheet->setCellValueByColumnAndRow(4, $rowCounter, $order['net_sales']);
+			$sheet->setCellValueByColumnAndRow(5, $rowCounter, $order['hex']);
+			$sheet->setCellValueByColumnAndRow(6, $rowCounter, $order['date']);
+			$sheet->setCellValueByColumnAndRow(7, $rowCounter, $order['product']['DFID']);
+			/*
+			$status = ($order['status'] == 'archive')?'o':'';
+			$sheet->setCellValueByColumnAndRow(8, $rowCounter, $status);
+*/
+			$sheet->setCellValueByColumnAndRow(8, $rowCounter, $order['costcentrecode']);
+			$sheet->setCellValueByColumnAndRow(9, $rowCounter, $order['SAP']);
+            $oCostNo = new cCostNoModel($order['costcentre']);
+
+            
+
+            
+			$sheet->setCellValueByColumnAndRow(10, $rowCounter, ($oCostNo->get('costno')));
+			$sheet->setCellValueByColumnAndRow(11, $rowCounter, $order['promotion_title']);
+			$sheet->setCellValueByColumnAndRow(12, $rowCounter, $order['filled_empty']);
+			$sheet->setCellValueByColumnAndRow(13, $rowCounter, $order['product']['SAP']);
+			$sheet->setCellValueByColumnAndRow(14, $rowCounter, $order['delivery']);
+			$sheet->setCellValueByColumnAndRow(15, $rowCounter, $order['display_quantity']);
 			if( isset( $order['topsign']['title'] ) ){
-				$sheet->setCellValueByColumnAndRow(17, $rowCounter, $order['topsign']['articlenr']);
+				$sheet->setCellValueByColumnAndRow(16, $rowCounter, $order['topsign']['articlenr']);
 			}
 
 
-			$text = '';
+			$numbers = '';
+			$units = '';
+			$titles = '';
 			foreach( $order['product']['article'] as $article){
-				$text .= $article['articlenr'].' x '.$article['units'].'
+				$numbers .= $article['articlenr'].'
+';
+				$titles .= $article['title'].'
+';
+				$units .= $article['units'].'
 ';
 			}
 
-			$sheet->setCellValueByColumnAndRow(18, $rowCounter, $text);
+			$sheet->setCellValueByColumnAndRow(17, $rowCounter, $numbers);
+			$sheet->setCellValueByColumnAndRow(18, $rowCounter, $titles);
+			$sheet->setCellValueByColumnAndRow(19, $rowCounter, $units);
+			$sheet->setCellValueByColumnAndRow(20, $rowCounter, $order['pallet_quantity']);
+
 
 			foreach( $order['product']['display_parts'] as $displayPart){
 				if($first){
@@ -1002,7 +1036,13 @@ class cGroheapiController{
 
 	public function changeOrder(){
 		$postData = json_decode(file_get_contents('php://input'),true);
-		$postData['mad'] = date('Y-m-d H:m:s', strtotime($postData['mad']));
+		if(empty($postData['mad'])){
+
+		}
+		else{
+			$postData['mad'] = date('Y-m-d H:m:s', strtotime($postData['mad']));
+		}
+
 
 		$cOrderModel = new cOrderModel($postData['id']);
 
