@@ -72,6 +72,7 @@ class cMail{
 				$oMailView->assign('costno', $data['costno']);
 				$oMailView->assign('displayPartsWeight', $data['displayPartsWeight']);
 				$oMailView->assign('articlesWeight', $data['articlesWeight']);
+				$oMailView->assign('SAP', $data['SAP']);
 				$mail_body = $oMailView->render();
 				$recipient = array($data['user']->get('mail'), 'mail@nils-fett.de', 'Vanessa.Wittmer@grohe.com');
 			break;
