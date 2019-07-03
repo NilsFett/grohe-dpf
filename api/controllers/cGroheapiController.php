@@ -598,10 +598,12 @@ class cGroheapiController{
 		else{
 			$oDisplay = new cDisplaysModel();
 		}
+
 		$oDisplay->set('title', $postData['display']['title']);
 		$oDisplay->set('articlenr', $postData['display']['articlenr']);
 		$oDisplay->set('image', $postData['display']['image']);
 		$oDisplay->set('displaytype', $postData['display']['displaytype']);
+		$oDisplay->set('base_display_template_id', $postData['display']['base_display_template_id']);
 		$oDisplay->set('topsign_punch', $postData['display']['topsign_punch']);
 		$oDisplay->set('instruction', $postData['display']['instruction']);
 		$oDisplay->set('hide', 0);
@@ -684,13 +686,13 @@ class cGroheapiController{
 		}
 		$userCostno = cCostNoModel::getByUserId(cSessionUser::getInstance()->get('id'));
 		cMail::sentMail('new_order', array(
-			'user' => cSessionUser::getInstance(), 
-			'order' => $order, 
+			'user' => cSessionUser::getInstance(),
+			'order' => $order,
 			'product' => $postData,
-			'costno' => $userCostno, 
+			'costno' => $userCostno,
 			'displayPartsWeight' => $displayPartsWeight,
-			'articlesWeight' => $articlesWeight, 
-			'topsign' => $oTopSignModel, 
+			'articlesWeight' => $articlesWeight,
+			'topsign' => $oTopSignModel,
 			'SAP'=> $postData['sap']));
 		//cMail::sentMail('order_success', array('user' => cSessionUser::getInstance(), 'order' => $order));
 
@@ -900,9 +902,9 @@ class cGroheapiController{
 		$sheet->setCellValue('B1', 'Cross charge'); // crosscharge
 		$sheet->setCellValue('C1', 'MAD'); // MAD
 		$sheet->setCellValue('D1', 'Net sales'); // net sales
-		$sheet->setCellValue('E1', 'OT ID');// DFno
+		$sheet->setCellValue('E1', 'DF ID');// DF ID
 		$sheet->setCellValue('F1', 'Order Date');// order date
-		$sheet->setCellValue('G1', 'DF ID'); // DF ID
+		$sheet->setCellValue('G1', 'DFno'); // DFno
 		$sheet->setCellValue('H1', 'Market'); // Market
 		$sheet->setCellValue('I1', 'SAP'); // SAP
 		$sheet->setCellValue('J1', 'Cost Center'); // Cost Center
@@ -959,9 +961,9 @@ class cGroheapiController{
 
 			$sheet->setCellValueByColumnAndRow(3, $rowCounter, $order['mad']);
 			$sheet->setCellValueByColumnAndRow(4, $rowCounter, $order['net_sales']);
-			$sheet->setCellValueByColumnAndRow(5, $rowCounter, $order['hex']);
+			$sheet->setCellValueByColumnAndRow(5, $rowCounter, $order['product']['DFID']);
 			$sheet->setCellValueByColumnAndRow(6, $rowCounter, $order['date']);
-			$sheet->setCellValueByColumnAndRow(7, $rowCounter, $order['product']['DFID']);
+			$sheet->setCellValueByColumnAndRow(7, $rowCounter, $order['hex']);
 			/*
 			$status = ($order['status'] == 'archive')?'o':'';
 			$sheet->setCellValueByColumnAndRow(8, $rowCounter, $status);
@@ -970,9 +972,9 @@ class cGroheapiController{
 			$sheet->setCellValueByColumnAndRow(9, $rowCounter, $order['SAP']);
             $oCostNo = new cCostNoModel($order['costcentre']);
 
-            
 
-            
+
+
 			$sheet->setCellValueByColumnAndRow(10, $rowCounter, ($oCostNo->get('costno')));
 			$sheet->setCellValueByColumnAndRow(11, $rowCounter, $order['promotion_title']);
 			$sheet->setCellValueByColumnAndRow(12, $rowCounter, $order['filled_empty']);
