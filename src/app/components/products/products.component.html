@@ -1,5 +1,5 @@
 <div class="content boxshadow" dpfContent>
-  <h2>Products <i class="fa icon-plus new" (click)="showNew()">Add new</i></h2>
+  <h2>Products <i class="fa icon-plus-1 new" (click)="showNew()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
     <table>
@@ -130,7 +130,7 @@
           <span class="artnr">{{article.articlenr}}</span>
           <span class="title">{{article.title}}</span>
           <span class="units"><b>{{article.units}}</b></span>
-          <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
+          <span (click)="addArticleToArticleList(article)" class="icon-plus-1"></span>
           <span (click)="removeArticleFromArticleList(article)" class="icon-minus"></span>
         </li>
       </ul>
@@ -149,7 +149,7 @@
               <span class="artnr">{{article.articlenr}}</span>
               <span class="title">{{article.title}}</span>
               <input type="text" id="countArticle{{article.articlenr}}" />
-              <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
+              <span (click)="addArticleToArticleList(article)" class="icon-plus-1"></span>
             </ng-container>
           </li>
         </ul>
@@ -162,7 +162,7 @@
           <span class="artnr">{{pm.articlenr}}</span>
           <span class="title">{{pm.title}}</span>
           <span class="units"><b>{{pm.units}}</b></span>
-          <span (click)="addPMToPMList(pm)" class="icon-plus"></span>
+          <span (click)="addPMToPMList(pm)" class="icon-plus-1"></span>
           <span (click)="removePMFromPMList(pm)" class="icon-minus"></span>
 
         </li>
@@ -182,7 +182,7 @@
               <span class="artnr">{{pm.articlenr}}</span>
               <span class="title">{{pm.title}}</span>
               <input type="text" id="countPM{{pm.id}}" />
-              <span (click)="addPMToPMList(pm)" class="icon-plus"></span>
+              <span (click)="addPMToPMList(pm)" class="icon-plus-1"></span>
             </ng-container>
           </li>
         </ul>
