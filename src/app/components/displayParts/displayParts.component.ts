@@ -54,6 +54,7 @@ export class DisplayPartsComponent  {
     else{
       this.dataService.displayPartsChange.subscribe(
         (displayParts:DisplaysPart[]) => {
+          console.log(this.dataService.displayParts);
           this.displayParts = this.displayPartsFilter.transform(this.dataService.displayParts, this.filter);
           this.dataSource.data = this.displayParts;
           this.dataSource.sort = this.sort;

@@ -195,8 +195,10 @@ class cUserModel extends cModel{
 
 	public static function getAll(){
 		$db = cDatabase::getInstance();
-		$oPDO = $db->hConnection->prepare( '	SELECT id, name, surname, department, street, zipcode, city, country, phone, fax, mail, usertype, deleted
-												FROM `'.static::$sTable.'` WHERE 1', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
+		$oPDO = $db->hConnection->prepare( '	SELECT `'.static::$sTable.'`.id, name, surname, department, street, zipcode, city, country, phone, fax, mail, usertype, deleted,
+												`t_costno`.costno, `t_costno`.description
+												FROM `'.static::$sTable.'` 
+												LEFT JOIN `t_costno` ON(`'.static::$sTable.'`.id = `t_costno`.userid)', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
 		$oPDO->execute(  );
 		$aResult = array();
 		while( $row = $oPDO->fetch(PDO::FETCH_ASSOC) ){

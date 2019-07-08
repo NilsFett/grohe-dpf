@@ -490,7 +490,7 @@ nav ul li:hover > a, nav ul li.active > a{
   font-weight:bold;
 }
 nav ul li:hover > a:before, nav ul li.active > a:before{
-  content: '\e800';
+  content: '\e802';
   font-family: "fontello";
   position:absolute;
   margin-left:-20px;

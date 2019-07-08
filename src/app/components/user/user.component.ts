@@ -29,7 +29,7 @@ export class UserComponent {
     deleted:null
   };
 
-  columnsToDisplay = [ 'surname', 'name',  'city', 'country', 'department', 'mail', 'usertype', 'deleted', 'edit', 'delete'];
+  columnsToDisplay = [ 'surname', 'name',  'city', 'country', 'department', 'mail', 'costno', 'usertype', 'deleted', 'edit', 'delete'];
   dataSource: MatTableDataSource<User>;
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),

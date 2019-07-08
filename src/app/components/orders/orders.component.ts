@@ -27,7 +27,7 @@ export class OrdersComponent {
   };
   public statusGetParams:string = '';
 
-  columnsToDisplay = [ 'timestamp', 'orderId',  'sap', 'pit', 'status', 'topsign', 'display',  'displayParts', 'edit'];
+  columnsToDisplay = [ 'timestamp', 'orderId', 'cross_charge','out', 'sap', 'pit', 'status', 'topsign', 'display',  'displayParts', 'edit'];
   dataSource: MatTableDataSource<Order>;
   orderForm = new FormGroup({
     status: new FormControl(''),

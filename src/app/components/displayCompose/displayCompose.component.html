@@ -1,5 +1,5 @@
 <div class="display-compose content boxshadow" dpfContent>
-  <h2>Displays <i class="fa icon-plus new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
+  <h2>Displays <i class="fa icon-plus-1 new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
     <table>
@@ -76,7 +76,7 @@
           <th mat-header-cell *matHeaderCellDef>
               Delete
           </th>
-          <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
+          <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa trash-empty delete"></i> </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
@@ -113,6 +113,9 @@
         <mat-form-field>
           <mat-select formControlName="displaytype"  #type placeholder="Display Type">
             <mat-option value="1_4_chep_pallet">1/4 Chep Pallet</mat-option>
+            <mat-option value="full_pallet">Full Pallet</mat-option>
+            <mat-option value="counter_displays">Counter Displays</mat-option>
+            <mat-option value="bundles">Bundles</mat-option>
           </mat-select>
           <mat-error [hidden]="type.valid || type.pristine">required</mat-error>
         </mat-form-field>
@@ -146,6 +149,7 @@
           <span class="title">{{part.title}}</span>
           <span class="units">{{part.units}}</span>
           <span (click)="removeDisplayPartFromPartList(part)" class="icon-minus"></span>
+          <span (click)="addDisplayPartToPartList(part)" class="icon-plus-1"></span>
         </li>
       </ul>
       <button mat-raised-button (click)="saveDisplaysAndPartList()">Save</button>
@@ -162,7 +166,7 @@
             <ng-container *ngIf="part.deleted == 0 && ( part.title.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 || part.articlenr.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 )">
               <span class="artnr">{{part.articlenr}}</span>
               <span class="title">{{part.title}}</span>
-              <span (click)="addDisplayPartToPartList(part)" class="icon-plus"></span>
+              <span (click)="addDisplayPartToPartList(part)" class="icon-plus-1"></span>
             </ng-container>
           </li>
         </ul>
@@ -194,7 +198,7 @@
 <div class="overlay templates" *ngIf="showChooseTemplate">
   <div class="overlay-content">
     <span (click)="hideChooseTemplateOverlay()" class="close icon-cancel"></span>
-    <h3 class="fa icon-plus">Choose Display Template</h3>
+    <h3 class="fa icon-plus-1">Choose Display Template</h3>
     <hr />
     <div class="row">
       <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
