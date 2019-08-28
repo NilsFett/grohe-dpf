@@ -197,7 +197,7 @@ class cUserModel extends cModel{
 		$db = cDatabase::getInstance();
 		$oPDO = $db->hConnection->prepare( '	SELECT `'.static::$sTable.'`.id, name, surname, department, street, zipcode, city, country, phone, fax, mail, usertype, deleted,
 												`t_costno`.costno, `t_costno`.description
-												FROM `'.static::$sTable.'` 
+												FROM `'.static::$sTable.'`
 												LEFT JOIN `t_costno` ON(`'.static::$sTable.'`.id = `t_costno`.userid)', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
 		$oPDO->execute(  );
 		$aResult = array();

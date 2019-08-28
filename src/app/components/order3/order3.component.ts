@@ -38,6 +38,8 @@ export class Order3Component {
       for(var i = 0; i < this.topSigns.length; i++ ){
         this.topSignsById[this.topSigns[i].id] = this.topSigns[i];
       }
+      console.log('this.topSignsById');
+      console.log(this.topSignsById);
     }
     else {
       this.dataService.topSignsChange.subscribe(
@@ -46,6 +48,8 @@ export class Order3Component {
           for(var i = 0; i < this.topSigns.length; i++ ){
             this.topSignsById[this.topSigns[i].id] = this.topSigns[i];
           }
+          console.log('this.topSignsById');
+          console.log(this.topSignsById);
         }
       );
       this.dataService.loadTopSigns();

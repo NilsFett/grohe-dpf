@@ -730,7 +730,7 @@ header, .main{
     max-height:100px;
 }
 
-grohe-dpf-medias{
+grohe-dpf-medias, grohe-dpf-promotion-uploads{
   position:fixed;
   height:100%;
   width:100%;

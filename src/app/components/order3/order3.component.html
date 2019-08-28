@@ -2,7 +2,7 @@
   <div class="products">
     <h3>ORDER PROCESS</h3>
     <ul class="order_prozess">
-      <li><span>1</span>SELECT</li>
+      <li routerLink="/order2"><span>1</span>SELECT</li>
       <li class="active"><span>2</span>SUMMERY</li>
     </ul>
     <div class="productSelect">
@@ -33,9 +33,12 @@
           <mat-form-field>
             <input type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
           </mat-form-field>
-          <mat-form-field>
-            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSigns[order.productChoosen.topsign_id].title}}" disabled>
+
+
+          <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] ">
+            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
           </mat-form-field>
+
           <div class="clear"></div>
           <table>
             <tr>
@@ -52,7 +55,7 @@
               <td>{{order.displayQuantity}}</td>
               <td>{{getDisplayWeight()}}&nbsp;kg</td>
             </tr>
-            <tr *ngIf="topSignsById[order.productChoosen.topsign_id]">
+            <tr *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id]">
               <td>{{topSignsById[order.productChoosen.topsign_id].articlenr}}</td>
               <td>{{topSignsById[order.productChoosen.topsign_id].title}}</td>
               <td>TopSign</td>

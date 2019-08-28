@@ -10,7 +10,7 @@ import { Display } from '../classes/display';
 
 import { Article } from '../classes/Article';
 import { TopSign } from '../classes/TopSign';
-
+import { PromotionImage } from '../classes/PromotionImage';
 import { Product } from '../classes/Product';
 import { ProductTree } from '../classes/ProductTree';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
@@ -19,6 +19,7 @@ import { Order } from '../classes/Order';
 import { Image } from '../classes/Image';
 import { UserService } from './user.service';
 import { OrderService } from './order.service';
+
 
 @Injectable()
 export class DataService {
@@ -70,6 +71,10 @@ export class DataService {
   public articlesByProductIdChange: Subject<any>;
   private articlesByProductIdChangeObserver: Observable<any>;
 
+  public promotionImages: PromotionImage[] = null;
+  public promotionImagesChange: Subject<Array<PromotionImage>>;
+  private promotionImagesChangeObserver: Observable<Array<PromotionImage>>;
+
   public saveSuccess: EventEmitter<boolean> = new EventEmitter();
   public deleteSuccess: EventEmitter<boolean> = new EventEmitter();
 
@@ -120,6 +125,9 @@ export class DataService {
 
     this.articlesByProductIdChange = new Subject<any>();
     this.articlesByProductIdChangeObserver = this.articlesByProductIdChange.asObservable();
+
+    this.promotionImagesChange = new Subject<Array<PromotionImage>>();
+    this.promotionImagesChangeObserver = this.promotionImagesChange.asObservable();
   }
 
   public loadUsers() {
@@ -145,6 +153,14 @@ export class DataService {
       this.imagesChange.next(this.images);
     });
   }
+
+  public loadPromotionImages() {
+    this.http.get(`${this.config.baseURL}loadPromotionImages`, { withCredentials: true }).subscribe((promotionImages: PromotionImage[]) => {
+      this.promotionImages = promotionImages;
+      this.promotionImagesChange.next(this.promotionImages);
+    });
+  }
+
 
   public loadCategories() {
     this.http.get(`${this.config.baseURL}loadCategories`, { withCredentials: true }).subscribe((categories: ProductTree[]) => {
@@ -290,6 +306,22 @@ export class DataService {
     );
   }
 
+  public changePromotionImage(dataSet) {
+    this.http.post(`${this.config.baseURL}changePromotionImage`, dataSet, { withCredentials: true }).subscribe(
+      (promotionImages: PromotionImage[]) => {
+
+        this.promotionImages = promotionImages;
+        this.promotionImagesChange.next(this.promotionImages);
+        this.ui.setMessage('Save success');
+        this.saveSuccess.next(true)
+        this.ui.doCloseEditNew();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
 
   public changeUser(dataSet) {
     this.http.post(`${this.config.baseURL}changeUser`, dataSet, { withCredentials: true }).subscribe(
@@ -420,6 +452,23 @@ export class DataService {
       }
     );
   }
+
+  public deletePromotionImage(dataSet) {
+    this.http.post(`${this.config.baseURL}deletePromotionImage`, dataSet, { withCredentials: true }).subscribe(
+      (promotionImages: PromotionImage[]) => {
+        this.promotionImages = promotionImages;
+        this.promotionImagesChange.next(this.promotionImages);
+        this.ui.setMessage('Delete success');
+        this.deleteSuccess.next(true);
+        this.ui.doCloseDelete();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
 
   public deleteImage(dataSet) {
     this.http.post(`${this.config.baseURL}deleteImage`, dataSet, { withCredentials: true }).subscribe(

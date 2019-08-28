@@ -13,43 +13,30 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-class cCostNoModel extends cModel{
+class cPromotionImagesModel extends cModel{
 
 	protected $aColumns = array(
 		'id' => array(
 			'value' => false,
 			'type' => 'int'
 		),
-		'userid' => array(
+		'name' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+		'image_id' => array(
 			'value' => false,
 			'type' => 'int'
 		),
-		'costno' => array(
+		'active' => array(
 			'value' => false,
-			'type' => 'varchar'
-		),
-		'description' => array(
-			'value' => false,
-			'type' => 'varchar'
+			'type' => 'int'
 		)
 	);
-	static $sTable = 't_costno';
+	static $sTable = 't_promotion_images';
 	protected $sPrimary = 'id';
 
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
-
-  public static function getByUserId($userId){
-      $query = 'SELECT * FROM t_costno WHERE userid = "'.$userId.'"';
-      $db = cDatabase::getInstance();
-      $hRessource = $db->hConnection->query($query);
-      $row = $hRessource->fetch();
-      if($row){
-          return new cCostNoModel($row);
-      }
-      else{
-          return false;
-      }
-  }
 }

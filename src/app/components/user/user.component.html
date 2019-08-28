@@ -66,6 +66,12 @@
             </th>
             <td mat-cell *matCellDef="let user"> {{user.costno}} </td>
           </ng-container>
+          <ng-container matColumnDef="description">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Market
+            </th>
+            <td mat-cell *matCellDef="let user"> {{user.description}} </td>
+          </ng-container>
           <ng-container matColumnDef="mail">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
               Email
@@ -147,7 +153,14 @@
             <input type="text" formControlName="fax" matInput name="fax" #fax placeholder="Fax">
             <mat-error [hidden]="fax.valid || fax.pristine">required</mat-error>
           </mat-form-field>
-
+          <mat-form-field>
+            <input type="text" formControlName="costno" matInput name="costno" #costno placeholder="Costno.">
+            <mat-error [hidden]="costno.valid || costno.pristine">required</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" formControlName="description" matInput name="description" #description placeholder="Market">
+            <mat-error [hidden]="description.valid || description.pristine">required</mat-error>
+          </mat-form-field>
           <button *ngIf="currentDataSet" mat-raised-button (click)="sendPassword();">Send new password</button>
           <hr />
           <div class="spacer20"></div>
