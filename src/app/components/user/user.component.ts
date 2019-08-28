@@ -29,7 +29,7 @@ export class UserComponent {
     deleted:null
   };
 
-  columnsToDisplay = [ 'surname', 'name',  'city', 'country', 'department', 'mail', 'costno', 'usertype', 'deleted', 'edit', 'delete'];
+  columnsToDisplay = [ 'surname', 'name',  'city', 'country', 'department', 'mail', 'costno','description', 'usertype', 'deleted', 'edit', 'delete'];
   dataSource: MatTableDataSource<User>;
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -41,6 +41,8 @@ export class UserComponent {
     phone: new FormControl(''),
     fax: new FormControl(''),
     usertype: new FormControl(''),
+    costno: new FormControl(''),
+    description: new FormControl(''),
     deleted: new FormControl('')
   });
 
@@ -97,6 +99,8 @@ export class UserComponent {
       this.currentDataSet.surname = this.userForm.controls['surname'].value;
       this.currentDataSet.department = this.userForm.controls['department'].value;
       this.currentDataSet.city = this.userForm.controls['city'].value;
+      this.currentDataSet.costno = this.userForm.controls['costno'].value;
+      this.currentDataSet.description = this.userForm.controls['description'].value;
       if( this.userForm.controls['deleted'].value === true ){
         this.currentDataSet.deleted = 1;
       }
@@ -124,6 +128,8 @@ export class UserComponent {
       phone: this.currentDataSet.phone,
       fax: this.currentDataSet.fax,
       usertype: this.currentDataSet.usertype,
+      costno: this.currentDataSet.costno,
+      description: this.currentDataSet.description,
       deleted: this.currentDataSet.deleted
     });
   }

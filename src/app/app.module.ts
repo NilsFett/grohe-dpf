@@ -20,6 +20,8 @@ import { ProductsComponent } from './components/products/products.component';
 import { Order2Component } from './components/order2/order2.component';
 import { Order3Component } from './components/order3/order3.component';
 import { MediasComponent } from './components/medias/medias.component';
+import { PromotionImages } from './components/promotionImages/promotionImages.component';
+import { PromotionUploads } from './components/promotionUploads/promotionUploads.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
 import { AccountComponent } from './components/account/account.component';
 import { PasswordComponent } from './components/password/password.component';
@@ -60,6 +62,7 @@ import { ArticlesFilter } from './pipes/articles/articlesFilter';
 import { ProductsFilter } from './pipes/product/productFilter';
 import { TopSignsFilter } from './pipes/topSigns/topSignsFilter';
 import { UserFilter } from './pipes/user/userFilter';
+import { PromotionImagesFilter } from './pipes/promotionImages/promotionImagesFilter';
 import { OrderFilter } from './pipes/order/orderFilter';
 
 const MY_DATE_FORMATS = {
@@ -118,10 +121,13 @@ export class MyDateAdapter extends NativeDateAdapter {
     ProductsFilter,
     TopSignsFilter,
     UserFilter,
+    PromotionImagesFilter,
     OrderFilter,
     UserComponent,
     TreeViewComponent,
-    MediasComponent/*,
+    MediasComponent,
+    PromotionImages,
+    PromotionUploads/*,
     FileSelectDirective*/
   ],
   imports: [
@@ -150,6 +156,7 @@ export class MyDateAdapter extends NativeDateAdapter {
     ProductsFilter,
     ProductsFilter,
     UserFilter,
+    PromotionImagesFilter,
     OrderFilter,
     TopSignsFilter,
     OrderService,

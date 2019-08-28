@@ -18,6 +18,8 @@ import { ProductsComponent } from './components/products/products.component';
 import { MediasComponent } from './components/medias/medias.component';
 import { AccountComponent } from './components/account/account.component';
 import { PasswordComponent } from './components/password/password.component';
+import { PromotionImages } from './components/promotionImages/promotionImages.component';
+import { PromotionUploads } from './components/promotionUploads/promotionUploads.component';
 
 import { AuthGuard } from './services/auth.service';
 import { UserComponent } from './components/user/user.component';
@@ -44,7 +46,8 @@ const routes: Routes = [
   { path: 'products/:id', component: ProductsComponent, canActivate: [AuthGuard] },
   { path: 'medias', component: MediasComponent, canActivate: [AuthGuard] },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
-  { path: 'changePassowrd', component: PasswordComponent, canActivate: [AuthGuard] }
+  { path: 'changePassowrd', component: PasswordComponent, canActivate: [AuthGuard] },
+  { path: 'promotionImages', component: PromotionImages, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

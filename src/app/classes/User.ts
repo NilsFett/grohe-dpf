@@ -11,7 +11,7 @@ export class User {
   public fax:string;
   public mail:string;
   public usertype:string;
-  public constno:string;
+  public costno:string;
   public description:string;
   public deleted:number;
 }

@@ -183,6 +183,12 @@ class cGroheapiController{
 		}
 	}
 
+	public function loadPromotionImages(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$articles = cPromotionImagesModel::getAll();
+			echo json_encode($articles);
+		}
+	}
 
 	public function getProducts(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
@@ -478,6 +484,9 @@ class cGroheapiController{
 		else{
 			$oArticlesModel->set('deleted', 0);
 		}
+		if(isset($postData['costno'])){
+			cCostNoModel::replaceCostno(cSessionUser::getInstance()->get('id'),$postData['costno'],$postData['description']);
+		}
 		$oArticlesModel->save();
 		$this->getUsers();
 	}
@@ -743,13 +752,14 @@ class cGroheapiController{
 
 	public function uploadImage(){
 
+		putenv('PATH=/usr/local/bin:/usr/bin:/bin:/opt/local/bin/');
 		if( count($_FILES) ){
 			foreach( $_FILES as $aImage ){
 				$aSize = getimagesize($aImage['tmp_name']);
 
 				if($aImage['type'] == 'application/octet-stream'){
 					if($aSize !== false){
-						$aFile['type'] = $aSize['mime'];
+						$aImage['type'] = $aSize['mime'];
 					}
 				}
 				if($aImage['error'][0] == 0 && ( $aImage['type'] == 'image/jpeg' || $aImage['type'] == 'image/gif' || $aImage['type'] == 'image/png' || $aImage['type'] == 'application/pdf' )){
@@ -759,8 +769,7 @@ class cGroheapiController{
 					$aErrors [] = 'File '.$aImage['tmp_name'].' konnte hochgeladen werden.';
 					continue;
 				}
-
-				$sExtension = explode('/', $aSize['mime']);
+				$sExtension = explode('/', $aImage['type']);
 				$sExtension = $sExtension[1];
 				$sHash = sha1(file_get_contents($aImage['tmp_name']));
 
@@ -769,11 +778,21 @@ class cGroheapiController{
 				}
 				else{
 					if(move_uploaded_file($aImage['tmp_name'], cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension)) {
+						if ( $aImage['type'] == 'application/pdf' && $_GET['type'] == 5){
+							$execute = 'convert -density 72 \'' . cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension . '\'[0] -colorspace sRGB -resize 1200x600 \'' . cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.jpeg';
+
+							$src = cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension;
+							$dest = cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.jpeg';
+
+							$execute = '/usr/local/bin/convert -density 72 \'' . $src. '[0]\' -colorspace sRGB -background white -alpha off -resize 1200x600 \'' . $dest .'\' 2>&1';
+							$sExtension = 'jpeg';
+							echo exec($execute,$x,$y);
+							var_dump($x);
+							var_dump($y);
+						}
 						$oImage = new cImageModel();
 						$oImage->set('title', $aImage['name']);
 						$oImage->set('path', $sHash.'.'.$sExtension);
-
-
 
 						$type = 1;
 						if($_GET['type'] == 'pimages'){
@@ -784,6 +803,9 @@ class cGroheapiController{
 						}
 						elseif($_GET['type'] == 'tspdf'){
 							$type = 4;
+						}
+						elseif($_GET['type'] == 'promotion'){
+							$type = 5;
 						}
 						$oImage->set('type', $type);
 
@@ -811,10 +833,11 @@ class cGroheapiController{
 								$newWidth = 150;
 							}
 
-							$image = new Imagick(cConfig::getInstance()->get('basepath')."uploads/".$sHash.".".$sExtension);
+							$src = cConfig::getInstance()->get('basepath')."uploads/".$sHash.".".$sExtension;
+							$dest = cConfig::getInstance()->get('basepath')."uploads/thumbs/".$sHash.".".$sExtension;
 
-							$image->resizeImage($newWidth, $newHeight, imagick::FILTER_CUBIC, 1, true);
-							$image->writeImage( cConfig::getInstance()->get('basepath')."uploads/thumbs/".$sHash.".".$sExtension );
+							$execute = '/usr/local/bin/convert \'' . $src. '\'  -background white -resize '.$newWidth.'x'.$newHeight.' \'' . $dest .'\' 2>&1';
+							exec($execute);
 						}
 						$oImage->save();
 						echo json_encode(array('success'=>true));
@@ -927,16 +950,16 @@ class cGroheapiController{
 
 
 		$cellCounter++;
-        if(isset($_GET['from'])){
-            $from = $_GET['from'] / 1000;
-            $until = $_GET['until'] / 1000;
-        }
-        else{
-            $from = false;
-            $until = false;
-        }
+    if(isset($_GET['from'])){
+        $from = $_GET['from'] / 1000;
+        $until = $_GET['until'] / 1000;
+    }
+    else{
+        $from = false;
+        $until = false;
+    }
 
-        $orders = cOrderModel::getAllOrders($from,$until);
+    $orders = cOrderModel::getAllOrders($from,$until);
 
 		foreach( $orders as $order){
 			if( ! isset($order['product']['article']))continue;
@@ -970,10 +993,10 @@ class cGroheapiController{
 */
 			$sheet->setCellValueByColumnAndRow(8, $rowCounter, $order['costcentrecode']);
 			$sheet->setCellValueByColumnAndRow(9, $rowCounter, $order['SAP']);
-            $oCostNo = new cCostNoModel($order['costcentre']);
 
+			//$oCostNo = new cCostNoModel($order['costcentre']);
 
-
+			$oCostNo = cCostNoModel::getByUserId($order['userid']);
 
 			$sheet->setCellValueByColumnAndRow(10, $rowCounter, ($oCostNo->get('costno')));
 			$sheet->setCellValueByColumnAndRow(11, $rowCounter, $order['promotion_title']);
