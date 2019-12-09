@@ -14,7 +14,7 @@ import { ConfigService } from '../../services/config.service';
   styleUrls: ['./topSigns.component.css']
 })
 export class TopSignsComponent  {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
   currentDataSet:TopSign = null;
   dataSetToDelete:TopSign = null;

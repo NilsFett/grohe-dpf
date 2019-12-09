@@ -1,12 +1,12 @@
 <div class="content boxshadow" dpfContent>
-  <h2>Articles <i class="fa icon-plus-1 new" (click)="showNew()">Add new</i></h2>
+  <h2>Articles <i class="fa icon-plus new" (click)="showNew()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
 
     <table [toSyncWith]="syncWidthSources" dpfSyncWidth>
       <tr>
         <td #td>
-          <i class="fa icon-search"></i><input placeholder="Article Number"(ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class=" filter" type="text"  name="articlenrFilter" >
+          <i class="fa icon-search"></i><input placeholder="SKU Number"(ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class=" filter" type="text"  name="articlenrFilter" >
         </td>
         <td #td>
             <i class="fa icon-search"></i><input placeholder="Title" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
@@ -163,6 +163,7 @@
           </mat-select>
           <mat-error [hidden]="packaging.valid || packaging.pristine">required</mat-error>
         </mat-form-field>
+
         <mat-form-field>
           <input type="text" formControlName="weight" matInput name="weight" #weight placeholder="Weight (gr.)*">
           <mat-error [hidden]="weight.valid || weight.pristine">required</mat-error>

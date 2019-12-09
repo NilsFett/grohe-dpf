@@ -21,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements AfterViewChecked, OnInit {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
   currentDataSet:Product = null;
   dataSetToDelete:Product = null;
@@ -40,6 +40,7 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
     DFID : new FormControl('',[Validators.required, Validators.minLength(2)]),
     SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
+    supplier : new FormControl('',[Validators.required]),
     product_tree : new FormControl(''),
     display_id : new FormControl('',[Validators.required]),
     topsign_id : new FormControl(''),
@@ -223,6 +224,7 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       title : new FormControl('',[Validators.required, Validators.minLength(2)]),
       DFID : new FormControl('',[Validators.required, Validators.minLength(2)]),
       SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      supplier : new FormControl('',[Validators.required]),
       display_id : new FormControl('',[Validators.required]),
       topsign_id : new FormControl(''),
       promotion_material_id : new FormControl(''),
@@ -357,6 +359,7 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       title: this.currentDataSet.title,
       DFID: this.currentDataSet.DFID,
       SAP: this.currentDataSet.SAP,
+      supplier: this.currentDataSet.supplier,
       display_id : this.currentDataSet.display_id,
       topsign_id : this.currentDataSet.topsign_id,
       promotion_material_id : this.currentDataSet.promotion_material_id,
@@ -371,6 +374,7 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       this.currentDataSet.title = this.productForm.controls['title'].value;
       this.currentDataSet.DFID = this.productForm.controls['DFID'].value;
       this.currentDataSet.SAP = this.productForm.controls['SAP'].value;
+      this.currentDataSet.supplier = this.productForm.controls['supplier'].value;
       this.currentDataSet.display_id = this.productForm.controls['display_id'].value,
       this.currentDataSet.topsign_id = this.productForm.controls['topsign_id'].value,
       this.currentDataSet.promotion_material_id = this.productForm.controls['promotion_material_id'].value,

@@ -13,7 +13,7 @@ export class AppComponent implements AfterViewInit{
   @HostListener('window:resize', ['$event']) onResize(event) {
     this.adjustHeight();
   }
-  @ViewChild('main') main: ElementRef;
+  @ViewChild('main', {static: false}) main!: ElementRef;
 
   public loggedIn:boolean = false;
   public mainheight : number;
@@ -21,8 +21,7 @@ export class AppComponent implements AfterViewInit{
   public navopen = true;
   public overflow:boolean;
   public userInfoOpen:boolean = false;
-
-  private currentURL:string = null;
+  public currentURL:string = null;
 
   constructor(
     public router : Router,

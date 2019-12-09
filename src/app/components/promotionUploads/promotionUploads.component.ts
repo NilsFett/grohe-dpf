@@ -21,15 +21,16 @@ export class PromotionUploads{
     public ui:UiService,
     public config:ConfigService
   ) {
+    this.dataService.imagesChange.subscribe(
+      (images: Image[]) => {
+        this.images = this.dataService.images;
+      }
+    );
     if (this.dataService.images) {
       this.images = this.dataService.images;
     }
     else {
-      this.dataService.imagesChange.subscribe(
-        (images: Image[]) => {
-          this.images = this.dataService.images;
-        }
-      );
+
       this.dataService.loadImages();
     }
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };

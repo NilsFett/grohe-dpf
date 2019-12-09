@@ -6,13 +6,20 @@ export class Order {
   public net_sales:string;
   public filled_empty:string;
   public dt:string;
+  public orderId:string;
 
   public hex:string;
   public date:string;
   public timestamp:number;
   public userid:number;
   public costcentre:string;
+  /*
   public costcentrecode:string;
+  */
+  public costcentre_costno:string;
+  public costcentre_description:string;
+  public customer:string;
+
   public promotion_title:string;
   public SAP:number;
 
@@ -22,6 +29,7 @@ export class Order {
   public delivery:string;
   public product:any;
   public display_parts:any;
+  public topsign:any;
 
   public checklist:string;
   public desired_date_delivery:string;

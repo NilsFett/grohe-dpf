@@ -15,7 +15,7 @@ import { Image } from '../../classes/Image';
   styleUrls: ['./promotionImages.component.css']
 })
 export class PromotionImages {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
   currentDataSet: PromotionImage = null;
   dataSetToDelete: PromotionImage = null;
@@ -24,7 +24,7 @@ export class PromotionImages {
     name: ''
   };
 
-  columnsToDisplay = [ 'name',  'active'];
+  columnsToDisplay = [ 'name', 'image', 'active', 'edit', 'delete'];
   dataSource: MatTableDataSource<PromotionImage>;
   promotionImageForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -44,6 +44,8 @@ export class PromotionImages {
     this.dataSource = new MatTableDataSource(this.promotionImages);
     this.ui.view = 'admin';
 
+    console.log('this.dataService.images');
+    console.log(this.dataService.images);
     if(this.dataService.images){
       this.images = this.dataService.images;
       for(let i = 0; i < this.images.length ; i++ ){
@@ -62,7 +64,6 @@ export class PromotionImages {
       this.dataService.loadImages();
     }
 
-
     if (this.dataService.promotionImages) {
       this.promotionImages = this.promotionImagesFilter.transform(this.dataService.promotionImages, this.filter);
       this.dataSource.data = this.promotionImages;
@@ -78,6 +79,12 @@ export class PromotionImages {
       );
       this.dataService.loadPromotionImages();
     }
+    this.ui.imageChoosen.subscribe( (image:Image)=>{
+      console.log('imageChoosen');
+      console.log(image);
+      this.currentDataSet.image_id = image.id;
+      this.ui.doHideMedias();
+    });
   }
 
   ngOnInit() {
@@ -98,9 +105,8 @@ export class PromotionImages {
   public save() {
     if (this.promotionImageForm.status == 'VALID') {
       this.currentDataSet.name = this.promotionImageForm.controls['name'].value;
-      this.currentDataSet.image_id = this.promotionImageForm.controls['image_id'].value;
-      this.currentDataSet.active = this.promotionImageForm.controls['active'].value;
-
+      //this.currentDataSet.image_id = this.promotionImageForm.controls['image_id'].value;
+      //this.currentDataSet.active = this.promotionImageForm.controls['active'].value;
       this.dataService.changePromotionImage(this.currentDataSet);
     }
   }
@@ -135,6 +141,7 @@ export class PromotionImages {
   }
 
   activeChange($event){
+    console.log('activeChange');
     console.log(this.currentDataSet.active);
     if(this.currentDataSet.active == 1){
       this.currentDataSet.active = 0;

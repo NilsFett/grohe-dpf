@@ -165,11 +165,19 @@ color:#3184b9;
   left:0px;
   height:100%;
   width:100%;
-  background: rgba(0,0,0, 0.2);
+  opacity: 0.5;
+  background-color: #000;
   z-index:2100;
 }
 
-.overlay{
+grohe-dpf-start .overlaybg{
+  opacity: 1;
+}
+.opaque{
+  background: rgba(255,255,255, 1);
+}
+
+.overlay, .promotion-image{
   position:fixed;
   top:0px;
   left:0px;
@@ -182,6 +190,11 @@ color:#3184b9;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.promotion-image img{
+  max-width: 80%;
+  max-height:80%;
 }
 
 .overlay-content{
@@ -243,7 +256,7 @@ color:#3184b9;
 
 .icon-ok.active:before{
 
-  content: '\e804';
+  content: '\e809';
   border-color:#3184b9;
 }
 
@@ -490,7 +503,7 @@ nav ul li:hover > a, nav ul li.active > a{
   font-weight:bold;
 }
 nav ul li:hover > a:before, nav ul li.active > a:before{
-  content: '\e802';
+  content: '\e805';
   font-family: "fontello";
   position:absolute;
   margin-left:-20px;

@@ -8,6 +8,10 @@ export class OrderService {
   public displayQuantity:any = '1';
   public topSign:number = null;
   public costcentre:number;
+  public costcentre_costno:string = '';
+  public costcentre_description:string = '';
+  public customer:string = '';
+  public DC:string = 'DIY';
   public productChoosen:Product = null;
   public SAP:string = '';
   public pit:string = '';
@@ -19,10 +23,14 @@ export class OrderService {
   ) {
     if(this.user.isLoggedIn){
       this.costcentre = this.user.data.costcentres[0].id;
+      this.costcentre_costno = this.user.data.costcentres[0].costno;
+      this.costcentre_description = this.user.data.costcentres[0].description;
     }
     else{
       this.user.loggedInStateObserver.subscribe(loggedIn => {
         this.costcentre = this.user.data.costcentres[0].id;
+        this.costcentre_costno = this.user.data.costcentres[0].costno;
+        this.costcentre_description = this.user.data.costcentres[0].description;
       });
     }
   }
@@ -32,9 +40,13 @@ export class OrderService {
     this.displayQuantity = 1;
     this.topSign = null;
     this.costcentre = null;
+    this.costcentre_costno = null
+    this.costcentre_description = null
     this.productChoosen = null;
     this.SAP = '';
+    this.DC = '';
     this.pit = '';
     this.desired_date_delivery = '';
+    this.customer = '';
   }
 }

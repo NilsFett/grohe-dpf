@@ -1,5 +1,13 @@
-<span style="font-size:200%;margin:60px 20px 0 0;padding:20px;background-color:transparent;" routerLink="/order2" class="close icon-cancel"></span>
+<div class="overlaybg opaque" *ngIf="promotionImage && ui.showOverlay && showPromotionImage">
+</div>
+<div *ngIf="promotionImage && showPromotionImage">
+    <span style="position:fixed;z-index:3000;right:20px;font-size:200%;margin:0 20px 0 0;padding:20px;background-color:transparent;" (click)="showPromotionImage = false" class="close icon-cancel"></span>
+  <div class="promotion-image" >
+    <img src="{{getImage(promotionImage.image_id)}}" />
+  </div>
+</div>
 
+<span style="font-size:200%;margin:60px 20px 0 0;padding:20px;background-color:transparent;" routerLink="/order2" class="close icon-cancel"></span>
 <div class="start">
     <h3><i class="fa icon-attention"></i>Before entering the „Display Factory“ use this checklist to make sure you have all relevant information at hand!</h3>
     <div class="spacer20"></div>

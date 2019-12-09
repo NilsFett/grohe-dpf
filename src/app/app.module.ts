@@ -26,6 +26,7 @@ import { TopSignsComponent } from './components/topSigns/topSigns.component';
 import { AccountComponent } from './components/account/account.component';
 import { PasswordComponent } from './components/password/password.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
@@ -104,6 +105,7 @@ export class MyDateAdapter extends NativeDateAdapter {
     Order2Component,
     Order3Component,
     OrdersComponent,
+    MyOrdersComponent,
     DisplayComposeComponent,
     DisplayPartsComponent,
     ArticlesComponent,

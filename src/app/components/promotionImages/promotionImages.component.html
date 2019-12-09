@@ -1,5 +1,5 @@
 <div class="content boxshadow" dpfContent>
-    <h2>Users <i class="fa icon-plus-1 new" (click)="showNew()">Add new</i></h2>
+    <h2>Users <i class="fa icon-plus new" (click)="showNew()">Add new</i></h2>
     <div class="dpfoverflowwrapper" dpfOverflowWrapper>
       <div class="spacer20"></div>
       <table>
@@ -18,11 +18,11 @@
             <td mat-cell *matCellDef="let PromotionImage"> {{PromotionImage.name}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="image_id">
+          <ng-container matColumnDef="image">
               <th mat-sort-header mat-header-cell *matHeaderCellDef>
                 Image
               </th>
-            <td mat-cell *matCellDef="let PromotionImage"> <img src="{{getImage(PromotionImage.image_id)}}" /></td>
+            <td mat-cell *matCellDef="let PromotionImage"><img src="{{getImage(PromotionImage.image_id)}}" /></td>
           </ng-container>
           <ng-container matColumnDef="active">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>
@@ -50,6 +50,7 @@
         </table>
       </div>
   </div>
+
   <div class="overlaybg" *ngIf="ui.showOverlay"></div>
   <div class="overlay" *ngIf="ui.showEditNew">
     <div class="overlay-content">
@@ -60,7 +61,7 @@
       <div class="container-flex">
         <form name="promotionImageForm" [formGroup]="promotionImageForm">
           <div class="spacer20"></div>
-          <img (click)="selectImage();" src="{{getImage(this.currentDataSet.image)}}" class="display" />
+          <img (click)="selectImage();" src="{{getImage(this.currentDataSet.image_id)}}" class="display" />
           <mat-form-field>
             <input type="text" formControlName="name" matInput name="name" #name placeholder="Name*">
             <mat-error [hidden]="name.valid || name.pristine">required</mat-error>
