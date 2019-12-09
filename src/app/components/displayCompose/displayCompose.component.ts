@@ -18,7 +18,7 @@ import { displayTemplates } from '../../classes/DisplayTemplates';
   styleUrls: ['./displayCompose.component.css']
 })
 export class DisplayComposeComponent implements OnDestroy{
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
   currentDataSet: Display = null;
   dataSetToDelete: Display = null;
   displays:Display[] = [];

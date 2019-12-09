@@ -36,7 +36,12 @@ class cOrderModel extends cModel{
 			'value' => false,
 			'type' => 'int'
 		),
-		'costcentre' => array(
+		'costcentre' => array(//obsolet
+			'value' => false,
+			'type' => 'varchar'
+		),
+
+		'costcentre_costno' => array(
 			'value' => false,
 			'type' => 'varchar'
 		),
@@ -51,6 +56,14 @@ class cOrderModel extends cModel{
 		'SAP' => array(
 			'value' => false,
 			'type' => 'int'
+		),
+		'channel' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
+		'customer' => array(
+			'value' => false,
+			'type' => 'varchar'
 		),
 		'display_quantity' => array(
 			'value' => false,
@@ -162,21 +175,38 @@ class cOrderModel extends cModel{
 		return $products;
 	}
 
+	private static $orderMatch = array(
+		'timestamp' => 'date',
+		'orderId' => 'id',
+		'cross_charge' => 'crosscharge',
+		'out' => 'tracking',
+		'SAP' => 'SAP',
+		'pit' => 'promotion_title',
+		'status' => 'status'
+	);
 	public static function getAllOrders($from, $until, $status=''){
-        if($from && $until){
-		$from = date('Y-m-d H:m:s', $from);
-		$until = date('Y-m-d H:m:s', $until);
-		$query = '	SELECT *
-								FROM `'.self::$sTable.'`
-								WHERE `date` > "'.$from.'"
-								AND `date` < "'.$until.'"';
 
-        }
-        else{
-            $query = '    SELECT *
-            FROM `'.self::$sTable.'`
-            WHERE `old_system` = 0';
-        }
+    if($from && $until){
+			$from = date('Y-m-d H:m:s', $from);
+			$until = date('Y-m-d H:m:s', $until);
+			$query = '	SELECT *
+									FROM `'.self::$sTable.'`
+									WHERE `date` > "'.$from.'"
+									AND `date` < "'.$until.'"';
+			if( ! empty( $status)){
+				$query .= '	AND `status` IN ("'.$status.'")';
+			}
+
+			if( ! empty( $_GET['sortBy'] ) && ! empty( $_GET['sortDirection'] ) ){
+				$query .= '	ORDER BY '.self::$orderMatch[$_GET['sortBy']].' '.$_GET['sortDirection'];
+			}
+    }
+    else{
+        $query = '    SELECT *
+        FROM `'.self::$sTable.'`
+        WHERE `old_system` = 0';
+    }
+
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();

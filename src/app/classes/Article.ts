@@ -6,6 +6,7 @@ export class Article {
   public extra:string;
   public type:number;
   public packaging:string;
+  public DT : number;
   public weight:number;
   public height:number;
   public width:number;

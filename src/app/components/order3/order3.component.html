@@ -38,7 +38,12 @@
           <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] ">
             <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
           </mat-form-field>
-
+          <mat-form-field>
+            <mat-select placeholder="D / C"  [(ngModel)]="order.DC">
+              <mat-option value="DIY">DIY</mat-option>
+              <mat-option value="Classical">Classical</mat-option>
+            </mat-select>
+          </mat-form-field>
           <div class="clear"></div>
           <table>
             <tr>
@@ -94,12 +99,29 @@
               <div class="inner">
                 <div class="span6"><b>Name</b></div><div class="span6">{{user.data.name.value}} {{user.data.surname.value}}</div>
                 <div class="span6"><b>Department</b></div><div class="span6">{{user.data.department.value}} </div>
+                <!--
                 <div class="span6"><b>Cost Centre</b></div>
                 <div class="span6">
                   <mat-form-field>
                     <mat-select [(ngModel)]="order.costcentre">
                       <mat-option *ngFor="let costcentre of user.data.costcentres" value="{{costcentre.id}}">{{costcentre.costno}} {{costcentre.description}}</mat-option>
                     </mat-select>
+                    <input matInput [(ngModel)]="order.costcentre">
+                  </mat-form-field>
+                </div>
+                -->
+                <div class="span6"><b>Cost Centre</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <input readonly matInput [(ngModel)]="order.costcentre_costno" placeholder="Cost Centre">
+                    <mat-error>required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="span6"><b>Cost Centre Country</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <input readonly matInput [(ngModel)]="order.costcentre_description" placeholder="Cost Centre Country">
+                    <mat-error>required</mat-error>
                   </mat-form-field>
                 </div>
                 <div class="span6"><b>E-Mail</b></div><div class="span6">{{user.data.mail.value}} </div>
@@ -117,7 +139,10 @@
               <h4 [ngClass]="{'warning': (order.pit.length == 0)}">Promotion Identification Title</h4>
               <div class="inner">
                 <mat-form-field>
-                  <input readonly type="text" matInput name="pit" #pit placeholder="Customer or Promotion ID" [(ngModel)]="order.pit">
+                  <input readonly type="text" matInput name="pit" #pit placeholder="Promotion ID" [(ngModel)]="order.pit">
+                </mat-form-field>
+                <mat-form-field>
+                  <input readonly type="text" matInput name="customer" #customer placeholder="Customer" [(ngModel)]="order.customer">
                 </mat-form-field>
               </div>
             </div>

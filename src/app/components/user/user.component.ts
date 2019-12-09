@@ -13,7 +13,7 @@ import { UserFilter } from 'src/app/pipes/user/userFilter';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
   currentDataSet: User = null;
   dataSetToDelete: User = null;

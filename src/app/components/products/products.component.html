@@ -1,5 +1,5 @@
 <div class="content boxshadow" dpfContent>
-  <h2>Products <i class="fa icon-plus-1 new" (click)="showNew()">Add new</i></h2>
+  <h2>Products <i class="fa icon-plus new" (click)="showNew()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
     <table>
@@ -92,7 +92,14 @@
           <input type="text" formControlName="SAP" matInput name="SAP" #SAP placeholder="SAP">
           <mat-error [hidden]="SAP.valid || SAP.pristine">required</mat-error>
         </mat-form-field>
-
+        <mat-form-field>
+          <mat-select formControlName="supplier"  #supplier placeholder="Supplier">
+            <mat-option value="estb">estb</mat-option>
+            <mat-option value="Display Factory">Display Factory</mat-option>
+            <mat-option value="Hölkemeier">Hölkemeier</mat-option>
+          </mat-select>
+          <mat-error [hidden]="display_id.valid || display_id.pristine">required</mat-error>
+        </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="display_id"  #display_id placeholder="Display">
             <mat-option value="{{display.id}}" *ngFor="let display of displays">{{display.title}}</mat-option>
@@ -130,7 +137,7 @@
           <span class="artnr">{{article.articlenr}}</span>
           <span class="title">{{article.title}}</span>
           <span class="units"><b>{{article.units}}</b></span>
-          <span (click)="addArticleToArticleList(article)" class="icon-plus-1"></span>
+          <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
           <span (click)="removeArticleFromArticleList(article)" class="icon-minus"></span>
         </li>
       </ul>
@@ -149,7 +156,7 @@
               <span class="artnr">{{article.articlenr}}</span>
               <span class="title">{{article.title}}</span>
               <input type="text" id="countArticle{{article.articlenr}}" />
-              <span (click)="addArticleToArticleList(article)" class="icon-plus-1"></span>
+              <span (click)="addArticleToArticleList(article)" class="icon-plus"></span>
             </ng-container>
           </li>
         </ul>
@@ -162,7 +169,7 @@
           <span class="artnr">{{pm.articlenr}}</span>
           <span class="title">{{pm.title}}</span>
           <span class="units"><b>{{pm.units}}</b></span>
-          <span (click)="addPMToPMList(pm)" class="icon-plus-1"></span>
+          <span (click)="addPMToPMList(pm)" class="icon-plus"></span>
           <span (click)="removePMFromPMList(pm)" class="icon-minus"></span>
 
         </li>
@@ -182,7 +189,7 @@
               <span class="artnr">{{pm.articlenr}}</span>
               <span class="title">{{pm.title}}</span>
               <input type="text" id="countPM{{pm.id}}" />
-              <span (click)="addPMToPMList(pm)" class="icon-plus-1"></span>
+              <span (click)="addPMToPMList(pm)" class="icon-plus"></span>
             </ng-container>
           </li>
         </ul>

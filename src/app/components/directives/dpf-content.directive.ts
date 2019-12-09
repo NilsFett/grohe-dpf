@@ -7,7 +7,7 @@ export class DpfContentDirective implements AfterViewInit{
   @HostListener('window:resize', ['$event']) onResize(event) {
     this.checkOverflow();
   }
-  @ContentChild(DpfOverflowWrapperDirective) overflowWrapper: DpfOverflowWrapperDirective;
+  @ContentChild(DpfOverflowWrapperDirective, {static: false}) overflowWrapper!: DpfOverflowWrapperDirective;
   constructor(private el: ElementRef){
 
   }

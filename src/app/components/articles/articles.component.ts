@@ -16,7 +16,7 @@ import { DpfSyncWidthSource } from '../directives/dpf-sync-width-source.directiv
   styleUrls: ['./articles.component.css']
 })
 export class ArticlesComponent  implements OnInit{
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
   @ViewChildren(DpfSyncWidthSource, { read: ElementRef }) syncWidthSources : QueryList<ElementRef>;
 
@@ -134,6 +134,9 @@ export class ArticlesComponent  implements OnInit{
       this.currentDataSet.width = this.articleForm.controls['width'].value;
       this.currentDataSet.depth = this.articleForm.controls['depth'].value;
       this.currentDataSet.topsign = this.articleForm.controls['topsign'].value;
+
+      console.log(this.currentDataSet);
+
       this.dataService.changeArticle(this.currentDataSet);
     }
   }

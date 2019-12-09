@@ -1,7 +1,8 @@
-import { Component, Input, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { UiService } from '../../services/ui.service';
 import { DataService } from '../../services/data.service';
+import { ConfigService } from '../../services/config.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { Order } from 'src/app/classes/Order';
@@ -12,11 +13,13 @@ import { OrderFilter } from 'src/app/pipes/order/orderFilter';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css']
 })
-export class OrdersComponent {
-  @ViewChild(MatSort) sort: MatSort;
+export class OrdersComponent implements OnInit{
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
+
+  public currentSorting = {active: "timestamp", direction: "asc"};
 
   currentDataSet: Order = null;
-  orders: Order[] = [];
+  orders: Order[] = [  ];
   filter = {
     orderId: '',
     sap: '',
@@ -27,8 +30,8 @@ export class OrdersComponent {
   };
   public statusGetParams:string = '';
 
-  columnsToDisplay = [ 'timestamp', 'orderId', 'cross_charge','out', 'sap', 'pit', 'status', 'topsign', 'display',  'displayParts', 'edit'];
-  dataSource: MatTableDataSource<Order>;
+  columnsToDisplay = [ 'timestamp', 'hex', 'cross_charge','out', 'SAP', 'promotion_title', 'status', 'topsign', 'display',  'displayParts', 'edit'];
+  dataSource: MatTableDataSource<Order> = null;
   orderForm = new FormGroup({
     status: new FormControl(''),
     mad: new FormControl(''),
@@ -42,7 +45,9 @@ export class OrdersComponent {
     public user: UserService,
     public ui: UiService,
     public dataService: DataService,
-    private orderFilter: OrderFilter
+    private orderFilter: OrderFilter,
+    private cd: ChangeDetectorRef,
+    public config: ConfigService
   ) {
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
     this.filter.from = new Date(y, m, 1);
@@ -51,16 +56,23 @@ export class OrdersComponent {
     this.dataSource = new MatTableDataSource(this.orders);
     this.ui.view = 'admin';
     if (this.dataService.orders) {
+      //this.orders = this.dataService.orders;
       this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
+
       this.dataSource.data = this.orders;
-      this.dataSource.sort = this.sort;
+      console.log('this.dataSource.data1');
+      console.log(this.dataSource.data);
+      //this.dataSource.sort = this.sort;
     }
     else {
       this.dataService.ordersChange.subscribe(
         (orders: Order[]) => {
+          this.orders = this.dataService.orders;
           this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
           this.dataSource.data = this.orders;
-          this.dataSource.sort = this.sort;
+          console.log('this.dataSource.data2');
+          console.log(this.dataSource.data);
+          //this.dataSource.sort = this.sort;
         }
       );
       this.dataService.loadOrders(this.filter.from, this.filter.until);
@@ -73,22 +85,51 @@ export class OrdersComponent {
   }
 
   ngOnInit() {
-      this.dataSource.sort = this.sort;
-      this.orderForm.valueChanges.subscribe(val => {
+    console.log('ngOnInit');
+    this.cd.detectChanges();
+    console.log(this.dataSource);
+    console.log(this.sort);
+    this.dataSource.sort = this.sort;
+    this.orderForm.valueChanges.subscribe(val => {
         this.currentDataSet.status = val.status;
         this.currentDataSet.mad = val.mad;
         this.currentDataSet.net_sales = val.net_sales;
         this.currentDataSet.filled_empty = val.filled_empty;
         this.currentDataSet.dt = val.dt;
     });
+    this.setFilterParams();
+  }
+
+  private serialize(obj) {
+    var str = [];
+    for (var p in obj)
+      if (obj.hasOwnProperty(p)) {
+        str.push(("status[]=" + encodeURIComponent(obj[p])));
+      }
+    return str.join("&");
   }
 
   filterChanges() {
-    console.log(this.filter);
-    //this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
+
+    this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
     this.dataSource.data = this.orderFilter.transform(this.dataService.orders, this.filter);
-    let arrStr = encodeURIComponent(JSON.stringify(this.filter.status));
-    this.statusGetParams =  arrStr;
+    this.setFilterParams();
+  }
+
+  private setFilterParams(){
+    console.log(this.filter);
+    if(this.filter.status.length){
+      let arrStr = this.serialize(this.filter.status);
+      console.log('this.filter.status');
+      console.log(this.filter.status);
+
+      this.statusGetParams =  '&'+arrStr;
+      console.log('this.statusGetParams');
+      console.log(this.statusGetParams);
+    }
+    else{
+      this.statusGetParams =  '';
+    }
 
   }
 
@@ -148,5 +189,9 @@ export class OrdersComponent {
 
   public tracking():boolean{
     return (this.currentDataSet.status == 'archive' || this.currentDataSet.status == 'storno')
+  }
+
+  public sortChange(sorting){
+    this.currentSorting = sorting;
   }
 }

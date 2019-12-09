@@ -19,18 +19,19 @@
               <div class="span2" style="padding-right:20px;">
                 <img style="width:100px;" src="{{config.baseURL}}uploads/dp{{product.base_display_template_id}}fwp_{{topSignsImageStringById[product.topsign_id]}}.jpg" />
               </div>
-              <div class="span10"><span  class="add icon-plus-1"></span>
+              <div class="span10"><span  class="add icon-plus"></span>
                 <p><span>DF-ID:</span><span>&nbsp;<b>{{product.DFID}}</b></span></p>
                 <p><span>Display Title:</span><span>&nbsp;<b>{{product.title}}</b></span></p>
                 <p>Display Types:&nbsp;<b>{{product.path.path}}&nbsp;</b></p>
                 <p>Price:&nbsp;<b>{{product.price}} €</b></p>
-                <p><span>Display SAP No.:</span><span>&nbsp;<b>{{product.SAP}}</b></span></p>
+                <p><span>Display SAP No. ( Packaging ):</span><span>&nbsp;<b>{{product.SAP}}</b></span></p>
                 <hr />
                 <p><span><b>Articles included:</b></span></p>
                 <ul>
                   <li *ngFor="let article of product.article">
                     <p><b>{{article.units}} x {{article.articlenr}}</b> ({{article.packaging}})<br />
                     {{article.title}} (Type : {{article.type}})</p>
+                    <p>{{article.DT}} </p>
                   </li>
                 </ul>
                 <ng-container *ngIf="product.promotion_material.length">
@@ -87,6 +88,13 @@
 
           <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] && !custom_topsign">
             <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="D / C"  [(ngModel)]="order.DC">
+              <mat-option value="Classical">Classical</mat-option>
+              <mat-option value="DIY">DIY</mat-option>
+            </mat-select>
+            <mat-hint class="warning">mandatory</mat-hint>
           </mat-form-field>
           <div class="clear"></div>
           <div class="spacer20"></div>
@@ -149,18 +157,45 @@
               <div class="inner">
                 <div class="span6"><b>Name</b></div><div class="span6">{{user.data.name.value}} {{user.data.surname.value}}</div>
                 <div class="span6"><b>Department</b></div><div class="span6">{{user.data.department.value}} </div>
-                <div class="span6"><b>Cost Centre</b></div>
+                <div class="span6"><b [ngClass]="{'warning': (order.costcentre_costno.length < 1 || order.costcentre_costno.length > 8)}">Cost Centre Number ( max 8 digits)</b></div>
                 <div class="span6">
                   <mat-form-field>
+                    <!--
                     <mat-select [(ngModel)]="order.costcentre">
                       <mat-option *ngFor="let costcentre of user.data.costcentres" value="{{costcentre.id}}">{{costcentre.costno}} {{costcentre.description}}</mat-option>
                     </mat-select>
+                    -->
+
+                    <input (keyup)="costNoChange($event)" matInput [(ngModel)]="order.costcentre_costno" placeholder="Cost Centre">
+                    <mat-error>required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="span6"><b>Cost Centre Country</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <!--
+                    <mat-select [(ngModel)]="order.costcentre">
+                      <mat-option *ngFor="let costcentre of user.data.costcentres" value="{{costcentre.id}}">{{costcentre.costno}} {{costcentre.description}}</mat-option>
+                    </mat-select>
+                    -->
+
+                    <input matInput [(ngModel)]="order.costcentre_description" placeholder="Cost Centre Country">
+                    <mat-error>required</mat-error>
                   </mat-form-field>
                 </div>
                 <div class="span6"><b>E-Mail</b></div><div class="span6">{{user.data.mail.value}} </div>
                 <div class="span6"><b>Phone</b></div><div class="span6">{{user.data.phone.value}} </div>
                 <div class="span6"><b>Address</b></div><div class="span6">{{user.data.street.value}}, {{user.data.zipcode.value}} {{user.data.city.value}}, {{user.data.country.value}}</div>
                 <div class="span6"><b>Order Date</b></div><div class="span6">{{getDateStringToday()}} </div>
+                <div class="span6"><b>Customer</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <mat-hint *ngIf="order.customer.length == 0" class="warning">Please fill to continue!</mat-hint>
+                    <input type="text" matInput name="customer" #customer placeholder="Customer" [(ngModel)]="order.customer">
+                    <mat-error>required</mat-error>
+                  </mat-form-field>
+                 </div>
+
                 <div class="clear"></div>
               </div>
             </div>
@@ -194,7 +229,7 @@
               <div class="inner">
                 <mat-form-field>
                   <mat-hint *ngIf="order.pit.length == 0" class="warning">Please fill to continue!</mat-hint>
-                  <input type="text" matInput name="pit" #pit placeholder="Customer or Promotion ID" [(ngModel)]="order.pit">
+                  <input type="text" matInput name="pit" #pit placeholder="Promotion ID" [(ngModel)]="order.pit">
                   <mat-error>required</mat-error>
                 </mat-form-field>
               </div>
@@ -213,7 +248,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="order.SAP.length == 8 && order.pit.length > 0" class="row">
+        <div *ngIf="order.SAP.length == 8 && order.pit.length > 0 && order.customer.length > 0 && (order.costcentre_costno.length > 0 && order.costcentre_costno.length < 9) && order.costcentre_description.length > 0" class="row">
           <button mat-raised-button (click)="storeOrder()">Finish order</button>
         </div>
         <div class="clear"></div>

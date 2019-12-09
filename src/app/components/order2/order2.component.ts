@@ -296,9 +296,11 @@ export class Order2Component{
     );
   }
 
+  public costNoChange(event){
+    this.order.costcentre_costno = this.order.costcentre_costno.replace(/\D/g,'');
+  }
+
   public sapNumberChange(event){
-    console.log(event);
-    console.log(this.order.SAP);
     this.order.SAP = this.order.SAP.replace(/\D/g,'');
   }
 

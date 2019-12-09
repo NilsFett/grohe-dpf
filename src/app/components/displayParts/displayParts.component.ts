@@ -13,7 +13,7 @@ import { DisplayPartsFilter } from '../../pipes/displayParts/displayPartsFilter'
   styleUrls: ['./displayParts.component.css']
 })
 export class DisplayPartsComponent  {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
   currentDataSet:DisplaysPart = null;
   dataSetToDelete:DisplaysPart = null;

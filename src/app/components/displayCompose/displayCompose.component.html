@@ -1,5 +1,5 @@
 <div class="display-compose content boxshadow" dpfContent>
-  <h2>Displays <i class="fa icon-plus-1 new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
+  <h2>Displays <i class="fa icon-plus new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
   <div class="dpfoverflowwrapper" dpfOverflowWrapper>
     <div class="spacer20"></div>
     <table>
@@ -149,7 +149,7 @@
           <span class="title">{{part.title}}</span>
           <span class="units">{{part.units}}</span>
           <span (click)="removeDisplayPartFromPartList(part)" class="icon-minus"></span>
-          <span (click)="addDisplayPartToPartList(part)" class="icon-plus-1"></span>
+          <span (click)="addDisplayPartToPartList(part)" class="icon-plus"></span>
         </li>
       </ul>
       <button mat-raised-button (click)="saveDisplaysAndPartList()">Save</button>
@@ -166,7 +166,7 @@
             <ng-container *ngIf="part.deleted == 0 && ( part.title.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 || part.articlenr.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 )">
               <span class="artnr">{{part.articlenr}}</span>
               <span class="title">{{part.title}}</span>
-              <span (click)="addDisplayPartToPartList(part)" class="icon-plus-1"></span>
+              <span (click)="addDisplayPartToPartList(part)" class="icon-plus"></span>
             </ng-container>
           </li>
         </ul>
@@ -198,7 +198,7 @@
 <div class="overlay templates" *ngIf="showChooseTemplate">
   <div class="overlay-content">
     <span (click)="hideChooseTemplateOverlay()" class="close icon-cancel"></span>
-    <h3 class="fa icon-plus-1">Choose Display Template</h3>
+    <h3 class="fa icon-plus">Choose Display Template</h3>
     <hr />
     <div class="row">
       <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>

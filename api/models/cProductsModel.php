@@ -40,6 +40,10 @@ class cProductsModel extends cModel{
 			'value' => false,
 			'type' => 'varchar'
 		),
+		'supplier' => array(
+			'value' => false,
+			'type' => 'varchar'
+		),
 		'product_tree' => array(
 			'value' => false,
 			'type' => 'int'

@@ -49,8 +49,8 @@
         <a>User</a>
       </li>
 
-      <li [ngClass]="{'active': (router.url == '/promotionImages')}">
-        <a (click)="navClicked()" href="/promotionImages" routerLink="/promotionImages">Promotion Images</a>
+      <li [ngClass]="{'active': (router.url == '/promotionImages')}" (click)="navClicked()" routerLink="/promotionImages">
+        <a>Promotion Images</a>
       </li>
 
     </ul>
@@ -77,6 +77,8 @@
           <p><span class="pointer" routerLink="/account">Account</span></p>
           <p><span class="pointer" routerLink="/changePassowrd">change password</span></p>
           <hr />
+          <p><span class="pointer" routerLink="/myorders">My orders</span></p>
+          <hr />
           <p><span class="pointer" (click)="user.logout()">Logout</span></p>
         </div>
         <p><span (click)="userInfoOpenClicked($event)" class="initals pointer">{{user.initials}}</span><span (click)="userInfoOpenClicked($event)" class="pointer">{{user.data.name.value}} {{user.data.surname.value}}</span><span (click)="userInfoOpen = ! userInfoOpen" class="icon-down-open-1 pointer"></span>
@@ -94,6 +96,6 @@
 <div class="boxshadow" id="message-window" [ngClass]="{'active': ui.messageWindowShow}">
   <p *ngFor="let message of ui.messages">{{message}}</p>
 </div>
-{{currentURL}}
+
 <grohe-dpf-medias *ngIf="ui.showMedias && currentURL == '/products'"></grohe-dpf-medias>
 <grohe-dpf-promotion-uploads *ngIf="ui.showMedias && currentURL == '/promotionImages'"></grohe-dpf-promotion-uploads>

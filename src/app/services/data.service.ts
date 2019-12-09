@@ -141,13 +141,23 @@ export class DataService {
     let fromTimestamp = from.getTime();
     let untilTimestamp = until.getTime();
     this.http.get(`${this.config.baseURL}orders?from=${fromTimestamp}&until=${untilTimestamp}`, { withCredentials: true }).subscribe((orders: Order[]) => {
-
       this.orders = orders;
       this.ordersChange.next(this.orders);
     });
   }
 
+  public loadMyOrders(from,until) {
+    let fromTimestamp = from.getTime();
+    let untilTimestamp = until.getTime();
+    this.http.get(`${this.config.baseURL}orders?my=1&from=${fromTimestamp}&until=${untilTimestamp}`, { withCredentials: true }).subscribe((orders: Order[]) => {
+      this.orders = orders;
+      this.ordersChange.next(this.orders);
+    });
+  }
+
+
   public loadImages() {
+    console.log('loadImages');
     this.http.get(`${this.config.baseURL}loadImages`, { withCredentials: true }).subscribe((images: Image[]) => {
       this.images = images;
       this.imagesChange.next(this.images);
@@ -538,7 +548,11 @@ export class DataService {
       product: this.order.productChoosen,
       quantity: this.order.displayQuantity,
       costcentre: this.order.costcentre,
+      costcentre_costno: this.order.costcentre_costno,
+      costcentre_description: this.order.costcentre_description,
       sap: this.order.SAP,
+      customer: this.order.customer,
+      channel: this.order.DC,
       pit: this.order.pit,
       desired_date_delivery: this.order.desired_date_delivery
     };
