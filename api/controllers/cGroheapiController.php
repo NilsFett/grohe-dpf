@@ -190,7 +190,7 @@ class cGroheapiController{
 		}
 	}
 
-	public function deletePromotionImages(){
+	public function deletePromotionImage(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$postData = json_decode(file_get_contents('php://input'),true);
 			$oPromotionImagesModel = new cPromotionImagesModel($postData['id']);
@@ -570,6 +570,15 @@ class cGroheapiController{
 		}
 	}
 
+	public function deleteTopSign(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$postData = json_decode(file_get_contents('php://input'),true);
+			$oTopSignModel = new cTopSignModel($postData['id']);
+			$oTopSignModel->delete();
+			$this->loadTopSigns();
+		}
+	}
+
 	public function deleteDisplayPart(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$postData = json_decode(file_get_contents('php://input'),true);
@@ -716,6 +725,8 @@ class cGroheapiController{
 		$postData = json_decode(file_get_contents('php://input'),true);
 		$order = cOrderModel::getCurrent();
 		$order->set('status', 'ordered');
+		$order->set('display_quantity', $postData['quantity']);
+		//$order->set('channel', $postData['channel']);
 		$order->save();
 		$oTopSignModel = new cTopSignModel($postData['product']['topsign_id']);
 		$displayPartsWeight = 0;
@@ -763,7 +774,7 @@ class cGroheapiController{
 
 		$order->set('date', date('Y-m-d H:i:s'));
 		if(empty($postData['desired_date_delivery'])){
-			$order->set('desired_date_delivery', date('Y-m-d H:i:s', time(60*60*24*35)));
+			$order->set('desired_date_delivery', date('Y-m-d H:i:s', time()+60*60*24*35));
 		}
 		else{
 			$order->set('desired_date_delivery', $postData['desired_date_delivery']);
@@ -795,7 +806,7 @@ class cGroheapiController{
 
 	public function uploadImage(){
 
-		putenv('PATH=/usr/local/bin:/usr/bin:/bin:/opt/local/bin/');
+		//putenv('PATH=/usr/local/bin:/usr/bin:/bin:/opt/local/bin/');
 		if( count($_FILES) ){
 			foreach( $_FILES as $aImage ){
 				$aSize = getimagesize($aImage['tmp_name']);
@@ -827,9 +838,10 @@ class cGroheapiController{
 							$src = cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension;
 							$dest = cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.jpeg';
 
-							$execute = '/usr/local/bin/convert -density 72 \'' . $src. '[0]\' -colorspace sRGB -background white -alpha off -resize 1200x600 \'' . $dest .'\' 2>&1';
+							$execute = 'convert -density 72 \'' . $src. '[0]\' -flatten -resize 1200x600 \'' . $dest .'\' 2>&1';
 							$sExtension = 'jpeg';
-							exec($execute,$x,$y);
+
+							exec($execute);
 						}
 						$oImage = new cImageModel();
 						$oImage->set('title', $aImage['name']);
@@ -877,7 +889,7 @@ class cGroheapiController{
 							$src = cConfig::getInstance()->get('basepath')."uploads/".$sHash.".".$sExtension;
 							$dest = cConfig::getInstance()->get('basepath')."uploads/thumbs/".$sHash.".".$sExtension;
 
-							$execute = '/usr/local/bin/convert \'' . $src. '\'  -background white -resize '.$newWidth.'x'.$newHeight.' \'' . $dest .'\' 2>&1';
+							$execute = 'convert \'' . $src. '\'  -background white -resize '.$newWidth.'x'.$newHeight.' \'' . $dest .'\' 2>&1';
 							exec($execute);
 						}
 						$oImage->save();
@@ -945,16 +957,16 @@ class cGroheapiController{
 	}
 
 	public function orders(){
+
 		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$from = $_GET['from'] / 1000;
+			$until = $_GET['until'] / 1000 + (60*60*24);
 			if(cSessionUser::getInstance()->get('usertype') == 'admin' && ! isset ($_GET['my'] )){
-				$from = $_GET['from'] / 1000;
-				$until = $_GET['until'] / 1000 + (60*60*24);
 				echo json_encode(cOrderModel::getAllOrders($from, $until));
 			}
 			else{
-				echo json_encode(cOrderModel::getAllByUserId(cSessionUser::getInstance()->get('id')));
+				echo json_encode(cOrderModel::getAllByUserId(cSessionUser::getInstance()->get('id'), $from, $until));
 			}
-
 		}
 	}
 
@@ -1076,7 +1088,7 @@ class cGroheapiController{
 			$sheet->setCellValueByColumnAndRow(21, $rowCounter, '');
 			$sheet->setCellValueByColumnAndRow(22, $rowCounter, '');
 			$sheet->setCellValueByColumnAndRow(23, $rowCounter, $order['net_sales']);
-			$sheet->setCellValueByColumnAndRow(24, $rowCounter, $oDisplay->get('articlenr'));
+			$sheet->setCellValueByColumnAndRow(24, $rowCounter, $order['product']['SAP']);////////
 			$sheet->setCellValueByColumnAndRow(25, $rowCounter, $order['filled_empty']);
 			$sheet->setCellValueByColumnAndRow(26, $rowCounter, $order['date']);
 			$sheet->setCellValueByColumnAndRow(27, $rowCounter, $order['hex']);

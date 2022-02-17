@@ -21,6 +21,7 @@ export class OrdersComponent implements OnInit{
   currentDataSet: Order = null;
   orders: Order[] = [  ];
   filter = {
+    dfid: '',
     orderId: '',
     sap: '',
     pit: '',
@@ -30,7 +31,7 @@ export class OrdersComponent implements OnInit{
   };
   public statusGetParams:string = '';
 
-  columnsToDisplay = [ 'timestamp', 'hex', 'cross_charge','out', 'SAP', 'promotion_title', 'status', 'topsign', 'display',  'displayParts', 'edit'];
+  columnsToDisplay = [ 'timestamp', 'DFID','hex', 'cross_charge','out', 'SAP', 'promotion_title', 'status', 'topsign', 'display',  'displayParts', 'edit'];
   dataSource: MatTableDataSource<Order> = null;
   orderForm = new FormGroup({
     status: new FormControl(''),
@@ -60,9 +61,13 @@ export class OrdersComponent implements OnInit{
       this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
 
       this.dataSource.data = this.orders;
-      console.log('this.dataSource.data1');
-      console.log(this.dataSource.data);
-      //this.dataSource.sort = this.sort;
+      this.dataService.ordersChange.subscribe(
+        (orders: Order[]) => {
+          this.orders = this.dataService.orders;
+          this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
+          this.dataSource.data = this.orders;
+        }
+      );
     }
     else {
       this.dataService.ordersChange.subscribe(
@@ -70,13 +75,11 @@ export class OrdersComponent implements OnInit{
           this.orders = this.dataService.orders;
           this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
           this.dataSource.data = this.orders;
-          console.log('this.dataSource.data2');
-          console.log(this.dataSource.data);
-          //this.dataSource.sort = this.sort;
         }
       );
-      this.dataService.loadOrders(this.filter.from, this.filter.until);
+
     }
+    this.dataService.loadOrders(this.filter.from, this.filter.until);
   }
 
   public loadOrders(){
@@ -85,7 +88,6 @@ export class OrdersComponent implements OnInit{
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.cd.detectChanges();
     console.log(this.dataSource);
     console.log(this.sort);

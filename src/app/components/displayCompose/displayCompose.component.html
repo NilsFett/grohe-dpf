@@ -76,7 +76,7 @@
           <th mat-header-cell *matHeaderCellDef>
               Delete
           </th>
-          <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa trash-empty delete"></i> </td>
+          <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
@@ -100,7 +100,7 @@
     <div class="container-flex" *ngIf="!showAssembly">
       <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="formValidateAfterIf()">
         <div class="spacer20"></div>
-        <img *ngIf="currentDataSet" (click)="selectImage();" src="{{getImage(currentDataSet.image)}}" class="display" />
+        <img *ngIf="currentDataSet" (click)="selectImage();" src="{{getImage(currentDataSet)}}" class="display" />
         <input type="hidden" formControlName="image" name="image" #title>
         <mat-form-field>
           <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
@@ -203,24 +203,25 @@
     <div class="row">
       <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
       <div class="spacer"></div>
-      <div class="span3 padding">
-
+      <div class="span2 padding">
         <img (click)="templateChoosen(0)" src="{{config.baseURL}}uploads/dp1fwp_v1.jpg" />
         <p>Manteldisplay mit niedrigem Sockel für Duschsysteme</p>
       </div>
-      <div class="span3 padding">
-
+      <div class="span2 padding">
         <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp2fwp_v1.jpg" />
         <p>Manteldisplay mit hohem Sockel für Stangensets</p>
       </div>
-      <div class="span3 padding">
-
+      <div class="span2 padding">
         <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp3fwp_v1.jpg" />
         <p>2 Schüttendisplay</p>
       </div>
-      <div class="span3 padding">
+      <div class="span2 padding">
         <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp4fwp_v1.jpg" />
         <p>3 Schüttendisplay</p>
+      </div>
+      <div class="span2 padding">
+        <img (click)="templateChoosen(5)" src="{{config.baseURL}}uploads/dp5fwp_v1.jpg" />
+        <p>Mixdisplay</p>
       </div>
       <hr class="clear" />
       <button class="delete-button" (click)="templateChoosen(4)" mat-raised-button>Or create a new one without template</button>

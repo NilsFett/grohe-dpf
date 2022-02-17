@@ -185,7 +185,7 @@
 
         <mat-form-field>
           <mat-select formControlName="topsign"  #topsign placeholder="Topsign">
-            <mat-option *ngFor="let topsign of topSigns" value="{{topsign.id}}">{{topsign.title}}</mat-option>
+            <mat-option *ngFor="let topsign of topSigns" value="{{topsign.id}}">{{topsign.articlenr}} | {{topsign.title}}</mat-option>
           </mat-select>
           <mat-error [hidden]="topsign.valid || topsign.pristine">required</mat-error>
         </mat-form-field>

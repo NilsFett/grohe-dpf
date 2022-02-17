@@ -11,6 +11,9 @@
             <i class="fa icon-search"></i><input placeholder="Order-ID" (ngModelChange)="filter.orderId=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.orderId" class="filter" type="text"  name="orderIdFilter" >
           </td>
           <td>
+            <i class="fa icon-search"></i><input placeholder="DF ID" (ngModelChange)="filter.dfid=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.dfid" class="filter" type="text"  name="orderIdFilter" >
+          </td>
+          <td>
             <i class="fa icon-search"></i><input placeholder="SAP-No" (ngModelChange)="filter.sap=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.sap" class="filter" type="text"  name="sapFilter" >
           </td>
           <td>
@@ -43,6 +46,12 @@
                 Order-Date
               </th>
             <td mat-cell *matCellDef="let order"> {{order.date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="DFID">
+              <th mat-sort-header mat-header-cell *matHeaderCellDef>
+                DF ID
+              </th>
+            <td mat-cell *matCellDef="let order"> {{order.product.DFID}} </td>
           </ng-container>
           <ng-container matColumnDef="hex">
             <th mat-sort-header mat-header-cell *matHeaderCellDef>

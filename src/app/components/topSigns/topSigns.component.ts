@@ -73,8 +73,19 @@ export class TopSignsComponent  {
     }
   }
 
+  public clearForm(){
+    this.topSignForm = new FormGroup({
+      image: new FormControl(''),
+      title : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      type: new FormControl(''),
+      articlenr : new FormControl('',[Validators.required, Validators.minLength(2)]),
+      weight : new FormControl('',[Validators.required])
+    });
+  }
+
   public showNew(){
-    this.ui.doShowEditNew();;
+    this.clearForm();
+    this.ui.doShowEditNew();
     this.currentDataSet = new TopSign();
   }
 

@@ -109,7 +109,7 @@
         <mat-form-field>
           <mat-select formControlName="topsign_id"  #topsign_id placeholder="Top Sign">
             <ng-container *ngFor="let topsign of topSigns" >
-              <mat-option *ngIf="topsign.type == 1" value="{{topsign.id}}" >{{topsign.title}}</mat-option>
+              <mat-option *ngIf="topsign.type == 1" value="{{topsign.id}}" >{{topsign.articlenr}} {{topsign.title}}</mat-option>
             </ng-container>
           </mat-select>
         </mat-form-field>

@@ -17,7 +17,7 @@
           <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
             <li (click)="productSelected(product)" *ngIf="filterArticleList(product)" class="row">
               <div class="span2" style="padding-right:20px;">
-                <img style="width:100px;" src="{{config.baseURL}}uploads/dp{{product.base_display_template_id}}fwp_{{topSignsImageStringById[product.topsign_id]}}.jpg" />
+                <img style="width:100px;" src="{{getImage(product)}}" />
               </div>
               <div class="span10"><span  class="add icon-plus"></span>
                 <p><span>DF-ID:</span><span>&nbsp;<b>{{product.DFID}}</b></span></p>
@@ -44,6 +44,9 @@
                     </li>
                   </ul>
                 </ng-container>
+                <hr />
+                <p><span><b>Top sign:</b></span></p>
+                <p *ngIf="topSignsById[product.topsign_id]">{{topSignsById[product.topsign_id].title}} | <b>{{topSignsById[product.topsign_id].articlenr}}</b></p>
               </div>
               <div class="clear"></div>
             </li>
@@ -54,7 +57,7 @@
       <div *ngIf="order.productChoosen" class="inner product-choosen">
         <span (click)="removeSelected(product)" class="cancel icon-cancel"></span>
         <div class="span4" style="padding-right:20px;">
-          <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp_{{topSignsImageStringById[order.productChoosen.topsign_id]}}.jpg" />
+          <img style="width:100px;" src="{{getImage(order.productChoosen)}}" />
 
         </div>
         <div class="span8">
@@ -87,7 +90,7 @@
           <div class="spacer20"></div>
 
           <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] && !custom_topsign">
-            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
+            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}} | {{topSignsById[order.productChoosen.topsign_id].articlenr}}" disabled>
           </mat-form-field>
           <mat-form-field>
             <mat-select placeholder="D / C"  [(ngModel)]="order.DC">

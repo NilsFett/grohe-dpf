@@ -13,7 +13,7 @@
         <div class="spacer20"></div>
         <div class="spacer20"></div>
         <div class="span4" style="padding-right:20px;">
-          <img src="{{config.baseURL}}uploads/dp{{order.productChoosen.base_display_template_id}}fwp_{{topSignsImageStringById[order.productChoosen.topsign_id]}}.jpg" />
+          <img src="{{getImage(order.productChoosen)}}" />
         </div>
         <div class="span8">
           <p><span><b>DF-ID:</b></span><span> {{order.productChoosen.DFID}}</span></p>
@@ -31,18 +31,16 @@
             </li>
           </ul>
           <mat-form-field>
-            <input type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
+            <input readonly type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
           </mat-form-field>
 
 
           <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] ">
-            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}}" disabled>
+            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}} | {{topSignsById[order.productChoosen.topsign_id].articlenr}}" disabled>
           </mat-form-field>
           <mat-form-field>
-            <mat-select placeholder="D / C"  [(ngModel)]="order.DC">
-              <mat-option value="DIY">DIY</mat-option>
-              <mat-option value="Classical">Classical</mat-option>
-            </mat-select>
+
+            <input readonly type="text" matInput placeholder="D / C" [(ngModel)]="order.DC">
           </mat-form-field>
           <div class="clear"></div>
           <table>
