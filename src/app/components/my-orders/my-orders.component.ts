@@ -18,6 +18,7 @@ export class MyOrdersComponent {
 
   orders: Order[] = [];
   filter = {
+    dfid: '',
     orderId: '',
     sap: '',
     pit: '',
@@ -45,8 +46,17 @@ export class MyOrdersComponent {
 
     if (this.dataService.orders) {
       this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
-      this.dataSource.data = this.orders;
+
       this.dataSource.sort = this.sort;
+
+      this.dataSource.data = this.orders;
+      this.dataService.ordersChange.subscribe(
+        (orders: Order[]) => {
+          this.orders = this.dataService.orders;
+          this.orders = this.orderFilter.transform(this.dataService.orders, this.filter);
+          this.dataSource.data = this.orders;
+        }
+      );
     }
     else {
       this.dataService.ordersChange.subscribe(

@@ -144,6 +144,39 @@ export abstract class displayTemplates {
       })
     ),
     parts:[]
+  },{
+
+    display:(new Display ({
+        id:null,
+        title:'Mixdisplay',
+        articlenr:'9800130S',
+        image:23,
+        hide:false,
+        displaytype:"1_4_chep_pallet",
+        base_display_template_id:5,
+        topsign_punch:'',
+        instruction:3
+      })
+    ),
+    parts:[{
+      articlenr:98001242,
+      units:1
+    },{
+      articlenr:98001508,
+      units:1
+    },{
+      articlenr:98001501,
+      units:1
+    },{
+      articlenr:98001503,
+      units:1
+    },{
+      articlenr:98001506,
+      units:3
+    },{
+      articlenr:98001540,
+      units:1
+    }]
   }
   ];
 }

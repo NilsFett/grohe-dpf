@@ -13,8 +13,15 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-session_start();
+session_set_cookie_params([
+					'path'=>'/',
+				/*	'expires'=> time() + 60 * 60 * 24 * 365,*/
+					'samesite' => 'None',
+					'secure' => true,
+					'httponly' => true,
+				'domain' => 'grohe-dpf.localdomain']);
+session_start(				);
+//header('Set-Cookie: cross-site-cookie=name; SameSite=None; Secure');
 if ($_SERVER['REQUEST_METHOD']=='OPTIONS') {
 	exit();
 }

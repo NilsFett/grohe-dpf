@@ -304,4 +304,14 @@ export class Order2Component{
     this.order.SAP = this.order.SAP.replace(/\D/g,'');
   }
 
+  public getImage(display){
+      let imageNumber = (parseInt(display.base_display_template_id));
+      if(this.topSignsImageStringById[display.topsign_id]){
+        return `${this.config.baseURL}uploads/dp${imageNumber}fwp_${(this.topSignsImageStringById[display.topsign_id])}.jpg`;
+
+      }
+      else{
+        return `${this.config.baseURL}uploads/dp${imageNumber}fwp_v1.jpg`;
+      }
+  }
 }

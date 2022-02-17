@@ -240,7 +240,68 @@ class cOrderModel extends cModel{
 		return $orders;
 	}
 
-	public static function getAllByUserId($userid){
+	public static function getAllByUserId($userid, $from, $until, $status=''){
+
+
+		if($from && $until){
+			$from = date('Y-m-d H:m:s', $from);
+			$until = date('Y-m-d H:m:s', $until);
+			$query = '	SELECT *
+									FROM `'.self::$sTable.'`
+									WHERE `date` > "'.$from.'"
+									AND `date` < "'.$until.'"';
+			if( ! empty( $status)){
+				$query .= '	AND `status` IN ("'.$status.'") AND `userid` = ?';
+			}
+
+			if( ! empty( $_GET['sortBy'] ) && ! empty( $_GET['sortDirection'] ) ){
+				$query .= '	ORDER BY '.self::$orderMatch[$_GET['sortBy']].' '.$_GET['sortDirection'];
+			}
+    }
+    else{
+        $query = '    SELECT *
+        FROM `'.self::$sTable.'`
+        WHERE `old_system` = 0
+				AND `userid` = ?';
+    }
+
+		$db = cDatabase::getInstance();
+		
+		$stmt = $db->hConnection->prepare($query);
+		$stmt->execute(array($userid));
+		$orders = array();
+
+
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+			$row['hex'] = $row['costcentrecode'].(toHexFive($row['id']));
+			if( ! empty($row['product'])){
+				$row['product'] = unserialize($row['product']);
+			}
+			else{
+				$row['product'] = '';
+			}
+			if( ! empty($row['topsign'])){
+				$row['topsign'] = unserialize($row['topsign']);
+			}
+			else{
+				$row['topsign'] = '';
+			}
+			$date = date('d.m.Y', strtotime($row['date']));
+			$row['date'] = $date;
+            $row['timestamp'] = strtotime($row['date']);
+			$oCostNo = new cCostNoModel($row['costcentre']);
+			$row['market'] = $row['costcentrecode'].$oCostNo->get('costno');
+			$row['cosno'] = $oCostNo->get('costno');
+			$orders[] = $row;
+		}
+
+		return $orders;
+
+
+
+
+
 		$query = '	SELECT *
 								FROM `'.self::$sTable.'`
 								WHERE `old_system` = 0

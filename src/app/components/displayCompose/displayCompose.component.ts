@@ -127,10 +127,8 @@ export class DisplayComposeComponent implements OnDestroy{
   }
 
   public getImage(display){
-
       let imageNumber = (parseInt(display.base_display_template_id));
       return `${this.config.baseURL}uploads/dp${imageNumber}fwp_v1.jpg`;
-
   }
 
   public showNew() {

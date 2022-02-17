@@ -234,6 +234,7 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       hide : new FormControl('')
     });
     this.articleList = [];
+    this.promotionMaterials = [];
   }
 
   filterChanges(){

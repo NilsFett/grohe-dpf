@@ -24,7 +24,15 @@ class cSessionUser extends cUserModel{
 
 
 		if(! isset($_COOKIE[cConfig::getInstance()->get('enviroment').'_user']) ){
-			setcookie(cConfig::getInstance()->get('enviroment').'_user', $this->cookieValue, time() + 60 * 60 * 24 * 365, '/');
+			setcookie(cConfig::getInstance()->get('enviroment').'_user', $this->cookieValue,
+				[
+					'path'=>'/',
+					'expires'=> time() + 60 * 60 * 24 * 365,
+					'samesite' => 'None',
+					'secure' => true,
+					'httponly' => true,
+				'domain' => 'grohe.hoehne-media.de']);
+			//setcookie('cross-site-cookie', 'name', ['expires'=> time() + 60 * 60 * 24 * 365,,'samesite' => 'None', 'secure' => true]);
 		}
 
 
