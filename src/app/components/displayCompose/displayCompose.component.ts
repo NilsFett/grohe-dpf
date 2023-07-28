@@ -128,6 +128,9 @@ export class DisplayComposeComponent implements OnDestroy{
 
   public getImage(display){
       let imageNumber = (parseInt(display.base_display_template_id));
+      if(this.imagesById[display.image]){
+        return `${this.config.baseURL}uploads/thumbs/${this.imagesById[display.image].path}`;
+      }
       return `${this.config.baseURL}uploads/dp${imageNumber}fwp_v1.jpg`;
   }
 
@@ -273,5 +276,7 @@ export class DisplayComposeComponent implements OnDestroy{
   ngOnDestroy(){
     //this.ui.imageChoosen.unsubscribe();
   }
+
+
 
 }

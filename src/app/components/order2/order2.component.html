@@ -9,15 +9,21 @@
       <div class="search" *ngIf="!order.productChoosen">
         <h4>Products <i class="new" (click)="showNewDialog()">Display Request</i></h4>
         <div class="inner">
-          <input type="text" class="search" placeholder="Quick Search (SKU no., DF-ID, Product Category, Display SAP no.) " (keyup)="productsSearchWordChanged($event.target.value)">
+          <input type="text" class="search" placeholder="Quick Search (SKU no., DF-ID, Product Category, Display SAP no., Top Sign) " (keyup)="productsSearchWordChanged($event.target.value)">
         </div>
         <br />
         <p *ngIf="! productsWithArticlesAndProductPath.length"><b>Loading Products, please wait...</b></p>
         <ul class="products">
           <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
             <li (click)="productSelected(product)" *ngIf="filterArticleList(product)" class="row">
-              <div class="span2" style="padding-right:20px;">
+              <div class="span2" hover-class="hover" style="padding-right:20px;">
+                <div class="hiddenimages">
+                  <img style="width:400px;" src="{{getImageTopSign(product,false)}}" />
+                  <img style="width:400px;" src="{{getImage(product,false)}}" />
+                </div>
+                <img style="width:100px;" src="{{getImageTopSign(product)}}" />
                 <img style="width:100px;" src="{{getImage(product)}}" />
+
               </div>
               <div class="span10"><span  class="add icon-plus"></span>
                 <p><span>DF-ID:</span><span>&nbsp;<b>{{product.DFID}}</b></span></p>
@@ -56,9 +62,9 @@
 
       <div *ngIf="order.productChoosen" class="inner product-choosen">
         <span (click)="removeSelected(product)" class="cancel icon-cancel"></span>
-        <div class="span4" style="padding-right:20px;">
+        <div  class="span4" style="padding-right:20px;">
+          <img style="width:100px;" src="{{getImageTopSign(order.productChoosen)}}" />
           <img style="width:100px;" src="{{getImage(order.productChoosen)}}" />
-
         </div>
         <div class="span8">
           <p>DF-ID:<b>{{order.productChoosen.DFID}}</b></p>

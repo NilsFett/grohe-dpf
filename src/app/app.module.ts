@@ -20,6 +20,7 @@ import { ProductsComponent } from './components/products/products.component';
 import { Order2Component } from './components/order2/order2.component';
 import { Order3Component } from './components/order3/order3.component';
 import { MediasComponent } from './components/medias/medias.component';
+/*import { DisplayTypesImagesComponent } from './components/displayTypesImages/displayTypesImages.component';*/
 import { PromotionImages } from './components/promotionImages/promotionImages.component';
 import { PromotionUploads } from './components/promotionUploads/promotionUploads.component';
 import { TopSignsComponent } from './components/topSigns/topSigns.component';
@@ -31,6 +32,7 @@ import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 import { DpfContentDirective } from './components/directives/dpf-content.directive';
 import { DpfOverflowWrapperDirective } from './components/directives/dpf-overflow-wrapper.directive';
 import { DpfFormValidateAfterIfDirective } from './components/directives/dpf-form-validate-after-if.directive';
+import { HoverClassDirective } from './components/directives/dpf-hover-class.directive';
 import { DpfSyncWidth } from './components/directives/dpf-sync-width.directive';
 import { DpfSyncWidthSource } from './components/directives/dpf-sync-width-source.directive';
 import { UserComponent } from './components/user/user.component';
@@ -115,6 +117,7 @@ export class MyDateAdapter extends NativeDateAdapter {
     DpfContentDirective,
     DpfOverflowWrapperDirective,
     DpfFormValidateAfterIfDirective,
+    HoverClassDirective,
     DpfSyncWidth,
     DpfSyncWidthSource,
     DisplayPartsFilter,
@@ -128,6 +131,7 @@ export class MyDateAdapter extends NativeDateAdapter {
     UserComponent,
     TreeViewComponent,
     MediasComponent,
+    /*DisplayTypesImagesComponent,*/
     PromotionImages,
     PromotionUploads/*,
     FileSelectDirective*/

@@ -615,6 +615,17 @@ class cGroheapiController{
 		}
 	}
 
+	public function hideProduct(){
+		if(cSessionUser::getInstance()->bIsLoggedIn){
+			$postData = json_decode(file_get_contents('php://input'),true);
+			$oProductsModel = new cProductsModel($postData['id']);
+			$newValue = ($oProductsModel->get('hide') == 0) ? 1:0;
+			$oProductsModel->set('hide', $newValue);
+			$oProductsModel->save();
+			$this->getProducts();
+		}
+	}
+
 	public function deleteImage(){
 		if(cSessionUser::getInstance()->bIsLoggedIn){
 			$postData = json_decode(file_get_contents('php://input'),true);
@@ -805,7 +816,6 @@ class cGroheapiController{
   }
 
 	public function uploadImage(){
-
 		//putenv('PATH=/usr/local/bin:/usr/bin:/bin:/opt/local/bin/');
 		if( count($_FILES) ){
 			foreach( $_FILES as $aImage ){
@@ -816,7 +826,7 @@ class cGroheapiController{
 						$aImage['type'] = $aSize['mime'];
 					}
 				}
-				if($aImage['error'][0] == 0 && ( $aImage['type'] == 'image/jpeg' || $aImage['type'] == 'image/gif' || $aImage['type'] == 'image/png' || $aImage['type'] == 'application/pdf' )){
+				if($aImage['error'] == 0 && ( $aImage['type'] == 'image/jpeg' || $aImage['type'] == 'image/gif' || $aImage['type'] == 'image/png' || $aImage['type'] == 'application/pdf' )){
 
 				}
 				else if( $aImage['error'] == 0 ){
@@ -827,12 +837,13 @@ class cGroheapiController{
 				$sExtension = $sExtension[1];
 				$sHash = sha1(file_get_contents($aImage['tmp_name']));
 
-				if(cImageModel::imageExists($sHash, 1)){
-					$aErrors[] = 'File '.$aImage['name'].' existiert bereits in diesem Ordner.';
+				if(cImageModel::imageExists($sHash.'.'.$sExtension, 1)){
+					$aErrors[] = 'File '.$aImage['name'].' wurde schon mal hochgeladen.';
+					echo json_encode(array('success'=>false,'errors'=>$aErrors ));
 				}
 				else{
 					if(move_uploaded_file($aImage['tmp_name'], cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension)) {
-						if ( $aImage['type'] == 'application/pdf' && $_GET['type'] == 5){
+						if ( $aImage['type'] == 'application/pdf' ){
 							$execute = 'convert -density 72 \'' . cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension . '\'[0] -colorspace sRGB -resize 1200x600 \'' . cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.jpeg';
 
 							$src = cConfig::getInstance()->get('basepath').'uploads/'.$sHash.'.'.$sExtension;
@@ -842,6 +853,11 @@ class cGroheapiController{
 							$sExtension = 'jpeg';
 
 							exec($execute);
+						}
+						if(cImageModel::imageExists($sHash.'.'.$sExtension, 1)){
+							$aErrors[] = 'File '.$aImage['name'].' wurde schon mal hochgeladen.';
+							echo json_encode(array('success'=>false,'errors'=>$aErrors ));
+							return;
 						}
 						$oImage = new cImageModel();
 						$oImage->set('title', $aImage['name']);
@@ -897,7 +913,7 @@ class cGroheapiController{
 					}
 					else{
 						$aErrors[] = 'File '.$aImage['name'].' konnte nicht hochgeladen werden.';
-						echo json_encode(array('success'=>false,'errors'=>$aErrors));
+						echo json_encode(array('success'=>false,'errors'=>$aErrors ));
 					}
 				}
 			}
@@ -927,7 +943,7 @@ class cGroheapiController{
 				$sExtension = $sExtension[1];
 				$sHash = sha1(file_get_contents($aImage['tmp_name']));
 
-				if(cImageModel::imageExists($sHash, 1)){
+				if(cImageModel::imageExists($sHash.'.'.$sExtension, 1)){
 					$aErrors[] = 'File '.$aImage['name'].' existiert bereits in diesem Ordner.';
 				}
 				else{
@@ -992,28 +1008,28 @@ class cGroheapiController{
 		$sheet->setCellValue('J1', 'Channel');// Channel JJJJJJJJJJJJJ
 		$sheet->setCellValue('K1', 'Customer');// Customer
 		$sheet->setCellValue('L1', 'Customer 2 / Promotion Title');// Customer 2 / Promotion Title
-		$sheet->setCellValue('M1', 'Street');// Street
-		$sheet->setCellValue('N1', 'Postal Code');// Postal Code
-		$sheet->setCellValue('O1', 'City');// City
-		$sheet->setCellValue('P1', 'Item/DF no.'); // DFno PPPPPPPPP
-		$sheet->setCellValue('Q1', 'Display'); //Type of Display
-		$sheet->setCellValue('R1', 'Type of Display'); //Type of Display
-		$sheet->setCellValue('S1', 'Quantity'); // Quantity
-		$sheet->setCellValue('T1', 'Planned delivery date'); // Planned delivery date
-		$sheet->setCellValue('U1', 'Month'); // Month
-		$sheet->setCellValue('V1', 'FY'); // Month
-		$sheet->setCellValue('W1', 'Net sales'); // net sales   WWWWWWWWWWWW
-		$sheet->setCellValue('X1', 'Packaging'); // Packaging
-		$sheet->setCellValue('Y1', 'Filled/Empty'); // filled / empty
-		$sheet->setCellValue('Z1', 'Order Date'); // Order Date
-		$sheet->setCellValue('AA1', 'DF-ID'); // DF-ID
-		$sheet->setCellValue('AB1', 'Cost Center'); // Cost Center
-		$sheet->setCellValue('AC1', 'Topsign'); // Topsign
-		$sheet->setCellValue('AD1', 'Article:'); // Article
-		$sheet->setCellValue('AE1', 'Article Description'); // Article Description
-		$sheet->setCellValue('AF1', 'Article Amount'); // Article Amount
-		$sheet->setCellValue('AG1', 'Pallets'); // Pallets
-		$sheet->setCellValue('AH1', 'Net / Net'); // Net / Net
+		//$sheet->setCellValue('M1', 'Street');// Street
+		//$sheet->setCellValue('N1', 'Postal Code');// Postal Code
+		//$sheet->setCellValue('O1', 'City');// City
+		$sheet->setCellValue('M1', 'Item/DF no.'); // DFno PPPPPPPPP
+		$sheet->setCellValue('N1', 'Display'); //Type of Display
+		$sheet->setCellValue('O1', 'Type of Display'); //Type of Display
+		$sheet->setCellValue('P1', 'Quantity'); // Quantity
+		//$sheet->setCellValue('T1', 'Planned delivery date'); // Planned delivery date
+		//$sheet->setCellValue('U1', 'Month'); // Month
+		$sheet->setCellValue('Q1', 'FY'); // Month
+		$sheet->setCellValue('R1', 'Net sales'); // net sales   WWWWWWWWWWWW
+		$sheet->setCellValue('S1', 'Packaging'); // Packaging
+		$sheet->setCellValue('T1', 'Filled/Empty'); // filled / empty
+		$sheet->setCellValue('U1', 'Order Date'); // Order Date
+		$sheet->setCellValue('V1', 'DF-ID'); // DF-ID
+		$sheet->setCellValue('W1', 'Cost Center'); // Cost Center
+		$sheet->setCellValue('X1', 'Topsign'); // Topsign
+		$sheet->setCellValue('Y1', 'Article:'); // Article
+		$sheet->setCellValue('Z1', 'Article Description'); // Article Description
+		$sheet->setCellValue('AA1', 'Article Amount'); // Article Amount
+		$sheet->setCellValue('AB1', 'Pallets'); // Pallets
+		$sheet->setCellValue('AC1', 'Net / Net'); // Net / Net
 
 		/*
 		$sheet->setCellValue('H1', 'Market'); // Market
@@ -1026,7 +1042,7 @@ class cGroheapiController{
 
 		$articlesById = array();
 		$displayPartsById = array();
-		$cellCounter = 35;
+		$cellCounter = 33;
 		$cellCounter++;
     if(isset($_GET['from'])){
         $from = $_GET['from'] / 1000;
@@ -1077,34 +1093,28 @@ class cGroheapiController{
 			$sheet->setCellValueByColumnAndRow(11, $rowCounter, $order['customer']);
 			$sheet->setCellValueByColumnAndRow(12, $rowCounter, $order['promotion_title']);
 			$sheet->setCellValueByColumnAndRow(13, $rowCounter, '');
-			$sheet->setCellValueByColumnAndRow(14, $rowCounter, '');
-			$sheet->setCellValueByColumnAndRow(15, $rowCounter, '');
-			$sheet->setCellValueByColumnAndRow(16, $rowCounter, $order['product']['DFID']);
+			//$sheet->setCellValueByColumnAndRow(14, $rowCounter, '');
+			//$sheet->setCellValueByColumnAndRow(15, $rowCounter, '');
+			$sheet->setCellValueByColumnAndRow(14, $rowCounter, $order['product']['DFID']);
 			$oDisplay = new cDisplaysModel( $order['product']['display_id'] );
-			$sheet->setCellValueByColumnAndRow(17, $rowCounter, $this->displayTypeExportNames[$oDisplay->get('displaytype')]);
-			$sheet->setCellValueByColumnAndRow(18, $rowCounter, 'Promotion');
-			$sheet->setCellValueByColumnAndRow(19, $rowCounter, $order['display_quantity']);
-			$sheet->setCellValueByColumnAndRow(20, $rowCounter, '');
-			$sheet->setCellValueByColumnAndRow(21, $rowCounter, '');
-			$sheet->setCellValueByColumnAndRow(22, $rowCounter, '');
-			$sheet->setCellValueByColumnAndRow(23, $rowCounter, $order['net_sales']);
-			$sheet->setCellValueByColumnAndRow(24, $rowCounter, $order['product']['SAP']);////////
-			$sheet->setCellValueByColumnAndRow(25, $rowCounter, $order['filled_empty']);
-			$sheet->setCellValueByColumnAndRow(26, $rowCounter, $order['date']);
-			$sheet->setCellValueByColumnAndRow(27, $rowCounter, $order['hex']);
+			$sheet->setCellValueByColumnAndRow(15, $rowCounter, $this->displayTypeExportNames[$oDisplay->get('displaytype')]);
+			$sheet->setCellValueByColumnAndRow(16, $rowCounter, 'Promotion');
+			$sheet->setCellValueByColumnAndRow(17, $rowCounter, $order['display_quantity']);
+			//$sheet->setCellValueByColumnAndRow(20, $rowCounter, '');
+			//$sheet->setCellValueByColumnAndRow(21, $rowCounter, '');
+			$sheet->setCellValueByColumnAndRow(18, $rowCounter, '');
+			$sheet->setCellValueByColumnAndRow(19, $rowCounter, $order['net_sales']);
+			$sheet->setCellValueByColumnAndRow(20, $rowCounter, $order['product']['SAP']);////////
+			$sheet->setCellValueByColumnAndRow(21, $rowCounter, $order['filled_empty']);
+			$sheet->setCellValueByColumnAndRow(22, $rowCounter, $order['date']);
+			$sheet->setCellValueByColumnAndRow(23, $rowCounter, $order['hex']);
 			$oCostNo = cCostNoModel::getByUserId($order['userid']);
 			$costcentre_costno = empty( $order['costcentre_costno'] ) ? $oCostNo->get('costno') : $order['costcentre_costno'];
-			$sheet->setCellValueByColumnAndRow(28, $rowCounter, $costcentre_costno);
+			$sheet->setCellValueByColumnAndRow(24, $rowCounter, $costcentre_costno);
 			if( isset( $order['topsign']['title'] ) ){
-				$sheet->setCellValueByColumnAndRow(29, $rowCounter, $order['topsign']['articlenr']);
+				$sheet->setCellValueByColumnAndRow(25, $rowCounter, $order['topsign']['articlenr']);
 			}
-			/*
-			$status = ($order['status'] == 'archive')?'o':'';
-			$sheet->setCellValueByColumnAndRow(8, $rowCounter, $status);
-			$oCostNo = new cCostNoModel($order['costcentre']);
-			$sheet->setCellValueByColumnAndRow(13, $rowCounter, $order['product']['SAP']);
-			$sheet->setCellValueByColumnAndRow(14, $rowCounter, $order['delivery']);
-*/
+
 
 
 
@@ -1122,10 +1132,10 @@ class cGroheapiController{
 
 			}
 			//$sheet->setCellValueByColumnAndRow(14, $rowCounter, $DCs);
-			$sheet->setCellValueByColumnAndRow(30, $rowCounter, $numbers);
-			$sheet->setCellValueByColumnAndRow(31, $rowCounter, $titles);
-			$sheet->setCellValueByColumnAndRow(32, $rowCounter, $units);
-			$sheet->setCellValueByColumnAndRow(33, $rowCounter, $order['pallet_quantity']);
+			$sheet->setCellValueByColumnAndRow(26, $rowCounter, $numbers);
+			$sheet->setCellValueByColumnAndRow(27, $rowCounter, $titles);
+			$sheet->setCellValueByColumnAndRow(28, $rowCounter, $units);
+			$sheet->setCellValueByColumnAndRow(29, $rowCounter, $order['pallet_quantity']);
 
 
 			foreach( $order['product']['display_parts'] as $displayPart){

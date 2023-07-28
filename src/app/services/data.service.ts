@@ -157,7 +157,6 @@ export class DataService {
 
 
   public loadImages() {
-    console.log('loadImages');
     this.http.get(`${this.config.baseURL}loadImages`, { withCredentials: true }).subscribe((images: Image[]) => {
       this.images = images;
       this.imagesChange.next(this.images);
@@ -170,7 +169,6 @@ export class DataService {
       this.promotionImagesChange.next(this.promotionImages);
     });
   }
-
 
   public loadCategories() {
     this.http.get(`${this.config.baseURL}loadCategories`, { withCredentials: true }).subscribe((categories: ProductTree[]) => {
@@ -455,6 +453,19 @@ export class DataService {
         this.ui.setMessage('Delete success');
         this.deleteSuccess.next(true);
         this.ui.doCloseDelete();
+      },
+      error => {
+        this.error.setError(error);
+        this.ui.setMessage('An Error occoured');
+      }
+    );
+  }
+
+  public hideProduct(dataSet) {
+    this.http.post(`${this.config.baseURL}hideProduct`, dataSet, { withCredentials: true }).subscribe(
+      (products: Product[]) => {
+        this.products = products;
+        this.productsChange.next(this.products);
       },
       error => {
         this.error.setError(error);

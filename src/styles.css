@@ -156,7 +156,7 @@ textarea{
   cursor:pointer;
   color:#3184b9;
 }
-.edit{
+.edit, .hide{
 color:#3184b9;
 }
 .overlaybg{
@@ -170,11 +170,31 @@ color:#3184b9;
   z-index:2100;
 }
 
+.hiddenimages{
+  display:none;
+  position:absolute;
+  top:50px;
+  left:40%;
+  background-color: #fff;
+  padding:20px;
+  z-index:1001;
+  border:2px solid #e6e6e6;
+}
+
+.hover .hiddenimages{
+  display:block;
+
+}
+
 grohe-dpf-start .overlaybg{
   opacity: 1;
 }
 .opaque{
   background: rgba(255,255,255, 1);
+}
+
+tr.hidden{
+  opacity: 0.3;
 }
 
 .overlay, .promotion-image{
@@ -239,6 +259,10 @@ grohe-dpf-start .overlaybg{
   width:100px;
 }
 
+.filtercheckbox{
+  margin-left:6px;
+}
+
 .icon-cancel, .icon-ok.active{
   color:#3184b9;
 }
@@ -273,6 +297,7 @@ i.icon-search{
 .mat-table img{
   max-width:100px;
   max-height:100px;
+  display:block;
 }
 
 #message-window{
@@ -503,13 +528,13 @@ nav ul li:hover > a, nav ul li.active > a{
   font-weight:bold;
 }
 nav ul li:hover > a:before, nav ul li.active > a:before{
-  content: '\e805';
+  content: '\f192';
   font-family: "fontello";
   position:absolute;
   margin-left:-20px;
   color:#3084b9;
   font-weight:bold;
-  font-size:40px;
+  font-size:14px;
 }
 
 
@@ -743,7 +768,7 @@ header, .main{
     max-height:100px;
 }
 
-grohe-dpf-medias, grohe-dpf-promotion-uploads{
+grohe-dpf-medias, grohe-dpf-promotion-uploads, grohe-dpf-display-types-images{
   position:fixed;
   height:100%;
   width:100%;

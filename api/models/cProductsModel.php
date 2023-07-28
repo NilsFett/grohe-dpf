@@ -106,11 +106,15 @@ class cProductsModel extends cModel{
 		parent::__construct($aData);
 	}
 
-	public static function getAll(){
-		$query = '	SELECT `t_display_position`.*, `t_displays`.`base_display_template_id`, `t_displays`.`id`  AS displayID
+	public static function getAll($withHidden = true){
+		$query = '	SELECT `t_display_position`.*, `t_displays`.`base_display_template_id`, `t_displays`.`id`  AS displayID, `t_topsign`.`title`AS top_sign_title
 								FROM `t_display_position`
 								LEFT JOIN `t_displays` ON(`t_displays`.`id` = `t_display_position`.`display_id`)
+								LEFT JOIN `t_topsign` ON(`t_topsign`.`id` = `t_display_position`.`topsign_id`)
 								WHERE `t_display_position`.`old_system` = 0 AND `t_displays`.`id`  IS NOT NULL AND `t_displays`.`old_system` = 0';
+								if($withHidden === false){
+									$query .= ' AND `t_display_position`.`hide` = 0';
+								}
 		$db = cDatabase::getInstance();
 		$stmt = $db->hConnection->prepare($query);
 		$stmt->execute();
@@ -119,9 +123,10 @@ class cProductsModel extends cModel{
 	}
 
 	public static function getAllByProductTreeId($productTreeId){
-		$query = '	SELECT `t_display_position`.*, `t_displays`.`base_display_template_id`, `t_displays`.`id`  AS displayID
+		$query = '	SELECT `t_display_position`.*, `t_displays`.`base_display_template_id`, `t_displays`.`id`  AS displayID, `t_topsign`.`title`AS top_sign_title
 								FROM `t_display_position`
 								LEFT JOIN `t_displays` ON(`t_displays`.`id` = `t_display_position`.`display_id`)
+								LEFT JOIN `t_topsign` ON(`t_topsign`.`id` = `t_display_position`.`topsign_id`)
 								WHERE `t_display_position`.`old_system` = 0
 								AND `t_displays`.`id`  IS NOT NULL
 								AND `t_displays`.`old_system` = 0
@@ -134,7 +139,7 @@ class cProductsModel extends cModel{
 	}
 
 	public static function getAllWithArticlesAndProductPath(){
-		$products = self::getAll();
+		$products = self::getAll(false);
 
 		foreach( $products as $index => $product ){
 			$products[$index]['path'] = self::getProductPath($product['product_tree']);

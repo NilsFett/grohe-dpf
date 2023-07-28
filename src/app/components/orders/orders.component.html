@@ -20,6 +20,9 @@
             <i class="fa icon-search"></i><input placeholder="Promotion-Title" (ngModelChange)="filter.pit=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.pit" class="filter" type="text"  name="pitFilter" >
           </td>
           <td>
+            <i class="fa icon-search"></i><input placeholder="Top Sign" (ngModelChange)="filter.topSign=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topSign" class="filter" type="text"  name="topSign" >
+          </td>
+          <td>
 
             <mat-select multiple placeholder="status" style="width:100px;" (ngModelChange)="filter.status=$event;filterChanges();" [(ngModel)]="filter.status">
               <mat-option selected value="ordered">ordered</mat-option>

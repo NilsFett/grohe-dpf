@@ -17,6 +17,8 @@ class cSessionUser extends cUserModel{
 	static $oInstance = NULL;
 	public $bIsLoggedIn = false;
 
+  private $cookieValue = NULL;
+
 	public function __construct(){
 		parent::__construct();
 		$this->cookieValue = session_id().time();

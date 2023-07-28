@@ -4,6 +4,8 @@ import { UserService} from '../../services/user.service';
 import { ConfigService} from '../../services/config.service';
 import { TopSign } from '../../classes/TopSign';
 import { DataService} from '../../services/data.service';
+import { Image } from '../../classes/Image';
+import { Display } from '../../classes/display';
 import { Router} from '@angular/router';
 
 @Component({
@@ -14,6 +16,10 @@ import { Router} from '@angular/router';
 export class Order3Component {
   public topSigns:TopSign[] = [];
   public topSignsById = {};
+  public images:Image[] = [];
+  public imagesById = {};
+  public displays:Display[] = [];
+  public displaysById = {};
   public success:boolean = false;
   public topSignsImageStringById = {
     1:'shower',
@@ -53,6 +59,40 @@ export class Order3Component {
         }
       );
       this.dataService.loadTopSigns();
+    }
+    if (this.dataService.displays) {
+      this.displays = this.dataService.displays;
+      for(var i = 0; i < this.displays.length; i++ ){
+        this.displaysById[this.displays[i].id] = this.displays[i];
+      }
+    }
+    else {
+      this.dataService.displaysChange.subscribe(
+        (displays: Display[]) => {
+          this.displays = this.dataService.displays;
+          for(var i = 0; i < this.displays.length; i++ ){
+            this.displaysById[this.displays[i].id] = this.displays[i];
+          }
+        }
+      );
+      this.dataService.loadDisplays();
+    }
+    if(this.dataService.images){
+      this.images = this.dataService.images;
+      for(let i = 0; i < this.images.length ; i++ ){
+        this.imagesById[this.images[i].id] = this.images[i];
+      }
+    }
+    else{
+      this.dataService.imagesChange.subscribe(
+        (images:Image[]) => {
+          this.images = images;
+          for(let i = 0; i < this.images.length ; i++ ){
+            this.imagesById[this.images[i].id] = this.images[i];
+          }
+        }
+      );
+      this.dataService.loadImages();
     }
   }
 
@@ -137,14 +177,21 @@ export class Order3Component {
       }
     );
   }
-  public getImage(display){
-      let imageNumber = (parseInt(display.base_display_template_id));
-      if(this.topSignsImageStringById[display.topsign_id]){
-        return `${this.config.baseURL}uploads/dp${imageNumber}fwp_${(this.topSignsImageStringById[display.topsign_id])}.jpg`;
+  public getImage(product){
+    if(this.displaysById[product.display_id] && this.imagesById[this.displaysById[product.display_id].image]){
+      return `${this.config.baseURL}uploads/${this.imagesById[this.displaysById[product.display_id].image].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
+  }
 
-      }
-      else{
-        return `${this.config.baseURL}uploads/dp${imageNumber}fwp_v1.jpg`;
-      }
+  public getImageTopSign(product){
+    if(this.topSignsById[product.topsign_id] && this.imagesById[this.topSignsById[product.topsign_id].image]){
+      return `${this.config.baseURL}uploads/${this.imagesById[this.topSignsById[product.topsign_id].image].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
   }
 }

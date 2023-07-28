@@ -6,13 +6,14 @@
 
 
     <ul *ngIf="ui.view == 'admin' ">
-
+<!--
       <li (click)="navClicked($event)" routerLink="/userRequests" [ngClass]="{'active': (router.url == '/userRequests')}">
         <a>User Account Request</a>
       </li>
       <li>
         <a>Frontpage</a>
       </li>
+-->
       <li>
         <a href="/displayCompose" routerLink="/displayCompose">Display Types</a>
       </li>
@@ -97,5 +98,6 @@
   <p *ngFor="let message of ui.messages">{{message}}</p>
 </div>
 
-<grohe-dpf-medias *ngIf="ui.showMedias && currentURL == '/products'"></grohe-dpf-medias>
+
+<grohe-dpf-medias *ngIf="ui.showMedias"></grohe-dpf-medias>
 <grohe-dpf-promotion-uploads *ngIf="ui.showMedias && currentURL == '/promotionImages'"></grohe-dpf-promotion-uploads>
