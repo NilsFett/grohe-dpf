@@ -30,10 +30,12 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
   filter = {
     title:'',
     DFID:'',
-    SAP:''
+    SAP:'',
+    TopSign:'',
+    showHidden:false
   };
 
-  columnsToDisplay = ['image', 'title', 'DFID', 'SAP', 'price', 'edit', 'delete'];
+  columnsToDisplay = ['image', 'title', 'DFID', 'SAP', 'TopSign', 'price', 'edit', 'delete', 'hide'];
   dataSource :  MatTableDataSource<Product>;
   productForm = new FormGroup({
     image : new FormControl(''),
@@ -77,13 +79,10 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     private changeDetectionRef:ChangeDetectorRef
   ) {
     this.ui.view = 'admin';
-    console.log('constructor products');
     this.dataSource = new MatTableDataSource(this.dataService.products);
     this.dataSource.sort = this.sort;
     this.ui.view = 'admin';
     this.refreshing = false;
-    console.log(this.refreshing );
-
 
     if(this.dataService.images){
       this.images = this.dataService.images;
@@ -102,6 +101,7 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       );
       this.dataService.loadImages();
     }
+
     if(this.dataService.categories){
       this.categories = this.dataService.categories;
     }
@@ -251,6 +251,32 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     }
   }
 
+  public getImageTopSign(product){
+    if(this.topSignsById[product.topsign_id] && this.imagesById[this.topSignsById[product.topsign_id].image]){
+      return `${this.config.baseURL}uploads/${this.imagesById[this.topSignsById[product.topsign_id].image].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
+  }
+  public getImageProduct(product){
+    if(this.displaysById[product.display_id] && this.imagesById[this.displaysById[product.display_id].image]){
+      return `${this.config.baseURL}uploads/${this.imagesById[this.displaysById[product.display_id].image].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
+  }
+
+  public getImageDisplayType(imageid){
+    if(this.imagesById[imageid]){
+      return `${this.config.baseURL}uploads/thumbs/${this.imagesById[imageid].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
+  }
+
   public removeArticleFromArticleList(article:Article){
     if( article.units == 1){
       let index = this.articleList.indexOf(article);
@@ -381,7 +407,6 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       this.currentDataSet.promotion_material_id = this.productForm.controls['promotion_material_id'].value,
       this.currentDataSet.price = this.productForm.controls['price'].value;
       this.currentDataSet.deliverytime = this.productForm.controls['deliverytime'].value;
-      console.log(this.currentDataSet);
       this.dataService.saveProductAndArticleList(this.currentDataSet, this.articleList, this.promotionMaterials);
     }
     else{
@@ -402,6 +427,11 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
 
   public delete(){
     this.dataService.deleteProduct(this.dataSetToDelete);
+  }
+
+  public hide(part){
+    //console.log(part);
+    this.dataService.hideProduct(part);
   }
 
   public selectImage(){

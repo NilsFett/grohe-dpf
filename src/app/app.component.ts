@@ -33,6 +33,7 @@ export class AppComponent implements AfterViewInit{
       (navEnd:NavigationEnd) => {
         if(navEnd.urlAfterRedirects){
           this.currentURL = navEnd.urlAfterRedirects;
+          this.ui.currentURL = this.currentURL;
           if(this.user.checked){
             this.checkRedirect();
           }
@@ -42,6 +43,7 @@ export class AppComponent implements AfterViewInit{
       },
       (navStart:NavigationStart) => {
         this.currentURL = null;
+        this.ui.currentURL = this.currentURL;
       }
     );
     this.user.loggedInStateObserver.subscribe(loggedIn => {

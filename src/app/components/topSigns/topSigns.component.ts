@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { TopSignsFilter } from '../../pipes/topSigns/topSignsFilter';
 import { ConfigService } from '../../services/config.service';
+import { Image } from '../../classes/Image';
 
 @Component({
   selector: 'grohe-dpf-topsigns',
@@ -24,19 +25,9 @@ export class TopSignsComponent  {
     title:'',
     weight:''
   };
-  public images = {
-    0: 'uploads/no_pic_thumb.jpg',
-    1: 'uploads/dp1.jpg',
-    2: 'uploads/dp2.jpg',
-    3: 'uploads/dp3.jpg',
-    10: 'uploads/afd1707d12f77e13ad77ba0fc17e9f83.jpg',
-    11: 'uploads/773a7998644c720179ac7636d13db2c8.jpg',
-    12: 'uploads/3858f5b37715465e7d7407d14f664a5f.jpg',
-    13: 'uploads/b8ab04829399a0a70fdaa2abb4ef7924.jpg',
-    14: 'uploads/5f78313fceb9d1ab61815e1cb7ed1969.jpg',
-    15: 'uploads/e2f35a7d3761f87697d032ac43fe7081.jpg',
-    16: 'uploads/1e7d0d4eeb42492d8138a3decc90955f.jpg',
-  };
+
+  public images:Image[] = [];
+  public imagesById = {};
   columnsToDisplay = ['image','articlenr','title', 'weight', 'type', 'edit', 'delete'];
   dataSource :  MatTableDataSource<TopSign>;
   topSignForm = new FormGroup({
@@ -71,6 +62,30 @@ export class TopSignsComponent  {
       );
       this.dataService.loadTopSigns();
     }
+    if(this.dataService.images){
+      this.images = this.dataService.images;
+      for(let i = 0; i < this.images.length ; i++ ){
+        this.imagesById[this.images[i].id] = this.images[i];
+      }
+    }
+    else{
+      this.dataService.imagesChange.subscribe(
+        (images:Image[]) => {
+          this.images = images;
+          for(let i = 0; i < this.images.length ; i++ ){
+            this.imagesById[this.images[i].id] = this.images[i];
+          }
+        }
+      );
+      this.dataService.loadImages();
+    }
+    this.ui.imageChoosen.subscribe( (image:Image)=>{
+      console.log('dfsdf');
+      this.currentDataSet.image = image.id;
+      console.log(image);
+      console.log(this.currentDataSet.image);
+      this.ui.doHideMedias();
+    });
   }
 
   public clearForm(){
@@ -95,12 +110,12 @@ export class TopSignsComponent  {
   }
 
   public getImage(imageid){
+    if(imageid && this.imagesById[imageid]){
 
-    if(imageid && this.images[imageid]){
-      return `${this.config.baseURL}${this.images[imageid]}`;
+      return `${this.config.baseURL}uploads/${this.imagesById[imageid].path}`;
     }
     else{
-      return `${this.config.baseURL}${this.images[0]}`;
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
     }
   }
 

@@ -22,6 +22,7 @@ export class UiService {
   public res: any = {width:null,height:null}
   public navopen = true;
   public mainheight : number;
+  public currentURL:string='';
 
   constructor(
     private user:UserService

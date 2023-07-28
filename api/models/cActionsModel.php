@@ -2,19 +2,19 @@
 /*
 Copyright (c) 2017 Nils Fett
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
-INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-* 
-* 
-* 
+*
+*
+*
 -- phpMyAdmin SQL Dump
 -- version 4.5.4.1deb2ubuntu2.1
 -- http://www.phpmyadmin.net
@@ -106,13 +106,13 @@ class cActionsModel extends cModel{
 	);
 	protected $sTable = 'actions';
 	protected $sPrimary = 'id';
-	
-	protected $aActions = false;
-	
+
+	protected $aActions = NULL;
+
 	public function __construct($aData = false){
 		parent::__construct($aData);
 	}
-	
+
 	public function getActionsByEnviromentName($nEnviromentName){
 		if(is_array($this->aActions)){
 			return $this->aActions;
@@ -121,7 +121,7 @@ class cActionsModel extends cModel{
 					FROM `actions`, `enviroments`
 					WHERE `enviroments`.name = "'.$nEnviromentName.'"
 					AND `enviroments`.ID = `actions`.enviroment_id';
-					
+
 		$this->hRessource = $this->hConnection->query($query);
 		$aActions = $this->hRessource->fetchAll();
 		foreach ($aActions as $aAction){

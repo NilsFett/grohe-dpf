@@ -23,15 +23,22 @@ export class MediasComponent{
     public ui:UiService,
     public config:ConfigService
   ) {
+    if(this.ui.currentURL == '/displayCompose'){
+      this.tab = 'pimages';
+    }
+    if(this.ui.currentURL == '/topSigns'){
+      this.tab = 'tsimages';
+    }
+    this.dataService.imagesChange.subscribe(
+      (images: Image[]) => {
+        this.images = this.dataService.images;
+      }
+    );
     if (this.dataService.images) {
       this.images = this.dataService.images;
     }
     else {
-      this.dataService.imagesChange.subscribe(
-        (images: Image[]) => {
-          this.images = this.dataService.images;
-        }
-      );
+
       this.dataService.loadImages();
     }
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };

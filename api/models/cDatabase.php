@@ -1,10 +1,12 @@
 <?php
 class cDatabase{
 	static $oInstance = NULL;
-	
+  protected $hConnection = NULL;
+  protected $hRessource = NULL;
+
 	public function __construct($aConfig = false){
 		$oConfig = cConfig::getInstance();
-		
+
 		if(is_array($aConfig)){
 			$h = $aConfig['host'];
 			$d = $aConfig['dbname'];
@@ -17,7 +19,7 @@ class cDatabase{
 			$u = $oConfig->get('user');
 			$p = $oConfig->get('password');
 		}
-		
+
 		$this->hConnection = new PDO( 'mysql:host='.$h.';dbname='.$d.';charset=UTF8', $u, $p, array(PDO::ATTR_PERSISTENT => true));
 		$this->hConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->hConnection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
@@ -26,7 +28,7 @@ class cDatabase{
    function __destruct() {
        $this->hConnection = null;
    }
-   
+
   	static public function getInstance(){
 		if(self::$oInstance == NULL){
 			return new cDatabase();

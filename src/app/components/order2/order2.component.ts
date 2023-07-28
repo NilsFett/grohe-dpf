@@ -8,6 +8,8 @@ import { Router} from '@angular/router';
 import { Product } from '../../classes/Product';
 import { Article } from '../../classes/Article';
 import { TopSign } from '../../classes/TopSign';
+import { Image } from '../../classes/Image';
+import { Display } from '../../classes/display';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { UserService} from '../../services/user.service';
 import { FileUploader } from 'ng2-file-upload';
@@ -25,6 +27,10 @@ export class Order2Component{
   public articles:Article[] = [];
   public articlesById = {};
   public articleSearchword:string = '';
+  public images:Image[] = [];
+  public imagesById = {};
+  public displays:Display[] = [];
+  public displaysById = {};
   public topSigns:TopSign[] = [];
   public topSignsById = {};
   public topSignsImageStringById = {
@@ -93,7 +99,40 @@ export class Order2Component{
       );
       this.dataService.loadTopSigns();
     }
-
+    if (this.dataService.displays) {
+      this.displays = this.dataService.displays;
+      for(var i = 0; i < this.displays.length; i++ ){
+        this.displaysById[this.displays[i].id] = this.displays[i];
+      }
+    }
+    else {
+      this.dataService.displaysChange.subscribe(
+        (displays: Display[]) => {
+          this.displays = this.dataService.displays;
+          for(var i = 0; i < this.displays.length; i++ ){
+            this.displaysById[this.displays[i].id] = this.displays[i];
+          }
+        }
+      );
+      this.dataService.loadDisplays();
+    }
+    if(this.dataService.images){
+      this.images = this.dataService.images;
+      for(let i = 0; i < this.images.length ; i++ ){
+        this.imagesById[this.images[i].id] = this.images[i];
+      }
+    }
+    else{
+      this.dataService.imagesChange.subscribe(
+        (images:Image[]) => {
+          this.images = images;
+          for(let i = 0; i < this.images.length ; i++ ){
+            this.imagesById[this.images[i].id] = this.images[i];
+          }
+        }
+      );
+      this.dataService.loadImages();
+    }
     //this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
          let obj = JSON.parse(response);
@@ -232,6 +271,7 @@ export class Order2Component{
           product.DFID.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
       ||  product.SAP.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
       ||  product.path.path.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1
+      ||  (this.topSignsById[product.topsign_id] && this.topSignsById[product.topsign_id].articlenr.toLowerCase().indexOf(this.productsSearchWord.toLowerCase()) !== -1)
     )
     {
       matching = true;
@@ -276,7 +316,6 @@ export class Order2Component{
     );
   }
   public quantityChanged(event){
-    console.log(this.order.displayQuantity);
     this.order.displayQuantity = this.order.displayQuantity.replace(/\D/g, '');
     if(this.order.displayQuantity < 1){
       this.order.displayQuantity = '1';
@@ -303,7 +342,7 @@ export class Order2Component{
   public sapNumberChange(event){
     this.order.SAP = this.order.SAP.replace(/\D/g,'');
   }
-
+/*
   public getImage(display){
       let imageNumber = (parseInt(display.base_display_template_id));
       if(this.topSignsImageStringById[display.topsign_id]){
@@ -313,5 +352,30 @@ export class Order2Component{
       else{
         return `${this.config.baseURL}uploads/dp${imageNumber}fwp_v1.jpg`;
       }
+  }
+*/
+  public getImage(product, thumb){
+    if(this.displaysById[product.display_id] && this.imagesById[this.displaysById[product.display_id].image]){
+      if(thumb)
+        return `${this.config.baseURL}uploads/thumbs/${this.imagesById[this.displaysById[product.display_id].image].path}`;
+      else
+        return `${this.config.baseURL}uploads/${this.imagesById[this.displaysById[product.display_id].image].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
+  }
+
+  public getImageTopSign(product, thumb){
+    if(this.topSignsById[product.topsign_id] && this.imagesById[this.topSignsById[product.topsign_id].image]){
+      if(thumb)
+        return `${this.config.baseURL}uploads/thumbs/${this.imagesById[this.topSignsById[product.topsign_id].image].path}`;
+      else
+
+        return `${this.config.baseURL}uploads/${this.imagesById[this.topSignsById[product.topsign_id].image].path}`;
+    }
+    else{
+      return `${this.config.baseURL}uploads/no_pic_thumb.jpg`;
+    }
   }
 }

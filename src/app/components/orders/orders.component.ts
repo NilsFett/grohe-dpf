@@ -25,6 +25,7 @@ export class OrdersComponent implements OnInit{
     orderId: '',
     sap: '',
     pit: '',
+    topSign: '',
     status: [],
     from:null,
     until:null

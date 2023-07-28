@@ -12,6 +12,13 @@
         </td>
         <td>
           <i class="fa icon-search"></i><input placeholder="SAP" (ngModelChange)="filter.SAP=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.SAP" class="filter" type="text"  name="sapFilter" >
+        </td>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="Top Sign" (ngModelChange)="filter.TopSign=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.TopSign" class="filter" type="text"  name="TopSign" >
+        </td>
+        <td>
+          <i class="fa icon-eye"></i>Show hidden<input placeholder="Show hidden" (ngModelChange)="filter.showHidden=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.showHidden" class="filtercheckbox" type="checkbox"  name="showHidden" >
+        </td>
       </tr>
     </table>
 
@@ -20,7 +27,10 @@
           <th mat-sort-header mat-header-cell *matHeaderCellDef>
             Image
           </th>
-        <td mat-cell *matCellDef="let product"> <img src="{{getImage(product.image)}}" /></td>
+        <td mat-cell *matCellDef="let product">
+          <img src="{{getImageTopSign(product)}}" />
+          <img src="{{getImageProduct(product)}}" />
+        </td>
       </ng-container>
       <ng-container matColumnDef="title">
         <th mat-sort-header mat-header-cell *matHeaderCellDef>
@@ -40,6 +50,12 @@
         </th>
         <td mat-cell *matCellDef="let part"> {{part.SAP}} </td>
       </ng-container>
+      <ng-container matColumnDef="TopSign">
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>
+          Top Sign
+        </th>
+        <td mat-cell *matCellDef="let part"> {{part.top_sign_title}} </td>
+      </ng-container>
       <ng-container matColumnDef="price">
         <th mat-sort-header mat-header-cell *matHeaderCellDef>
           Price
@@ -58,8 +74,14 @@
         </th>
         <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
       </ng-container>
+      <ng-container matColumnDef="hide">
+        <th mat-header-cell *matHeaderCellDef>
+            Hide
+        </th>
+        <td class="hide" (click)="hide(part)" mat-cell *matCellDef="let part"><i class="fa icon-eye-off hide"></i> </td>
+      </ng-container>
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
-      <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
+      <tr [ngClass]="{'hidden': part.hide == 1}" mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
     </table>
   </div>
 </div>
