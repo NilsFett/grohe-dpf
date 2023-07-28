@@ -1,0 +1,103 @@
+<div (click)="clicked()" [ngStyle]="{'height': mainheight+'px'}" #wrapper id="wrapper" class="view_{{ui.view}}" [ngClass]="{'open': (navopen && ui.view == 'admin'), 'login': (router.url == '/' || router.url == '/login' || router.url == '/register' || router.url == '/passwordReset'), 'pad': (res.width < 1000)}">
+  <nav *ngIf="user.isLoggedIn && user.data.usertype.value == 'admin' && ui.view == 'admin'"  [ngStyle]="navstyle">
+    <img class="logo" alt="Grohe Logo" src="/assets/images/grohe_logo.png">
+    <span (click)="openclosenav()" class="openclose fa icon-menu"></span>
+
+
+
+    <ul *ngIf="ui.view == 'admin' ">
+<!--
+      <li (click)="navClicked($event)" routerLink="/userRequests" [ngClass]="{'active': (router.url == '/userRequests')}">
+        <a>User Account Request</a>
+      </li>
+      <li>
+        <a>Frontpage</a>
+      </li>
+-->
+      <li>
+        <a href="/displayCompose" routerLink="/displayCompose">Display Types</a>
+      </li>
+      <li (click)="navClicked($event)" routerLink="/displayParts" [ngClass]="{'active': (router.url == '/displayParts')}">
+        <a>Display Parts</a>
+      </li>
+      <li (click)="navClicked($event)" routerLink="/articles" [ngClass]="{'active': (router.url == '/articles')}">
+        <a>SKU</a>
+      </li>
+      <li (click)="navClicked($event)" routerLink="/products" [ngClass]="{'active': (router.url == '/products')}">
+        <a>DF ID</a>
+        <ul>
+          <li (click)="navClicked($event)" routerLink="/products/102" [ngClass]="{'active': (router.url == '/products/102')}">
+            <a>¼ Pallet</a>
+          </li>
+          <li (click)="navClicked($event)" routerLink="/products/103" [ngClass]="{'active': (router.url == '/products/103')}">
+            <a>Full Pallet</a>
+          </li>
+          <li (click)="navClicked($event)" routerLink="/products/104" [ngClass]="{'active': (router.url == '/products/104')}">
+            <a>Counter</a>
+          </li>
+          <li (click)="navClicked($event)" routerLink="/products/105" [ngClass]="{'active': (router.url == '/products/105')}">
+            <a>Bundle</a>
+          </li>
+        </ul>
+      </li>
+      <li (click)="navClicked($event)" routerLink="/topSigns" [ngClass]="{'active': (router.url == '/topSigns')}">
+        <a>Topsign / Promotion Material</a>
+      </li>
+      <li  (click)="navClicked($event)" routerLink="/orders" [ngClass]="{'active': (router.url == '/orders')}">
+        <a>Orders</a>
+      </li>
+      <li (click)="navClicked($event)" routerLink="/user" [ngClass]="{'active': (router.url == '/user')}">
+        <a>User</a>
+      </li>
+
+      <li [ngClass]="{'active': (router.url == '/promotionImages')}" (click)="navClicked()" routerLink="/promotionImages">
+        <a>Promotion Images</a>
+      </li>
+
+    </ul>
+  </nav>
+  <header *ngIf="router.url != '/' && router.url != '/login' && router.url != '/register' && router.url != '/passwordReset'" [ngClass]="{'login': (router.url == '/' || router.url == 'login')}" >
+    <div class="hwrapper">
+      <div *ngIf="user.isLoggedIn && user.data.usertype.value == 'admin'" class="hleft tright">
+        <p>
+          <span *ngIf="!navopen && user.isLoggedIn && ui.view == 'admin'" (click)="openclosenav()" class="openclose fa icon-menu"></span>
+          <span routerLink="/start" (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button"><span class="highwidth">Customer View</span><span class="lowwidth fa icon-eye">C</span></span>
+          <span routerLink="/orders" (click)="ui.view = 'admin'" [ngClass]="{'active': ui.view == 'admin'}" class="button"><span class="highwidth">Admin View</span><span class="lowwidth fa icon-eye">A</span></span>
+        </p>
+      </div>
+      <div *ngIf="user.isLoggedIn && user.data.usertype.value == 'user'" class="hleft tright">
+        <p>
+          <span routerLink="/order2" (click)="ui.view = 'customer'" [ngClass]="{'active': ui.view == 'customer'}" class="button"><span class="highwidth">Display Order</span><span class="lowwidth fa icon-eye">C</span></span>
+        </p>
+      </div>
+      <div *ngIf="user.isLoggedIn" class="hright tright">
+        <div *ngIf="userInfoOpen" class="user-info boxshadow">
+          <span class="initals">{{user.initials}}</span><span>{{user.data.name.value}} {{user.data.surname.value}}</span><br />
+          <span class="usertype">{{user.data.usertype.value}}</span><br />
+          <hr />
+          <p><span class="pointer" routerLink="/account">Account</span></p>
+          <p><span class="pointer" routerLink="/changePassowrd">change password</span></p>
+          <hr />
+          <p><span class="pointer" routerLink="/myorders">My orders</span></p>
+          <hr />
+          <p><span class="pointer" (click)="user.logout()">Logout</span></p>
+        </div>
+        <p><span (click)="userInfoOpenClicked($event)" class="initals pointer">{{user.initials}}</span><span (click)="userInfoOpenClicked($event)" class="pointer">{{user.data.name.value}} {{user.data.surname.value}}</span><span (click)="userInfoOpen = ! userInfoOpen" class="icon-down-open-1 pointer"></span>
+        </p>
+      </div>
+    </div>
+  </header>
+  <div class="main" #main>
+    <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="error.errors.length" class="messages">
+    <p *ngFor="let error of error.errors">{{error}}</p>
+  </div>
+</div>
+<div class="boxshadow" id="message-window" [ngClass]="{'active': ui.messageWindowShow}">
+  <p *ngFor="let message of ui.messages">{{message}}</p>
+</div>
+
+
+<grohe-dpf-medias *ngIf="ui.showMedias"></grohe-dpf-medias>
+<grohe-dpf-promotion-uploads *ngIf="ui.showMedias && currentURL == '/promotionImages'"></grohe-dpf-promotion-uploads>

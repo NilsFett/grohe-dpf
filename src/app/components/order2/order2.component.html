@@ -1,0 +1,300 @@
+<div class="order">
+  <div class="products">
+    <h3>ORDER PROCESS</h3>
+    <ul class="order_prozess">
+      <li class="active"><span>1</span>SELECT</li>
+      <li><span>2</span>SUMMERY</li>
+    </ul>
+    <div class="productSelect">
+      <div class="search" *ngIf="!order.productChoosen">
+        <h4>Products <i class="new" (click)="showNewDialog()">Display Request</i></h4>
+        <div class="inner">
+          <input type="text" class="search" placeholder="Quick Search (SKU no., DF-ID, Product Category, Display SAP no., Top Sign) " (keyup)="productsSearchWordChanged($event.target.value)">
+        </div>
+        <br />
+        <p *ngIf="! productsWithArticlesAndProductPath.length"><b>Loading Products, please wait...</b></p>
+        <ul class="products">
+          <ng-container *ngFor="let product of productsWithArticlesAndProductPath">
+            <li (click)="productSelected(product)" *ngIf="filterArticleList(product)" class="row">
+              <div class="span2" hover-class="hover" style="padding-right:20px;">
+                <div class="hiddenimages">
+                  <img style="width:400px;" src="{{getImageTopSign(product,false)}}" />
+                  <img style="width:400px;" src="{{getImage(product,false)}}" />
+                </div>
+                <img style="width:100px;" src="{{getImageTopSign(product)}}" />
+                <img style="width:100px;" src="{{getImage(product)}}" />
+
+              </div>
+              <div class="span10"><span  class="add icon-plus"></span>
+                <p><span>DF-ID:</span><span>&nbsp;<b>{{product.DFID}}</b></span></p>
+                <p><span>Display Title:</span><span>&nbsp;<b>{{product.title}}</b></span></p>
+                <p>Display Types:&nbsp;<b>{{product.path.path}}&nbsp;</b></p>
+                <p>Price:&nbsp;<b>{{product.price}} €</b></p>
+                <p><span>Display SAP No. ( Packaging ):</span><span>&nbsp;<b>{{product.SAP}}</b></span></p>
+                <hr />
+                <p><span><b>Articles included:</b></span></p>
+                <ul>
+                  <li *ngFor="let article of product.article">
+                    <p><b>{{article.units}} x {{article.articlenr}}</b> ({{article.packaging}})<br />
+                    {{article.title}} (Type : {{article.type}})</p>
+                    <p>{{article.DT}} </p>
+                  </li>
+                </ul>
+                <ng-container *ngIf="product.promotion_material.length">
+                  <hr />
+                  <p><span><b>Promotion Material included:</b></span></p>
+                  <ul>
+                    <li *ngFor="let pm of product.promotion_material">
+                      <p><b>{{pm.units}} x {{pm.articlenr}}</b><br />
+                      {{pm.title}}</p>
+                    </li>
+                  </ul>
+                </ng-container>
+                <hr />
+                <p><span><b>Top sign:</b></span></p>
+                <p *ngIf="topSignsById[product.topsign_id]">{{topSignsById[product.topsign_id].title}} | <b>{{topSignsById[product.topsign_id].articlenr}}</b></p>
+              </div>
+              <div class="clear"></div>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+
+      <div *ngIf="order.productChoosen" class="inner product-choosen">
+        <span (click)="removeSelected(product)" class="cancel icon-cancel"></span>
+        <div  class="span4" style="padding-right:20px;">
+          <img style="width:100px;" src="{{getImageTopSign(order.productChoosen)}}" />
+          <img style="width:100px;" src="{{getImage(order.productChoosen)}}" />
+        </div>
+        <div class="span8">
+          <p>DF-ID:<b>{{order.productChoosen.DFID}}</b></p>
+          <p>Display Title:<b>&nbsp;{{order.productChoosen.title}}</b></p>
+          <p>Display Types:&nbsp;<b>{{order.productChoosen.path.path}}</b></p>
+          <p>Price:&nbsp;<b>{{order.productChoosen.price}} €</b></p>
+          <p>Display SAP No.:<b>{{order.productChoosen.SAP}}</b></p>
+          <hr />
+          <p><span><b>Articles included:</b></span></p>
+          <ul>
+            <li *ngFor="let article of order.productChoosen.article">
+              <p><b>{{article.units}} x {{article.articlenr}}</b> ({{article.packaging}})<br />{{article.title}} (Type : {{article.type}})</p>
+            </li>
+          </ul>
+          <ng-container *ngIf="order.productChoosen.promotion_material.length">
+            <hr />
+            <p><span><b>Promotion Material included:</b></span></p>
+            <ul>
+              <li *ngFor="let pm of order.productChoosen.promotion_material">
+                <p><b>{{pm.units}} x {{pm.articlenr}}</b><br />
+                {{pm.title}}</p>
+              </li>
+            </ul>
+          </ng-container>
+          <div class="spacer20"></div>
+          <mat-form-field class="blue border-blue" >
+            <mat-hint class="warning"><b>Required volum!</b></mat-hint><input (keyup)="quantityChanged($event)" pattern="[1-9][0-9]*" style="color:#3B85D2;" type="text" matInput name="quantity" placeholder="Display Quantity" [(ngModel)]="order.displayQuantity">
+          </mat-form-field>
+          <div class="spacer20"></div>
+
+          <mat-form-field *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id] && !custom_topsign">
+            <input type="text" matInput name="topSign" placeholder="Top Sign" value="{{topSignsById[order.productChoosen.topsign_id].title}} | {{topSignsById[order.productChoosen.topsign_id].articlenr}}" disabled>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="D / C"  [(ngModel)]="order.DC">
+              <mat-option value="Classical">Classical</mat-option>
+              <mat-option value="DIY">DIY</mat-option>
+            </mat-select>
+            <mat-hint class="warning">mandatory</mat-hint>
+          </mat-form-field>
+          <div class="clear"></div>
+          <div class="spacer20"></div>
+          <table>
+            <tr>
+              <th>SAP-No.</th>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Quantity</th>
+              <th>Weight</th>
+            </tr>
+            <tr>
+              <td>{{order.productChoosen.SAP}}</td>
+              <td>{{order.productChoosen.title}}</td>
+              <td>Display</td>
+              <td>{{order.displayQuantity}}</td>
+              <td>{{getDisplayWeight()}}&nbsp;kg</td>
+            </tr>
+            <tr *ngIf="order.productChoosen.topsign_id > 0 && topSignsById[order.productChoosen.topsign_id]">
+              <td>{{topSignsById[order.productChoosen.topsign_id].articlenr}}</td>
+              <td>{{topSignsById[order.productChoosen.topsign_id].title}}</td>
+              <td>TopSign</td>
+              <td>{{order.displayQuantity}}</td>
+              <td>{{getTopSignWeight()}}&nbsp;kg</td>
+            </tr>
+            <tr *ngFor="let article of order.productChoosen.article">
+              <td>{{article.articlenr}}</td>
+              <td>{{article.title}}</td>
+              <td>Article</td>
+              <td>{{article.units * order.displayQuantity}}</td>
+              <td>{{getArticleWeight(article)}}&nbsp;kg</td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <b>Total Weight</b>
+              </td>
+              <td>
+                <b>{{getTotalWeight() }}&nbsp;kg</b>
+              </td>
+            </tr>
+          </table>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="dp3" placeholder="lead Time 5 weeks" disabled [(ngModel)]="order.desired_date_delivery">
+            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <div class="spacer20"></div>
+          <!--
+          <button mat-raised-button routerLink="/order3">Continue</button>
+          <div class="clear"></div>
+          -->
+        </div>
+        <div class="clear"></div>
+        <div class="row">
+          <div class="span6">
+            <div class="orderbox">
+              <h4>Buyer-Information</h4>
+              <div class="inner">
+                <div class="span6"><b>Name</b></div><div class="span6">{{user.data.name.value}} {{user.data.surname.value}}</div>
+                <div class="span6"><b>Department</b></div><div class="span6">{{user.data.department.value}} </div>
+                <div class="span6"><b [ngClass]="{'warning': (order.costcentre_costno.length < 1 || order.costcentre_costno.length > 8)}">Cost Centre Number ( max 8 digits)</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <!--
+                    <mat-select [(ngModel)]="order.costcentre">
+                      <mat-option *ngFor="let costcentre of user.data.costcentres" value="{{costcentre.id}}">{{costcentre.costno}} {{costcentre.description}}</mat-option>
+                    </mat-select>
+                    -->
+
+                    <input (keyup)="costNoChange($event)" matInput [(ngModel)]="order.costcentre_costno" placeholder="Cost Centre">
+                    <mat-error>required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="span6"><b>Cost Centre Country</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <!--
+                    <mat-select [(ngModel)]="order.costcentre">
+                      <mat-option *ngFor="let costcentre of user.data.costcentres" value="{{costcentre.id}}">{{costcentre.costno}} {{costcentre.description}}</mat-option>
+                    </mat-select>
+                    -->
+
+                    <input matInput [(ngModel)]="order.costcentre_description" placeholder="Cost Centre Country">
+                    <mat-error>required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="span6"><b>E-Mail</b></div><div class="span6">{{user.data.mail.value}} </div>
+                <div class="span6"><b>Phone</b></div><div class="span6">{{user.data.phone.value}} </div>
+                <div class="span6"><b>Address</b></div><div class="span6">{{user.data.street.value}}, {{user.data.zipcode.value}} {{user.data.city.value}}, {{user.data.country.value}}</div>
+                <div class="span6"><b>Order Date</b></div><div class="span6">{{getDateStringToday()}} </div>
+                <div class="span6"><b>Customer</b></div>
+                <div class="span6">
+                  <mat-form-field>
+                    <mat-hint *ngIf="order.customer.length == 0" class="warning">Please fill to continue!</mat-hint>
+                    <input type="text" matInput name="customer" #customer placeholder="Customer" [(ngModel)]="order.customer">
+                    <mat-error>required</mat-error>
+                  </mat-form-field>
+                 </div>
+
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+          <div class="span6">
+            <div class="orderbox">
+              <h4>Your Order Process</h4>
+              <div class="inner">
+                <ul>
+                  <li class="warning">Please book your order in SAP now!</li>
+                  <li>Transaction: ZDF01</li>
+                  <li>Fill in the requested information
+                    <ul>
+                      <li>Under "Items" simply add this information:</li>
+                      <li>ID: <span class="warning">{{order.productChoosen.DFID}}</span></li>
+                      <li>Quantity: <span class="warning">{{order.displayQuantity}}</span></li>
+                    </ul>
+                  </li>
+                  <li>Press F8 (clock symbol)</li>
+                  <li>Add Promotion Idenfitication title and SAP order number in the field below/li>
+                  <li>For further and detailed information please check the display factory manual.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span6">
+            <div class="orderbox">
+              <h4 [ngClass]="{'warning': (order.pit.length == 0)}">Promotion Identification Title</h4>
+              <div class="inner">
+                <mat-form-field>
+                  <mat-hint *ngIf="order.pit.length == 0" class="warning">Please fill to continue!</mat-hint>
+                  <input type="text" matInput name="pit" #pit placeholder="Promotion ID" [(ngModel)]="order.pit">
+                  <mat-error>required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="span6">
+            <div class="orderbox">
+              <h4 [ngClass]="{'warning': (order.SAP.length != 8)}">SAP Order Number (8 digits)</h4>
+              <div class="inner">
+                <mat-form-field>
+                  <mat-hint *ngIf="order.SAP.length != 8" class="warning">Please fill to continue!</mat-hint>
+                  <input (keyup)="sapNumberChange($event)" type="text" matInput name="SAP" #SAP placeholder="SAP Order Number" [(ngModel)]="order.SAP">
+
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="order.SAP.length == 8 && order.pit.length > 0 && order.customer.length > 0 && (order.costcentre_costno.length > 0 && order.costcentre_costno.length < 9) && order.costcentre_description.length > 0" class="row">
+          <button mat-raised-button (click)="storeOrder()">Finish order</button>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlaybg" *ngIf="ui.showOverlay"></div>
+<div class="overlay" *ngIf="ui.showEditNew">
+
+  <div class="overlay-content custom-display order request">
+    <span (click)="ui.doCloseEditNew()" class="close">X</span>
+    <div class="clear"></div>
+    <!--
+    <h2>Custom Display creation is coming soon.</h2>
+    <hr />
+    <p>This Ferature is in progress. Until we finished this feature you are wellcome to send an e-mail with your specific display settings</p>
+    -->
+    <div class="spacer20"></div>
+    <mat-form-field style="padding:20px;border:1px solid #3B85BE;">
+      <mat-label style="color:#3B85BE;"><b>Please describe your Display Settings</b></mat-label>
+      <textarea matInput [(ngModel)]="requestText"></textarea>
+    </mat-form-field>
+    {{requestText}}
+    <div class="spacer20"></div>
+    <div (click)="openFileBrowser();" class="fileinputframe">
+      <button style="float:none;" mat-raised-button type="button" class="btn btn-success btn-s">Upload custom Top Sign</button>
+      <input #fileInput  (click)="fileInput.value = null" (change)="uploadAll()" type="file" ng2FileSelect [uploader]="uploader" id="fileinput" />
+    </div>
+    <ul>
+      <li *ngFor="let item of uploader.queue">UPLOADING : {{ item?.file?.name }}</li>
+    </ul>
+    <p *ngIf="custom_topsign"><b>You have uploaded a custon Top Sign: {{custom_topsign}}</b><span (click)="custom_topsign = null" class="cancel icon-cancel"></span></p>
+
+    <div class="spacer20"></div>
+    <button *ngIf="!displayRequestSuccess" mat-raised-button (click)="displayRequest()">Send request</button>
+    <h2 *ngIf="displayRequestSuccess">Request sended succesfully. Thank you!</h2>
+  </div>
+</div>

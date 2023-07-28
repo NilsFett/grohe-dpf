@@ -1,0 +1,28 @@
+
+div.clogin{
+  width:550px;
+
+  min-width:300px;
+  max-width:80%;
+  padding:20px;
+  margin:5% auto 20px auto;
+  text-align: center;
+  color:#FFF;
+  opacity:0.92;
+}
+
+div.clogin .boxshadow{
+  padding:20px;
+}
+
+.bluebg{
+  padding: 20px 0 0 0;
+}
+
+.mat-form-field{
+  margin: 0px auto;
+}
+
+.tright{
+  margin:20px 0 0 0;
+}
