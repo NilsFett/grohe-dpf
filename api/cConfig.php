@@ -32,7 +32,7 @@ class cConfig{
 		);
 		$this->aConfig['dbname'] = 'grohe-dpf';
 		$this->aConfig['user'] = 'root';
-		$this->aConfig['password'] = 'iCasaful:06123';
+		$this->aConfig['password'] = 'password';
 		$this->aConfig['host'] = 'localhost';
 
 		$this->aConfig['basepath'] = '/Users/nilsfett/Sites/grohe-dpf/api/';
