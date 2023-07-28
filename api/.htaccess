@@ -1,0 +1,22 @@
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "https://localhost:4200"
+    Header set Access-Control-Allow-Credentials: "true"
+    Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+    Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+</IfModule>
+
+RewriteEngine On
+
+#RewriteCond %{QUERY_STRING} (.*)
+#RewriteCond ^(uploads) - [L]
+
+#RewriteRule !^/api/uploads($|/)index.php [L]
+
+RewriteCond %{REQUEST_URI} "/api/uploads/"
+RewriteRule (.*) $1 [L]
+
+
+#RewriteCond %{REQUEST_URI} ^((?!/api/uploads).*)
+#RewriteRule (.*) index.php [L]
+
+RewriteRule ^((?!api/uploads).*) index.php [L]

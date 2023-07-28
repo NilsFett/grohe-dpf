@@ -1,0 +1,98 @@
+<div class="content boxshadow" dpfContent>
+    <h2>Orders</h2>
+    <div class="dpfoverflowwrapper" dpfOverflowWrapper>
+      <div class="spacer20"></div>
+      <table>
+        <tr>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="Order-ID" (ngModelChange)="filter.orderId=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.orderId" class="filter" type="text"  name="orderIdFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="DF ID" (ngModelChange)="filter.dfid=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.dfid" class="filter" type="text"  name="orderIdFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="SAP-No" (ngModelChange)="filter.sap=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.sap" class="filter" type="text"  name="sapFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="Promotion-Title" (ngModelChange)="filter.pit=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.pit" class="filter" type="text"  name="pitFilter" >
+          </td>
+          <td>
+
+            <mat-select multiple placeholder="status" style="width:100px;" (ngModelChange)="filter.status=$event;filterChanges();" [(ngModel)]="filter.status">
+              <mat-option selected value="ordered">ordered</mat-option>
+              <mat-option value="finished">finished</mat-option>
+              <mat-option value="storno">storno</mat-option>
+            </mat-select>
+          </td>
+          <td>
+
+              <input matInput [matDatepicker]="from" placeholder="Date from" disabled (ngModelChange)="filter.from = $event;loadOrders()" [(ngModel)]="this.filter.from">
+              <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+              <mat-datepicker #from disabled="false"></mat-datepicker>
+
+          </td>
+          <td>
+
+              <input matInput [matDatepicker]="until" placeholder="Date until" disabled (ngModelChange)="filter.until = $event;loadOrders()"  [(ngModel)]="this.filter.until">
+              <mat-datepicker-toggle matSuffix [for]="until"></mat-datepicker-toggle>
+              <mat-datepicker #until disabled="false"></mat-datepicker>
+
+          </td>
+        </tr>
+      </table>
+
+        <table mat-table matSort [dataSource]="dataSource" >
+          <ng-container matColumnDef="timestamp">
+              <th mat-sort-header mat-header-cell *matHeaderCellDef>
+                Order-Date
+              </th>
+            <td mat-cell *matCellDef="let order"> {{order.date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="orderId">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Order-ID
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.hex}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="sap">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              SAP-No
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.SAP}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="pit">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Promotion-Title
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.promotion_title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Status
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.status}} </td>
+          </ng-container>
+          <ng-container matColumnDef="topsign">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Topsign
+            </th>
+            <td mat-cell *matCellDef="let order">
+               {{order.topsign.articlenr}} - {{order.topsign.title}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="display">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Display
+            </th>
+            <td mat-cell *matCellDef="let order">
+              <p *ngFor="let article of order.product.article"> {{article.units}} x {{article.title}}</p>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+          <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
+        </table>
+      </div>
+  </div>

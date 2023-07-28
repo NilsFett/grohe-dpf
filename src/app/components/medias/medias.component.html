@@ -1,0 +1,42 @@
+<div id="medias" [ngStyle]="{'height': ui.mainheight+'px'}">
+  <span (click)="ui.doHideMedias();" class="close icon-cancel"></span>
+  <br />
+  <h2>Medias</h2>
+
+  <div class="upload">
+    <p>Upload</p>
+    <div (click)="openFileBrowser();" class="fileinputframe">
+      <button mat-raised-button type="button" class="btn btn-success btn-s">Select Images to Upload</button>
+      <input type="file" ng2FileSelect [uploader]="uploader" multiple id="fileinput" />
+    </div>
+    <ul>
+      <li *ngFor="let item of uploader.queue">{{ item?.file?.name }}</li>
+    </ul>
+    <button mat-raised-button type="button" class="btn btn-success btn-s"
+        (click)="uploadAll()" *ngIf="uploader.getNotUploadedItems().length">Upload
+    </button>
+  </div>
+  <hr />
+  <ul *ngIf="(ui.currentURL !== '/displayCompose' && ui.currentURL !== '/topSigns')" class="tab">
+    <li style="margin-left:10px;" (click)="tab = 'dimages'" [ngClass]="{'active': tab == 'dimages'}">Display Images</li>
+    <li>&nbsp;|&nbsp;</li>
+    <li (click)="tab = 'pimages'" [ngClass]="{'active': tab == 'pimages'}">Product Images</li>
+    <li>&nbsp;|&nbsp;</li>
+    <li (click)="tab = 'tsimages'" [ngClass]="{'active': tab == 'tsimages'}">Top Sign Images</li>
+    <li>&nbsp;|&nbsp;</li>
+    <li (click)="tab = 'tspdf'" [ngClass]="{'active': tab == 'tspdf'}">TopSign PDFs</li>
+  </ul>
+  <br />
+  <hr />
+  <div class="imagelist overlay-content">
+    <ng-container  *ngFor="let image of images">
+      <div class="image" *ngIf="tab == tabs[image.type]">
+        {{image.id}}
+        <img (click)="imageChoosen(image);" src="{{config.baseURL}}uploads/thumbs/{{image.path}}" />
+        <div class="imagefilename" >{{image.title}}</div>
+        <span (click)="deleteImage(image)" class="fa icon-trash-empty"></span>
+      </div>
+    </ng-container>
+  </div>
+
+</div>

@@ -1,0 +1,230 @@
+<div class="display-compose content boxshadow" dpfContent>
+  <h2>Displays <i class="fa icon-plus new" (click)="showChooseTemplateOverlay()">Add new</i></h2>
+  <div class="dpfoverflowwrapper" dpfOverflowWrapper>
+    <div class="spacer20"></div>
+    <table>
+      <tr>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="Article Number" (ngModelChange)="filter.articlenr=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.articlenr" class=" filter" type="text"  name="articlenrFilter" >
+        </td>
+        <td>
+            <i class="fa icon-search"></i><input placeholder="Title" (ngModelChange)="filter.title=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.title" class="filter" type="text"  name="titleFilter" >
+        </td>
+        <td>
+            <i class="fa icon-search"></i><input placeholder="Displaytype" (ngModelChange)="filter.displaytype=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.displaytype" class="filter" type="text"  name="displaytypeFilter" >
+        </td>
+        <!--
+        <td>
+            <i class="fa icon-search"></i><input placeholder="Topsign Punch" (ngModelChange)="filter.topsign_punch=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topsign_punch" class="filter" type="text"  name="topsign_punchFilter" >
+        </td>
+        -->
+      </tr>
+    </table>
+    <div class="hr"></div>
+      <table mat-table matSort [dataSource]="dataSource" matSortActive="articlenr" matSortDirection="asc" >
+
+        <ng-container matColumnDef="image">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Image
+            </th>
+
+          <td mat-cell *matCellDef="let display"><img src="{{getImage(display)}}" /></td>
+        </ng-container>
+
+        <ng-container matColumnDef="articlenr">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Articel Number
+            </th>
+          <td mat-cell *matCellDef="let part"> {{part.articlenr}} </td>
+        </ng-container>
+        <ng-container matColumnDef="title">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Title
+          </th>
+          <td mat-cell *matCellDef="let display"> {{display.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="displaytype">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Displaytype
+          </th>
+          <td mat-cell *matCellDef="let display"> {{display.displaytype}} </td>
+        </ng-container>
+<!--
+        <ng-container matColumnDef="topsign_punch">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Topsign Punch
+          </th>
+          <td mat-cell *matCellDef="let display"> {{display.topsign_punch}} </td>
+        </ng-container>
+-->
+        <ng-container matColumnDef="instruction">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Instruction
+          </th>
+          <td mat-cell *matCellDef="let display"> {{instructions[display.instruction]}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Edit
+          </th>
+          <td class="edit" (click)="setCurrentDataSet(part)" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef>
+              Delete
+          </th>
+          <td class="edit" (click)="showDelete(part)" mat-cell *matCellDef="let part"> <i class="fa icon-trash-empty delete"></i> </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+        <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
+      </table>
+    </div>
+</div>
+<div class="overlaybg" *ngIf="ui.showOverlay currentDataSet"></div>
+<div class="overlay" *ngIf="ui.showEditNew && currentDataSet">
+  <div class="overlay-content">
+    <span (click)="ui.doCloseEditNew();" class="close icon-cancel"></span>
+    <h3 class="fa icon-edit">Display Type</h3>
+    <p>{{currentDataSet.title}}&nbsp;&nbsp;</p>
+    <ul class="tab">
+      <li (click)="showAssembly=false" [ngClass]="{'active': showAssembly == false}">Display Data</li><li>&nbsp;|&nbsp;</li>
+      <li (click)="showAssembly=true" [ngClass]="{'active': showAssembly == true}">Assembly</li>
+    </ul>
+
+
+    <hr class="clear" />
+    <div class="container-flex" *ngIf="!showAssembly">
+      <form name="displayPartForm" [formGroup]="displayForm" (form-validate-after-if)="formValidateAfterIf()">
+        <div class="spacer20"></div>
+        <img *ngIf="currentDataSet" (click)="selectImage();" src="{{getImage(currentDataSet)}}" class="display" />
+        <input type="hidden" formControlName="image" name="image" #title>
+        <mat-form-field>
+          <input type="text" formControlName="title" matInput name="title" #title placeholder="Title*">
+          <mat-error [hidden]="title.valid || title.pristine">required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" formControlName="articlenr" matInput name="articlenr" #articlenr placeholder="Articlenr*">
+          <mat-error [hidden]="articlenr.valid || articlenr.pristine">required, 8 signs maximum</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="displaytype"  #type placeholder="Display Type">
+            <mat-option value="1_4_chep_pallet">1/4 Chep Pallet</mat-option>
+            <mat-option value="full_pallet">Full Pallet</mat-option>
+            <mat-option value="counter_displays">Counter Displays</mat-option>
+            <mat-option value="bundles">Bundles</mat-option>
+          </mat-select>
+          <mat-error [hidden]="type.valid || type.pristine">required</mat-error>
+        </mat-form-field>
+        <!--
+        <mat-form-field>
+          <mat-select formControlName="topsign_punch"  #packaging placeholder="Topsign Punch">
+            <mat-option value="old Punch">old Punch</mat-option>
+            <mat-option value=""></mat-option>
+          </mat-select>
+          <mat-error [hidden]="packaging.valid || packaging.pristine">required</mat-error>
+        </mat-form-field>
+-->
+        <mat-form-field>
+          <mat-select formControlName="instruction"  #instruction placeholder="Instruction">
+            <mat-option value="1">Euphoria</mat-option>
+            <mat-option value="2">Rainshower</mat-option>
+            <mat-option value="3">Standard</mat-option>
+          </mat-select>
+          <mat-error [hidden]="instruction.valid || instruction.pristine">required</mat-error>
+        </mat-form-field>
+        <hr />
+        <div class="spacer20"></div>
+        <button  (click)="saveDisplaysAndPartList()" mat-raised-button>Save</button>
+        <div class="spacer20"></div>
+      </form>
+    </div>
+    <div class="container-flex display-parts-assembly" *ngIf="showAssembly">
+      <ul>
+        <li *ngFor="let part of partsList">
+          <span class="artnr">{{part.articlenr}}</span>
+          <span class="title">{{part.title}}</span>
+          <span class="units">{{part.units}}</span>
+          <span (click)="removeDisplayPartFromPartList(part)" class="icon-minus"></span>
+          <span (click)="addDisplayPartToPartList(part)" class="icon-plus"></span>
+        </li>
+      </ul>
+      <button mat-raised-button (click)="saveDisplaysAndPartList()">Save</button>
+      <div class="spacer20"></div>
+      <hr />
+      <div class="spacer20"></div>
+      <p>Add Display Part</p>
+      <mat-form-field>
+        <input type="text" matInput name="partsearch" placeholder="Search by SAP Number or Title" (keyup)="partsSearchwordChanged($event.target.value)">
+      </mat-form-field>
+      <div class="chooseDisplayPart">
+        <ul>
+          <li *ngFor="let part of displayParts">
+            <ng-container *ngIf="part.deleted == 0 && ( part.title.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 || part.articlenr.toLowerCase().indexOf(partsSearchword.toLowerCase()) !== -1 )">
+              <span class="artnr">{{part.articlenr}}</span>
+              <span class="title">{{part.title}}</span>
+              <span (click)="addDisplayPartToPartList(part)" class="icon-plus"></span>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="ui.showDelete">
+  <div class="overlay-content">
+    <span (click)="ui.doCloseDelete()" class="close icon-cancel"></span>
+    <h3 class="fa icon-trash-empty">Display</h3>
+    <p>{{dataSetToDelete.title}}</p>
+    <hr />
+    <div class="container-flex">
+      <h2>This display will be deleted permanently. Are you sure?</h2>
+      <div class="spacer"></div>
+      <div style="display:flex;justify-content:  space-between" *ngIf="!ui.deleteSuccess">
+        <button class="delete-button" (click)="delete()" mat-raised-button>Delete</button>
+        <button class="abort-button" (click)="dataSetToDelete = null;ui.doCloseDelete();" mat-raised-button>Abort</button>
+      </div>
+      <div *ngIf="ui.deleteSuccess">
+        Delete Success
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay templates" *ngIf="showChooseTemplate">
+  <div class="overlay-content">
+    <span (click)="hideChooseTemplateOverlay()" class="close icon-cancel"></span>
+    <h3 class="fa icon-plus">Choose Display Template</h3>
+    <hr />
+    <div class="row">
+      <h2>Choose one of this Display Templates to prefill new Display with Display Parts preset?</h2>
+      <div class="spacer"></div>
+      <div class="span2 padding">
+        <img (click)="templateChoosen(0)" src="{{config.baseURL}}uploads/dp1fwp_v1.jpg" />
+        <p>Manteldisplay mit niedrigem Sockel für Duschsysteme</p>
+      </div>
+      <div class="span2 padding">
+        <img (click)="templateChoosen(1)" src="{{config.baseURL}}uploads/dp2fwp_v1.jpg" />
+        <p>Manteldisplay mit hohem Sockel für Stangensets</p>
+      </div>
+      <div class="span2 padding">
+        <img (click)="templateChoosen(2)" src="{{config.baseURL}}uploads/dp3fwp_v1.jpg" />
+        <p>2 Schüttendisplay</p>
+      </div>
+      <div class="span2 padding">
+        <img (click)="templateChoosen(3)" src="{{config.baseURL}}uploads/dp4fwp_v1.jpg" />
+        <p>3 Schüttendisplay</p>
+      </div>
+      <div class="span2 padding">
+        <img (click)="templateChoosen(5)" src="{{config.baseURL}}uploads/dp5fwp_v1.jpg" />
+        <p>Mixdisplay</p>
+      </div>
+      <hr class="clear" />
+      <button class="delete-button" (click)="templateChoosen(4)" mat-raised-button>Or create a new one without template</button>
+    </div>
+  </div>
+</div>

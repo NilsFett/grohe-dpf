@@ -1,0 +1,197 @@
+<div class="content boxshadow" dpfContent>
+    <h2>Orders</h2>
+    <div class="dpfoverflowwrapper" dpfOverflowWrapper>
+      <div class="spacer20"></div>
+      <p><a target="_blank" href="{{config.baseURL}}orderExport?from={{filter.from.getTime()}}&until={{filter.until.getTime()}}{{statusGetParams}}&sortBy={{this.currentSorting.active}}&sortDirection={{this.currentSorting.direction}}">EXPORT</a><p>
+
+      <table>
+        <tr>
+
+          <td>
+            <i class="fa icon-search"></i><input placeholder="Order-ID" (ngModelChange)="filter.orderId=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.orderId" class="filter" type="text"  name="orderIdFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="DF ID" (ngModelChange)="filter.dfid=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.dfid" class="filter" type="text"  name="orderIdFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="SAP-No" (ngModelChange)="filter.sap=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.sap" class="filter" type="text"  name="sapFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="Promotion-Title" (ngModelChange)="filter.pit=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.pit" class="filter" type="text"  name="pitFilter" >
+          </td>
+          <td>
+            <i class="fa icon-search"></i><input placeholder="Top Sign" (ngModelChange)="filter.topSign=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.topSign" class="filter" type="text"  name="topSign" >
+          </td>
+          <td>
+
+            <mat-select multiple placeholder="status" style="width:100px;" (ngModelChange)="filter.status=$event;filterChanges();" [(ngModel)]="filter.status">
+              <mat-option selected value="ordered">ordered</mat-option>
+              <mat-option value="finished">finished</mat-option>
+              <mat-option value="storno">storno</mat-option>
+            </mat-select>
+          </td>
+          <td>
+              <input matInput [matDatepicker]="from" placeholder="Date from" disabled (ngModelChange)="filter.from = $event;loadOrders()" [(ngModel)]="this.filter.from">
+              <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+              <mat-datepicker #from disabled="false"></mat-datepicker>
+          </td>
+          <td>
+              <input matInput [matDatepicker]="until" placeholder="Date until" disabled (ngModelChange)="filter.until = $event;loadOrders()"  [(ngModel)]="this.filter.until">
+              <mat-datepicker-toggle matSuffix [for]="until"></mat-datepicker-toggle>
+              <mat-datepicker #until disabled="false"></mat-datepicker>
+          </td>
+        </tr>
+      </table>
+
+        <table (matSortChange)="sortChange($event)" mat-table matSort [dataSource]="dataSource" matSortActive="timestamp" matSortDirection="asc">
+          <ng-container matColumnDef="timestamp">
+              <th mat-sort-header mat-header-cell *matHeaderCellDef>
+                Order-Date
+              </th>
+            <td mat-cell *matCellDef="let order"> {{order.date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="DFID">
+              <th mat-sort-header mat-header-cell *matHeaderCellDef>
+                DF ID
+              </th>
+            <td mat-cell *matCellDef="let order"> {{order.product.DFID}} </td>
+          </ng-container>
+          <ng-container matColumnDef="hex">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Order-ID
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.hex}} </td>
+          </ng-container>
+          <ng-container matColumnDef="cross_charge">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Cross Charge
+            </th>
+            <td mat-cell *matCellDef="let order"> {{(order.crosscharge == '1')?'1':''}} </td>
+          </ng-container>
+          <ng-container matColumnDef="out">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Out
+            </th>
+            <td mat-cell *matCellDef="let order"> {{(order.status =='archive' || order.status =='finished')?'1':''}} </td>
+          </ng-container>
+          <ng-container matColumnDef="SAP">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              SAP-No
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.SAP}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="promotion_title">
+            <th mat-header-cell *matHeaderCellDef>
+              Promotion-Title
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.promotion_title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Status
+            </th>
+            <td mat-cell *matCellDef="let order"> {{order.status}} </td>
+          </ng-container>
+          <ng-container matColumnDef="topsign">
+            <th mat-header-cell *matHeaderCellDef>
+              Topsign
+            </th>
+            <td mat-cell *matCellDef="let order">
+               {{order.topsign.articlenr}} - {{order.topsign.title}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="display">
+            <th mat-header-cell *matHeaderCellDef>
+              Display
+            </th>
+            <td mat-cell *matCellDef="let order">
+              <p *ngFor="let article of order.product.article"> {{article.units}} x {{article.title}}</p>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="displayParts">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Display-Parts
+            </th>
+            <td mat-cell *matCellDef="let order">
+              <!--
+              <p *ngFor="let parts of order.product.display_parts"> {{parts.units}} x {{parts.title}}</p>
+              -->
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="edit">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>
+              Edit
+            </th>
+            <td class="edit" (click)="ui.doShowEditNew();setCurrentDataSet(part);" mat-cell *matCellDef="let part"> <i class="fa icon-edit edit"></i> </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+          <tr mat-row *matRowDef="let part; columns: columnsToDisplay"></tr>
+        </table>
+      </div>
+  </div>
+  <div class="overlaybg" *ngIf="ui.showOverlay"></div>
+  <div class="overlay" *ngIf="ui.showEditNew">
+    <div class="overlay-content">
+      <span (click)="currentDataSet = null;ui.doCloseEditNew()" class="close"><i class="fa icon-cancel"></i></span>
+      <h3 class="fa icon-edit">Order</h3>
+      <p>{{currentDataSet.hex}}</p>
+      <hr />
+      <div class="container-flex">
+        <form name="orderForm" [formGroup]="orderForm">
+          <div class="spacer20"></div>
+
+          <p>Tracking:<span style="float:right;" [ngClass]="{'active':(currentDataSet.tracking == 1)}" class="icon-ok" (click)="trackingChange()">&nbsp;</span><p>
+          <div class="clear"></div>
+          <p>Cross Charge:<span style="float:right;" [ngClass]="{'active':(currentDataSet.crosscharge == 1)}" class="icon-ok" (click)="crosschargeChange()">&nbsp;</span><p>
+          <div class="clear"></div>
+          <p>Out: <span style="float:right;" [ngClass]="{'active':(currentDataSet.status == 'archive' || currentDataSet.status == 'finished')}" class="icon-ok" (click)="currentDataSet.status = 'finished';updateFormValues()">&nbsp;</span><p>
+          <div class="clear"></div>
+
+
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status"  #status>
+              <mat-option value="ordered">ordered</mat-option>
+              <mat-option value="finished">finished</mat-option>
+              <mat-option value="storno">storno</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="mad" placeholder="MAD" disabled formControlName="mad" >
+            <mat-datepicker-toggle matSuffix [for]="mad"></mat-datepicker-toggle>
+            <mat-datepicker #mad disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="Net Sales" formControlName="net_sales" >
+          </mat-form-field>
+
+          <p>OT-ID: {{currentDataSet.hex}}</p>
+          <p>Order Date: {{currentDataSet.date}}</p>
+          <p>Market: {{currentDataSet.costcentrecode}}</p>
+          <p>Cost center: {{currentDataSet.costcentre}}</p>
+          <p>Promotion Title: {{currentDataSet.promotion_title}}</p>
+          <mat-form-field>
+            <input matInput type="text" placeholder="Filled / Empty Displays" formControlName="filled_empty" >
+          </mat-form-field>
+          <p>Display: {{currentDataSet.product.SAP}}</p>
+          <p>SAP: {{currentDataSet.SAP}}</p>
+          <mat-form-field>
+            <input matInput type="text" placeholder="D / T" formControlName="dt" >
+          </mat-form-field>
+          <p>Quantity: {{currentDataSet.display_quantity}}</p>
+          <p>Topsign Article Nr.: {{currentDataSet.topsign.aticlnr}}</p>
+          <button (click)="save()" mat-raised-button>Save</button>
+          <div class="spacer20"></div>
+
+        </form>
+      </div>
+    </div>
+  </div>
