@@ -4,7 +4,8 @@ import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
 import { TopSign } from '../../classes/TopSign';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { TopSignsFilter } from '../../pipes/topSigns/topSignsFilter';
 import { ConfigService } from '../../services/config.service';
 import { Image } from '../../classes/Image';
@@ -122,9 +123,9 @@ export class TopSignsComponent  {
   public save(){
     if (this.topSignForm.status == 'VALID') {
       this.currentDataSet.title = this.topSignForm.controls['title'].value;
-      this.currentDataSet.articlenr = this.topSignForm.controls['articlenr'].value;
+      this.currentDataSet.articlenr = Number(this.topSignForm.controls['articlenr'].value);
       this.currentDataSet.type = this.topSignForm.controls['type'].value;
-      this.currentDataSet.weight = this.topSignForm.controls['weight'].value;
+      this.currentDataSet.weight = Number(this.topSignForm.controls['weight'].value);
       this.dataService.changeTopSign(this.currentDataSet);
     }
   }

@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs/Observable"
-import { Subject } from 'rxjs/Subject';
+import { Observable } from "rxjs"
+import { Subject } from 'rxjs';
 import { ConfigService } from './config.service';
 import { UiService } from './ui.service';
 import { ErrorService } from './error.service';

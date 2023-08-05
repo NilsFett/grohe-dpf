@@ -5,7 +5,7 @@
       <table>
         <tr>
           <td>
-            <i class="fa icon-search"></i><input placeholder="name" (ngModelChange)="filter.name=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.name" class="filter" type="text"  name="nameFilter" >
+            <i class="fa icon-search"></i><input placeholder="name" (ngModelChange)="filter.name=$event;filterChanges();"  [(ngModel)]="filter.name" class="filter" type="text"  name="nameFilter" >
           </td>
         </tr>
       </table>
@@ -67,7 +67,7 @@
             <mat-error [hidden]="name.valid || name.pristine">required</mat-error>
           </mat-form-field>
 
-          <p>Active:<span style="float:right;" [ngClass]="{'active':(currentDataSet.active == 1)}" class="icon-ok" (click)="activeChange()">&nbsp;</span><p>
+          <p>Active:<span style="float:right;" [ngClass]="{'active':(currentDataSet.active == 1)}" class="icon-ok" (click)="activeChange($event)">&nbsp;</span><p>
           <hr />
           <div class="spacer20"></div>
           <button (click)="save()" mat-raised-button>Save</button>
@@ -91,7 +91,7 @@
         <h2>This Promotion Image will be deleted permanently. Are you sure?</h2>
         <div class="spacer"></div>
         <div style="display:flex;justify-content:  space-between" *ngIf="!ui.deleteSuccess">
-          <button class="delete-button" (click)="delete()" mat-raised-button>Delete</button>
+          <button class="delete-button" (click)="delete($event)" mat-raised-button>Delete</button>
           <button class="abort-button" (click)="dataSetToDelete = null;ui.showOverlay = false;" mat-raised-button>Abort</button>
         </div>
         <div *ngIf="ui.deleteSuccess">

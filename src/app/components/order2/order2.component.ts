@@ -20,6 +20,7 @@ import { FileUploader } from 'ng2-file-upload';
   styleUrls: ['./order2.component.css']
 })
 export class Order2Component{
+  [x: string]: any;
   public productsWithArticlesAndProductPath:Product[] = [];
   public productsSearchWord:string = '';
   public productChoosen:Product = null;
@@ -40,7 +41,7 @@ export class Order2Component{
   };
   public topsignImageId:number = null;
 
-  public uploader: FileUploader = new FileUploader({url: `${this.config.baseURL}uploadTopSign`, itemAlias: 'media'});
+  public uploader: FileUploader = new FileUploader({url: `${ConfigService.baseURL}uploadTopSign`, itemAlias: 'media'});
   public custom_topsign:string = null;
   public requestText:string = '';
 

@@ -3,7 +3,8 @@ import { UserService } from '../../services/user.service';
 import { UiService } from '../../services/ui.service';
 import { DataService } from '../../services/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Order } from 'src/app/classes/Order';
 import { OrderFilter } from 'src/app/pipes/order/orderFilter';
 

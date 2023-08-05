@@ -16,11 +16,10 @@ export class ArticlesFilter implements PipeTransform{
         &&  item.title.toLowerCase().indexOf(filter.title.toLowerCase()) !== -1
         &&  item.type.toLowerCase().indexOf(filter.type.toLowerCase()) !== -1
         &&  item.packaging.toLowerCase().indexOf(filter.packaging.toLowerCase()) !== -1
-        &&  item.weight.toLowerCase().indexOf(filter.weight.toLowerCase()) !== -1
-        &&  item.height.toLowerCase().indexOf(filter.height.toLowerCase()) !== -1
-        &&  item.width.toLowerCase().indexOf(filter.width.toLowerCase()) !== -1
-        &&  item.depth.toLowerCase().indexOf(filter.depth.toLowerCase()) !== -1
-        ){
+        &&  item.weight.toString().toLowerCase().indexOf(filter.weight.toString().toLowerCase()) !== -1
+        &&  item.height.toString().toLowerCase().indexOf(filter.height.toString().toLowerCase()) !== -1
+        &&  item.width.toString().toLowerCase().indexOf(filter.width.toString().toLowerCase()) !== -1
+        &&  item.depth.toString().toLowerCase().indexOf(filter.depth.toString().toLowerCase()) !== -1){
           return true;
         }
       }

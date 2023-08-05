@@ -6,7 +6,8 @@ import { DataService} from '../../services/data.service';
 import { ConfigService} from '../../services/config.service';
 import { Product } from '../../classes/Product';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ProductsFilter } from '../../pipes/product/productFilter'
 import { Image } from '../../classes/Image';
 import { ProductTree } from '../../classes/ProductTree';
@@ -217,25 +218,26 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     this.currentDataSet = new Product();
     this.clearForm();
   }
-
   public clearForm(){
-    this.productForm = new FormGroup({
-      image : new FormControl(''),
-      title : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      DFID : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      supplier : new FormControl('',[Validators.required]),
-      display_id : new FormControl('',[Validators.required]),
-      topsign_id : new FormControl(''),
-      promotion_material_id : new FormControl(''),
-      product_tree : new FormControl(''),
-      price : new FormControl('',[Validators.required, Validators.minLength(2)]),
-      deliverytime : new FormControl(''),
-      hide : new FormControl('')
-    });
-    this.articleList = [];
-    this.promotionMaterials = [];
   }
+  // public clearForm(){
+  //   this.productForm = new FormGroup({
+  //     image : new FormControl(''),
+  //     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
+  //     DFID : new FormControl('',[Validators.required, Validators.minLength(2)]),
+  //     SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
+  //     supplier : new FormControl('',[Validators.required]),
+  //     display_id : new FormControl('',[Validators.required]),
+  //     topsign_id : new FormControl(''),
+  //     promotion_material_id : new FormControl(''),
+  //     product_tree : new FormControl(''),
+  //     price : new FormControl('',[Validators.required, Validators.minLength(2)]),
+  //     deliverytime : new FormControl(''),
+  //     hide : new FormControl('')
+  //   });
+  //   this.articleList = [];
+  //   this.promotionMaterials = [];
+  // }
 
   filterChanges(){
       this.products = this.productsFilter.transform(this.dataService.products, this.filter);
@@ -382,17 +384,17 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
 
 
     this.productForm.patchValue({
-      image: this.currentDataSet.image,
+      image: this.currentDataSet.image.toString(),
       title: this.currentDataSet.title,
       DFID: this.currentDataSet.DFID,
       SAP: this.currentDataSet.SAP,
       supplier: this.currentDataSet.supplier,
-      display_id : this.currentDataSet.display_id,
-      topsign_id : this.currentDataSet.topsign_id,
-      promotion_material_id : this.currentDataSet.promotion_material_id,
-      product_tree: this.currentDataSet.product_tree,
-      price: this.currentDataSet.price,
-      deliverytime:this.currentDataSet.deliverytime
+      display_id : this.currentDataSet.display_id.toString(),
+      topsign_id : this.currentDataSet.topsign_id.toString(),
+      promotion_material_id : this.currentDataSet.promotion_material_id.toString(),
+      product_tree: this.currentDataSet.product_tree.toString(),
+      price: this.currentDataSet.price.toString(),
+      deliverytime:this.currentDataSet.deliverytime.toString()
     });
   }
 
@@ -402,11 +404,11 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
       this.currentDataSet.DFID = this.productForm.controls['DFID'].value;
       this.currentDataSet.SAP = this.productForm.controls['SAP'].value;
       this.currentDataSet.supplier = this.productForm.controls['supplier'].value;
-      this.currentDataSet.display_id = this.productForm.controls['display_id'].value,
-      this.currentDataSet.topsign_id = this.productForm.controls['topsign_id'].value,
-      this.currentDataSet.promotion_material_id = this.productForm.controls['promotion_material_id'].value,
-      this.currentDataSet.price = this.productForm.controls['price'].value;
-      this.currentDataSet.deliverytime = this.productForm.controls['deliverytime'].value;
+      this.currentDataSet.display_id = Number(this.productForm.controls['display_id'].value),
+      this.currentDataSet.topsign_id = Number(this.productForm.controls['topsign_id'].value),
+      this.currentDataSet.promotion_material_id = Number(this.productForm.controls['promotion_material_id'].value),
+      this.currentDataSet.price = Number(this.productForm.controls['price'].value);
+      this.currentDataSet.deliverytime = Number(this.productForm.controls['deliverytime'].value);
       this.dataService.saveProductAndArticleList(this.currentDataSet, this.articleList, this.promotionMaterials);
     }
     else{

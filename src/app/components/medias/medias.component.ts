@@ -13,7 +13,7 @@ import { FileUploader } from 'ng2-file-upload';
 export class MediasComponent{
 
   //public uploader:FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage`});
-  public uploader: FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage`, itemAlias: 'media'});
+  
   public images:Image[]=[];
   public tab:string = 'dimages';
   public tabs:any = {1:'dimages',2:'pimages', 3:'tsimages',4:'tspdf'};
@@ -21,7 +21,8 @@ export class MediasComponent{
   constructor(
     private dataService:DataService,
     public ui:UiService,
-    public config:ConfigService
+    public config:ConfigService,
+    public uploader: FileUploader = new FileUploader({url: `${config.baseURL}uploadImage`, itemAlias: 'media'})
   ) {
     if(this.ui.currentURL == '/displayCompose'){
       this.tab = 'pimages';

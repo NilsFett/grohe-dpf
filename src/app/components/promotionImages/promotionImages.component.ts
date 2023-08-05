@@ -4,7 +4,8 @@ import { UiService } from '../../services/ui.service';
 import { DataService } from '../../services/data.service';
 import { ConfigService} from '../../services/config.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { PromotionImage } from 'src/app/classes/PromotionImage';
 import { PromotionImagesFilter } from 'src/app/pipes/promotionImages/promotionImagesFilter';
 import { Image } from '../../classes/Image';
@@ -120,8 +121,8 @@ export class PromotionImages {
   private updateFormValues(){
     this.promotionImageForm.patchValue({
       name: this.currentDataSet.name,
-      image_id: this.currentDataSet.image_id,
-      active: this.currentDataSet.active
+      image_id: this.currentDataSet.image_id.toString(),
+      active: this.currentDataSet.active.toString()
     });
   }
 
@@ -136,11 +137,13 @@ export class PromotionImages {
     this.ui.deleteSuccess = false;
   }
 
-  public delete() {
+  public delete($event) {
+    $event.stopPropagation();
     this.dataService.deletePromotionImage(this.dataSetToDelete);
   }
 
   activeChange($event){
+    $event.stopPropagation();
     console.log('activeChange');
     console.log(this.currentDataSet.active);
     if(this.currentDataSet.active == 1){

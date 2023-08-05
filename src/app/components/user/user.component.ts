@@ -3,7 +3,8 @@ import { UserService } from '../../services/user.service';
 import { UiService } from '../../services/ui.service';
 import { DataService } from '../../services/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { User } from 'src/app/classes/User';
 import { UserFilter } from 'src/app/pipes/user/userFilter';
 
@@ -43,7 +44,7 @@ export class UserComponent {
     usertype: new FormControl(''),
     costno: new FormControl(''),
     description: new FormControl(''),
-    deleted: new FormControl('')
+    deleted: new FormControl()
   });
 
   constructor(
@@ -130,7 +131,7 @@ export class UserComponent {
       usertype: this.currentDataSet.usertype,
       costno: this.currentDataSet.costno,
       description: this.currentDataSet.description,
-      deleted: this.currentDataSet.deleted
+      deleted: this.currentDataSet.deleted.toString()
     });
   }
 

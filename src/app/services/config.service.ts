@@ -4,7 +4,9 @@ import { Injectable, Inject } from '@angular/core';
 export class ConfigService {
 
   //public baseURL = 'http://groheapi.localdomain/api/';
-  public baseURL = 'https://grohe-dpf.localdomain/api/';
+  // public baseURL = 'http://example.local/api/';
+  public baseURL = 'https://grohe.local/api/'; 
+  static baseURL: any;
 
 
 

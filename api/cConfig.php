@@ -27,15 +27,15 @@ class cConfig{
 		$this->aConfig['enviroment'] = 'grohedpf';
 		$this->aConfig['senderMail'] = 'mail@nils-fett.de';
 		$this->aConfig['hosts'] = array(
-			'grohe-dpf.localdomain' => 'groheapi'
+			'grohe.local' => 'groheapi'
 			 //everything.localdomain
 		);
 		$this->aConfig['dbname'] = 'grohe-dpf';
 		$this->aConfig['user'] = 'root';
-		$this->aConfig['password'] = 'password';
+		$this->aConfig['password'] = '';
 		$this->aConfig['host'] = 'localhost';
 
-		$this->aConfig['basepath'] = '/Users/nilsfett/Sites/grohe-dpf/api/';
+		$this->aConfig['basepath'] = "D:/xampp/htdocs/grohe-dpf/api/";
 
 	}
 
