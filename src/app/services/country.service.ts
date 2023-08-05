@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { ErrorService } from './error.service';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Subject, Observable} from 'rxjs';
 
 @Injectable()
 export class CountryService {

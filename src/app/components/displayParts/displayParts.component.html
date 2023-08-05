@@ -22,6 +22,9 @@
         <td>
           <i class="fa icon-search"></i><input placeholder="Height" (ngModelChange)="filter.height=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.height" class="filter" type="text"  name="heightFilter" >
         </td>
+        <td>
+          <i class="fa icon-search"></i><input placeholder="Stock" (ngModelChange)="filter.stock=$event;filterChanges();" (click)="$event.stopPropagation()" [(ngModel)]="filter.stock" class="filter" type="text"  name="stockFilter" >
+        </td>
       </tr>
     </table>
       <table mat-table matSort matSortActive="articlenr" matSortDirection="asc" [dataSource]="dataSource" >

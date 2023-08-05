@@ -14,7 +14,7 @@ export class TopSignsFilter implements PipeTransform{
       item => {
         if( item.title.toLowerCase().indexOf(filter.title.toLowerCase()) !== -1
         &&  item.articlenr.toLowerCase().indexOf(filter.articlenr.toLowerCase()) !== -1
-        &&  item.weight.toLowerCase().indexOf(filter.weight.toLowerCase()) !== -1){
+        &&  item.weight.toString().toLowerCase().indexOf(filter.weight.toString().toLowerCase()) !== -1){
           return true;
         }
       }

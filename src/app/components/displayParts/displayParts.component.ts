@@ -4,7 +4,8 @@ import { UiService} from '../../services/ui.service';
 import { DataService} from '../../services/data.service';
 import { DisplaysPart } from '../../classes/DisplaysPart';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { DisplayPartsFilter } from '../../pipes/displayParts/displayPartsFilter'
 
 @Component({
@@ -25,7 +26,8 @@ export class DisplayPartsComponent  {
     width:'',
     height:'',
     type:'',
-    weight:''
+    weight:'',
+    stock:''
   };
 
   columnsToDisplay = ['articlenr','title', 'weight', 'length', 'width', 'height', 'edit', 'delete'];
@@ -36,7 +38,8 @@ export class DisplayPartsComponent  {
     weight : new FormControl('',[Validators.required]),
     length : new FormControl(''),
     width : new FormControl(''),
-    height : new FormControl('')
+    height : new FormControl(''),
+    stock : new FormControl('')
   });
 
   constructor(
@@ -77,7 +80,8 @@ export class DisplayPartsComponent  {
       weight : new FormControl('',[Validators.required]),
       length : new FormControl(''),
       width : new FormControl(''),
-      height : new FormControl('')
+      height : new FormControl(''),
+      stock : new FormControl('')
     });
   }
 
@@ -89,9 +93,9 @@ export class DisplayPartsComponent  {
   public save(){
     if (this.displayPartForm.status == 'VALID') {
       this.currentDataSet.title = this.displayPartForm.controls['title'].value;
-      this.currentDataSet.articlenr = this.displayPartForm.controls['articlenr'].value;
-
-      this.currentDataSet.weight = this.displayPartForm.controls['weight'].value;
+      this.currentDataSet.articlenr = Number(this.displayPartForm.controls['articlenr'].value);
+      
+      this.currentDataSet.weight = Number(this.displayPartForm.controls['weight'].value);
       this.currentDataSet.length = this.displayPartForm.controls['length'].value;
       this.currentDataSet.width = this.displayPartForm.controls['width'].value;
       this.currentDataSet.height = this.displayPartForm.controls['height'].value;
@@ -109,8 +113,8 @@ export class DisplayPartsComponent  {
       width: currentDataSet.width,
       height: currentDataSet.height,
       stock: currentDataSet.stock,
-      weight: currentDataSet.weight,
-      deleted: currentDataSet.deleted
+      weight: currentDataSet.weight
+      // deleted: currentDataSet.deleted
     });
     this.ui.doShowEditNew();
   }

@@ -40,10 +40,15 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTableModule } from '@angular/material/table';
-import { MatNativeDateModule, NativeDateAdapter, DateAdapter,  MatSortModule, MatPaginatorModule, MatIconModule, MAT_DATE_FORMATS } from '@angular/material';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatNativeDateModule, NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule,MatCheckboxModule } from '@angular/material';
+// import { MatInputModule,MatCheckboxModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule} from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
 import { CdkTreeModule } from '@angular/cdk/tree';

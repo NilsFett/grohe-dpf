@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { ErrorService } from './error.service';
 import { ApiResponseInterface } from '../interfaces/apiResponse';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class UserService {
     this.http.get(`${this.config.baseURL}isLoggedIn`,{withCredentials: true}).subscribe(
       (response:ApiResponseInterface) => {
         this.checked = true;
-
+        console.log(response.data)
         if(response.loggedIn){
           this.data = response.data;
           this.isLoggedIn = true;

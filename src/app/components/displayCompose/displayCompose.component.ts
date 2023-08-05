@@ -3,7 +3,8 @@ import { UserService} from '../../services/user.service';
 import { UiService} from '../../services/ui.service';
 import { DataService } from '../../services/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import { Display } from '../../classes/display';
 import { Image } from '../../classes/Image';
 import { DisplaysPart } from '../../classes/DisplaysPart';
@@ -194,7 +195,8 @@ export class DisplayComposeComponent implements OnDestroy{
       articlenr: this.currentDataSet.articlenr,
       displaytype: this.currentDataSet.displaytype,
       /*topsign_punch: this.currentDataSet.topsign_punch,*/
-      instruction: this.currentDataSet.instruction
+      instruction: this.currentDataSet.instruction.toString()
+      
     });
   }
 
@@ -249,7 +251,7 @@ export class DisplayComposeComponent implements OnDestroy{
       this.currentDataSet.articlenr = this.displayForm.controls['articlenr'].value;
       this.currentDataSet.displaytype = this.displayForm.controls['displaytype'].value;
       /*this.currentDataSet.topsign_punch = this.displayForm.controls['topsign_punch'].value;*/
-      this.currentDataSet.instruction = this.displayForm.controls['instruction'].value;
+      this.currentDataSet.instruction = Number(this.displayForm.controls['instruction'].value);
       this.dataService.saveDisplayAndPartList(this.currentDataSet, this.partsList);
     }
     else{

@@ -133,5 +133,8 @@
       }
     }
   },
-  "defaultProject": "grohe-dpf"
+ 
+  "cli": {
+    "analytics": false
+  }
 }

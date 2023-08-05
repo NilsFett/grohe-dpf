@@ -20,7 +20,7 @@ session_set_cookie_params([
 					'secure' => true,
 					'httponly' => true,
 				'domain' => 'grohe-dpf.localdomain']);
-session_start(				);
+session_start();
 //header('Set-Cookie: cross-site-cookie=name; SameSite=None; Secure');
 if ($_SERVER['REQUEST_METHOD']=='OPTIONS') {
 	exit();

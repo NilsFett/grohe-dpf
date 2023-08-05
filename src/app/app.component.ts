@@ -13,11 +13,11 @@ export class AppComponent implements AfterViewInit{
   @HostListener('window:resize', ['$event']) onResize(event) {
     this.adjustHeight();
   }
-  @ViewChild('main', {static: false}) main!: ElementRef;
+  @ViewChild('main', {static: false}) main!: ElementRef;  
 
   public loggedIn:boolean = false;
   public mainheight : number;
-  public res: any = {width:null,height:null}
+  public res: any = {width:null,height:null} 
   public navopen = true;
   public overflow:boolean;
   public userInfoOpen:boolean = false;
@@ -30,7 +30,7 @@ export class AppComponent implements AfterViewInit{
     public ui: UiService
   ) {
     this.router.events.subscribe(
-      (navEnd:NavigationEnd) => {
+      (navEnd:NavigationEnd) => { 
         if(navEnd.urlAfterRedirects){
           this.currentURL = navEnd.urlAfterRedirects;
           this.ui.currentURL = this.currentURL;

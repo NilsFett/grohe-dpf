@@ -266,9 +266,13 @@ class cOrderModel extends cModel{
     }
 
 		$db = cDatabase::getInstance();
-		
 		$stmt = $db->hConnection->prepare($query);
-		$stmt->execute(array($userid));
+		if (! empty( $status)) {
+			$stmt->execute(array($userid));
+		}else{
+			$stmt->execute();
+		}
+		;
 		$orders = array();
 
 

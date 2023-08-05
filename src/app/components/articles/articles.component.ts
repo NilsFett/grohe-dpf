@@ -5,7 +5,8 @@ import { DataService} from '../../services/data.service';
 import { Article } from '../../classes/Article';
 import { TopSign } from '../../classes/TopSign';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ArticlesFilter } from '../../pipes/articles/articlesFilter';
 import { DpfSyncWidthSource } from '../directives/dpf-sync-width-source.directive';
 
@@ -125,15 +126,17 @@ export class ArticlesComponent  implements OnInit{
 
   public save(){
     if (this.articleForm.status == 'VALID') {
-      this.currentDataSet.articlenr = this.articleForm.controls['articlenr'].value;
+      this.currentDataSet.articlenr =+this.articleForm.controls['articlenr'].value;
       this.currentDataSet.title = this.articleForm.controls['title'].value;
-      this.currentDataSet.type = this.articleForm.controls['type'].value;
+      this.currentDataSet.type =+ this.articleForm.controls['type'].value;
       this.currentDataSet.packaging = this.articleForm.controls['packaging'].value;
-      this.currentDataSet.weight = this.articleForm.controls['weight'].value;
-      this.currentDataSet.height = this.articleForm.controls['height'].value;
-      this.currentDataSet.width = this.articleForm.controls['width'].value;
-      this.currentDataSet.depth = this.articleForm.controls['depth'].value;
-      this.currentDataSet.topsign = this.articleForm.controls['topsign'].value;
+      this.currentDataSet.weight =+ this.articleForm.controls['weight'].value;
+      // this.currentDataSet.weight = +this.articleForm.controls['weight'].value;
+
+      this.currentDataSet.height =+ this.articleForm.controls['height'].value;
+      this.currentDataSet.width =+ this.articleForm.controls['width'].value;
+      this.currentDataSet.depth =+ this.articleForm.controls['depth'].value;
+      this.currentDataSet.topsign =+ this.articleForm.controls['topsign'].value;
 
       console.log(this.currentDataSet);
 
