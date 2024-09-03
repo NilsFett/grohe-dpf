@@ -126,9 +126,9 @@ export class ArticlesComponent  implements OnInit{
 
   public save(){
     if (this.articleForm.status == 'VALID') {
-      this.currentDataSet.articlenr =+this.articleForm.controls['articlenr'].value;
+      this.currentDataSet.articlenr = this.articleForm.controls['articlenr'].value;
       this.currentDataSet.title = this.articleForm.controls['title'].value;
-      this.currentDataSet.type =+ this.articleForm.controls['type'].value;
+      this.currentDataSet.type = this.articleForm.controls['type'].value;
       this.currentDataSet.packaging = this.articleForm.controls['packaging'].value;
       this.currentDataSet.weight =+ this.articleForm.controls['weight'].value;
       // this.currentDataSet.weight = +this.articleForm.controls['weight'].value;

@@ -218,26 +218,24 @@ export class ProductsComponent implements AfterViewChecked, OnInit {
     this.currentDataSet = new Product();
     this.clearForm();
   }
+
   public clearForm(){
-  }
-  // public clearForm(){
-  //   this.productForm = new FormGroup({
-  //     image : new FormControl(''),
-  //     title : new FormControl('',[Validators.required, Validators.minLength(2)]),
-  //     DFID : new FormControl('',[Validators.required, Validators.minLength(2)]),
-  //     SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
-  //     supplier : new FormControl('',[Validators.required]),
-  //     display_id : new FormControl('',[Validators.required]),
-  //     topsign_id : new FormControl(''),
-  //     promotion_material_id : new FormControl(''),
-  //     product_tree : new FormControl(''),
-  //     price : new FormControl('',[Validators.required, Validators.minLength(2)]),
-  //     deliverytime : new FormControl(''),
-  //     hide : new FormControl('')
-  //   });
-  //   this.articleList = [];
-  //   this.promotionMaterials = [];
-  // }
+     this.productForm = new FormGroup({
+       image : new FormControl(''),
+       title : new FormControl('',[Validators.required, Validators.minLength(2)]),
+       DFID : new FormControl('',[Validators.required, Validators.minLength(2)]),
+       SAP : new FormControl('',[Validators.required, Validators.minLength(2)]),
+       supplier : new FormControl('',[Validators.required]),
+       product_tree : new FormControl(''),
+       display_id : new FormControl('',[Validators.required]),
+       topsign_id : new FormControl(''),
+       promotion_material_id : new FormControl(''),
+       price : new FormControl('',[Validators.required, Validators.minLength(1)]),
+       deliverytime : new FormControl('')
+     });
+     this.articleList = [];
+     this.promotionMaterials = [];
+   }
 
   filterChanges(){
       this.products = this.productsFilter.transform(this.dataService.products, this.filter);

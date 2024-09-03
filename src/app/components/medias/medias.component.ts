@@ -12,8 +12,8 @@ import { FileUploader } from 'ng2-file-upload';
 })
 export class MediasComponent{
 
-  //public uploader:FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage`});
-  
+  public uploader:FileUploader;
+
   public images:Image[]=[];
   public tab:string = 'dimages';
   public tabs:any = {1:'dimages',2:'pimages', 3:'tsimages',4:'tspdf'};
@@ -22,8 +22,10 @@ export class MediasComponent{
     private dataService:DataService,
     public ui:UiService,
     public config:ConfigService,
-    public uploader: FileUploader = new FileUploader({url: `${config.baseURL}uploadImage`, itemAlias: 'media'})
+
   ) {
+    this.uploader = new FileUploader({url: `${this.config.baseURL}uploadImage`});
+    console.log('1');
     if(this.ui.currentURL == '/displayCompose'){
       this.tab = 'pimages';
     }
@@ -35,6 +37,7 @@ export class MediasComponent{
         this.images = this.dataService.images;
       }
     );
+    console.log('2');
     if (this.dataService.images) {
       this.images = this.dataService.images;
     }
@@ -43,6 +46,7 @@ export class MediasComponent{
       this.dataService.loadImages();
     }
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    console.log('3');
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
          let obj = JSON.parse(response);
          item.remove();

@@ -170,7 +170,7 @@ class cModel extends cDatabase{
 
 			$oPDO = $this->hConnection->prepare( 'INSERT INTO `'.static::$sTable.'` ( '.(implode(',', $aColNames).' ) VALUES ( '.implode(',', $aColValues).' )' ), array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY) );
 
-			$result = $oPDO->execute( $aColsValuePairs );
+			$result = @$oPDO->execute( $aColsValuePairs );
 			if( isset($this->sPrimary)  ){
 				$this->aColumns[$this->sPrimary]['value'] = $this->hConnection->lastInsertId();
 			}

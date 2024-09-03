@@ -294,7 +294,7 @@ i.icon-search{
   line-height:22px;
 }
 
-.mat-table img{
+.mat-table img, .mat-mdc-table img{
   max-width:100px;
   max-height:100px;
   display:block;
@@ -657,18 +657,22 @@ header.login .span6{
   left:10px;
 }
 
-.mat-form-field.mat-focused .mat-form-field-label{
+mat-form-field.mat-focused .mat-form-field-label{
   color:#3784c0;
 }
-.mat-form-field.mat-focused .mat-form-field-ripple{
+mat-form-field.mat-focused .mat-form-field-ripple{
   background-color:#3784c0;
 }
 
 mat-form-field.blue .mat-form-field-label{
   color:#3784c0;
 }
-
-.mat-form-field {
+/*
+.mat-mdc-form-field-focus-overlay{
+  background-color: transparent !important;
+}
+*/
+mat-form-field {
   width:100%;
   /*max-width:300px;*/
   display:block !important;

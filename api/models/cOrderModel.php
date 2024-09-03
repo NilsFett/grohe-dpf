@@ -151,7 +151,7 @@ class cOrderModel extends cModel{
 			$order->set('userid', cSessionUser::getInstance()->get('id'));
 			$order->set('status', 'progress');
 			$order->set('date', date('Y-m-d H:i:s'));
-			$order->save();
+			//$order->save();
 		}
 		return $order;
 	}

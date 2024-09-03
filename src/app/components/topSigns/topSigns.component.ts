@@ -121,9 +121,9 @@ export class TopSignsComponent  {
   }
 
   public save(){
-    if (this.topSignForm.status == 'VALID') {
+    if (this.topSignForm.status === 'VALID') {
       this.currentDataSet.title = this.topSignForm.controls['title'].value;
-      this.currentDataSet.articlenr = Number(this.topSignForm.controls['articlenr'].value);
+      this.currentDataSet.articlenr = this.topSignForm.controls['articlenr'].value;
       this.currentDataSet.type = this.topSignForm.controls['type'].value;
       this.currentDataSet.weight = Number(this.topSignForm.controls['weight'].value);
       this.dataService.changeTopSign(this.currentDataSet);

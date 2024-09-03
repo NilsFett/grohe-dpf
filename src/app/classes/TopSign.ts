@@ -1,6 +1,6 @@
 export class TopSign {
   public id:number;
-  public articlenr:number;
+  public articlenr:string;
   public title:string;
   public path:string;
   public type:string;

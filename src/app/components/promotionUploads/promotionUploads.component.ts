@@ -12,7 +12,7 @@ import { FileUploader } from 'ng2-file-upload';
 })
 export class PromotionUploads{
 
-  public uploader: FileUploader = new FileUploader({url: `${this.config.baseURL}uploadImage?type=5`, itemAlias: 'media'});
+  public uploader: FileUploader;
   public images:Image[]=[];
 
   private timeoutHandle;
@@ -33,6 +33,7 @@ export class PromotionUploads{
 
       this.dataService.loadImages();
     }
+    this.uploader = new FileUploader({url: `${this.config.baseURL}uploadImage?type=5`, itemAlias: 'media'});
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
          let obj = JSON.parse(response);
