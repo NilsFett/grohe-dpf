@@ -1,0 +1,14 @@
+# Traefik dynamic configuration (file provider).
+#
+# Defines the *default* TLS certificate Traefik serves when a router has TLS
+# enabled but no working certificate resolver — i.e. develop mode, where
+# CERT_RESOLVER is empty. The bundled cert is a self-signed throwaway
+# (docker/traefik/certs/default.*), so browsers will show a warning you can
+# click through. In production CERT_RESOLVER=le, Let's Encrypt issues the real
+# cert and this default is never used.
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/traefik/certs/default.crt
+        keyFile: /etc/traefik/certs/default.key

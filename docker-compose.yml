@@ -1,0 +1,174 @@
+services:
+  # ---------------------------------------------------------------------------
+  # Generates the self-signed default certificate used in develop mode, if it
+  # doesn't already exist. Runs to completion before traefik starts. The cert is
+  # git-ignored, so this recreates it on a fresh checkout. (In production the
+  # cert is generated but unused — Let's Encrypt issues the real one.)
+  # ---------------------------------------------------------------------------
+  traefik-certgen:
+    image: alpine:3.20
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        cd /certs
+        if [ -f default.crt ] && [ -f default.key ]; then
+          echo "Self-signed cert already present, skipping."
+          exit 0
+        fi
+        apk add --no-cache openssl >/dev/null
+        openssl req -x509 -nodes -newkey rsa:2048 -days 3650 \
+          -keyout default.key -out default.crt \
+          -subj "/CN=${DOMAIN}/O=Grohe DPF Dev" \
+          -addext "subjectAltName=DNS:${DOMAIN},DNS:localhost,DNS:*.localhost,IP:127.0.0.1"
+        echo "Generated self-signed cert for ${DOMAIN}"
+    volumes:
+      - ./docker/traefik/certs:/certs
+
+  # ---------------------------------------------------------------------------
+  # Reverse proxy / TLS termination.
+  # Listens on 80 + 443 and redirects all HTTP to HTTPS.
+  #
+  # TLS depends on ENVIRONMENT / CERT_RESOLVER (see .env):
+  #   - develop    (CERT_RESOLVER empty) -> serves the bundled self-signed cert
+  #                from the file provider (docker/traefik/dynamic/tls.yml).
+  #   - production (CERT_RESOLVER=le)     -> obtains a real certificate from
+  #                Let's Encrypt (HTTP-01 challenge on the web entrypoint).
+  # ---------------------------------------------------------------------------
+  traefik:
+    image: traefik:3.6.2
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      # File provider: supplies the self-signed default certificate for develop.
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Global HTTP -> HTTPS redirect.
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      # Let's Encrypt resolver (used only in production, when CERT_RESOLVER=le).
+      - --certificatesresolvers.le.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.le.acme.httpchallenge=true
+      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+      # - --api.dashboard=true  # uncomment + add a router to expose the dashboard
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik/letsencrypt:/letsencrypt
+      # Self-signed default cert + the dynamic config that registers it.
+      - ./docker/traefik/dynamic:/etc/traefik/dynamic:ro
+      - ./docker/traefik/certs:/etc/traefik/certs:ro
+    depends_on:
+      traefik-certgen:
+        condition: service_completed_successfully
+    networks:
+      - web
+
+  # ---------------------------------------------------------------------------
+  # PHP backend (api/). Served at https://${DOMAIN}/api/*
+  # ---------------------------------------------------------------------------
+  php:
+    build: ./docker/php
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_BASEPATH: /var/www/html/api/
+      APP_HOST: ${DOMAIN}
+      APP_ENV_NAME: groheapi
+      COOKIE_DOMAIN: ${DOMAIN}
+    volumes:
+      - ./api:/var/www/html/api
+    depends_on:
+      db:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      # php is on two networks (web + internal); without this hint Traefik may
+      # try to reach it on `internal`, which it isn't attached to -> timeouts.
+      - traefik.docker.network=grohe-dpf-web
+      # Host + PathPrefix is more specific than the frontend's Host-only rule,
+      # so Traefik routes /api/* here and everything else to the SPA.
+      - traefik.http.routers.php.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)
+      - traefik.http.routers.php.entrypoints=websecure
+      - traefik.http.routers.php.tls=true
+      # Empty in develop (self-signed default cert); "le" in production.
+      - traefik.http.routers.php.tls.certresolver=${CERT_RESOLVER}
+      - traefik.http.services.php.loadbalancer.server.port=80
+    networks:
+      - web
+      - internal
+
+  # ---------------------------------------------------------------------------
+  # Angular frontend (ng serve). Served at https://${DOMAIN}/
+  # ---------------------------------------------------------------------------
+  node:
+    image: node:18
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      # Required by the old webpack toolchain (see package.json "start").
+      NODE_OPTIONS: --openssl-legacy-provider
+    command: >
+      sh -c "npm install &&
+             node_modules/.bin/ng serve --host 0.0.0.0 --port 4200 --disable-host-check --poll 2000"
+    volumes:
+      - ./:/app
+      # Keep the container's own node_modules (don't shadow with the host's).
+      - /app/node_modules
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.front.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.front.entrypoints=websecure
+      - traefik.http.routers.front.tls=true
+      # Empty in develop (self-signed default cert); "le" in production.
+      - traefik.http.routers.front.tls.certresolver=${CERT_RESOLVER}
+      - traefik.http.services.front.loadbalancer.server.port=4200
+    networks:
+      - web
+
+  # ---------------------------------------------------------------------------
+  # Database. grohe.sql is auto-imported into ${DB_NAME} on first boot.
+  # ---------------------------------------------------------------------------
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    container_name: grohe-dpf-db
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      # Imported only when the data volume is empty (first boot).
+      - ./grohe.sql:/docker-entrypoint-initdb.d/grohe.sql:ro
+    ports:
+      - '3306:3306/tcp'
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - internal
+
+networks:
+  # Explicit names so the Traefik network hint below is stable regardless of the
+  # compose project name (otherwise docker prefixes them, e.g. grohe-dpf_web).
+  web:
+    name: grohe-dpf-web
+  internal:
+    name: grohe-dpf-internal
+
+volumes:
+  dbdata:

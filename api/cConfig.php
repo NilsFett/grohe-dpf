@@ -26,16 +26,27 @@ class cConfig{
 
 		$this->aConfig['enviroment'] = 'grohedpf';
 		$this->aConfig['senderMail'] = 'mail@nils-fett.de';
+
+		// Host -> environment map. The environment name selects the controller
+		// (c<Env>Controller) and the `enviroments` table row used for routing.
+		// In Docker the public domain is injected via APP_HOST.
 		$this->aConfig['hosts'] = array(
-			'grohe-dpf.localdomain' => 'groheapi'
+			'groheapi.localdomain' => 'groheapi'
 			 //everything.localdomain
 		);
-		$this->aConfig['dbname'] = 'grohe-dpf';
-		$this->aConfig['user'] = 'root';
-		$this->aConfig['password'] = 'password';
-		$this->aConfig['host'] = 'localhost';
+		$appHost = getenv('APP_HOST');
+		if ($appHost) {
+			$this->aConfig['hosts'][$appHost] = getenv('APP_ENV_NAME') ?: 'groheapi';
+		}
 
-		$this->aConfig['basepath'] = '/Users/nilsfett/Sites/grohe-dpf/api/';
+		// Database + paths. Defaults preserve the original local setup; Docker
+		// overrides them through environment variables (see docker-compose.yml).
+		$this->aConfig['dbname']   = getenv('DB_NAME') ?: 'grohe-dpf';
+		$this->aConfig['user']     = getenv('DB_USER') ?: 'root';
+		$this->aConfig['password'] = (getenv('DB_PASSWORD') !== false) ? getenv('DB_PASSWORD') : 'iCasaful:06123';
+		$this->aConfig['host']     = getenv('DB_HOST') ?: 'localhost';
+
+		$this->aConfig['basepath'] = getenv('APP_BASEPATH') ?: '/home/nils/workspace/grohe-dpf/api/';
 
 	}
 

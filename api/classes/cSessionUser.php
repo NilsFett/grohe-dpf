@@ -33,7 +33,7 @@ class cSessionUser extends cUserModel{
 					'samesite' => 'None',
 					'secure' => true,
 					'httponly' => true,
-				'domain' => 'grohe.hoehne-media.de']);
+				'domain' => (getenv('COOKIE_DOMAIN') !== false) ? getenv('COOKIE_DOMAIN') : 'grohe.hoehne-media.de']);
 			//setcookie('cross-site-cookie', 'name', ['expires'=> time() + 60 * 60 * 24 * 365,,'samesite' => 'None', 'secure' => true]);
 		}
 

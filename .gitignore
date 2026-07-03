@@ -57,3 +57,13 @@ Thumbs.db
 /api/cConfig.php
 /api/topsign/
 /api/topsign/*
+
+#Docker
+/.env
+/docker/traefik/letsencrypt/*
+!/docker/traefik/letsencrypt/.gitkeep
+# Self-signed dev cert is generated at startup (traefik-certgen), never committed.
+/docker/traefik/certs/*
+!/docker/traefik/certs/.gitkeep
+
+.angular
